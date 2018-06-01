@@ -1,0 +1,14 @@
+.DS_Store
+node_modules
+package-lock.json
+lerna-debug.log
+packages/**/dist/
+yarn-error.log
+tmp
+build
+dist
+cjs
+es
+umd
+*.lerna_backup
+.npmrc

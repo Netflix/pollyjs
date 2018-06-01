@@ -1,0 +1,128 @@
+{
+  "created_at": "2018-06-01T20:36:46.198Z",
+  "entries": {
+    "1077f062f8b12b51733933f86fb7ebc4": [
+      {
+        "created_at": "2018-06-01T20:36:46.198Z",
+        "request": {
+          "body": "{\"foo\":\"bar\"}",
+          "headers": {
+            "Content-Type": "application/json;charset=utf-8"
+          },
+          "method": "POST",
+          "timestamp": "2018-06-01T20:36:46.070Z",
+          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
+        },
+        "response": {
+          "body": "{\"foo\":\"bar\"}",
+          "headers": {
+            "connection": "close",
+            "content-length": "13",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 01 Jun 2018 20",
+            "etag": "W/\"d-pedE0BZFQNM7HX6mFsKPL6l+dUo\"",
+            "x-powered-by": "Express"
+          },
+          "status": 200,
+          "timestamp": "2018-06-01T20:36:46.119Z"
+        }
+      }
+    ],
+    "70d74380485b3d40cc52f32a0c49d166": [
+      {
+        "created_at": "2018-06-01T20:36:46.198Z",
+        "request": {
+          "headers": {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          "method": "DELETE",
+          "timestamp": "2018-06-01T20:36:46.165Z",
+          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
+        },
+        "response": {
+          "body": "",
+          "headers": {
+            "connection": "close",
+            "content-length": "0",
+            "date": "Fri, 01 Jun 2018 20",
+            "x-powered-by": "Express"
+          },
+          "status": 200,
+          "timestamp": "2018-06-01T20:36:46.179Z"
+        }
+      }
+    ],
+    "a50cd52528f4b6e3ff5502b656c9b296": [
+      {
+        "created_at": "2018-06-01T20:36:46.198Z",
+        "request": {
+          "headers": {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          "method": "GET",
+          "timestamp": "2018-06-01T20:36:45.979Z",
+          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
+        },
+        "response": {
+          "body": "",
+          "headers": {
+            "connection": "close",
+            "content-length": "0",
+            "date": "Fri, 01 Jun 2018 20",
+            "x-powered-by": "Express"
+          },
+          "status": 404,
+          "timestamp": "2018-06-01T20:36:46.063Z"
+        }
+      },
+      {
+        "created_at": "2018-06-01T20:36:46.198Z",
+        "request": {
+          "headers": {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          "method": "GET",
+          "timestamp": "2018-06-01T20:36:46.121Z",
+          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
+        },
+        "response": {
+          "body": "{\"foo\":\"bar\"}",
+          "headers": {
+            "connection": "close",
+            "content-length": "13",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 01 Jun 2018 20",
+            "etag": "W/\"d-pedE0BZFQNM7HX6mFsKPL6l+dUo\"",
+            "x-powered-by": "Express"
+          },
+          "status": 200,
+          "timestamp": "2018-06-01T20:36:46.161Z"
+        }
+      },
+      {
+        "created_at": "2018-06-01T20:36:46.198Z",
+        "request": {
+          "headers": {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          "method": "GET",
+          "timestamp": "2018-06-01T20:36:46.180Z",
+          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
+        },
+        "response": {
+          "body": "",
+          "headers": {
+            "connection": "close",
+            "content-length": "0",
+            "date": "Fri, 01 Jun 2018 20",
+            "x-powered-by": "Express"
+          },
+          "status": 404,
+          "timestamp": "2018-06-01T20:36:46.191Z"
+        }
+      }
+    ]
+  },
+  "name": "@pollyjs/core/Integration | Adapters/XHR Adapter + Rest Persister/should respect request order",
+  "schema_version": 0.1
+}

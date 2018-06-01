@@ -1,0 +1,64 @@
+{
+  "name": "@pollyjs/ember",
+  "version": "0.0.0",
+  "description": "The default blueprint for ember-cli addons.",
+  "keywords": [
+    "ember-addon"
+  ],
+  "license": "Apache-2.0",
+  "author": "",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember",
+  "scripts": {
+    "build": "ember build",
+    "lint": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "start": "ember serve",
+    "format": "prettier --config ../../../.prettier.js --write **/*.js",
+    "test": "ember test ci",
+    "clean": "rimraf dist tmp"
+  },
+  "dependencies": {
+    "@pollyjs/core": "0.0.0",
+    "@pollyjs/node-server": "0.0.0",
+    "broccoli-funnel": "^2.0.1",
+    "broccoli-merge-trees": "^3.0.0",
+    "broccoli-source": "^1.1.0",
+    "browser-resolve": "^1.11.2",
+    "debug": "^3.1.0",
+    "ember-cli-babel": "^6.6.0"
+  },
+  "devDependencies": {
+    "broccoli-asset-rev": "^2.4.5",
+    "ember-cli": "~2.18.2",
+    "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-eslint": "^4.2.1",
+    "ember-cli-htmlbars": "^2.0.1",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
+    "ember-cli-inject-live-reload": "^1.4.1",
+    "ember-cli-qunit": "^4.3.2",
+    "ember-cli-shims": "^1.2.0",
+    "ember-cli-sri": "^2.1.0",
+    "ember-cli-uglify": "^2.0.0",
+    "ember-disable-prototype-extensions": "^1.1.2",
+    "ember-export-application-global": "^2.0.0",
+    "ember-load-initializers": "^1.0.0",
+    "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-resolver": "^4.0.0",
+    "ember-source": "~2.18.0",
+    "eslint": "^4.18.1",
+    "eslint-plugin-ember": "^5.1.0",
+    "loader.js": "^4.2.3",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.10.2",
+    "rimraf": "^2.6.2"
+  },
+  "engines": {
+    "node": "6.* || >= 7.*"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config"
+  }
+}

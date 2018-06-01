@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Polly.js Tests</title>
+    <link href="../node_modules/mocha/mocha.css" rel="stylesheet"/>
+    {{#css_files}}
+      <link rel="stylesheet" href="{{src}}">
+    {{/css_files}}
+  </head>
+  <body>
+    <div id="mocha"></div>
+
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="/testem.js"></script>
+
+    <script>
+      window.expect = window.chai.expect;
+      mocha.setup({ ui: 'bdd', noHighlighting: true });
+    </script>
+
+
+    {{#serve_files}}
+      <script src="../{{src}}"></script>
+    {{/serve_files}}
+
+    <script>
+        mocha.checkLeaks();
+        mocha.run();
+    </script>
+  </body>
+</html>

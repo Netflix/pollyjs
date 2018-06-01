@@ -1,0 +1,26 @@
+{
+  "lerna": "2.11.0",
+  "version": "independent",
+  "npmClient": "yarn",
+  "packages": ["packages/@pollyjs/*"],
+  "command": {
+    "publish": {
+      "allowBranch": "master",
+      "conventionalCommits": true,
+      "message": "chore(release): Publish %s",
+      "ignoreChanges": [
+        "**/tests/**",
+        "**/*.md"
+      ]
+    }
+  },
+  "changelog": {
+    "repo": "Netflix/pollyjs",
+    "labels": {
+      "Tag: Breaking Change": ":boom: Breaking Change",
+      "Tag: Enhancement": ":rocket: Enhancement",
+      "Tag: Bug Fix": ":bug: Bug Fix",
+      "Tag: Documentation": ":memo: Documentation"
+    }
+  }
+}

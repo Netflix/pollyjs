@@ -1,0 +1,39 @@
+{
+  "name": "@pollyjs/adapter",
+  "version": "0.0.0",
+  "description": "",
+  "main": "cjs/pollyjs-adapter.js",
+  "module": "es/pollyjs-adapter.js",
+  "browser": "umd/pollyjs-adapter.js",
+  "files": [
+    "src",
+    "cjs",
+    "es",
+    "umd"
+  ],
+  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter",
+  "scripts": {
+    "build": "npm-run-all clean rollup",
+    "test:build": "rollup -c rollup.config.test.js",
+    "test:clean": "rimraf build",
+    "clean": "rimraf cjs es umd",
+    "rollup": "rollup -c ../../../rollup.config.js",
+    "watch": "yarn rollup -w",
+    "format": "prettier --config ../../../.prettier.js --write **/*.js",
+    "lint": "eslint ./*.js src",
+    "prepack": "NODE_ENV=production yarn build"
+  },
+  "keywords": [
+    "polly",
+    "pollyjs"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.10.2",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.56.3"
+  }
+}
