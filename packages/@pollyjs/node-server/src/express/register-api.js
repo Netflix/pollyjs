@@ -1,4 +1,5 @@
 import path from 'path';
+import express from 'express';
 import bodyParser from 'body-parser';
 import nocache from 'nocache';
 import API from '../api';
@@ -8,12 +9,12 @@ export default function registerAPI(app, config) {
   config = { ...DefaultConfig, ...config };
   config.namespace = path.join('/', config.namespace);
 
-  const { recordingsDir, namespace } = config;
-  const api = new API(recordingsDir);
+  const router = express.Router();
+  const api = new API(config.recordingsDir);
 
-  app.use(namespace, nocache());
+  router.use(nocache());
 
-  app.get(path.join(namespace, ':recording/:entryId'), function(req, res) {
+  router.get('/:recording/:entryId', function(req, res) {
     const { recording, entryId } = req.params;
     const { order } = req.query;
     const { status, body } = api.getRecordingEntry(recording, entryId, order);
@@ -27,7 +28,7 @@ export default function registerAPI(app, config) {
     }
   });
 
-  app.get(path.join(namespace, ':recording'), function(req, res) {
+  router.get('/:recording', function(req, res) {
     const { recording } = req.params;
     const { status, body } = api.getRecording(recording);
 
@@ -40,21 +41,22 @@ export default function registerAPI(app, config) {
     }
   });
 
-  app.post(
-    path.join(namespace, ':recording'),
-    bodyParser.json({ limit: '50mb' }),
-    function(req, res) {
-      const { recording } = req.params;
-      const { status, body } = api.saveRecording(recording, req.body);
+  router.post('/:recording', bodyParser.json({ limit: '50mb' }), function(
+    req,
+    res
+  ) {
+    const { recording } = req.params;
+    const { status, body } = api.saveRecording(recording, req.body);
 
-      res.status(status).send(body);
-    }
-  );
+    res.status(status).send(body);
+  });
 
-  app.delete(path.join(namespace, ':recording'), function(req, res) {
+  router.delete('/:recording', function(req, res) {
     const { recording } = req.params;
     const { status, body } = api.deleteRecording(recording);
 
     res.status(status).send(body);
   });
+
+  app.use(config.namespace, router);
 }
