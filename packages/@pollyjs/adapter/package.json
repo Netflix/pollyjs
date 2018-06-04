@@ -2,21 +2,19 @@
   "name": "@pollyjs/adapter",
   "version": "0.0.0",
   "description": "",
-  "main": "cjs/pollyjs-adapter.js",
-  "module": "es/pollyjs-adapter.js",
-  "browser": "umd/pollyjs-adapter.js",
+  "main": "dist/cjs/pollyjs-adapter.js",
+  "module": "dist/es/pollyjs-adapter.js",
+  "browser": "dist/umd/pollyjs-adapter.js",
   "files": [
     "src",
-    "cjs",
-    "es",
-    "umd"
+    "dist"
   ],
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter",
   "scripts": {
     "build": "npm-run-all clean rollup",
     "test:build": "rollup -c rollup.config.test.js",
     "test:clean": "rimraf build",
-    "clean": "rimraf cjs es umd",
+    "clean": "rimraf dist",
     "rollup": "rollup -c ../../../rollup.config.js",
     "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",

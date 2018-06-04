@@ -2,21 +2,19 @@
   "name": "@pollyjs/core",
   "version": "0.0.0",
   "description": "",
-  "main": "cjs/pollyjs-core.js",
-  "module": "es/pollyjs-core.js",
-  "browser": "umd/pollyjs-core.js",
+  "main": "dist/cjs/pollyjs-core.js",
+  "module": "dist/es/pollyjs-core.js",
+  "browser": "dist/umd/pollyjs-core.js",
   "files": [
     "src",
-    "cjs",
-    "es",
-    "umd"
+    "dist"
   ],
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core",
   "scripts": {
     "build": "npm-run-all clean rollup",
     "test:build": "rollup -c rollup.config.test.js",
     "test:clean": "rimraf build",
-    "clean": "rimraf cjs es umd",
+    "clean": "rimraf dist",
     "rollup": "rollup -c ../../../rollup.config.js",
     "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",

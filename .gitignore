@@ -7,8 +7,5 @@ yarn-error.log
 tmp
 build
 dist
-cjs
-es
-umd
 *.lerna_backup
 .npmrc

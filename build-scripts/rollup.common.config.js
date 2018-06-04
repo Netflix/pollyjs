@@ -21,11 +21,7 @@ const banner = `/**
 export const output = format => {
   return {
     format,
-    /*
-      NOTE: unpkg expects a `umd` directory to be packaged meaning
-            all dist files cant be stored under `/dist` :(.
-    */
-    file: `./${format}/${pkg.name.replace('@pollyjs/', 'pollyjs-')}.js`,
+    file: `./dist/${format}/${pkg.name.replace('@pollyjs/', 'pollyjs-')}.js`,
     sourcemap: production,
     banner
   };
