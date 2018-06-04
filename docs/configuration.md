@@ -153,7 +153,7 @@ _Default_:
 ```js
 {
   host: '',
-  namespace: '/polly'
+  apiNamespace: '/polly'
 }
 ```
 

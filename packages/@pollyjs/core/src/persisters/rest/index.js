@@ -5,9 +5,9 @@ import stringify from 'json-stable-stringify';
 
 export default class RestPersister extends Persister {
   ajax(url, ...args) {
-    const { host, namespace } = this.config;
+    const { host, apiNamespace } = this.config;
 
-    return ajax(buildUrl(host, namespace, url), ...args);
+    return ajax(buildUrl(host, apiNamespace, url), ...args);
   }
 
   findRecordingEntry(pollyRequest) {

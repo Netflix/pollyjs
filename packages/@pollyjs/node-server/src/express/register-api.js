@@ -7,7 +7,7 @@ import DefaultConfig from '../config';
 
 export default function registerAPI(app, config) {
   config = { ...DefaultConfig, ...config };
-  config.namespace = path.join('/', config.namespace);
+  config.apiNamespace = path.join('/', config.apiNamespace);
 
   const router = express.Router();
   const api = new API(config.recordingsDir);
@@ -58,5 +58,5 @@ export default function registerAPI(app, config) {
     res.status(status).send(body);
   });
 
-  app.use(config.namespace, router);
+  app.use(config.apiNamespace, router);
 }

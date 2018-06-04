@@ -16,12 +16,12 @@ cli
   .option('-H, --host <host>', 'host')
   .option('-p, --port <port>', 'port number', Polly.Defaults.port)
   .option(
-    '-n, --namespace <namespace>',
+    '-n, --api-namespace <namespace>',
     'api namespace',
-    Polly.Defaults.namespace
+    Polly.Defaults.apiNamespace
   )
   .option(
-    '-rd, --recordings-dir <path>',
+    '-d, --recordings-dir <path>',
     'recordings directory',
     Polly.Defaults.recordingsDir
   )

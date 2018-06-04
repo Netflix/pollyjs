@@ -56,7 +56,7 @@ registerExpressAPI(app, {
 });
 ```
 
-### namespace
+### apiNamespace
 
 _Type_: `String`
 _Default_: `'polly'`
@@ -65,6 +65,6 @@ The API namespace for the routes.
 
 ```js
 registerExpressAPI(app, {
-  namespace: 'polly_js'
+  apiNamespace: 'polly_js'
 });
 ```

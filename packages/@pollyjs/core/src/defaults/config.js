@@ -17,7 +17,7 @@ export default {
   persister: 'rest',
   persisterOptions: {
     host: '',
-    namespace: '/polly'
+    apiNamespace: '/polly'
   },
 
   matchRequestsBy: {

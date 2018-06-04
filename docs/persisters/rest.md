@@ -16,7 +16,7 @@ const polly = new Polly('<Recording>', {
   persister: 'rest',
   persisterOptions: {
     host: '',
-    namespace: '/polly'
+    apiNamespace: '/polly'
   }
 });
 ```
@@ -40,7 +40,7 @@ polly.configure({
 });
 ```
 
-### namespace
+### apiNamespace
 
 _Type_: `String`
 _Default_: `'/polly'`
@@ -56,7 +56,7 @@ __Example__
 ```js
 polly.configure({
   persisterOptions: {
-    namespace: '/pollyjs'
+    apiNamespace: '/pollyjs'
   }
 });
 ```

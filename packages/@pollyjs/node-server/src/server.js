@@ -21,7 +21,7 @@ export default class Server {
 
     registerAPI(this.app, {
       recordingsDir: this.config.recordingsDir,
-      namespace: this.config.namespace
+      apiNamespace: this.config.apiNamespace
     });
   }
 
