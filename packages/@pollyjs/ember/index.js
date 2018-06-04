@@ -8,7 +8,7 @@ const resolve = require('browser-resolve');
 const debug = require('debug')('@pollyjs/ember');
 const mergeTrees = require('broccoli-merge-trees');
 const { UnwatchedDir } = require('broccoli-source');
-const { registerExpressAPI } = require('@pollyjs/node-server');
+const { registerExpressAPI, Defaults } = require('@pollyjs/node-server');
 
 const { assign } = Object;
 
@@ -96,18 +96,24 @@ module.exports = {
 
   testemMiddleware(app) {
     if (this._config.enabled) {
-      registerExpressAPI(app, {
-        recordingsDir: path.join(this.app.project.root, this._config.recordingsDir),
-        namespace: this._config.namespace
-      });
+      registerExpressAPI(app, this._config.server);
     }
   },
 
   _pollyConfig() {
-    return assign({
-      enabled: this.app.env !== 'production',
-      recordingsDir: 'pollyjs/recordings',
-      namespace: 'polly'
-    }, this.app.options['pollyjs']);
+    const config = assign(
+      {
+        enabled: this.app.env !== 'production',
+        server: {}
+      },
+      this.app.options.pollyjs
+    );
+
+    config.server.recordingsDir = path.join(
+      this.app.project.root,
+      config.server.recordingsDir || Defaults.recordingsDir
+    );
+
+    return config;
   }
 };
