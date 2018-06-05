@@ -12,7 +12,10 @@ export default function createClientTestConfig(options = {}) {
           format: 'es',
           name: `${pkg.name}-tests`,
           file: `./build/tests/bundle-es.js`,
-          intro: `describe('${pkg.name}', function() {`,
+          intro: `
+            'use strict'
+            describe('${pkg.name}', function() {
+          `,
           outro: '});'
         },
         plugins: [multiEntry()],
