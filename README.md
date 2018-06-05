@@ -11,7 +11,7 @@ Polly.JS is a standalone, framework agnostic, JavaScript library that enables re
 
 By combining the ideas behind Ruby's [VCR](https://github.com/vcr/vcr) with a client side Express-like server, Polly taps into native browser implementations to record, replay, and stub network requests and responses –— allowing for mocking APIs with as little as one line of code.
 
-> Interested in contributing, or just seeing Polly in action? Head over to [CONTRIBUTING.md](./CONTRIBUTING.md) to learn how to spin up the project!
+> Interested in contributing, or just seeing Polly in action? Head over to [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to spin up the project!
 
 # Why Polly?
 

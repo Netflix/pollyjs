@@ -159,6 +159,10 @@ a {
   margin: 0;
 }
 
+.markdown-section blockquote {
+  margin: 1em 0;
+}
+
 /****** CODE HIGHLIGHTING ******/
 .token.string {
   color: #42b983;
