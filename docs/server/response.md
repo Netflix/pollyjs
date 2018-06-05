@@ -32,7 +32,7 @@ Set the response's status code.
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
 | status | `Number` | Status code |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 
@@ -64,7 +64,7 @@ removed.
 |  ---  | ---  |     ---     |
 | name | `String` | The name of the header |
 | value | `String` | The value for the header |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 
@@ -80,7 +80,7 @@ altogether.
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
 | headers | `Object` | The headers to add to the response |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 
@@ -113,7 +113,7 @@ Sets the response's Content Type.
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
 | value | `String` | &nbsp; |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 
@@ -132,7 +132,7 @@ Sets the response's body.
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
 | body | `any` | &nbsp; |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 
@@ -151,7 +151,7 @@ type to `text/plain`, and call [send](#send).
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
 | status | `Number` | Status code |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 
@@ -167,7 +167,7 @@ been set already, and call [send](#send) with the stringified object.
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
 | obj | `Object` | Object to send |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 
@@ -181,7 +181,7 @@ Freeze the response and headers so they can no longer be modified.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| __Returns__ | [PollyResponse](server/response) | The current response |
+| __Returns__ | [Response](server/response) | The current response |
 
 __Example__
 

@@ -41,7 +41,7 @@ Fires right before the request goes out.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [PollyRequest](server/request) | The request instance |
+| req | [Request](server/request) | The request instance |
 
 __Example__
 
@@ -60,8 +60,8 @@ Fires right before the response materializes and the promise resolves.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [PollyRequest](server/request) | The request instance |
-| res | [PollyResponse](server/response) | The response instance |
+| req | [Request](server/request) | The request instance |
+| res | [Response](server/response) | The response instance |
 
 __Example__
 
@@ -80,8 +80,8 @@ the response materializes and the promise resolves.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [PollyRequest](server/request) | The request instance |
-| res | [PollyResponse](server/response) | The response instance |
+| req | [Request](server/request) | The request instance |
+| res | [Response](server/response) | The response instance |
 
 __Example__
 
@@ -99,7 +99,7 @@ Fires before the request/response exchange gets persisted.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [PollyRequest](server/request) | The request instance |
+| req | [Request](server/request) | The request instance |
 | recording | `Object` | The recording that will be persisted |
 
 __Example__
@@ -120,7 +120,7 @@ and before the event materializes into a response.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [PollyRequest](server/request) | The request instance |
+| req | [Request](server/request) | The request instance |
 | recording | `Object` | The retrieved recording |
 
 __Example__
