@@ -1,47 +1,36 @@
-[![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+<!-- <p align="center">
+  <img alt="CSS Blocks" width="480px" src="http://css-blocks.com/static/media/wordmark-animated.012177e4.svg" />
+</p> -->
+<h1 align="center" style="border: none;">Polly.JS</h1>
+<h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
+
 [![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
+[![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-# Polly.JS
+Polly.JS is a standalone, framework agnostic, JavaScript library that enables recording, replaying, and stubbing HTTP interactions.
 
-Standalone, framework agnostic, JavaScript library that enables recording, replaying, and stubbing HTTP interactions.
+By combining the ideas behind Ruby's [VCR](https://github.com/vcr/vcr) with a client side Express-like server, Polly taps into native browser implementations to record, replay, and stub network requests and responses –— allowing for mocking APIs with as little as one line of code.
 
-## Installation
+> Interested in contributing, or just seeing Polly in action? Head over to [CONTRIBUTING.md](./CONTRIBUTING.md) to learn how to spin up the project!
 
-_Note that you must have node (and npm) installed._
+# Why Polly?
 
-```bash
-npm install @pollyjs/cli -g
-npm install @pollyjs/core -D
-```
+With Polly added to your project, you receive:
 
-If you want to install it with [yarn](https://yarnpkg.com):
+ - ⚡️ Fetch & XHR Support
+ - 🚀 Simple, Powerful, & Intuitive API
+ - 💎 First Class Mocha & QUnit Test Helpers
+ - 🔥 Intercept, Pass-Through, and Attach Events
+ - 📼 Record to Disk or Local Storage
+ - ⏰ Slow Down or Speed Up Time
 
-```bash
-yarn global add @pollyjs/cli
-yarn add @pollyjs/core -D
-```
+## Getting Started
 
-## Setup
-
-In order write to disk, Polly makes networks requests to a local server which
-does all the heavy lifting. If you don't want to use the CLI and you have your
-own express server, see the [Node Server](docs/node-server/overview) documentation on
-integrating with your existing server.
-
-Using the installed CLI, run the `listen` command to start up the node server.
-
-```bash
-polly listen
-```
-
-Optionally, Polly can persist to local storage which would not require setting up
-any node integrations. See the [Local Storage Persister](docs/persisters/local-storage)
-documentation for more details.
+For a detailed guide on getting started, check out the [Quick Start](https://netflix.github.io/pollyjs/#/quick-start) documentation.
 
 ## Usage
 
-Now that you've installed Polly and have setup your server, you're ready to
-fly. Lets take a look at what an example test case would look like using Polly.
+Lets take a look at what an example test case would look like using Polly.
 
 ```js
 import { Polly } from '@pollyjs/core';
