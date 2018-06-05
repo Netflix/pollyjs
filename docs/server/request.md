@@ -75,7 +75,7 @@ __Example__
 
 ```js
 server.get('/movies/:id').intercept((req, res) => {
-  console.log(req.params.id)
+  console.log(req.params.id);
 });
 ```
 

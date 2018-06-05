@@ -14,34 +14,72 @@ If you want to install it with [yarn](https://yarnpkg.com):
 yarn add @pollyjs/node-server -D
 ```
 
-## Integrations
+## Server
 
-The `@pollyjs/node-server` packages provides a `registerExpressAPI` method which
-takes in an [Express](http://expressjs.com/) app and a config to register the
-necessary routes to be used with the REST Persister.
+This packages includes a fully working standalone node server that is pre-configured
+with the necessary APIs and middleware to support the [REST Persister](persisters/rest).
 
-### Webpack DevServer
+The Server constructor accepts a configuration object that can be a combination
+of the below listed Server & API options. Once instantiated, you will have
+full access to the Express app via the `app` property.
 
 ```js
-const path = require('path');
-const { registerExpressAPI } = require('@pollyjs/node-server');
+const { Server } = require('@pollyjs/node-server');
+const server = new Server({
+  quiet: true,
+  port: 4000,
+  apiNamespace: 'pollyjs'
+});
 
-const config = {
-  devServer: {
-    before(app) {
-      registerExpressAPI(app, config);
-    }
-  }
-};
+// Add custom business logic to the express server
+server
+  .app
+  .get('/custom', () => { /* Add custom express logic */ });
 
-module.exports = config;
+// Start listening and attach extra logic to the http server
+server
+  .listen()
+  .on('error', () => { /* Add http server error logic */ });
 ```
 
-### Ember CLI
+## Server Configuration
 
-See the [Ember CLI documentation](frameworks/ember-cli) for more details.
+### port
 
-## Configuration
+_Type_: `Number`
+_Default_: `3000`
+
+```js
+new Server({
+  port: 4000
+});
+```
+
+### host
+
+_Type_: `String`
+_Default_: `undefined`
+
+```js
+new Server({
+  host: 'test.localhost'
+});
+```
+
+### quiet
+
+_Type_: `Boolean`
+_Default_: `false`
+
+Enable/Disable the logging middleware ([morgan](https://github.com/expressjs/morgan)).
+
+```js
+new Server({
+  quiet: true
+});
+```
+
+## API Configuration
 
 ### recordingsDir
 
@@ -51,6 +89,10 @@ _Default_: `'recordings'`
 The root directory to store all recordings.
 
 ```js
+new Server({
+  recordingsDir: '__recordings__'
+});
+
 registerExpressAPI(app, {
   recordingsDir: '__recordings__'
 });
@@ -61,9 +103,17 @@ registerExpressAPI(app, {
 _Type_: `String`
 _Default_: `'polly'`
 
-The API namespace for the routes.
+The namespace to mount the polly API on. This should really only be changed
+if there is a conflict with the default apiNamespace.
+
+!> If modified, you must provide the new `apiNamespace` to the client side Polly
+instance via the [Persister Options](persisters/rest#apinamespace)
 
 ```js
+new Server({
+  apiNamespace: 'polly_js'
+});
+
 registerExpressAPI(app, {
   apiNamespace: 'polly_js'
 });

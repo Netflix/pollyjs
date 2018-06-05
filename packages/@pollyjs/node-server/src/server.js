@@ -48,5 +48,7 @@ export default class Server {
       });
 
     gracefulShutdown(this.server);
+
+    return this.server;
   }
 }

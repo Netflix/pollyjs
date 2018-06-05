@@ -1,11 +1,9 @@
 # Configuration
 
-<!-- [config.js](https://raw.githubusercontent.com/Netflix/pollyjs/master/packages/%40pollyjs/core/src/defaults/config.js ':include :type=code') → -->
-
 A Polly can be configured by passing a configuration object as the 2nd argument
 
 ```js
-new Polly('<Recording>', {
+new Polly('<Recording Name>', {
   recordIfMissing: true
 });
 ```
@@ -13,19 +11,23 @@ new Polly('<Recording>', {
 Or via the [configure](api#configure) method on the instance.
 
 ```js
-const polly = new Polly('<Recording>');
+const polly = new Polly('<Recording Name>');
 
 polly.configure({
   recordIfMissing: true
 });
 ```
 
+## Defaults
+
+[config.js](https://raw.githubusercontent.com/Netflix/pollyjs/master/packages/@pollyjs/core/src/defaults/config.js ':include :type=code')
+
 ## logging
 
 _Type_: `Boolean`
 _Default_: `false`
 
-Logs requests by recording to the console.
+Logs requests and their responses to the console grouped by the recording name.
 
 __Example__
 
@@ -40,7 +42,8 @@ polly.configure({
 _Type_: `Boolean`
 _Default_: `true`
 
-If a request's recording is not found, passthrough to the server and record the response.
+If a request's recording is not found, pass-through to the server and
+record the response.
 
 __Example__
 
@@ -55,7 +58,8 @@ polly.configure({
 _Type_: `Boolean`
 _Default_: `false`
 
-If a request's recording has expired, passthrough to the server and record a new response.
+If a request's recording has expired, pass-through to the server and
+record a new response.
 
 __Example__
 
@@ -70,7 +74,9 @@ polly.configure({
 _Type_: `Boolean`
 _Default_: `false`
 
-By default, Polly does not persist if there were requests that failed during recording.  A failed request is defined when it's response statusCode is < 200 or >= 300.
+If `false`, Polly will throw when attempting to persist any failed requests.
+A failed request is defined when it's response status code that is `< 200` or
+`≥ 300`.
 
 __Example__
 
@@ -85,13 +91,18 @@ polly.configure({
 _Type_: `String`
 _Default_: `null`
 
-After how long the request's recording will be considered expired.
+After how long the request's recording will be considered expired from the time
+it was persister.
 
 __Example__
 
 ```js
 polly.configure({
   expiresIn: '30d5h10m' // expires in 30 days, 5 hours, 10 minutes
+});
+
+polly.configure({
+  expiresIn: '5 min 10 seconds 100 milliseconds' // expires in 5 minutes, 10 seconds, 100 milliseconds
 });
 ```
 
@@ -119,7 +130,7 @@ polly.configure({
 _Type_: `Array`
 _Default_: `['fetch', 'xhr']`
 
-The adapter(s) the polly will hook into.
+The adapter(s) polly will hook into.
 
 __Example__
 
@@ -159,8 +170,8 @@ _Default_:
 
 Options to be passed into the persister.
 
-?> __Note:__ Check out the appropriate documentation pages for each per
-persister for more details.
+?> __Note:__ Check out the appropriate documentation pages for each persister
+for more details.
 
 __Example__
 

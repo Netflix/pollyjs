@@ -1,6 +1,7 @@
-# Polly.JS
+[![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
 
-[![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?token=Z18soQhopzoWV2byxvwx&branch=master)](https://travis-ci.com/Netflix/pollyjs)
+# Polly.JS
 
 Standalone, framework agnostic, JavaScript library that enables recording, replaying, and stubbing HTTP interactions.
 

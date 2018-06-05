@@ -13,7 +13,7 @@ Create a new Polly instance.
 __Example__
 
 ```js
-new Polly('<Recording>', { /* ... */ });
+new Polly('<Recording Name>', { /* ... */ });
 ```
 
 ## Properties
@@ -23,19 +23,20 @@ new Polly('<Recording>', { /* ... */ });
 _Type_: `String`
 _Default_: `null`
 
-The recording name the recordings will be stored under.
+The recording name the recordings will be stored under. The provided name is
+sanitized as well as postfixed with a GUID.
 
 __Example__
 
 ```js
-new Polly('Stranger Things', { /* ... */ });
+new Polly('Wants a Cracker', { /* ... */ });
 ```
 
 Will save recordings to the following file:
 
 ```text
 recordings
-  └── Stranger Things
+  └── Wants-a-Cracker_1234
       └── recording.json
 ```
 
@@ -44,15 +45,15 @@ __Example__
 ?> A recording can also have slashes to better organize recordings.
 
 ```js
-new Polly('Stranger Things/Season 1');
+new Polly('Wants a Cracker/Cheddar');
 ```
 
 Will save recordings to the following file:
 
 ```text
 recordings
-  └── Stranger Things
-      └── Season 1
+  └── Wants-a-Cracker_1234
+      └── Cheddar_5678
           └── recording.json
 ```
 
@@ -79,23 +80,24 @@ _Type_: `Object`
 
 A static object of all the possible modes a polly can be in.
 
-<!-- [modes.js](https://raw.githubusercontent.com/Netflix/pollyjs/master/packages/%40pollyjs/core/src/defaults/modes.js ':include :type=code') → -->
+[modes.js](https://raw.githubusercontent.com/Netflix/pollyjs/master/packages/@pollyjs/core/src/defaults/modes.js ':include :type=code') →
 
 
 ### persister
 
-_Type_: `Class`
-_Default_: `BuiltinPersister`
+_Type_: `Persister`
+_Default_: `RestPersister`
 
 The persister used to find and save recordings.
 
 ### server
 
-_Type_: `Class`
+_Type_: `Server`
 _Default_: `Server`
 
-The server used to determine if a url should be intercepted or passthrough.
-See [here](server) for more details.
+Every polly instance has a reference to a [client side server](server/overview) which you can leverage
+to gain full control of all HTTP interactions as well as dictate how the Polly instance
+should handle them.
 
 ```js
 const { server } = polly;
@@ -123,7 +125,7 @@ polly.configure({ recordIfMissing: false });
 ### record
 
 Puts polly in recording mode. All requests going forward will
-passthrough and their responses will be recorded.
+be sent to the server and their responses will be recorded.
 
 __Example__
 
@@ -144,8 +146,9 @@ polly.replay();
 
 ### pause
 
-Puts polly in a paused mode. All requests going forward will passthrough.
-The previous mode will be saved and can be restored by calling [play](api#play)
+Puts polly in a paused mode. All requests going forward will pass through
+and will not be recorded or replayed. The previous mode will be saved and can
+be restored by calling [play](api#play)
 
 __Example__
 
@@ -173,7 +176,7 @@ polly.play();
 
 Persist all recordings and disconnect from all adapters.
 
-!> This method is `async` and must be resolved before your test has ended.
+!> This method is `async` and must be resolved before all recordings are persisted.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
@@ -201,7 +204,7 @@ polly.connectTo('xhr');
 
 ### disconnectFrom
 
-Connect to an adapter.
+Disconnect from an adapter.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |

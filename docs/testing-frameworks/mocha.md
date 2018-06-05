@@ -17,7 +17,7 @@ parent module(s).
 import { setupMocha as setupPolly } from '@pollyjs/core';
 
 describe('Netflix Homepage', function() {
-  setupPolly();
+  setupPolly({/* default configuration options */});
 
   it('should be able to sign in', async function() {
     /*

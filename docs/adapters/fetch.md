@@ -1,6 +1,6 @@
 # Fetch Adapter
 
-The fetch adapter wraps the native window's fetch method for seamless
+The fetch adapter wraps the global fetch method for seamless
 recording and replaying of requests.
 
 ## Usage
@@ -11,7 +11,7 @@ The fetch adapter is connected to by default but you can use the
 adapter.
 
 ```js
-const polly = new Polly('<Recording>', {
+const polly = new Polly('<Recording Name>', {
   adapters: ['fetch']
 });
 

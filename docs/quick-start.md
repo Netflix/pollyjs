@@ -2,7 +2,7 @@
 
 ## Installation
 
-!> Using Ember.JS? See the [ember-cli section](frameworks/ember-cli) instead.
+?> Using Ember.JS? See the [Ember CLI Addon](frameworks/ember-cli) documentation for more details.
 
 _Note that you must have node (and npm) installed._
 
@@ -22,10 +22,11 @@ yarn add @pollyjs/core -D
 
 In order write to disk, Polly makes networks requests to a local server which
 does all the heavy lifting. If you don't want to use the CLI and you have your
-own express server, see the [Node Server](node-server/overview) documentation on
-integrating with your existing server.
+own express server, see the [Express Integrations](node-server/express-integrations)
+documentation on integrating with your existing server.
 
-Using the installed CLI, run the `listen` command to start up the node server.
+Using the installed [CLI](cli/overview), run the [listen](cli/commands#listen)
+command to start up the node server.
 
 ```bash
 polly listen

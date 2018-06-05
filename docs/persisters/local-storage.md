@@ -1,12 +1,15 @@
 # Local Storage Persister
 
-The Local Storage Persister uses the browser's local storage
-to read and write recordings.
+Read and write recordings to and from the browser's Local Storage.
 
 ## Usage
 
 ```js
-const polly = new Polly('<Recording>', {
+const polly = new Polly('<Recording Name>', {
   persister: 'local-storage'
 });
 ```
+
+## Options {docsify-ignore}
+
+_There are currently no available configuration options for this persister._

@@ -7,7 +7,7 @@ should handle them.
 ## Usage
 
 ```js
-const polly = new Polly('<Recording>');
+const polly = new Polly('<Recording Name>');
 const { server } = polly;
 
 // Events & Middleware

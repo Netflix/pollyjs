@@ -204,7 +204,7 @@ describe('Unit | Polly', function() {
 
       const promise = this.polly.stop();
 
-      expect(this.polly.stop()).to.be.a('promise');
+      expect(promise).to.be.a('promise');
       await promise;
       expect(this.polly.mode).to.equal(Modes.STOPPED);
     });

@@ -18,7 +18,7 @@ parent module(s).
 import { setupQunit as setupPolly } from '@pollyjs/core';
 
 module('Netflix Homepage', function(hooks) {
-  setupPolly(hooks);
+  setupPolly(hooks, {/* default configuration options */});
 
   test('should be able to sign in', async function(assert) {
     /*

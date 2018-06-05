@@ -6,7 +6,7 @@ Events can be attached to a server route using `.on()` and detached via
 the `.off()` methods.
 
 ?> __Note:__ Event handlers can be asynchronous. An `async` function can be used
-or a promise can be returned.
+or a `Promise` can be returned.
 
 ```js
 // Events
@@ -41,7 +41,7 @@ Fires right before the request goes out.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [`Request`](server/request) | The request instance |
+| req | [PollyRequest](server/request) | The request instance |
 
 __Example__
 
@@ -60,8 +60,8 @@ Fires right before the response materializes and the promise resolves.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [`Request`](server/request) | The request instance |
-| res | [`Response`](server/response) | The response instance |
+| req | [PollyRequest](server/request) | The request instance |
+| res | [PollyResponse](server/response) | The response instance |
 
 __Example__
 
@@ -73,44 +73,64 @@ server
   });
 ```
 
-### beforeRecord
+### afterResponse
 
-Fires before the request/response gets persisted.
+Fires right after the response has been finalized for the request but before
+the response materializes and the promise resolves.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [`Request`](server/request) | The request instance |
-| event | `Object` | The event that will be persisted |
+| req | [PollyRequest](server/request) | The request instance |
+| res | [PollyResponse](server/response) | The response instance |
+
+__Example__
+
+```js
+server
+  .get('/session')
+  .on('afterResponse', (req, res) => {
+    console.log(`${req.url} took ${req.responseTime}ms with a status of ${res.statusCode}.`);
+  });
+```
+
+### beforeRecord
+
+Fires before the request/response exchange gets persisted.
+
+| Param | Type | Description |
+|  ---  | ---  |     ---     |
+| req | [PollyRequest](server/request) | The request instance |
+| recording | `Object` | The recording that will be persisted |
 
 __Example__
 
 ```js
 server
   .any()
-  .on('beforeRecord', (req, event) => {
-    event.request = encrypt(event.request);
-    event.response = encrypt(event.response);
+  .on('beforeRecord', (req, recording) => {
+    recording.request = encrypt(recording.request);
+    recording.response = encrypt(recording.response);
   });
 ```
 
 ### beforeReplay
 
-Fires after fetching an event from the persister and before the event
-materializes into a response.
+Fires after retrieving the recorded request/response exchange from the persister
+and before the event materializes into a response.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| req | [`Request`](server/request) | The request instance |
-| event | `Object` | The event that will be persisted |
+| req | [PollyRequest](server/request) | The request instance |
+| recording | `Object` | The retrieved recording |
 
 __Example__
 
 ```js
 server
   .any()
-  .on('beforeReplay', (req, event) => {
-    event.request = decrypt(event.request);
-    event.response = decrypt(event.response);
+  .on('beforeReplay', (req, recording) => {
+    recording.request = decrypt(recording.request);
+    recording.response = decrypt(recording.response);
   });
 ```
 

@@ -16,13 +16,91 @@ a {
   transition: all 0.3s linear;
 }
 
+/****** Cover Page ******/
+.cover-main .netflix-logo {
+  width: 125px;
+  height: 32px;
+  background: url('images/Netflix_Logo.png');
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.cover-main .buttons a {
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 14px;
+  text-align: center;
+  line-height: 18px;
+  color: #221f1f;
+  background: #fff;
+  outline: none;
+  border: none;
+  background-color: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  margin: 0.5rem 1rem;
+  color: var(--theme-color);
+  overflow: hidden;
+  transition: color .25s cubic-bezier(.215,.61,.355,1);
+  vertical-align: baseline;
+  text-transform: uppercase;
+}
+
+.cover-main .buttons a:before,
+.cover-main .buttons a:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border: 2px solid var(--theme-color);
+  box-sizing: border-box;
+}
+
+.cover-main .buttons a:after {
+  background: var(--theme-color);
+  transform: translateX(-101%);
+  transition: all .2s cubic-bezier(.215,.61,.355,1);
+}
+
+.cover-main .buttons a:hover {
+  color: white;
+  box-shadow: 0 5px 16px rgba(229,9,20,.3);
+}
+
+.cover-main .buttons a:hover:after {
+  transform: translateX(0);
+}
+
+.cover-main .buttons a span {
+  position: relative;
+  z-index: 1;
+}
+
 /****** Sidebar ******/
+.sidebar ul li a {
+  font-size: 15px;
+}
+
 .sidebar ul li a:hover {
   color: var(--theme-color);
 }
 
 .app-sub-sidebar li:before {
   display: none;
+}
+
+.sidebar .search .clear-button {
+  cursor: pointer;
 }
 
 .sidebar-toggle {
@@ -37,7 +115,7 @@ a {
 }
 
 .markdown-section a:hover {
-  border-color: var(--theme-color);
+  border-color: var(--theme-color-dark);
   color: var(--theme-color-dark);
 }
 

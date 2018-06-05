@@ -1,4 +1,5 @@
 - Getting Started
+  - [Overview](README.md)
   - [Quick Start](quick-start.md)
 
 - Testing Frameworks
@@ -23,7 +24,11 @@
 
 - Node Server
   - [Overview](node-server/overview.md)
-  - [CLI](node-server/cli.md)
+  - [Express Integrations](node-server/express-integrations.md)
+
+- CLI
+  - [Overview](cli/overview.md)
+  - [Commands](cli/commands.md)
 
 - Frameworks
   - [Ember CLI](frameworks/ember-cli.md)

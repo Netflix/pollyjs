@@ -12,7 +12,7 @@ The XHR adapter is connected to by default but you can use the
 adapter.
 
 ```js
-const polly = new Polly('<Recording>', {
+const polly = new Polly('<Recording Name>', {
   adapters: ['xhr']
 });
 

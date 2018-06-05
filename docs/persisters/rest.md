@@ -1,18 +1,17 @@
 # REST Persister
 
-The REST adapter uses an API to talk to a server to read and write recordings
-from the file system.
+Read and write recordings to and from the file system via a CRUD API hosted
+on a server.
 
 ## Setup
 
-This library provides a fully functional node server to get you up and running.
-Please refer to the [Node Server Overview](node-server/overview) documentation
-to get set up.
+This library provides a fully functional [node server](node-server/overview)
+as well as a [CLI](cli/overview) to get you up and running.
 
 ## Usage
 
 ```js
-const polly = new Polly('<Recording>', {
+new Polly('<Recording Name>', {
   persister: 'rest',
   persisterOptions: {
     host: '',
@@ -47,9 +46,12 @@ _Default_: `'/polly'`
 
 The API namespace.
 
-!> If overriding the namespace, the same option must be provided to the node
-server. See [Node Server: Namespace](node-server/overview#namespace) for more
-details.
+The namespace the Polly API is mounted on. This should really only be changed
+if there is a conflict with the default apiNamespace.
+
+!> If modified, you must provide the new `apiNamespace` to the node server
+via the [Node Server apiNamespace](node-server/overview#apinamespace) configuration
+option.
 
 __Example__
 
