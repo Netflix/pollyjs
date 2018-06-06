@@ -1,9 +1,9 @@
 # API
 
-## HTTP Verbs
+## HTTP Methods
 
-The `get`, `put`, `post`, `patch`, `delete`, `head`, and `options` HTTP verbs
-are available methods on the server.
+The `get`, `put`, `post`, `patch`, `delete`, `head`, and `options` HTTP methods
+have a corresponding method on the server instance.
 
 ```js
 server.get('/ping');
@@ -16,7 +16,7 @@ server.options('/ping');
 ```
 
 Each of these methods return a [Route Handler](server/route-handler.md) which
-you can use to passthrough, intercept, and attach events to.
+you can use to pass-through, intercept, and attach events to.
 
 ```js
 server.get('/ping').passthrough();
@@ -27,8 +27,8 @@ server.patch('/ping').off('beforeRequest');
 
 ## any
 
-Declare [Middleware](server/events-and-middleware#middleware) globally or for
-a specific route.
+Declare [Events & Middleware](server/events-and-middleware#middleware) globally
+or for a specific route.
 
 __Example__
 

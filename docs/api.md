@@ -176,11 +176,12 @@ polly.play();
 
 Persist all recordings and disconnect from all adapters.
 
-!> This method is `async` and must be resolved before all recordings are persisted.
+!> This method is `async` and will resolve once all recordings have
+persisted and the instance has successfully torn down.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| Returns | `Promise` | A promise that will resolve when all recordings have persisted and all adapters have been disconnected from. |
+| Returns | `Promise` | &nbsp; |
 
 __Example__
 
@@ -194,7 +195,7 @@ Connect to an adapter.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| adapterName | `String` | The name of the adapter to connect to |
+| name | `String` | The name of the adapter to connect to |
 
 __Example__
 
@@ -208,7 +209,7 @@ Disconnect from an adapter.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| adapterName | `String` | The name of the adapter to disconnect from |
+| name | `String` | The name of the adapter to disconnect from |
 
 __Example__
 

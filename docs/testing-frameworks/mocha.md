@@ -11,7 +11,7 @@ parent module(s).
 
 ## Usage
 
-### Simple Example
+### Simple Example {docsify-ignore}
 
 ```js
 import { setupMocha as setupPolly } from '@pollyjs/core';
@@ -44,7 +44,7 @@ describe('Netflix Homepage', function() {
 });
 ```
 
-### Intercept Example
+### Intercept Example {docsify-ignore}
 
 ```js
 import { setupMocha as setupPolly } from '@pollyjs/core';
@@ -64,16 +64,20 @@ describe('module', function() {
 });
 ```
 
-### Explicitly Register beforeEach and afterEach
+## Test Hook Ordering
 
-`You are trying to access an instance of Polly that is no longer available` errors that occur during test runs are triggered by accessing `this.polly` after the instance has been destroyed.
+If you find yourself getting the following error during a test run:
 
-This is typically within an `afterEach` hook or inadvertently within an `async` method or `Promise` that settled after your tests finished.
+!> _You are trying to access an instance of Polly that is no longer available._
 
-The former we'll walk you through fixing.  The latter is a bug in your test code where you'll need to await some async task.
+Then this is due to accessing `this.polly` after the instance has been stopped and destroyed.
+Typically, this occurs within an `afterEach` hook or inadvertently within an `async` method or `Promise` that settled after your tests finished.
+We'll walk you through fixing the former while the latter is usually a bug in your test code where you'll need to await some async task.
 
-`setupMocha` can be invoked as a function or accessed as an object with two methods: `setupPolly.beforeEach` and `setupPolly.afterEach`.  Typically most will only need to know of `setupMocha()` however, in your case you'll need finer control of when these two hooks fire.  By default, Mocha registers these hooks as FIFO (first-in, first-out).  Instead of calling `setupPolly()`, register these two hooks separately, and in the order that fits within your test, as shown below.
-
+`setupMocha` can be invoked as a function or accessed as an object with two methods: `setupMocha.beforeEach` and `setupMocha.afterEach`.
+Typically most will only need to know of `setupMocha()` however, in your case you'll need finer control of when these two hooks fire.
+By default, Mocha registers these hooks as FIFO (first-in, first-out). Instead of calling `setupMocha()`, register these two hooks separately,
+and in the order that fits within your test, as shown below.
 
 ```js
 import { setupMocha as setupPolly } from '@pollyjs/core';
@@ -82,9 +86,7 @@ describe('Netflix Homepage', function() {
   setupPolly.beforeEach({/* default configuration options */});
 
   afterEach(function() {
-    this.polly.stop();
-    
-    /* do something else ... */
+    /* do something before the polly instance is destroyed... */
   });
 
   setupPolly.afterEach();
@@ -93,5 +95,4 @@ describe('Netflix Homepage', function() {
     /* ... */
   });
 });
-
 ```

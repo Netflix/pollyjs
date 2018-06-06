@@ -163,11 +163,20 @@ a {
   margin: 1em 0;
 }
 
+.markdown-section blockquote > p {
+  font-weight: 500;
+}
+
 /****** CODE HIGHLIGHTING ******/
 .token.string {
   color: #42b983;
 }
 
-.token.boolean, .token.number {
+.token.boolean,
+.token.number {
   color: var(--theme-color);
+}
+
+.lang-bash .token.function {
+  color: #e96900;
 }

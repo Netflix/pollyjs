@@ -37,5 +37,5 @@
   - [API](api.md)
   - [Configuration](configuration.md)
 
-- [Changelog](changelog.md)
-- [Contributing](contributing.md)
+- [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
