@@ -1,5 +1,5 @@
 import { setupMocha as setupPolly, Polly } from '../../src';
-import setupFetch from '../helpers/setup-fetch';
+import * as setupFetch from '../helpers/setup-fetch';
 import Configs from './configs';
 
 const { keys } = Object;
@@ -9,12 +9,15 @@ describe('Integration | Persisters', function() {
     const defaults = Configs[name];
 
     describe(name, function() {
-      afterEach(function() {
-        return this.polly.persister.deleteRecording(this.polly.recordingId);
+      setupPolly.beforeEach(defaults);
+      setupFetch.beforeEach(defaults.adapters[0]);
+
+      afterEach(async function() {
+        await this.polly.persister.deleteRecording(this.polly.recordingId);
       });
 
-      setupPolly(defaults);
-      setupFetch(defaults.adapters[0]);
+      setupFetch.afterEach();
+      setupPolly.afterEach();
 
       it('should have the correct schema', async function() {
         const { recordingId, persister } = this.polly;
@@ -112,11 +115,13 @@ describe('Integration | Persisters', function() {
         });
       });
 
+      setupFetch.beforeEach(defaults.adapters[0]);
+
       afterEach(function() {
         return this.polly.persister.deleteRecording(this.polly.recordingId);
       });
 
-      setupFetch(defaults.adapters[0]);
+      setupFetch.afterEach();
 
       it('should not persist by default when a request fails', async function() {
         let error;
@@ -142,11 +147,13 @@ describe('Integration | Persisters', function() {
         this.polly = new Polly(`${name} | with recordFailedRequests`, defaults);
       });
 
+      setupFetch.beforeEach(defaults.adapters[0]);
+
       afterEach(function() {
         return this.polly.persister.deleteRecording(this.polly.recordingId);
       });
 
-      setupFetch(defaults.adapters[0]);
+      setupFetch.afterEach();
 
       it('should not persist by default when a request fails', async function() {
         await this.fetch('/should-not-exist-either');

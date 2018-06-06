@@ -1,6 +1,11 @@
 import xhrRequest from './xhr-request';
 
 export default function setupFetch(fetchType) {
+  beforeEach(fetchType);
+  afterEach();
+}
+
+export function beforeEach(fetchType) {
   self.beforeEach(function() {
     this.fetch = (...args) => {
       if (fetchType === 'xhr') {
@@ -16,9 +21,12 @@ export default function setupFetch(fetchType) {
       `/api/db/${encodeURIComponent(this.polly.recordingId)}`;
     this.fetchRecord = (...args) => this.fetch(this.recordUrl(), ...args);
   });
+}
 
+export function afterEach() {
   self.afterEach(async function() {
-    // Reset any data set in the DB
+    this.polly.stop();
+
     await this.fetchRecord({ method: 'DELETE' });
   });
 }

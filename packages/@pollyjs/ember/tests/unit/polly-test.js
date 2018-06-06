@@ -17,6 +17,16 @@ module('Unit | Polly | General', function() {
     });
   });
 
+  module('setupPolly.[beforeEach,afterEach]', function(hooks) {
+    setupPolly.beforeEach(hooks);
+    setupPolly.afterEach(hooks);
+
+    test('it works', function(assert) {
+      assert.ok(this.polly);
+      assert.ok(this.polly instanceof Polly);
+    });
+  });
+
   module('Timing', function() {
     test('it works', function(assert) {
       assert.equal(typeof Timing, 'object');

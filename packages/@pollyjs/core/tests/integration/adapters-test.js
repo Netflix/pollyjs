@@ -1,5 +1,5 @@
 import { setupMocha as setupPolly } from '../../src';
-import setupFetch from '../helpers/setup-fetch';
+import * as setupFetch from '../helpers/setup-fetch';
 import Configs from './configs';
 
 const { parse } = JSON;
@@ -9,8 +9,10 @@ describe('Integration | Adapters', function() {
     const defaults = Configs[name];
 
     describe(name, function() {
-      setupPolly(defaults);
-      setupFetch(defaults.adapters[0]);
+      setupPolly.beforeEach(defaults);
+      setupFetch.beforeEach(defaults.adapters[0]);
+      setupFetch.afterEach();
+      setupPolly.afterEach();
 
       it('should respect request order', async function() {
         let res = await this.fetchRecord();
