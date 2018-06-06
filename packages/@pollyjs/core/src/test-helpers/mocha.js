@@ -1,4 +1,4 @@
-import Polly from '../polly';
+import { afterEach, beforeEach } from './lib';
 
 function generateRecordingName(context) {
   const { currentTest } = context;
@@ -14,11 +14,18 @@ function generateRecordingName(context) {
 }
 
 export default function setupMocha(defaults = {}) {
-  self.beforeEach(function() {
-    this.polly = new Polly(generateRecordingName(this), defaults);
-  });
-
-  self.afterEach(function() {
-    return this.polly.stop();
-  });
+  setupMocha.beforeEach(defaults);
+  setupMocha.afterEach();
 }
+
+setupMocha.beforeEach = function setupMochaBeforeEach(defaults) {
+  self.beforeEach(function() {
+    return beforeEach(this, generateRecordingName(this), defaults);
+  });
+};
+
+setupMocha.afterEach = function setupMochaAfterEach() {
+  self.afterEach(function() {
+    return afterEach(this, 'mocha');
+  });
+};
