@@ -19,7 +19,7 @@ export async function afterEach(context, framework) {
     get() {
       throw new Error(
         `[Polly] You are trying to access an instance of Polly that is no longer available.\n` +
-          `See: https://netflix.github.io/pollyjs/#/testing-frameworks/${framework}?id=explicitly-register-beforeeach-and-aftereach`
+          `See: https://netflix.github.io/pollyjs/#/testing-frameworks/${framework}?id=test-hook-ordering`
       );
     }
   });
