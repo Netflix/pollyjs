@@ -171,6 +171,6 @@ describe('Netflix Homepage', function() {
 
 ## Test Helpers
 
-Using Mocha or QUnit? We got you covered! Checkout the [Mocha](testing-frameworks/mocha) or
-[QUnit](testing-frameworks/qunit) documentation pages for detailed instructions
+Using Mocha or QUnit? We got you covered! Checkout the [Mocha](test-helpers/mocha) or
+[QUnit](test-helpers/qunit) documentation pages for detailed instructions
 on how to use the provided test helpers.

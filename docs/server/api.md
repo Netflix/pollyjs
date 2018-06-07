@@ -15,7 +15,7 @@ server.head('/ping');
 server.options('/ping');
 ```
 
-Each of these methods return a [Route Handler](server/route-handler.md) which
+Each of these methods returns a [Route Handler](server/route-handler.md) which
 you can use to pass-through, intercept, and attach events to.
 
 ```js
