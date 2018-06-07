@@ -65,7 +65,7 @@ describe('Netflix Homepage', function() {
 
     /* start: pseudo test code */
     await visit('/login');
-    await fillIn('email', 'johndoe@email.com');
+    await fillIn('email', 'polly@netflix.com');
     await fillIn('password', '@pollyjs');
     await submit();
     /* end: pseudo test code */
@@ -79,6 +79,39 @@ describe('Netflix Homepage', function() {
     await polly.stop();
   });
 });
+```
+
+The above test case would generate the following recording which Polly will use
+to replay the sign in request/response when the test is reran:
+
+```json
+{
+  "created_at": "2018-06-01T20:36:46.198Z",
+  "entries": {
+    "1077f062f8b12b51733933f86fb7ebc4": [
+      {
+        "created_at": "2018-06-01T20:36:46.198Z",
+        "request": {
+          "body": "{\"email\":\"polly@netflix.com\",\"password\":\"@pollyjs\"}",
+          "headers": {
+            "Content-Type": "application/json;charset=utf-8"
+          },
+          "method": "POST",
+          "timestamp": "2018-06-01T20:36:46.070Z",
+          "url": "/api/v1/login"
+        },
+        "response": {
+          "body": "",
+          "headers": {},
+          "status": 200,
+          "timestamp": "2018-06-01T20:36:46.119Z"
+        }
+      }
+    ]
+  },
+  "name": "Sign In",
+  "schema_version": 0.1
+}
 ```
 
 ## Client Side Server
@@ -119,7 +152,7 @@ describe('Netflix Homepage', function() {
 
     /* start: pseudo test code */
     await visit('/login');
-    await fillIn('email', 'johndoe@email.com');
+    await fillIn('email', 'polly@netflix.com');
     await fillIn('password', '@pollyjs');
     await submit();
     /* end: pseudo test code */

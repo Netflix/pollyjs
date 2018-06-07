@@ -218,6 +218,8 @@ section.cover ul {
   color: var(--theme-color);
 }
 
-.lang-bash .token.function {
+.lang-bash .token.function,
+.lang-json .token.property {
   color: #e96900;
 }
+

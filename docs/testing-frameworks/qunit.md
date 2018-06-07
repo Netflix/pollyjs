@@ -30,7 +30,7 @@ module('Netflix Homepage', function(hooks) {
 
     /* start: pseudo test code */
     await visit('/login');
-    await fillIn('email', 'johndoe@email.com');
+    await fillIn('email', 'polly@netflix.com');
     await fillIn('password', '@pollyjs');
     await submit();
     /* end: pseudo test code */
