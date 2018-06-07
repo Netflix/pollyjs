@@ -36,6 +36,14 @@ Optionally, Polly can persist to local storage which would not require setting u
 any node integrations. See the [Local Storage Persister](persisters/local-storage)
 documentation for more details.
 
+## How it Works
+
+Once instantiated, Polly will hook into native browser APIs (such as fetch & XHR) via
+adapters to intercept any outgoing requests. Depending on its current
+[mode](configuration#mode) as well as rules defined via the
+[client side server](server/overview), the request will either be replayed, recorded,
+passed-through, or intercepted.
+
 ## Usage
 
 Now that you've installed Polly and have setup your server, you're ready to
@@ -54,15 +62,6 @@ describe('Netflix Homepage', function() {
       has already recorded.
     */
     const polly = new Polly('Sign In');
-    const { server } = polly;
-
-    /* Intercept all Google Analytic requests and respond with a 200 */
-    server
-      .get('/google-analytics/*path')
-      .intercept((req, res) => res.sendStatus(200));
-
-    /* Pass-through all GET requests to /coverage */
-    server.get('/coverage').passthrough();
 
     /* start: pseudo test code */
     await visit('/login');
@@ -81,3 +80,64 @@ describe('Netflix Homepage', function() {
   });
 });
 ```
+
+## Client Side Server
+
+Every polly instance has a reference to a client side server which you can leverage
+to gain full control of all HTTP interactions as well as dictate how the Polly instance
+should handle them.
+
+?> _TIP:_ Check out the [Server](server/overview) documentation for more details and examples!
+
+Lets take a look at how we can modify our previous test case to test against a
+failed sign in attempt.
+
+```js
+import { Polly } from '@pollyjs/core';
+
+describe('Netflix Homepage', function() {
+  it('should handle a failed sign in attempt', async function() {
+    const polly = new Polly('Failed Sign In');
+    const { server } = polly;
+
+    /*
+      Using the client side server, we can intercept when a request url matches
+      `/api/v1/login` and respond with the necessary status code and body to
+      emulate a failed sign in attempt.
+    */
+    server.get('/api/v1/login').intercept((req, res) => {
+      // Set the response's status code to be 401 (Unauthorized)
+      res.status(401);
+
+      // Respond with a json object containing an error message that will be shown
+      res.json({
+        error: {
+          message: 'Incorrect username or password.'
+        }
+      });
+    })
+
+    /* start: pseudo test code */
+    await visit('/login');
+    await fillIn('email', 'johndoe@email.com');
+    await fillIn('password', '@pollyjs');
+    await submit();
+    /* end: pseudo test code */
+
+    expect(document.querySelector('.error-message').textContent)
+      .to.equal('Incorrect username or password.');
+
+    /*
+      Calling `stop` will persist requests as well as disconnect from any
+      connected browser APIs (e.g. fetch or XHR).
+    */
+    await polly.stop();
+  });
+});
+```
+
+## Test Helpers
+
+Using Mocha or QUnit? We got you covered! Checkout the [Mocha](testing-frameworks/mocha) or
+[QUnit](testing-frameworks/qunit) documentation pages for detailed instructions
+on how to use the provided test helpers.

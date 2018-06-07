@@ -1,5 +1,9 @@
 # Overview
 
+The `@pollyjs/node-server` package provides a standalone node server as well as
+an express integration to be able to support the [REST Persister](persisters/rest)
+so recordings can be saved to and read from disk.
+
 ## Installation
 
 _Note that you must have node (and npm) installed._

@@ -6,9 +6,12 @@
 
 > Record, replay, and stub HTTP interactions.
 
-* Simple, Powerful, & Intuitive API
-* Fetch & XHR Support
-* First Class Test Helpers
+- 🚀 Fetch & XHR Support
+- ⚡️️ Simple, Powerful, & Intuitive API
+- 💎 First Class Mocha & QUnit Test Helpers
+- 🔥 Intercept, Pass-Through, and Attach Events
+- 📼 Record to Disk or Local Storage
+- ⏱ Slow Down or Speed Up Time
 
 <div class="buttons">
   <a href="https://github.com/Netflix/pollyjs/" target="_blank"><span>GitHub</span></a>

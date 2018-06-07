@@ -5,6 +5,7 @@
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
 [![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
+[![npm version](https://badge.fury.io/js/%40pollyjs%2Fcore.svg)](https://badge.fury.io/js/%40pollyjs%2Fcore)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 Polly.JS is a standalone, framework agnostic, JavaScript library that enables recording, replaying, and stubbing HTTP interactions.
@@ -25,6 +26,20 @@ a simple, powerful, and intuitive API.
 - 🔥 Intercept, Pass-Through, and Attach Events
 - 📼 Record to Disk or Local Storage
 - ⏱ Slow Down or Speed Up Time
+
+## Installation
+
+_Note that you must have node (and npm) installed._
+
+```bash
+npm install @pollyjs/core -D
+```
+
+If you want to install it with [yarn](https://yarnpkg.com):
+
+```bash
+yarn add @pollyjs/core -D
+```
 
 ## Getting Started
 
