@@ -41,7 +41,7 @@ documentation for more details.
 Once instantiated, Polly will hook into native browser APIs (such as fetch & XHR) via
 adapters to intercept any outgoing requests. Depending on its current
 [mode](configuration#mode) as well as rules defined via the
-[client side server](server/overview), the request will either be replayed, recorded,
+[client-side server](server/overview), the request will either be replayed, recorded,
 passed-through, or intercepted.
 
 ## Usage
@@ -82,7 +82,7 @@ describe('Netflix Homepage', function() {
 ```
 
 The above test case would generate the following recording which Polly will use
-to replay the sign in request/response when the test is reran:
+to replay the sign-in request/response when the test is rerun:
 
 ```json
 {
@@ -114,9 +114,9 @@ to replay the sign in request/response when the test is reran:
 }
 ```
 
-## Client Side Server
+## Client-Side Server
 
-Every polly instance has a reference to a client side server which you can leverage
+Every polly instance has a reference to a client-side server which you can leverage
 to gain full control of all HTTP interactions as well as dictate how the Polly instance
 should handle them.
 
@@ -134,7 +134,7 @@ describe('Netflix Homepage', function() {
     const { server } = polly;
 
     /*
-      Using the client side server, we can intercept when a request url matches
+      Using the client-side server, we can intercept when a request url matches
       `/api/v1/login` and respond with the necessary status code and body to
       emulate a failed sign in attempt.
     */

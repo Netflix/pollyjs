@@ -95,7 +95,7 @@ The persister used to find and save recordings.
 _Type_: `Server`
 _Default_: `Server`
 
-Every polly instance has a reference to a [client side server](server/overview) which you can leverage
+Every polly instance has a reference to a [client-side server](server/overview) which you can leverage
 to gain full control of all HTTP interactions as well as dictate how the Polly instance
 should handle them.
 
