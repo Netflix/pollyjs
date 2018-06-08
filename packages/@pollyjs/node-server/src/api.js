@@ -46,7 +46,7 @@ export default class API {
       fs.removeSync(recordingFilename);
     }
 
-    return this.respond(204);
+    return this.respond(200);
   }
 
   filenameFor(recording) {
