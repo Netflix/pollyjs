@@ -13,7 +13,7 @@
     }
   ],
   "scripts": {
-    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "commitmsg": "commitlint -E GIT_PARAMS",
     "build": "lerna run build --ignore=@pollyjs/ember --parallel",
     "build:watch": "npm-run-all clean watch",
     "watch": "lerna run watch --ignore=@pollyjs/ember --parallel",
@@ -35,10 +35,10 @@
     "release": "lerna publish"
   },
   "devDependencies": {
-    "@commitlint/cli": "^6.2.0",
-    "@commitlint/config-conventional": "^6.1.3",
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
     "@commitlint/config-lerna-scopes": "^7.0.0",
-    "@commitlint/travis-cli": "^6.2.0",
+    "@commitlint/travis-cli": "^7.0.0",
     "babel-core": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
