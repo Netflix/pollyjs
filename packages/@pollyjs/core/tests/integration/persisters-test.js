@@ -1,4 +1,4 @@
-import { setupMocha as setupPolly, Polly } from '../../src';
+import { Polly, setupMocha as setupPolly } from '../../src';
 import setupFetch from '../helpers/setup-fetch';
 import Configs from './configs';
 

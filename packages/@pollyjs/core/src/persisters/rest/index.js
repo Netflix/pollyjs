@@ -1,7 +1,7 @@
-import ajax from './ajax';
-import Persister from '../persister';
-import buildUrl from '../../utils/build-url';
 import stringify from 'json-stable-stringify';
+import buildUrl from '../../utils/build-url';
+import Persister from '../persister';
+import ajax from './ajax';
 
 export default class RestPersister extends Persister {
   ajax(url, ...args) {
@@ -10,33 +10,25 @@ export default class RestPersister extends Persister {
     return ajax(buildUrl(host, apiNamespace, url), ...args);
   }
 
-  findRecordingEntry(pollyRequest) {
+  async findRecordingEntry(pollyRequest) {
     const { id, order, recordingId } = pollyRequest;
 
-    return this.ajax(
+    const response = await this.ajax(
       `/${encodeURIComponent(recordingId)}/${id}?order=${order}`,
       {
         Accept: 'application/json; charset=utf-8'
       }
-    ).catch(e => {
-      if (e && e.status === 404) {
-        return null;
-      }
+    );
 
-      throw e;
-    });
+    return this._normalize(response);
   }
 
-  findRecording(recordingId) {
-    return this.ajax(`/${encodeURIComponent(recordingId)}`, {
+  async findRecording(recordingId) {
+    const response = await this.ajax(`/${encodeURIComponent(recordingId)}`, {
       Accept: 'application/json; charset=utf-8'
-    }).catch(e => {
-      if (e && e.status === 404) {
-        return null;
-      }
-
-      throw e;
     });
+
+    return this._normalize(response);
   }
 
   async saveRecording(recordingId, data) {
@@ -54,5 +46,19 @@ export default class RestPersister extends Persister {
     await this.ajax(`/${encodeURIComponent(recordingId)}`, {
       method: 'DELETE'
     });
+  }
+
+  _normalize({ xhr, body }) {
+    /**
+     * 204 - No Content.  Polly uses this status code in place of 404
+     * when interacting with our Rest server to prevent throwing
+     * request errors in consumer's stdout (console.log)
+     */
+    if (xhr.status === 204) {
+      /* return null when a record was not found */
+      return null;
+    }
+
+    return body;
   }
 }
