@@ -1,5 +1,5 @@
-import path from 'path';
 import fs from 'fs-extra';
+import path from 'path';
 
 export default class API {
   constructor(recordingsDir) {
@@ -18,7 +18,7 @@ export default class API {
       }
     }
 
-    return this.respond(404);
+    return this.respond(204);
   }
 
   getRecording(recording) {
@@ -28,7 +28,7 @@ export default class API {
       return this.respond(200, fs.readJsonSync(recordingFilename));
     }
 
-    return this.respond(404);
+    return this.respond(204);
   }
 
   saveRecording(recording, data) {
@@ -46,7 +46,7 @@ export default class API {
       fs.removeSync(recordingFilename);
     }
 
-    return this.respond(204);
+    return this.respond(200);
   }
 
   filenameFor(recording) {

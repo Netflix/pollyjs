@@ -41,5 +41,7 @@ function handleResponse(xhr, resolve, reject) {
     }
   }
 
-  return xhr.status >= 200 && xhr.status < 300 ? resolve(body) : reject(xhr);
+  return xhr.status >= 200 && xhr.status < 300
+    ? resolve({ body, xhr })
+    : reject(xhr);
 }
