@@ -1,7 +1,7 @@
 {
   "name": "@pollyjs/node-server",
   "version": "0.0.0",
-  "description": "",
+  "description": "Standalone node server and express integration for @pollyjs",
   "main": "dist/cjs/pollyjs-node-server.js",
   "module": "dist/es/pollyjs-node-server.js",
   "files": [
@@ -28,6 +28,9 @@
     "replay",
     "express"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",

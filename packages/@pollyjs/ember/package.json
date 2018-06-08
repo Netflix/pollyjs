@@ -1,7 +1,7 @@
 {
   "name": "@pollyjs/ember",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Use @pollyjs in your Ember-CLI application",
   "keywords": [
     "polly",
     "pollyjs",
@@ -24,6 +24,9 @@
   "directories": {
     "doc": "doc",
     "test": "tests"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember",
   "scripts": {

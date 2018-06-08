@@ -1,7 +1,7 @@
 {
   "name": "@pollyjs/adapter",
   "version": "0.0.0",
-  "description": "",
+  "description": "Extendable base adapter class used by @pollyjs",
   "main": "dist/cjs/pollyjs-adapter.js",
   "module": "dist/es/pollyjs-adapter.js",
   "browser": "dist/umd/pollyjs-adapter.js",
@@ -26,6 +26,9 @@
     "pollyjs",
     "adapter"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "contributors": [
     {
       "name": "Jason Mitchell",

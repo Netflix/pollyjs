@@ -1,7 +1,7 @@
 {
   "name": "@pollyjs/cli",
   "version": "0.0.0",
-  "description": "",
+  "description": "@pollyjs CLI",
   "files": [
     "bin"
   ],
@@ -24,6 +24,9 @@
     "server",
     "listen"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "contributors": [
     {
       "name": "Jason Mitchell",

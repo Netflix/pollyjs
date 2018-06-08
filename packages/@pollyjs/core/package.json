@@ -1,7 +1,7 @@
 {
   "name": "@pollyjs/core",
   "version": "0.0.0",
-  "description": "",
+  "description": "Record, replay, and stub HTTP Interactions",
   "main": "dist/cjs/pollyjs-core.js",
   "module": "dist/es/pollyjs-core.js",
   "browser": "dist/umd/pollyjs-core.js",
@@ -31,6 +31,9 @@
     "test",
     "mock"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "contributors": [
     {
       "name": "Jason Mitchell",
