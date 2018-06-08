@@ -66,18 +66,14 @@ describe('module', function() {
 
 ## Test Hook Ordering
 
-If you find yourself getting the following error during a test run:
+Accessing `this.polly` during a test run after the polly instance has been
+stopped and destroyed produces the following error:
 
 !> _You are trying to access an instance of Polly that is no longer available._
 
-Then this is due to accessing `this.polly` after the instance has been stopped and destroyed.
-Typically, this occurs within an `afterEach` hook or inadvertently within an `async` method or `Promise` that settled after your tests finished.
-We'll walk you through fixing the former while the latter is usually a bug in your test code where you'll need to await some async task.
+If you need do some work before the polly instance gets destroyed or just need more control on when each of the test hooks are called, `setupMocha` can be invoked as a function or accessed as an object with two methods: `setupMocha.beforeEach` and `setupMocha.afterEach`.
 
-`setupMocha` can be invoked as a function or accessed as an object with two methods: `setupMocha.beforeEach` and `setupMocha.afterEach`.
-Typically most will only need to know of `setupMocha()` however, in your case you'll need finer control of when these two hooks fire.
-By default, Mocha registers these hooks as FIFO (first-in, first-out). Instead of calling `setupMocha()`, register these two hooks separately,
-and in the order that fits within your test, as shown below.
+Instead of calling `setupMocha()`, register these two hooks separately in the order that fits within your test.
 
 ```js
 import { setupMocha as setupPolly } from '@pollyjs/core';

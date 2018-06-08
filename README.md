@@ -7,17 +7,24 @@
 [![Build Status](https://travis-ci.org/Netflix/pollyjs.svg?branch=master)](https://travis-ci.org/Netflix/pollyjs)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-Polly.JS is a standalone, framework agnostic, JavaScript library that enables recording, replaying, and stubbing HTTP interactions.
+Polly.JS is a standalone, framework-agnostic JavaScript library that enables
+recording, replaying, and stubbing HTTP interactions.
 
-By combining the ideas behind Ruby's [VCR](https://github.com/vcr/vcr) with a client-side Express-like server, Polly taps into native browser implementations to record, replay, and stub network requests and responses –— allowing for mocking APIs with as little as __one line of code__.
-
-> Interested in contributing, or just seeing Polly in action? Head over to [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to spin up the project!
-
-# Why Polly?
-
-Polly.JS is a feature packed library that works out of the box with little to no
-configuration while giving you the ability take full control of each request with
+Polly taps into native browser APIs to mock requests and responses with little to no
+configuration while giving you the ability to take full control of each request with
 a simple, powerful, and intuitive API.
+
+> Interested in contributing or just seeing Polly in action? Head over to [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to spin up the project!
+
+## Why Polly?
+
+Keeping fixtures and factories in parity with your APIs can be a time consuming process.
+Polly alleviates this by recording and maintaining actual server responses without foregoing flexibility.
+
+- Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
+- Use Polly's client-side server to modify or intercept requests and responses to simulate different application states (e.g. loading, error, etc.).
+
+## Features
 
 - 🚀 Fetch & XHR Support
 - ⚡️️ Simple, Powerful, & Intuitive API

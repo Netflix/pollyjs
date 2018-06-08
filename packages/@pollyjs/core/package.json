@@ -24,8 +24,10 @@
   "keywords": [
     "polly",
     "pollyjs",
+    "vcr",
     "record",
     "replay",
+    "recorder",
     "test",
     "mock"
   ],
