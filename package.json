@@ -1,6 +1,17 @@
 {
   "private": true,
   "license": "Apache-2.0",
+  "repository": "https://github.com/netflix/pollyjs",
+  "contributors": [
+    {
+      "name": "Jason Mitchell",
+      "email": "jason.mitchell.w@gmail.com"
+    },
+    {
+      "name": "Offir Golan",
+      "email": "offirgolan@gmail.com"
+    }
+  ],
   "scripts": {
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "build": "lerna run build --ignore=@pollyjs/ember --parallel",

@@ -3,10 +3,24 @@
   "version": "0.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
+    "polly",
+    "pollyjs",
+    "record",
+    "replay",
+    "test",
     "ember-addon"
   ],
   "license": "Apache-2.0",
-  "author": "",
+  "contributors": [
+    {
+      "name": "Jason Mitchell",
+      "email": "jason.mitchell.w@gmail.com"
+    },
+    {
+      "name": "Offir Golan",
+      "email": "offirgolan@gmail.com"
+    }
+  ],
   "directories": {
     "doc": "doc",
     "test": "tests"

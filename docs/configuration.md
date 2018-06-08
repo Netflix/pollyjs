@@ -1,20 +1,21 @@
 # Configuration
 
-A Polly can be configured by passing a configuration object as the 2nd argument
+A Polly instance can be configured by passing a configuration object
+to the constructor's 2nd argument:
 
 ```js
 new Polly('<Recording Name>', {
-  recordIfMissing: true
+  recordIfMissing: false
 });
 ```
 
-Or via the [configure](api#configure) method on the instance.
+Or via the [configure](api#configure) method on the instance:
 
 ```js
 const polly = new Polly('<Recording Name>');
 
 polly.configure({
-  recordIfMissing: true
+  recordIfMissing: false
 });
 ```
 
@@ -75,8 +76,8 @@ _Type_: `Boolean`
 _Default_: `false`
 
 If `false`, Polly will throw when attempting to persist any failed requests.
-A failed request is defined when it's response status code that is `< 200` or
-`≥ 300`.
+A request is considered to be a failed request when its response's status code
+is `< 200` or `≥ 300`.
 
 __Example__
 
@@ -91,18 +92,18 @@ polly.configure({
 _Type_: `String`
 _Default_: `null`
 
-After how long the request's recording will be considered expired from the time
-it was persister.
+After how long the recorded request will be considered expired from the time
+it was persisted.
 
 __Example__
 
 ```js
 polly.configure({
-  expiresIn: '30d5h10m' // expires in 30 days, 5 hours, 10 minutes
+  expiresIn: '30d5h10m' // expires in 30 days, 5 hours, and 10 minutes
 });
 
 polly.configure({
-  expiresIn: '5 min 10 seconds 100 milliseconds' // expires in 5 minutes, 10 seconds, 100 milliseconds
+  expiresIn: '5 min 10 seconds 100 milliseconds' // expires in 5 minutes, 10 seconds, and 100 milliseconds
 });
 ```
 
@@ -111,11 +112,11 @@ polly.configure({
 _Type_: `String`
 _Default_: `'replay'`
 
-The polly mode. Can be one of the following:
+The Polly mode. Can be one of the following:
 
-- `replay`: Replay
-- `record`: Force record
-- `passthrough`: Pass through directly to the server
+- `replay`: Replay responses from recordings.
+- `record`: Force Polly to record all requests. This will overwrite recordings that already exist.
+- `passthrough`: Passes all requests through directly to the server without recording or replaying.
 
 __Example__
 
@@ -177,7 +178,9 @@ __Example__
 
 ```js
 polly.configure({
-  persisterOptions: {}
+  persisterOptions: {
+    apiNamespace: '/pollyjs'
+  }
 });
 ```
 
@@ -186,7 +189,7 @@ polly.configure({
 _Type_: `Function`
 _Default_: `Timing.fixed(0)`
 
-The timing used when replaying requests.
+The timeout delay strategy used when replaying requests.
 
 __Example__
 
@@ -210,8 +213,6 @@ _Type_: `Object`
 
 _Default_:
 
-__Example__
-
 ```js
 matchRequestsBy: {
   method: true,
@@ -232,14 +233,15 @@ matchRequestsBy: {
 }
 ```
 
-Request matching configuration
+Request matching configuration. Each of these options are used to generate
+a GUID for the request.
 
 - ### method
 
   _Type_: `Boolean`
   _Default_: `true`
 
-  The request's method (e.g. `GET`, `POST`)
+  The request method (e.g. `GET`, `POST`)
 
   __Example__
 
@@ -256,7 +258,7 @@ Request matching configuration
   _Type_: `Boolean | Object`
   _Default_: `true`
 
-  The request's headers.
+  The request headers.
 
   __Example__
 
@@ -287,7 +289,7 @@ Request matching configuration
   _Type_: `Boolean`
   _Default_: `true`
 
-  The request's body.
+  The request body.
 
   __Example__
 
@@ -306,13 +308,21 @@ Request matching configuration
 
   The order the request came in. Take the following scenario:
 
-  __Example__
-
   ```js
-  model.load();       // → fetch('/model/1')
+  // Retrieve our model
+  let model = await fetch('/models/1').then(res => res.json());
+
+  // Modify the model
   model.foo = 'bar';
-  model.save();       // → fetch('/model/1', { method: 'POST' })
-  model.reload();     // → fetch('/model/1')
+
+  // Save the model with our new change
+  await fetch('/models/1', { method: 'POST', body: JSON.stringify(model) });
+
+  // Get our updated model
+  model = await fetch('/models/1').then(res => res.json())
+
+  // Assert that our change persisted
+  expect(model.foo).to.equal('bar');
   ```
 
   The order of the requests matter since the payload for the first and
@@ -333,7 +343,7 @@ Request matching configuration
   _Type_: `Boolean`
   _Default_: `true`
 
-  The protocol scheme of the URL (e.g. `http:`).
+  The request url protocol (e.g. `http:`).
 
   __Example__
 

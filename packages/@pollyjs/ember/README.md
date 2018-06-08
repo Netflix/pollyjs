@@ -1,37 +1,67 @@
-# polly-ember
+<!-- <p align="center">
+  <img alt="Polly.JS" width="480px" src="" />
+</p> -->
+<h1 align="center">Polly.JS</h1>
+<h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
-```js
-import { Polly } from '@pollyjs/core';
+[![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
+[![npm version](https://badge.fury.io/js/%40pollyjs%2Fember.svg)](https://badge.fury.io/js/%40pollyjs%2Fember)
+[![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-test('it works', async function(assert) {
-  let polly = new Polly('puppy-breeds');
-  let res = await fetch('https://dog.ceo/api/breeds/list/all');
-  let json = await res.json();
-  assert.equal(res.status, 200);
-  assert.equal(json.status, 'success');
-  polly.stop();
-});
-```
+Installing the `@pollyjs/ember` addon will import and vendor the necessary
+Polly.JS packages as well as register the [Express API](https://netflix.github.io/pollyjs/#/node-server/express-integrations)
+required by the [REST Persister](https://netflix.github.io/pollyjs/#/persisters/rest).
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd polly-ember`
-* `yarn install`
+```bash
+ember install @pollyjs/ember
+```
 
-## Running
+## Documentation
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+Check out the [Ember CLI Addon](https://netflix.github.io/pollyjs/#/frameworks/ember-cli)
+documentation for more details.
 
-## Running Tests
+## Configuration
 
-* `yarn test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+Addon and [server API configuration](https://netflix.github.io/pollyjs/#/node-server/overview#api-configuration) can be
+be specified in `ember-cli-build.js`. By default, the addon will only be
+enabled in non-production environments.
 
-## Building
+```js
+module.exports = function(defaults) {
+  const app = new EmberApp(defaults, {
+    pollyjs: {
+      // Addon Configuration Options
+      enabled: EmberApp.env() !== 'production'
 
-* `ember build`
+      // Server Configuration Options
+      server: {
+        apiNamespace: 'polly',
+        recordingsDir: 'recordings'
+      }
+    }
+  });
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+  return app.toTree();
+};
+```
+
+## Usage
+
+Once installed and configured, you can import and use Polly as documented. Check
+out the [Quick Start](https://netflix.github.io/pollyjs/#/quick-start#usage) documentation to get started.
+
+> For an even better testing experience, check out the provided
+[QUnit Test Helper](https://netflix.github.io/pollyjs/#/test-helpers/qunit)!
+
+## License
+
+Copyright (c) 2018 Netflix, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

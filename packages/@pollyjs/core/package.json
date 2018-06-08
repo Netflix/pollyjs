@@ -23,9 +23,22 @@
   },
   "keywords": [
     "polly",
-    "pollyjs"
+    "pollyjs",
+    "record",
+    "replay",
+    "test",
+    "mock"
   ],
-  "author": "",
+  "contributors": [
+    {
+      "name": "Jason Mitchell",
+      "email": "jason.mitchell.w@gmail.com"
+    },
+    {
+      "name": "Offir Golan",
+      "email": "offirgolan@gmail.com"
+    }
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@sindresorhus/fnv1a": "^1.0.0",

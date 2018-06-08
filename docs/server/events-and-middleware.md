@@ -95,7 +95,7 @@ server
 
 ### beforeRecord
 
-Fires before the request/response exchange gets persisted.
+Fires before the request/response gets persisted.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
@@ -115,8 +115,8 @@ server
 
 ### beforeReplay
 
-Fires after retrieving the recorded request/response exchange from the persister
-and before the event materializes into a response.
+Fires after retrieving the recorded request/response from the persister
+and before the recording materializes into a response.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |

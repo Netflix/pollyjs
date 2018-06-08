@@ -19,9 +19,21 @@
   },
   "keywords": [
     "polly",
-    "pollyjs"
+    "pollyjs",
+    "cli",
+    "server",
+    "listen"
   ],
-  "author": "",
+  "contributors": [
+    {
+      "name": "Jason Mitchell",
+      "email": "jason.mitchell.w@gmail.com"
+    },
+    {
+      "name": "Offir Golan",
+      "email": "offirgolan@gmail.com"
+    }
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@pollyjs/node-server": "0.0.0",

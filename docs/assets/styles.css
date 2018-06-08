@@ -17,6 +17,47 @@ a {
 }
 
 /****** Cover Page ******/
+section.cover .cover-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+section.cover h1 {
+  margin: .625rem 0 1rem;
+}
+
+section.cover blockquote,
+section.cover blockquote p {
+  margin: 0;
+}
+
+section.cover ul {
+  font-size: 1.25rem;
+  line-height: 2rem;
+  display: grid;
+  text-align: left;
+  grid-column-gap: 16px;
+  grid-row-gap: 20px;
+  grid-template-columns: repeat(2,50%);
+  white-space: pre;
+  list-style: none;
+  max-width: unset;
+  margin: 1.5em 0;
+}
+
+@media (max-width: 850px) {
+  section.cover ul {
+    grid-template-columns: 100%;
+    padding: 0;
+  }
+
+  section.cover ul li {
+    text-align: center;
+  }
+}
+
 .cover-main .netflix-logo {
   width: 125px;
   height: 32px;
@@ -45,7 +86,7 @@ a {
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
-  margin: 0.5rem 1rem;
+  margin: 0 1rem;
   color: var(--theme-color);
   overflow: hidden;
   transition: color .25s cubic-bezier(.215,.61,.355,1);
@@ -163,11 +204,22 @@ a {
   margin: 1em 0;
 }
 
+.markdown-section blockquote > p {
+  font-weight: 500;
+}
+
 /****** CODE HIGHLIGHTING ******/
 .token.string {
   color: #42b983;
 }
 
-.token.boolean, .token.number {
+.token.boolean,
+.token.number {
   color: var(--theme-color);
 }
+
+.lang-bash .token.function,
+.lang-json .token.property {
+  color: #e96900;
+}
+

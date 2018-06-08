@@ -9,6 +9,25 @@
     "dist"
   ],
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server",
+  "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Jason Mitchell",
+      "email": "jason.mitchell.w@gmail.com"
+    },
+    {
+      "name": "Offir Golan",
+      "email": "offirgolan@gmail.com"
+    }
+  ],
+  "keywords": [
+    "polly",
+    "pollyjs",
+    "server",
+    "record",
+    "replay",
+    "express"
+  ],
   "scripts": {
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",
@@ -21,12 +40,6 @@
     "lint": "eslint ./*.js src bin",
     "prepack": "NODE_ENV=production yarn build"
   },
-  "keywords": [
-    "polly",
-    "pollyjs"
-  ],
-  "author": "",
-  "license": "Apache-2.0",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",

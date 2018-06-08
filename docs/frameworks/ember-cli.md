@@ -41,4 +41,4 @@ Once installed and configured, you can import and use Polly as documented. Check
 out the [Quick Start](quick-start#usage) documentation to get started.
 
 ?> For an even better testing experience, check out the provided
-[QUnit Test Helper](testing-frameworks/qunit)!
+[QUnit Test Helper](test-helpers/qunit)!

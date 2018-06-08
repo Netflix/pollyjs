@@ -1,6 +1,6 @@
 # Overview
 
-The `@pollyjs/cli` packages provides a standalone CLI to quickly get you setup
+The `@pollyjs/cli` package provides a standalone CLI to quickly get you setup
 and ready to go.
 
 ## Installation

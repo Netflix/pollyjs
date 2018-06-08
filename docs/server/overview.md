@@ -65,5 +65,5 @@ __Example__
 server.get(['/api/v2/users', '/api/v2/users/*path']).passthrough();
 
 // Register the same event handler on both '/session' and '/users/session'
-server.any(['/session', '/users/session']).on('beforeResponse');
+server.any(['/session', '/users/session']).on('beforeRequest', () => {});
 ```

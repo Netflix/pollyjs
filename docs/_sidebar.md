@@ -2,17 +2,9 @@
   - [Overview](README.md)
   - [Quick Start](quick-start.md)
 
-- Testing Frameworks
-  - [Mocha](testing-frameworks/mocha.md)
-  - [QUnit](testing-frameworks/qunit.md)
-
-- Adapters
-  - [XHR](adapters/xhr.md)
-  - [Fetch](adapters/fetch.md)
-
-- Persisters
-  - [REST](persisters/rest.md)
-  - [Local Storage](persisters/local-storage.md)
+- Test Helpers
+  - [Mocha](test-helpers/mocha.md)
+  - [QUnit](test-helpers/qunit.md)
 
 - Server
   - [Overview](server/overview.md)
@@ -22,13 +14,21 @@
   - [Request](server/request.md)
   - [Response](server/response.md)
 
+- CLI
+  - [Overview](cli/overview.md)
+  - [Commands](cli/commands.md)
+
 - Node Server
   - [Overview](node-server/overview.md)
   - [Express Integrations](node-server/express-integrations.md)
 
-- CLI
-  - [Overview](cli/overview.md)
-  - [Commands](cli/commands.md)
+- Adapters
+  - [XHR](adapters/xhr.md)
+  - [Fetch](adapters/fetch.md)
+
+- Persisters
+  - [REST](persisters/rest.md)
+  - [Local Storage](persisters/local-storage.md)
 
 - Frameworks
   - [Ember CLI](frameworks/ember-cli.md)
@@ -37,5 +37,5 @@
   - [API](api.md)
   - [Configuration](configuration.md)
 
-- [Changelog](changelog.md)
-- [Contributing](contributing.md)
+- [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
