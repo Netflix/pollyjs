@@ -1,5 +1,6 @@
 import { setupMocha as setupPolly, Polly } from '../../src';
 import * as setupFetch from '../helpers/setup-fetch';
+
 import Configs from './configs';
 
 const { keys } = Object;
