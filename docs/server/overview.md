@@ -1,6 +1,6 @@
 # Overview
 
-Every polly instance has a reference to a client side server which you can leverage
+Every polly instance has a reference to a client-side server which you can leverage
 to gain full control of all HTTP interactions as well as dictate how the Polly instance
 should handle them.
 

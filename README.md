@@ -4,12 +4,12 @@
 <h1 align="center">Polly.JS</h1>
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
-[![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
+[![Build Status](https://travis-ci.org/Netflix/pollyjs.svg?branch=master)](https://travis-ci.org/Netflix/pollyjs)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 Polly.JS is a standalone, framework agnostic, JavaScript library that enables recording, replaying, and stubbing HTTP interactions.
 
-By combining the ideas behind Ruby's [VCR](https://github.com/vcr/vcr) with a client side Express-like server, Polly taps into native browser implementations to record, replay, and stub network requests and responses –— allowing for mocking APIs with as little as __one line of code__.
+By combining the ideas behind Ruby's [VCR](https://github.com/vcr/vcr) with a client-side Express-like server, Polly taps into native browser implementations to record, replay, and stub network requests and responses –— allowing for mocking APIs with as little as __one line of code__.
 
 > Interested in contributing, or just seeing Polly in action? Head over to [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to spin up the project!
 
@@ -32,7 +32,7 @@ Check out the [Quick Start](https://netflix.github.io/pollyjs/#/quick-start) doc
 
 ## Usage
 
-Lets take a look at what an example test case would look like using Polly.
+Let's take a look at what an example test case would look like using Polly.
 
 ```js
 import { Polly } from '@pollyjs/core';

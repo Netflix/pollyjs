@@ -4,7 +4,7 @@
 <h1 align="center">Polly.JS</h1>
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
-[![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
+[![Build Status](https://travis-ci.org/Netflix/pollyjs.svg?branch=master)](https://travis-ci.org/Netflix/pollyjs)
 [![npm version](https://badge.fury.io/js/%40pollyjs%2Fadapter.svg)](https://badge.fury.io/js/%40pollyjs%2Fadapter)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
