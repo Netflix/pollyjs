@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/node-server",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Standalone node server and express integration for @pollyjs",
   "main": "dist/cjs/pollyjs-node-server.js",
   "module": "dist/es/pollyjs-node-server.js",
