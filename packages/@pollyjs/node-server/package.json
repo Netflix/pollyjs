@@ -40,8 +40,7 @@
     "test": "",
     "test:build": "",
     "test:clean": "",
-    "lint": "eslint ./*.js src bin",
-    "prepack": "NODE_ENV=production yarn build"
+    "lint": "eslint ./*.js src bin"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

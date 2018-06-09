@@ -7,7 +7,7 @@
     "publish": {
       "allowBranch": "master",
       "conventionalCommits": true,
-      "message": "chore: Publish %s",
+      "message": "chore: Publish",
       "ignoreChanges": [
         "**/test/**",
         "**/tests/**",

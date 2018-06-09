@@ -18,8 +18,7 @@
     "rollup": "rollup -c ../../../rollup.config.js",
     "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
-    "lint": "eslint ./*.js src tests",
-    "prepack": "NODE_ENV=production yarn build"
+    "lint": "eslint ./*.js src tests"
   },
   "keywords": [
     "polly",
