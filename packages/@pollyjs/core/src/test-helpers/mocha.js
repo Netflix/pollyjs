@@ -13,19 +13,19 @@ function generateRecordingName(context) {
   return parts.reverse().join('/');
 }
 
-export default function setupMocha(defaults = {}) {
-  setupMocha.beforeEach(defaults);
-  setupMocha.afterEach();
+export default function setupMocha(defaults = {}, ctx = self) {
+  setupMocha.beforeEach(defaults, ctx);
+  setupMocha.afterEach(ctx);
 }
 
-setupMocha.beforeEach = function setupMochaBeforeEach(defaults) {
-  self.beforeEach(function() {
+setupMocha.beforeEach = function setupMochaBeforeEach(defaults, ctx = self) {
+  ctx.beforeEach(function() {
     return beforeEach(this, generateRecordingName(this), defaults);
   });
 };
 
-setupMocha.afterEach = function setupMochaAfterEach() {
-  self.afterEach(function() {
+setupMocha.afterEach = function setupMochaAfterEach(ctx = self) {
+  ctx.afterEach(function() {
     return afterEach(this, 'mocha');
   });
 };
