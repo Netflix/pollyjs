@@ -167,8 +167,7 @@ section.cover.show ~ .sidebar-toggle {
 
   .cover-main .buttons a {
     width: 100%;
-    margin-right: 0;
-    margin-left: 0;
+    margin: 0.2rem 0;
   }
 }
 
