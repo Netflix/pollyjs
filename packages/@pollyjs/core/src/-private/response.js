@@ -1,4 +1,5 @@
 import stringify from 'json-stable-stringify';
+import assert from '../utils/assert';
 
 const { freeze } = Object;
 
@@ -6,13 +7,9 @@ function formatHeader(name) {
   return (name || '').toLowerCase();
 }
 
-function status(statusCode) {
-  return parseInt(statusCode, 10) || null;
-}
-
 export default class PollyResponse {
   constructor(statusCode, headers, body) {
-    this.statusCode = status(statusCode);
+    this.status(statusCode || 200);
     this.headers = headers || {};
     this.body = body;
   }
@@ -22,7 +19,14 @@ export default class PollyResponse {
   }
 
   status(statusCode) {
-    this.statusCode = status(statusCode);
+    const status = parseInt(statusCode, 10);
+
+    assert(
+      `[Response] Invalid status code: ${status}`,
+      status >= 100 && status < 600
+    );
+
+    this.statusCode = status;
 
     return this;
   }
