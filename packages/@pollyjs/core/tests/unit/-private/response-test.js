@@ -9,17 +9,28 @@ describe('Unit | Response', function() {
     expect(new PollyResponse()).to.exist;
   });
 
+  it('should have a default status code of 200', function() {
+    expect(new PollyResponse().statusCode).to.equal(200);
+  });
+
   describe('API', function() {
     beforeEach(function() {
       response = new PollyResponse();
     });
 
     it('.status()', function() {
-      response.status(200);
-      expect(response.statusCode).to.equal(200);
+      [100, '404', 500, '599'].forEach(statusCode => {
+        expect(response.status(statusCode).statusCode).to.equal(
+          Number(statusCode)
+        );
+      });
 
-      response.status('400');
-      expect(response.statusCode).to.equal(400);
+      [null, '', 0, 99, 600, 999].forEach(statusCode => {
+        expect(() => response.status(statusCode)).to.throw(
+          Error,
+          /Invalid status code/
+        );
+      });
     });
 
     it('.getHeader()', function() {
