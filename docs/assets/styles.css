@@ -16,14 +16,24 @@ a {
   transition: all 0.3s linear;
 }
 
+.github-corner {
+  z-index: 5;
+}
+
 /****** Cover Page ******/
+section.cover {
+  padding-bottom: 112px; /* fixed footer (Netflix) height */
+  height: auto;
+  min-height: 100vh;
+}
+
 section.cover .cover-main {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   margin: 0;
-  padding: 32px 18px 120px;
+  padding: 32px 16px 0;
 }
 
 section.cover h1 {
@@ -52,13 +62,27 @@ section.cover ul li {
   white-space: nowrap;
 }
 
+section.cover.show ~ .sidebar,
+section.cover.show ~ .sidebar-toggle {
+  display: none;
+}
+
 .cover-main .netflix-logo {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+  z-index: 5;
+}
+
+.cover-main .netflix-logo .logo {
   width: 125px;
   height: 32px;
   background: url('images/Netflix_Logo.png');
-  position: absolute;
-  bottom: 40px;
-  left: 40px;
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center center;
@@ -136,6 +160,18 @@ section.cover ul li {
   }
 }
 
+@media (max-width: 450px) {
+  section.cover ul li {
+    white-space: normal;
+  }
+
+  .cover-main .buttons a {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
 /****** Sidebar ******/
 .sidebar ul li a {
   font-size: 15px;
@@ -158,6 +194,10 @@ section.cover ul li {
 }
 
 /****** Markdown General ******/
+.markdown-section {
+  padding: 30px 30px 40px;
+}
+
 .markdown-section a {
   text-decoration: none;
   border-bottom: 0.1rem solid var(--theme-color);

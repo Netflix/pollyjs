@@ -1,4 +1,6 @@
-<div class="netflix-logo"></div>
+<div class="netflix-logo">
+  <div class="logo"></div>
+</div>
 
 <!-- ![logo](assets/logo.png) -->
 
