@@ -57,6 +57,12 @@ _Type_: `any`
 
 The request body.
 
+### json
+
+_Type_: `Object`
+
+The JSON parsed request body.
+
 ### query
 
 _Type_: `Object`

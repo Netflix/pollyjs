@@ -188,8 +188,59 @@ section.cover.show ~ .sidebar-toggle {
   cursor: pointer;
 }
 
+/****** Sidebar Toggle ******/
 .sidebar-toggle {
   cursor: pointer;
+}
+
+body .sidebar-toggle {
+  background: none;
+  top: 1.5rem;
+  left: calc(300px + 1.5rem);
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  transition: left 0.25s ease-out;
+}
+
+body .sidebar-toggle span {
+  background-color: var(--theme-color);
+  height: 0.2rem;
+  width: 1.5rem;
+  position: absolute;
+  left: 0;
+  margin: 0;
+  transform-origin: 0;
+  border-radius: 1px;
+}
+
+body.close .sidebar-toggle {
+  transition: left 0.25s ease-out;
+  width: 1.5rem;
+  height: 1.5rem;
+  left: 1.5rem;
+}
+
+body.close .sidebar-toggle span {
+  transform-origin: center;
+}
+
+body .sidebar-toggle span:nth-child(1) { top:0; }
+body .sidebar-toggle span:nth-child(2) { top:0.5rem; }
+body .sidebar-toggle span:nth-child(3) { top:1rem; }
+
+.sidebar-toggle:hover { opacity: 0.8; }
+.sidebar-toggle .sidebar-toggle-button:hover { opacity: 1; }
+
+@media screen and (max-width: 768px) {
+  body .sidebar-toggle {
+    left: 1rem;
+  }
+
+  body.close .sidebar-toggle {
+    left: calc(300px + 1.5rem);
+  }
 }
 
 /****** Markdown General ******/
