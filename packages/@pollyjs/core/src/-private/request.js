@@ -9,6 +9,7 @@ import removeHostFromUrl from '../utils/remove-host-from-url';
 import serializeRequestBody from '../utils/serialize-request-body';
 
 const { keys, freeze } = Object;
+const { parse } = JSON;
 
 const PARSED_URL = Symbol();
 const ROUTE = Symbol();
@@ -104,6 +105,10 @@ export default class PollyRequest {
 
   get shouldIntercept() {
     return typeof this[ROUTE].handler.get('intercept') === 'function';
+  }
+
+  get json() {
+    return parse(this.body);
   }
 
   async setup() {
