@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120716183-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-120716183-1');
+  </script>
   <meta charset="UTF-8">
   <title>Polly.JS</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -33,8 +41,7 @@
         paths: 'auto',
         placeholder: 'Search',
         noData: 'No Results.'
-      },
-      ga: 'UA-120716183-1'
+      }
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
@@ -43,6 +50,5 @@
   <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
   <script src="//unpkg.com/docsify-copy-code@2"></script>
   <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/ga.min.js"></script>
 </body>
 </html>
