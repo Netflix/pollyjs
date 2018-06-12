@@ -1,6 +1,6 @@
 :root {
-  --theme-color: #E50914;
-  --theme-color-dark: #B20710;
+  --theme-color: #e50914;
+  --theme-color-dark: #b20710;
 }
 
 body {
@@ -25,6 +25,11 @@ section.cover {
   padding-bottom: 112px; /* fixed footer (Netflix) height */
   height: auto;
   min-height: 100vh;
+  /**
+   * Intended to defeat this inline style on initial boot that flashes when on page load:
+   * https://github.com/docsifyjs/docsify/blob/8352a1e489abc2a7b6361fe02d696e1891a031cd/src/core/render/tpl.js#L56-L70 
+   */
+  background: #fff !important;
 }
 
 section.cover .cover-main {
@@ -37,7 +42,7 @@ section.cover .cover-main {
 }
 
 section.cover h1 {
-  margin: .625rem 0 1rem;
+  margin: 0.625rem 0 1rem;
 }
 
 section.cover blockquote,
@@ -52,7 +57,7 @@ section.cover ul {
   text-align: left;
   grid-column-gap: 16px;
   grid-row-gap: 20px;
-  grid-template-columns: repeat(2,50%);
+  grid-template-columns: repeat(2, 50%);
   list-style: none;
   max-width: unset;
   margin: 1.5em 0;
@@ -111,14 +116,14 @@ section.cover.show ~ .sidebar-toggle {
   margin: 0 1rem;
   color: var(--theme-color);
   overflow: hidden;
-  transition: color .25s cubic-bezier(.215,.61,.355,1);
+  transition: color 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
   vertical-align: baseline;
   text-transform: uppercase;
 }
 
 .cover-main .buttons a:before,
 .cover-main .buttons a:after {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   width: 100%;
@@ -132,12 +137,12 @@ section.cover.show ~ .sidebar-toggle {
 .cover-main .buttons a:after {
   background: var(--theme-color);
   transform: translateX(-101%);
-  transition: all .2s cubic-bezier(.215,.61,.355,1);
+  transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .cover-main .buttons a:hover {
   color: white;
-  box-shadow: 0 5px 16px rgba(229,9,20,.3);
+  box-shadow: 0 5px 16px rgba(229, 9, 20, 0.3);
 }
 
 .cover-main .buttons a:hover:after {
@@ -226,12 +231,22 @@ body.close .sidebar-toggle span {
   transform-origin: center;
 }
 
-body .sidebar-toggle span:nth-child(1) { top:0; }
-body .sidebar-toggle span:nth-child(2) { top:0.5rem; }
-body .sidebar-toggle span:nth-child(3) { top:1rem; }
+body .sidebar-toggle span:nth-child(1) {
+  top: 0;
+}
+body .sidebar-toggle span:nth-child(2) {
+  top: 0.5rem;
+}
+body .sidebar-toggle span:nth-child(3) {
+  top: 1rem;
+}
 
-.sidebar-toggle:hover { opacity: 0.8; }
-.sidebar-toggle .sidebar-toggle-button:hover { opacity: 1; }
+.sidebar-toggle:hover {
+  opacity: 0.8;
+}
+.sidebar-toggle .sidebar-toggle-button:hover {
+  opacity: 1;
+}
 
 @media screen and (max-width: 768px) {
   body .sidebar-toggle {
@@ -271,7 +286,7 @@ body .sidebar-toggle span:nth-child(3) { top:1rem; }
 .markdown-section table tr {
   border-width: 0.15rem 0;
   border-style: solid;
-  border-color: #F1F1F2;
+  border-color: #f1f1f2;
 }
 
 .markdown-section table thead tr {
@@ -321,4 +336,3 @@ body .sidebar-toggle span:nth-child(3) { top:1rem; }
 .lang-json .token.property {
   color: #e96900;
 }
-
