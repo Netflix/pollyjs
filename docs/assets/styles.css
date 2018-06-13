@@ -1,11 +1,16 @@
 :root {
   --theme-color: #e50914;
   --theme-color-dark: #b20710;
+
+  --text-color-base: #2E2E46;
+  --text-color-secondary: #646473;
+  --text-color-tertiary: #81818E;
 }
 
 body {
   font-size: 100%;
   line-height: 1.5;
+  color: var(--text-color-base);
 }
 
 * {
@@ -27,7 +32,7 @@ section.cover {
   min-height: 100vh;
   /**
    * Intended to defeat this inline style on initial boot that flashes when on page load:
-   * https://github.com/docsifyjs/docsify/blob/8352a1e489abc2a7b6361fe02d696e1891a031cd/src/core/render/tpl.js#L56-L70 
+   * https://github.com/docsifyjs/docsify/blob/8352a1e489abc2a7b6361fe02d696e1891a031cd/src/core/render/tpl.js#L56-L70
    */
   background: #fff !important;
 }
@@ -39,6 +44,10 @@ section.cover .cover-main {
   flex-direction: column;
   margin: 0;
   padding: 32px 16px 0;
+}
+
+section.cover img {
+  width: 400px;
 }
 
 section.cover h1 {
@@ -177,6 +186,10 @@ section.cover.show ~ .sidebar-toggle {
 }
 
 /****** Sidebar ******/
+.sidebar .sidebar-logo {
+  height: 150px;
+}
+
 .sidebar ul li a {
   font-size: 15px;
 }
@@ -320,6 +333,11 @@ body .sidebar-toggle span:nth-child(3) {
 
 .markdown-section blockquote > p {
   font-weight: 500;
+}
+
+.markdown-section em,
+.markdown-section blockquote {
+  color: var(--text-color-tertiary);
 }
 
 /****** CODE HIGHLIGHTING ******/

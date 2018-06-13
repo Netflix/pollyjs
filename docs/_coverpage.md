@@ -2,9 +2,7 @@
   <div class="logo"></div>
 </div>
 
-<!-- ![logo](assets/logo.png) -->
-
-# Polly.JS
+![logo](assets/images/wordmark-logo-alt.png)
 
 > Record, replay, and stub HTTP interactions.
 
