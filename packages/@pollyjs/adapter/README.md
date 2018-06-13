@@ -1,7 +1,6 @@
-<!-- <p align="center">
-  <img alt="Polly.JS" width="480px" src="" />
-</p> -->
-<h1 align="center">Polly.JS</h1>
+<p align="center">
+  <img alt="Polly.JS" width="400px" src="https://raw.githubusercontent.com/Netflix/pollyjs/master/docs/assets/images/wordmark-logo-alt.png" />
+</p>
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
 [![Build Status](https://travis-ci.org/Netflix/pollyjs.svg?branch=master)](https://travis-ci.org/Netflix/pollyjs)
