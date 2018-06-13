@@ -50,7 +50,7 @@ export default class RestPersister extends Persister {
 
   _normalize({ xhr, body }) {
     /**
-     * 204 - No Content.  Polly uses this status code in place of 404
+     * 204 - No Content. Polly uses this status code in place of 404
      * when interacting with our Rest server to prevent throwing
      * request errors in consumer's stdout (console.log)
      */

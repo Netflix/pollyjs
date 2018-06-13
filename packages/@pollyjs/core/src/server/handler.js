@@ -1,6 +1,8 @@
 import assert from '../utils/assert';
 import Events from './events';
 
+const EVENTS = Symbol();
+
 function assertEventName(eventName) {
   assert(
     `Invalid event name provided. Expected string, received: "${typeof eventName}".`,
@@ -16,19 +18,26 @@ function assertEventName(eventName) {
 }
 
 export default class Handler extends Map {
+  constructor() {
+    super(...arguments);
+    this.set(EVENTS, new Map());
+  }
+
   on(eventName, handler) {
     assertEventName(eventName);
 
     assert(
-      `Attempted to register ${eventName} but invalid handler provided.  Expected function, received: "${typeof handler}".`,
+      `Attempted to register "${eventName}" but invalid handler provided.  Expected function, received: "${typeof handler}".`,
       typeof handler === 'function'
     );
 
-    if (!this.has(eventName)) {
-      this.set(eventName, []);
+    const events = this.get(EVENTS);
+
+    if (!events.has(eventName)) {
+      events.set(eventName, []);
     }
 
-    this.get(eventName).push(handler);
+    events.get(eventName).push(handler);
 
     return this;
   }
@@ -36,18 +45,26 @@ export default class Handler extends Map {
   off(eventName, handler) {
     assertEventName(eventName);
 
-    if (this.hasEvent(eventName)) {
+    const events = this.get(EVENTS);
+
+    if (this._hasEventHandlers(eventName)) {
       if (typeof handler === 'function') {
-        this.set(eventName, this.get(eventName).filter(l => l !== handler));
+        events.set(eventName, events.get(eventName).filter(h => h !== handler));
       } else {
-        this.delete(eventName);
+        events.delete(eventName);
       }
     }
 
     return this;
   }
 
-  hasEvent(eventName) {
-    return this.has(eventName) && this.get(eventName).length > 0;
+  _hasEventHandlers(eventName) {
+    return this._getEventHandlers(eventName).length > 0;
+  }
+
+  _getEventHandlers(eventName) {
+    const events = this.get(EVENTS);
+
+    return events.has(eventName) ? events.get(eventName) : [];
   }
 }

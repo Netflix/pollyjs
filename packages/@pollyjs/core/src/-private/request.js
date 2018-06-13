@@ -112,8 +112,8 @@ export default class PollyRequest {
   }
 
   async setup() {
-    // Trigger the `beforeRequest` event
-    await this._trigger('beforeRequest');
+    // Trigger the `request` event
+    await this._trigger('request');
 
     // Setup the response
     this.response = new PollyResponse();
@@ -156,8 +156,8 @@ export default class PollyRequest {
 
     this.didRespond = true;
 
-    // Trigger the `afterResponse` event
-    await this._trigger('afterResponse', this.response);
+    // Trigger the `response` event
+    await this._trigger('response', this.response);
 
     freeze(this);
   }
@@ -170,8 +170,8 @@ export default class PollyRequest {
     return this[ROUTE].invoke(methodName, this, ...args);
   }
 
-  _trigger(methodName, ...args) {
-    return this[ROUTE].trigger(methodName, this, ...args);
+  _trigger(eventName, ...args) {
+    return this[ROUTE].trigger(eventName, this, ...args);
   }
 
   _identify() {

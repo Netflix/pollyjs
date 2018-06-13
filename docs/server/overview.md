@@ -13,7 +13,7 @@ const { server } = polly;
 // Events & Middleware
 server
   .any()
-  .on('beforeRequest', (req, res) => {
+  .on('request', (req, res) => {
     req.headers['X-Auth-Token'] = 'abc123';
   });
 
@@ -65,5 +65,5 @@ __Example__
 server.get(['/api/v2/users', '/api/v2/users/*path']).passthrough();
 
 // Register the same event handler on both '/session' and '/users/session'
-server.any(['/session', '/users/session']).on('beforeRequest', () => {});
+server.any(['/session', '/users/session']).on('request', () => {});
 ```

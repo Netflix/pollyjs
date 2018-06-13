@@ -25,11 +25,11 @@ __Example__
 ```js
 server
   .get('/session')
-  .on('beforeRequest', req => {
+  .on('request', req => {
     req.headers['X-AUTH'] = '<ACCESS_TOKEN>';
     req.query.email = 'test@app.com';
   })
-  .on('beforeRequest', () => {/* Do something else */});
+  .on('request', () => {/* Do something else */});
 ```
 
 ### off
@@ -49,10 +49,10 @@ const handler = () => {};
 
 server
   .get('/session')
-  .on('beforeRequest', , handler)
-  .on('beforeRequest', () => {})
-  .off('beforeRequest', handler) /* Un-register the specified event/handler pair */
-  .off('beforeRequest'); /* Un-register all handlers */
+  .on('request', , handler)
+  .on('request', () => {})
+  .off('request', handler) /* Un-register the specified event/handler pair */
+  .off('request'); /* Un-register all handlers */
 ```
 
 ### intercept

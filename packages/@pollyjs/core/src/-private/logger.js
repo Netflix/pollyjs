@@ -18,12 +18,12 @@ export default class Logger {
   connect() {
     this._middleware = this.polly.server
       .any()
-      .on('afterResponse', (...args) => this.logRequest(...args));
+      .on('response', (...args) => this.logRequest(...args));
   }
 
   disconnect() {
     this.groupEnd();
-    this._middleware.off('afterResponse');
+    this._middleware.off('response');
   }
 
   console(method, ...args) {
