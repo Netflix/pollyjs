@@ -113,6 +113,7 @@ describe('Integration | Persisters', function() {
         server.get('/api/db/:id').on('beforePersist', (req /*, res*/) => {
           expect(req.params.id).to.equal('foo');
           expect(beforePersistCalled).to.be.false;
+          expect(() => (req.body = 'test')).to.throw(Error);
           beforePersistCalled = true;
         });
 

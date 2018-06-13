@@ -14,8 +14,13 @@ describe('Integration | Server', function() {
           expect(requestCalled).to.be.true;
           res.sendStatus(200);
         })
-        .on('request', () => {
+        .on('request', req => {
           expect(requestCalled).to.be.false;
+
+          // Validate that we can modify the request
+          req.body = 'test';
+          expect(req.body).to.equal('test');
+
           requestCalled = true;
         });
 
@@ -59,6 +64,9 @@ describe('Integration | Server', function() {
           expect(responseCalled).to.be.false;
           expect(req.didRespond).to.be.true;
           expect(res.statusCode).to.equal(200);
+
+          // Validate that the req cant be modified
+          expect(() => (req.body = 'test')).to.throw(Error);
 
           responseCalled = true;
         });

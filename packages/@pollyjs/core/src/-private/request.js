@@ -148,10 +148,10 @@ export default class PollyRequest {
 
     this.didRespond = true;
 
+    freeze(this);
+
     // Trigger the `response` event
     await this._trigger('response', this.response);
-
-    freeze(this);
   }
 
   async serializeBody() {
