@@ -81,6 +81,24 @@ describe('Netflix Homepage', function() {
 });
 ```
 
+## Credits
+
+_In alphabetical order:_
+
+* [Jason Mitchell](https://twitter.com/_jasonmit) - Creator / Maintainer
+* [Offir Golan](https://twitter.com/offirgolan) - Creator / Maintainer
+* [Sophinie Som](https://dribbble.com/sophiniesom) - Branding / Logo
+
+## We're hiring!
+
+Join the Netflix Studio & Content Engineering teams to help us build projects like this!
+
+Open Roles:
+
+* [Senior UI Engineer - Content Platform Engineering](https://jobs.netflix.com/jobs/865180)
+* [Senior UI Engineer - Globalization Technologies & Infrastructure](https://jobs.netflix.com/jobs/866907)
+* [Senior UI Engineer - Partner Workforce](https://jobs.netflix.com/jobs/866939)
+
 ## License
 
 Copyright (c) 2018 Netflix, Inc.
