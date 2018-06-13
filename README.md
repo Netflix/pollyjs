@@ -87,7 +87,7 @@ _In alphabetical order:_
 
 * [Jason Mitchell](https://twitter.com/_jasonmit) - Creator / Maintainer
 * [Offir Golan](https://twitter.com/offirgolan) - Creator / Maintainer
-* [Sophinie Som](https://dribbble.com/sophiniesom) - Branding / Logo
+* [Sophinie Som](https://twitter.com/s0phinie) - Branding / Logo
 
 ## We're hiring!
 
