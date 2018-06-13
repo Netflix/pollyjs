@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Polly.JS" width="400px" src="https://raw.githubusercontent.com/Netflix/pollyjs/master/docs/assets/images/wordmark-logo-alt.png" />
+  <img alt="Polly.JS" width="400px" src="https://netflix.github.io/pollyjs/assets/images/wordmark-logo-alt.png" />
 </p>
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
