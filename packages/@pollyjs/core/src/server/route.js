@@ -2,17 +2,18 @@ import Handler from './handler';
 
 async function invoke(fn, route, req, ...args) {
   if (typeof fn === 'function') {
-    const params = req.params;
+    const proxyReq = new Proxy(req, {
+      get(source, prop) {
+        if (prop === 'params') {
+          // Set the request's params to given route's matched params
+          return route.params;
+        }
 
-    // Set the request's params to given route's matched params
-    req.params = route.params || {};
+        return source[prop];
+      }
+    });
 
-    const result = await fn(req, ...args);
-
-    // Reset the params object to what it was before
-    req.params = params;
-
-    return result;
+    return await fn(proxyReq, ...args);
   }
 }
 
