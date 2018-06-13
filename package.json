@@ -32,7 +32,7 @@
     "posttest": "yarn test:clean",
     "server:build": "lerna run build --scope=@pollyjs/node-server",
     "server:start": "node ./test/server.js",
-    "release": "yarn run clean && lerna publish"
+    "release": "lerna publish"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",
