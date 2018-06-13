@@ -21,8 +21,8 @@ you can use to pass-through, intercept, and attach events to.
 ```js
 server.get('/ping').passthrough();
 server.put('/ping').intercept((req, res) => res.sendStatus(200));
-server.post('/ping').on('beforeRequest', (req) => { /* Do Something */ });
-server.patch('/ping').off('beforeRequest');
+server.post('/ping').on('request', (req) => { /* Do Something */ });
+server.patch('/ping').off('request');
 ```
 
 ## any
@@ -35,7 +35,7 @@ __Example__
 ```js
 server
   .any('/session/:id')
-  .on('beforeRequest', (req, res) => {
+  .on('request', (req, res) => {
     req.query.email = 'test@netflix.com';
   });
 ```
@@ -51,7 +51,7 @@ server.host('http://netflix.com', () => {
   // Middleware will be attached to the host
   server
     .any()
-    .on('beforeRequest', (req) => {});
+    .on('request', (req) => {});
 
   server.get('/session').intercept(() => {}); // → http://netflix.com/session
 });
@@ -68,7 +68,7 @@ server.namespace('/api', () => {
   // Middleware will be attached to the namespace
   server
     .any()
-    .on('beforeRequest', (req) => {});
+    .on('request', (req) => {});
 
   server.get('/session').intercept(() => {}); // → /api/session
 

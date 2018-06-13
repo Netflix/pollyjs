@@ -1,13 +1,13 @@
 import Handler from './handler';
 
-async function invoke(handler, route, req, ...args) {
-  if (typeof handler === 'function') {
+async function invoke(fn, route, req, ...args) {
+  if (typeof fn === 'function') {
     const params = req.params;
 
     // Set the request's params to given route's matched params
     req.params = route.params || {};
 
-    const result = await handler(req, ...args);
+    const result = await fn(req, ...args);
 
     // Reset the params object to what it was before
     req.params = params;
@@ -17,12 +17,10 @@ async function invoke(handler, route, req, ...args) {
 }
 
 async function trigger(route, eventName, ...args) {
-  if (route.handler.hasEvent(eventName)) {
-    const handlers = route.handler.get(eventName);
+  const handlers = route.handler._getEventHandlers(eventName);
 
-    for (const handler of handlers) {
-      await invoke(handler, route, ...args);
-    }
+  for (const handler of handlers) {
+    await invoke(handler, route, ...args);
   }
 }
 

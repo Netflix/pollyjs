@@ -1,7 +1,7 @@
 export default [
-  'beforeRequest',
+  'request',
   'beforeReplay',
-  'beforeRecord',
+  'beforePersist',
   'beforeResponse',
-  'afterResponse'
+  'response'
 ];

@@ -4,23 +4,23 @@ describe('Integration | Server', function() {
   setupPolly();
 
   describe('Events & Middleware', function() {
-    it('event: beforeRequest', async function() {
+    it('event: request', async function() {
       const { server } = this.polly;
-      let beforeRequestCalled = false;
+      let requestCalled = false;
 
       server
         .get('/ping')
         .intercept((req, res) => {
-          expect(beforeRequestCalled).to.be.true;
+          expect(requestCalled).to.be.true;
           res.sendStatus(200);
         })
-        .on('beforeRequest', () => {
-          expect(beforeRequestCalled).to.be.false;
-          beforeRequestCalled = true;
+        .on('request', () => {
+          expect(requestCalled).to.be.false;
+          requestCalled = true;
         });
 
       expect((await fetch('/ping')).status).to.equal(200);
-      expect(beforeRequestCalled).to.be.true;
+      expect(requestCalled).to.be.true;
     });
 
     it('event: beforeResponse', async function() {
@@ -45,26 +45,26 @@ describe('Integration | Server', function() {
       expect(beforeResponseCalled).to.be.true;
     });
 
-    it('event: afterResponse', async function() {
+    it('event: response', async function() {
       const { server } = this.polly;
-      let afterResponseCalled = false;
+      let responseCalled = false;
 
       server
         .get('/ping')
         .intercept((req, res) => {
-          expect(afterResponseCalled).to.be.false;
+          expect(responseCalled).to.be.false;
           res.sendStatus(200);
         })
-        .on('afterResponse', (req, res) => {
-          expect(afterResponseCalled).to.be.false;
+        .on('response', (req, res) => {
+          expect(responseCalled).to.be.false;
           expect(req.didRespond).to.be.true;
           expect(res.statusCode).to.equal(200);
 
-          afterResponseCalled = true;
+          responseCalled = true;
         });
 
       expect((await fetch('/ping')).status).to.equal(200);
-      expect(afterResponseCalled).to.be.true;
+      expect(responseCalled).to.be.true;
     });
 
     it('can register multiple event handlers', async function() {
@@ -74,12 +74,12 @@ describe('Integration | Server', function() {
       server
         .get('/ping')
         .intercept((req, res) => res.sendStatus(200))
-        .on('beforeRequest', () => stack.push(1))
-        .on('beforeRequest', () => stack.push(2))
+        .on('request', () => stack.push(1))
+        .on('request', () => stack.push(2))
         .on('beforeResponse', () => stack.push(3))
         .on('beforeResponse', () => stack.push(4))
-        .on('afterResponse', () => stack.push(5))
-        .on('afterResponse', () => stack.push(6));
+        .on('response', () => stack.push(5))
+        .on('response', () => stack.push(6));
 
       expect((await fetch('/ping')).status).to.equal(200);
       expect(stack).to.deep.equal([1, 2, 3, 4, 5, 6]);
@@ -87,24 +87,24 @@ describe('Integration | Server', function() {
 
     it('can turn off events', async function() {
       const { server } = this.polly;
-      let beforeRequestCalled,
+      let requestCalled,
         beforeResponseCalled = false;
 
       const handler = server
         .get('/ping')
         .intercept((req, res) => res.sendStatus(200))
-        .on('beforeRequest', () => (beforeRequestCalled = true))
+        .on('request', () => (requestCalled = true))
         .on('beforeResponse', () => (beforeResponseCalled = true));
 
       expect((await fetch('/ping')).status).to.equal(200);
-      expect(beforeRequestCalled).to.be.true;
+      expect(requestCalled).to.be.true;
       expect(beforeResponseCalled).to.be.true;
 
-      beforeRequestCalled = beforeResponseCalled = false;
-      handler.off('beforeRequest').off('beforeResponse');
+      requestCalled = beforeResponseCalled = false;
+      handler.off('request').off('beforeResponse');
 
       expect((await fetch('/ping')).status).to.equal(200);
-      expect(beforeRequestCalled).to.be.false;
+      expect(requestCalled).to.be.false;
       expect(beforeResponseCalled).to.be.false;
     });
 
@@ -113,7 +113,7 @@ describe('Integration | Server', function() {
 
       server
         .any('/ping')
-        .on('beforeRequest', req => {
+        .on('request', req => {
           expect(req.params).to.deep.equal({});
         })
         .on('beforeResponse', req => {
@@ -122,7 +122,7 @@ describe('Integration | Server', function() {
 
       server
         .any('/ping/:id')
-        .on('beforeRequest', req => {
+        .on('request', req => {
           expect(req.params).to.deep.equal({ id: '1' });
         })
         .on('beforeResponse', req => {
@@ -132,7 +132,7 @@ describe('Integration | Server', function() {
       server
         .get('/ping/:id/:id2/*path')
         .intercept((req, res) => res.sendStatus(200))
-        .on('beforeRequest', req => {
+        .on('request', req => {
           expect(req.params).to.deep.equal({
             id: '1',
             id2: '2',
@@ -152,13 +152,13 @@ describe('Integration | Server', function() {
 
     it('preserves middleware order', async function() {
       const { server } = this.polly;
-      const beforeRequestOrder = [];
+      const requestOrder = [];
       const beforeResponseOrder = [];
 
       server
         .any()
-        .on('beforeRequest', () => {
-          beforeRequestOrder.push(1);
+        .on('request', () => {
+          requestOrder.push(1);
         })
         .on('beforeResponse', () => {
           beforeResponseOrder.push(1);
@@ -166,8 +166,8 @@ describe('Integration | Server', function() {
 
       server
         .any()
-        .on('beforeRequest', () => {
-          beforeRequestOrder.push(2);
+        .on('request', () => {
+          requestOrder.push(2);
         })
         .on('beforeResponse', () => {
           beforeResponseOrder.push(2);
@@ -175,9 +175,9 @@ describe('Integration | Server', function() {
 
       server
         .any('/ping/:id')
-        .on('beforeRequest', async () => {
+        .on('request', async () => {
           await server.timeout(5);
-          beforeRequestOrder.push(3);
+          requestOrder.push(3);
         })
         .on('beforeResponse', async () => {
           await server.timeout(5);
@@ -186,8 +186,8 @@ describe('Integration | Server', function() {
 
       server
         .any(['/ping', '/ping/*path'])
-        .on('beforeRequest', () => {
-          beforeRequestOrder.push(4);
+        .on('request', () => {
+          requestOrder.push(4);
         })
         .on('beforeResponse', () => {
           beforeResponseOrder.push(4);
@@ -196,11 +196,11 @@ describe('Integration | Server', function() {
       server
         .get('/ping/:id')
         .intercept((req, res) => res.sendStatus(200))
-        .on('beforeRequest', () => beforeRequestOrder.push(5))
+        .on('request', () => requestOrder.push(5))
         .on('beforeResponse', () => beforeResponseOrder.push(5));
 
       expect((await fetch('/ping/1')).status).to.equal(200);
-      expect(beforeRequestOrder).to.deep.equal([1, 2, 3, 4, 5]);
+      expect(requestOrder).to.deep.equal([1, 2, 3, 4, 5]);
       expect(beforeResponseOrder).to.deep.equal([1, 2, 3, 4, 5]);
     });
   });

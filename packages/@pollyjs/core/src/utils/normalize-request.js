@@ -1,5 +1,5 @@
 import URL from 'url-parse';
-import isObject from './is-object';
+import isObjectLike from 'lodash-es/isObjectLike';
 
 const { keys } = Object;
 
@@ -15,7 +15,7 @@ export function url(url, config = {}) {
   // Sort Query Params
   const { query } = parsedUrl;
 
-  if (isObject(query)) {
+  if (isObjectLike(query)) {
     const sortedQuery = keys(query)
       .sort()
       .reduce((q, k) => {
@@ -31,7 +31,7 @@ export function url(url, config = {}) {
 }
 
 export function headers(headers, config) {
-  if (isObject(config) && isObject(headers) && config.exclude) {
+  if (isObjectLike(config) && isObjectLike(headers) && config.exclude) {
     // Filter out excluded headers
     return keys(headers).reduce((h, k) => {
       if (!config.exclude.includes(k)) {

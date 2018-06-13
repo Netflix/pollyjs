@@ -7,45 +7,45 @@ describe('Unit | Server | Handler', function() {
 
   it('throws on registering an unknown event name', function() {
     expect(() => new Handler().on('unknownEventName')).to.throw(
-      `[Polly] Invalid event name provided: "unknownEventName". Possible events: beforeRequest, beforeReplay, beforeRecord, beforeResponse, afterResponse.`
+      /Invalid event name provided/
     );
   });
 
   it('throws on un-registering an unknown event name', function() {
     expect(() => new Handler().off('unknownEventName')).to.throw(
-      `[Polly] Invalid event name provided: "unknownEventName". Possible events: beforeRequest, beforeReplay, beforeRecord, beforeResponse, afterResponse.`
+      /Invalid event name provided/
     );
   });
 
   it('registers a known event via .on()', function() {
     const handler = new Handler();
 
-    expect(handler.hasEvent('beforeRequest')).to.be.false;
+    expect(handler._hasEventHandlers('request')).to.be.false;
 
-    handler.on('beforeRequest', () => {});
-    expect(handler.hasEvent('beforeRequest')).to.be.true;
+    handler.on('request', () => {});
+    expect(handler._hasEventHandlers('request')).to.be.true;
 
-    handler.on('beforeRequest', () => {});
-    expect(handler.get('beforeRequest').length).to.equal(2);
+    handler.on('request', () => {});
+    expect(handler._getEventHandlers('request').length).to.equal(2);
   });
 
   it('un-registers a known event via .off()', function() {
     const handler = new Handler();
     const fn = () => {};
 
-    handler.on('beforeRequest', fn);
-    handler.on('beforeRequest', () => {});
-    handler.on('beforeRequest', () => {});
-    expect(handler.hasEvent('beforeRequest')).to.be.true;
-    expect(handler.get('beforeRequest').length).to.equal(3);
+    handler.on('request', fn);
+    handler.on('request', () => {});
+    handler.on('request', () => {});
+    expect(handler._hasEventHandlers('request')).to.be.true;
+    expect(handler._getEventHandlers('request').length).to.equal(3);
 
-    handler.off('beforeRequest', fn);
-    expect(handler.hasEvent('beforeRequest')).to.be.true;
-    expect(handler.get('beforeRequest').length).to.equal(2);
-    expect(handler.get('beforeRequest').includes(fn)).to.be.false;
+    handler.off('request', fn);
+    expect(handler._hasEventHandlers('request')).to.be.true;
+    expect(handler._getEventHandlers('request').length).to.equal(2);
+    expect(handler._getEventHandlers('request').includes(fn)).to.be.false;
 
-    handler.off('beforeRequest');
-    expect(handler.hasEvent('beforeRequest')).to.be.false;
-    expect(handler.has('beforeRequest')).to.be.false;
+    handler.off('request');
+    expect(handler._hasEventHandlers('request')).to.be.false;
+    expect(handler._getEventHandlers('request').length).to.equal(0);
   });
 });

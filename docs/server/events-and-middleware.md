@@ -12,8 +12,8 @@ or a `Promise` can be returned.
 // Events
 server
   .get('/')
-  .on('beforeRequest', req => {})
-  .off('beforeRequest');
+  .on('request', req => {})
+  .off('request');
 
 // Passthrough w/ Events
 server
@@ -25,17 +25,17 @@ server
 // Intercept w/ Events
 server
   .get('/', (req, res) => {})
-  .on('beforeRequest', req => {})
+  .on('request', req => {})
   .on('beforeResponse', (req, res) => {});
 
 // Middleware w/ Events
 server
   .any('/')
-  .on('beforeRequest', req => {})
+  .on('request', req => {})
   .on('beforeResponse', (req, res) => {});
 ```
 
-### beforeRequest
+### request
 
 Fires right before the request goes out.
 
@@ -48,7 +48,7 @@ __Example__
 ```js
 server
   .get('/session')
-  .on('beforeRequest', req => {
+  .on('request', req => {
     req.headers['X-AUTH'] = '<ACCESS_TOKEN>';
     req.query.email = 'test@app.com';
   });
@@ -73,7 +73,7 @@ server
   });
 ```
 
-### afterResponse
+### response
 
 Fires right after the response has been finalized for the request but before
 the response materializes and the promise resolves.
@@ -88,12 +88,12 @@ __Example__
 ```js
 server
   .get('/session')
-  .on('afterResponse', (req, res) => {
+  .on('response', (req, res) => {
     console.log(`${req.url} took ${req.responseTime}ms with a status of ${res.statusCode}.`);
   });
 ```
 
-### beforeRecord
+### beforePersist
 
 Fires before the request/response gets persisted.
 
@@ -107,7 +107,7 @@ __Example__
 ```js
 server
   .any()
-  .on('beforeRecord', (req, recording) => {
+  .on('beforePersist', (req, recording) => {
     recording.request = encrypt(recording.request);
     recording.response = encrypt(recording.response);
   });
@@ -149,7 +149,7 @@ routes. This middleware in specific overrides the `X-Auth-Token` with a test tok
 ```js
 server
   .any()
-  .on('beforeRequest', (req, res) => {
+  .on('request', (req, res) => {
     req.headers['X-Auth-Token'] = 'abc123';
   });
 ```
@@ -163,7 +163,7 @@ the email query param with that of a test email.
 ```js
 server
   .any('/session/:id')
-  .on('beforeRequest', (req, res) => {
+  .on('request', (req, res) => {
     req.query.email = 'test@netflix.com';
   });
 ```

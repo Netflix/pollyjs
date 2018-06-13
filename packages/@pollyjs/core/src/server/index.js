@@ -8,6 +8,7 @@ import buildUrl from '../utils/build-url';
 import assert from '../utils/assert';
 import timeout from '../utils/timeout';
 import removeHostFromUrl from '../utils/remove-host-from-url';
+import castArray from 'lodash-es/castArray';
 
 const HOST = Symbol();
 const NAMESPACES = Symbol();
@@ -19,7 +20,6 @@ const STAR = '*';
 const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
 const { keys } = Object;
-const { isArray } = Array;
 
 function parseUrl(url) {
   const path = new URL(url);
@@ -31,10 +31,6 @@ function parseUrl(url) {
   const href = removeHostFromUrl(path).href;
 
   return { host, path: href };
-}
-
-function makeArray(a) {
-  return isArray(a) ? a : [a];
 }
 
 export default class Server {
@@ -112,7 +108,7 @@ export default class Server {
   _register(method, routes) {
     const handler = new RouteHandler();
 
-    makeArray(routes).forEach(route => {
+    castArray(routes).forEach(route => {
       const { host, path } = parseUrl(this._buildUrl(route));
       const registry = this._registryForHost(host);
 
@@ -126,7 +122,7 @@ export default class Server {
     const handler = new Handler();
     const pathsByHost = {};
 
-    makeArray(routes).forEach(route => {
+    castArray(routes).forEach(route => {
       /*
         If the route is a '*' or '' and there is no host or namespace
         specified, treat the middleware as global so it will match all routes.

@@ -46,12 +46,12 @@ export default class Persister {
         entry.created_at = createdAt;
 
         /*
-          Trigger the `beforeRecord` hook on each new recorded entry.
+          Trigger the `beforePersist` event on each new recorded entry.
 
           NOTE: This must be triggered last as this entry can be used to
                 modify the payload (i.e. encrypting the request & response).
         */
-        await request._trigger('beforeRecord', entry);
+        await request._trigger('beforePersist', entry);
       }
 
       if (recording) {
