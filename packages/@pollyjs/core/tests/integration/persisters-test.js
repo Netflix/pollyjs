@@ -105,6 +105,25 @@ describe('Integration | Persisters', function() {
         expect(savedRecording.entries[entryKeys[0]].length).to.equal(2);
         expect(savedRecording.entries[entryKeys[1]].length).to.equal(1);
       });
+
+      it('should emit beforePersist', async function() {
+        const { persister, server } = this.polly;
+        let beforePersistCalled = false;
+
+        server.get('/api/db/:id').on('beforePersist', (req /*, res*/) => {
+          expect(req.params.id).to.equal('foo');
+          expect(beforePersistCalled).to.be.false;
+          beforePersistCalled = true;
+        });
+
+        this.polly.record();
+
+        await this.fetch('/api/db/foo');
+        expect(beforePersistCalled).to.be.false;
+
+        await persister.persist();
+        expect(beforePersistCalled).to.be.true;
+      });
     });
 
     describe(`${name} | recordFailedRequests set to false`, function() {

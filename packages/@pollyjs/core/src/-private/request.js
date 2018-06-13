@@ -34,9 +34,6 @@ export default class PollyRequest {
     */
     this.action = null;
 
-    // This will be overridden by the route when a method is invoked
-    this.params = {};
-
     // Lookup the associated route for this request
     this[ROUTE] = polly.server.lookup(this.method, this.url);
   }
