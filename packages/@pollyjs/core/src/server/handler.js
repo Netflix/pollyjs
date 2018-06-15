@@ -1,5 +1,5 @@
-import assert from '../utils/assert';
 import Events from './events';
+import { assert } from '@pollyjs/utils';
 
 const EVENTS = Symbol();
 

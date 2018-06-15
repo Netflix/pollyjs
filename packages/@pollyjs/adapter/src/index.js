@@ -1,12 +1,7 @@
 import isExpired from './utils/is-expired';
+import { ACTIONS, MODES, assert } from '@pollyjs/utils';
 
 const REQUEST_HANDLER = Symbol();
-const ACTIONS = {
-  RECORD: 'record',
-  REPLAY: 'replay',
-  INTERCEPT: 'intercept',
-  PASSTHROUGH: 'passthrough'
-};
 
 export default class Adapter {
   constructor(polly) {
@@ -75,12 +70,12 @@ export default class Adapter {
   }
 
   async [REQUEST_HANDLER](request) {
-    const { mode, Modes } = this.polly;
+    const { mode } = this.polly;
     const pollyRequest = this.polly.registerRequest(request);
 
     await pollyRequest.setup();
 
-    if (mode === Modes.PASSTHROUGH || pollyRequest.shouldPassthrough) {
+    if (mode === MODES.PASSTHROUGH || pollyRequest.shouldPassthrough) {
       return this.passthrough(pollyRequest);
     }
 
@@ -88,11 +83,11 @@ export default class Adapter {
       return this.intercept(pollyRequest);
     }
 
-    if (mode === Modes.RECORD) {
+    if (mode === MODES.RECORD) {
       return this.record(pollyRequest);
     }
 
-    if (mode === Modes.REPLAY) {
+    if (mode === MODES.REPLAY) {
       return this.replay(pollyRequest);
     }
 
@@ -153,12 +148,12 @@ export default class Adapter {
   }
 
   assert(message, ...args) {
-    this.polly.assert(`${this} ${message}`, ...args);
+    assert(`${this} ${message}`, ...args);
   }
 
   toString() {
     /* cannot use this.assert since `this` calls toString */
-    this.polly.assert('Must implement the the `toString` hook.', false);
+    assert('Must implement the the `toString` hook.', false);
   }
 
   onConnect() {

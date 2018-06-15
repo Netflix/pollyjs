@@ -1,8 +1,8 @@
-import Modes from './modes';
+import { MODES } from '@pollyjs/utils';
 import Timing from '../utils/timing';
 
 export default {
-  mode: Modes.REPLAY,
+  mode: MODES.REPLAY,
   adapters: ['fetch', 'xhr'],
 
   logging: false,

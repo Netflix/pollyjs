@@ -1,5 +1,5 @@
 import stringify from 'json-stable-stringify';
-import assert from '../utils/assert';
+import { assert } from '@pollyjs/utils';
 
 const { freeze } = Object;
 

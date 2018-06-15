@@ -1,5 +1,5 @@
-import assert from '../utils/assert';
 import Handler from './handler';
+import { assert } from '@pollyjs/utils';
 
 export default class RouteHandler extends Handler {
   constructor() {

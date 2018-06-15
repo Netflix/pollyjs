@@ -1,6 +1,6 @@
+import Persister from '@pollyjs/persister';
 import get from 'lodash-es/get';
 import stringify from 'json-stable-stringify';
-import Persister from '../persister';
 
 export default class LocalStoragePersister extends Persister {
   constructor(polly, store = self.localStorage) {

@@ -3,10 +3,9 @@ import URL from 'url-parse';
 import stringify from 'json-stable-stringify';
 import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
-import assert from '../utils/assert';
-import timestamp from '../utils/timestamp';
 import removeHostFromUrl from '../utils/remove-host-from-url';
 import serializeRequestBody from '../utils/serialize-request-body';
+import { assert, timestamp } from '@pollyjs/utils';
 
 const { keys, freeze } = Object;
 
