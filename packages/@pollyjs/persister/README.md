@@ -25,6 +25,11 @@ If you want to install it with [yarn](https://yarnpkg.com):
 yarn add @pollyjs/persister -D
 ```
 
+## Documentation
+
+Check out the [Custom Persister](https://netflix.github.io/pollyjs/#/persisters/custom)
+documentation for more details.
+
 ## Usage
 
 ```js
@@ -41,7 +46,7 @@ class CustomPersister extends Persister {
 }
 ```
 
-For better usage details, please refer to the source code for
+For better usage examples, please refer to the source code for
 the [REST](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/core/src/persisters/rest/index.js) & [Local Storage](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/core/src/persisters/local-storage/index.js) persisters.
 
 ## License

@@ -72,7 +72,7 @@ stopped and destroyed produces the following error:
 
 !> _You are trying to access an instance of Polly that is no longer available._
 
-If you need do some work before the polly instance gets destroyed or just need more control on when each of the test hooks are called, `setupQunit` can be invoked as a function or accessed as an object with two methods: `setupQunit.beforeEach` and `setupQunit.afterEach`.
+If you need to do some work before the polly instance gets destroyed or just need more control on when each of the test hooks are called, `setupQunit` can be invoked as a function or accessed as an object with two methods: `setupQunit.beforeEach` and `setupQunit.afterEach`.
 
 Instead of calling `setupQunit()`, register these two hooks separately in the order that fits within your test.
 

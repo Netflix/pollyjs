@@ -25,6 +25,11 @@ If you want to install it with [yarn](https://yarnpkg.com):
 yarn add @pollyjs/adapter -D
 ```
 
+## Documentation
+
+Check out the [Custom Adapter](https://netflix.github.io/pollyjs/#/adapters/custom)
+documentation for more details.
+
 ## Usage
 
 ```js
@@ -45,7 +50,7 @@ class CustomAdapter extends Adapter {
 }
 ```
 
-For better usage details, please refer to the source code for
+For better usage examples, please refer to the source code for
 the [Fetch](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/core/src/adapters/fetch/index.js) & [XHR](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/core/src/adapters/xhr/index.js) adapters.
 
 ## License

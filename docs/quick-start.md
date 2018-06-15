@@ -20,7 +20,7 @@ yarn add @pollyjs/core -D
 
 ## Setup
 
-In order write to disk, Polly makes networks requests to a local server which
+In order to write to disk, Polly makes networks requests to a local server which
 does all the heavy lifting. If you don't want to use the CLI and you have your
 own express server, see the [Express Integrations](node-server/express-integrations)
 documentation on integrating with your existing server.
