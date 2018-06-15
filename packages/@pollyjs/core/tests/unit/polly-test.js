@@ -2,6 +2,7 @@ import defaults from '../../src/defaults/config';
 import Polly from '../../src/polly';
 import setupPolly from '../../src/test-helpers/mocha';
 import Adapter from '@pollyjs/adapter';
+import Persister from '@pollyjs/persister';
 import { MODES } from '@pollyjs/utils';
 
 const nativeFetch = self.fetch;
@@ -100,6 +101,31 @@ describe('Unit | Polly', function() {
 
     expect(connectCalled).to.be.true;
     expect(disconnectCalled).to.be.true;
+  });
+
+  it('it supports overriding default persisters', async function() {
+    let instantiated, persistCalled;
+
+    class MockPersister extends Persister {
+      constructor() {
+        super(...arguments);
+        instantiated = true;
+      }
+
+      persist() {
+        persistCalled = true;
+        super.persist(...arguments);
+      }
+    }
+
+    const polly = new Polly('recording name', {
+      persister: ['local-storage', MockPersister]
+    });
+
+    await polly.stop();
+
+    expect(instantiated).to.be.true;
+    expect(persistCalled).to.be.true;
   });
 
   describe('configure', function() {
