@@ -1,4 +1,4 @@
-import timeout from './timeout';
+import { timeout } from '@pollyjs/utils';
 
 export default {
   fixed(ms) {

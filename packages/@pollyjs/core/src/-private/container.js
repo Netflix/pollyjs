@@ -1,4 +1,4 @@
-import assert from '../utils/assert';
+import { assert } from '@pollyjs/utils';
 
 export default class Container extends Map {
   set(name, Type) {

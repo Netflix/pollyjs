@@ -8,10 +8,9 @@ import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
 import LocalStoragePersister from './persisters/local-storage';
 import RestPersister from './persisters/rest';
-import { version } from '../package.json';
-import Modes from './defaults/modes';
-import assert from './utils/assert';
 import Server from './server';
+import { version } from '../package.json';
+import { MODES, assert } from '@pollyjs/utils';
 
 const RECORDING_NAME = Symbol();
 const RECORDING_ID = Symbol();
@@ -64,7 +63,7 @@ export default class Polly {
   }
 
   set recordingName(name) {
-    this.assert(
+    assert(
       `'${name}' is not a valid recording name.`,
       typeof name === 'string' && name.trim().length > 0
     );
@@ -87,9 +86,9 @@ export default class Polly {
   }
 
   set mode(mode) {
-    const possibleModes = values(Modes);
+    const possibleModes = values(MODES);
 
-    this.assert(
+    assert(
       `Invalid mode provided: "${mode}". Possible modes: ${possibleModes.join(
         ', '
       )}.`,
@@ -100,65 +99,58 @@ export default class Polly {
   }
 
   /**
-   * @public
-   * @readonly
-   * @memberof Polly
-   */
-  get Modes() {
-    return Modes;
-  }
-
-  /**
-   *
-   * @private
-   * @memberof Polly
-   */
-  assert() {
-    return assert(...arguments);
-  }
-
-  /**
    * @param {Object} [config={}]
    * @public
    * @memberof Polly
    */
   configure(config = {}) {
-    this.assert(
+    assert(
       'Cannot call `configure` once requests have been handled.',
       this._requests.length === 0
     );
-    this.assert(
+    assert(
       'Cannot call `configure` on an instance of Polly that is not running.',
-      this.mode !== Modes.STOPPED
+      this.mode !== MODES.STOPPED
     );
+
+    const { _container: container } = this;
 
     this.config = mergeOptions(DefaultConfig, this.config, config);
 
-    this.config.adapters.forEach(adapterOptions => {
-      if (isArray(adapterOptions)) {
-        const [adapterName, AdapterType] = adapterOptions;
+    // Handle Adapters
+    this.config.adapters.forEach(adapter => {
+      let adapterName = adapter;
 
-        this._container.set(`adapter:${adapterName}`, AdapterType);
+      if (isArray(adapterName)) {
+        const [name, AdapterType] = adapterName;
+
+        adapterName = name;
+        container.set(`adapter:${adapterName}`, AdapterType);
+      }
+
+      if (typeof adapterName === 'string') {
         this.connectTo(adapterName);
 
         return;
       }
 
-      if (typeof adapterOptions === 'string') {
-        this.connectTo(adapterOptions);
-
-        return;
-      }
-
-      this.assert(
-        `Invalid argument "${adapterOptions}" passed into \`configure({ adapters: [...] })\``,
+      assert(
+        `Invalid argument "${adapterName}" passed into \`configure({ adapters: [...] })\``,
         false
       );
     });
 
-    this.persister = new (this._container.get(
-      `persister:${this.config.persister}`
-    ))(this);
+    // Handle Persister
+    let { persister: persisterName } = this.config;
+
+    if (isArray(persisterName)) {
+      const [name, PersisterType] = persisterName;
+
+      persisterName = name;
+      container.set(`persister:${persisterName}`, PersisterType);
+    }
+
+    this.persister = new (container.get(`persister:${persisterName}`))(this);
   }
 
   /**
@@ -178,7 +170,7 @@ export default class Polly {
    * @memberof Polly
    */
   record() {
-    this.mode = Modes.RECORD;
+    this.mode = MODES.RECORD;
   }
 
   /**
@@ -186,7 +178,7 @@ export default class Polly {
    * @memberof Polly
    */
   replay() {
-    this.mode = Modes.REPLAY;
+    this.mode = MODES.REPLAY;
   }
 
   /**
@@ -195,7 +187,7 @@ export default class Polly {
    */
   pause() {
     this[PAUSED_MODE] = this.mode;
-    this.mode = Modes.PASSTHROUGH;
+    this.mode = MODES.PASSTHROUGH;
   }
 
   /**
@@ -214,11 +206,11 @@ export default class Polly {
    * @memberof Polly
    */
   async stop() {
-    if (this.mode !== Modes.STOPPED) {
+    if (this.mode !== MODES.STOPPED) {
       this.disconnect();
       this.logger.disconnect();
       await this.persister.persist();
-      this.mode = Modes.STOPPED;
+      this.mode = MODES.STOPPED;
     }
   }
 
@@ -228,7 +220,7 @@ export default class Polly {
    * @memberof Polly
    */
   connectTo(adapterName) {
-    this.assert(
+    assert(
       `Adapter matching the name \`${adapterName}\` was not registered.`,
       this._container.has(`adapter:${adapterName}`)
     );

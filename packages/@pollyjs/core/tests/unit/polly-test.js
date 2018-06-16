@@ -1,8 +1,9 @@
 import defaults from '../../src/defaults/config';
 import Polly from '../../src/polly';
 import setupPolly from '../../src/test-helpers/mocha';
-import Modes from '../../src/defaults/modes';
 import Adapter from '@pollyjs/adapter';
+import Persister from '@pollyjs/persister';
+import { MODES } from '@pollyjs/utils';
 
 const nativeFetch = self.fetch;
 
@@ -102,6 +103,31 @@ describe('Unit | Polly', function() {
     expect(disconnectCalled).to.be.true;
   });
 
+  it('it supports overriding default persisters', async function() {
+    let instantiated, persistCalled;
+
+    class MockPersister extends Persister {
+      constructor() {
+        super(...arguments);
+        instantiated = true;
+      }
+
+      persist() {
+        persistCalled = true;
+        super.persist(...arguments);
+      }
+    }
+
+    const polly = new Polly('recording name', {
+      persister: ['local-storage', MockPersister]
+    });
+
+    await polly.stop();
+
+    expect(instantiated).to.be.true;
+    expect(persistCalled).to.be.true;
+  });
+
   describe('configure', function() {
     setupPolly({ adapters: [] });
 
@@ -163,50 +189,50 @@ describe('Unit | Polly', function() {
     setupPolly({ adapters: [] });
 
     it('.record()', async function() {
-      this.polly.mode = Modes.REPLAY;
+      this.polly.mode = MODES.REPLAY;
 
-      expect(this.polly.mode).to.equal(Modes.REPLAY);
+      expect(this.polly.mode).to.equal(MODES.REPLAY);
       this.polly.record();
-      expect(this.polly.mode).to.equal(Modes.RECORD);
+      expect(this.polly.mode).to.equal(MODES.RECORD);
     });
 
     it('.replay()', async function() {
-      this.polly.mode = Modes.RECORD;
+      this.polly.mode = MODES.RECORD;
 
-      expect(this.polly.mode).to.equal(Modes.RECORD);
+      expect(this.polly.mode).to.equal(MODES.RECORD);
       this.polly.replay();
-      expect(this.polly.mode).to.equal(Modes.REPLAY);
+      expect(this.polly.mode).to.equal(MODES.REPLAY);
     });
 
     it('.pause()', async function() {
-      this.polly.mode = Modes.RECORD;
+      this.polly.mode = MODES.RECORD;
 
-      expect(this.polly.mode).to.equal(Modes.RECORD);
+      expect(this.polly.mode).to.equal(MODES.RECORD);
       this.polly.pause();
-      expect(this.polly.mode).to.equal(Modes.PASSTHROUGH);
+      expect(this.polly.mode).to.equal(MODES.PASSTHROUGH);
     });
 
     it('.play()', async function() {
-      this.polly.mode = Modes.RECORD;
+      this.polly.mode = MODES.RECORD;
 
-      expect(this.polly.mode).to.equal(Modes.RECORD);
+      expect(this.polly.mode).to.equal(MODES.RECORD);
       this.polly.play();
-      expect(this.polly.mode).to.equal(Modes.RECORD);
+      expect(this.polly.mode).to.equal(MODES.RECORD);
       this.polly.pause();
-      expect(this.polly.mode).to.equal(Modes.PASSTHROUGH);
+      expect(this.polly.mode).to.equal(MODES.PASSTHROUGH);
       this.polly.play();
-      expect(this.polly.mode).to.equal(Modes.RECORD);
+      expect(this.polly.mode).to.equal(MODES.RECORD);
     });
 
     it('.stop()', async function() {
-      this.polly.mode = Modes.RECORD;
-      expect(this.polly.mode).to.equal(Modes.RECORD);
+      this.polly.mode = MODES.RECORD;
+      expect(this.polly.mode).to.equal(MODES.RECORD);
 
       const promise = this.polly.stop();
 
       expect(promise).to.be.a('promise');
       await promise;
-      expect(this.polly.mode).to.equal(Modes.STOPPED);
+      expect(this.polly.mode).to.equal(MODES.STOPPED);
     });
 
     it('.connectTo()', async function() {

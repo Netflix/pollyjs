@@ -25,10 +25,12 @@
 - Adapters
   - [XHR](adapters/xhr.md)
   - [Fetch](adapters/fetch.md)
+  - [Custom](adapters/custom.md)
 
 - Persisters
   - [REST](persisters/rest.md)
   - [Local Storage](persisters/local-storage.md)
+  - [Custom](persisters/custom.md)
 
 - Frameworks
   - [Ember CLI](frameworks/ember-cli.md)

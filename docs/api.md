@@ -74,15 +74,6 @@ polly.record();
 polly.mode // → 'record'
 ```
 
-### Modes
-
-_Type_: `Object`
-
-A static object of all the possible modes a polly can be in.
-
-[modes.js](https://raw.githubusercontent.com/Netflix/pollyjs/master/packages/@pollyjs/core/src/defaults/modes.js ':include :type=code') →
-
-
 ### persister
 
 _Type_: `Persister`

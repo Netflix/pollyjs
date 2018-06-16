@@ -33,7 +33,7 @@ module.exports = function(defaults) {
   const app = new EmberApp(defaults, {
     pollyjs: {
       // Addon Configuration Options
-      enabled: EmberApp.env() !== 'production'
+      enabled: EmberApp.env() !== 'production',
 
       // Server Configuration Options
       server: {

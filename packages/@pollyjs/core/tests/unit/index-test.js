@@ -5,10 +5,12 @@ describe('Unit | Index', function() {
     [
       'Polly',
       'Timing',
+      'setupQunit',
+      'setupMocha',
       'XHRAdapter',
       'FetchAdapter',
-      'setupQunit',
-      'setupMocha'
+      'RESTPersister',
+      'LocalStoragePersister'
     ].forEach(name => {
       expect(PollyExports[name]).to.be.ok;
     });

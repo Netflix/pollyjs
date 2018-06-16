@@ -1,8 +1,10 @@
-const ACTIONS = {
-  record: 'Recorded',
-  replay: 'Replayed',
-  intercept: 'Intercepted',
-  passthrough: 'Passthrough'
+import { ACTIONS } from '@pollyjs/utils';
+
+const FORMATTED_ACTIONS = {
+  [ACTIONS.RECORD]: 'Recorded',
+  [ACTIONS.REPLAY]: 'Replayed',
+  [ACTIONS.INTERCEPT]: 'Intercepted',
+  [ACTIONS.PASSTHROUGH]: 'Passthrough'
 };
 
 export default class Logger {
@@ -57,9 +59,9 @@ export default class Logger {
 
   logRequest(request) {
     this.log(
-      `${ACTIONS[request.action]} ➞ ${request.method} ${request.url} ${
-        request.response.statusCode
-      } • ${request.responseTime}ms`,
+      `${FORMATTED_ACTIONS[request.action]} ➞ ${request.method} ${
+        request.url
+      } ${request.response.statusCode} • ${request.responseTime}ms`,
       request
     );
   }

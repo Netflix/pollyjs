@@ -1,4 +1,4 @@
-import timestamp from '../utils/timestamp';
+import { timestamp, assert } from '@pollyjs/utils';
 
 const SCHEMA_VERSION = 0.1;
 
@@ -33,7 +33,7 @@ export default class Persister {
       let recording = await this.findRecording(recordingId);
 
       for (const { request, entry } of entries) {
-        this.polly.assert(
+        assert(
           `Cannot persist response for [${entry.request.method}] ${
             entry.request.url
           } because the status code was ${
@@ -112,15 +112,9 @@ export default class Persister {
   }
 
   recordRequest(pollyRequest) {
-    this.polly.assert(
-      `You must pass a PollyRequest to 'recordRequest'.`,
-      pollyRequest
-    );
+    assert(`You must pass a PollyRequest to 'recordRequest'.`, pollyRequest);
 
-    this.polly.assert(
-      `Cannot save a request with no response.`,
-      pollyRequest.didRespond
-    );
+    assert(`Cannot save a request with no response.`, pollyRequest.didRespond);
 
     const { recordingId, recordingName, id, order } = pollyRequest;
 
@@ -137,30 +131,18 @@ export default class Persister {
   }
 
   findRecordingEntry() {
-    this.polly.assert(
-      '[Persister] Must implement the `findRecordingEntry` hook.',
-      false
-    );
+    assert('[Persister] Must implement the `findRecordingEntry` hook.', false);
   }
 
   findRecording() {
-    this.polly.assert(
-      '[Persister] Must implement the `findRecording` hook.',
-      false
-    );
+    assert('[Persister] Must implement the `findRecording` hook.', false);
   }
 
   saveRecording() {
-    this.polly.assert(
-      '[Persister] Must implement the `saveRecording` hook.',
-      false
-    );
+    assert('[Persister] Must implement the `saveRecording` hook.', false);
   }
 
   deleteRecording() {
-    this.polly.assert(
-      '[Persister] Must implement the `deleteRecording` hook.',
-      false
-    );
+    assert('[Persister] Must implement the `deleteRecording` hook.', false);
   }
 }
