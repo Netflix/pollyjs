@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Extendable base adapter class used by @pollyjs",
   "main": "dist/cjs/pollyjs-adapter.js",
   "module": "dist/es/pollyjs-adapter.js",
@@ -41,7 +41,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@pollyjs/utils": "0.0.0"
+    "@pollyjs/utils": "^0.1.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

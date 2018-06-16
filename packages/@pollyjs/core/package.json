@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Record, replay, and stub HTTP Interactions",
   "main": "dist/cjs/pollyjs-core.js",
   "module": "dist/es/pollyjs-core.js",
@@ -46,9 +46,9 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@pollyjs/adapter": "^0.1.0",
-    "@pollyjs/persister": "0.0.0",
-    "@pollyjs/utils": "0.0.0",
+    "@pollyjs/adapter": "^0.2.0",
+    "@pollyjs/persister": "^0.1.0",
+    "@pollyjs/utils": "^0.1.0",
     "@sindresorhus/fnv1a": "^1.0.0",
     "blueimp-md5": "^2.10.0",
     "json-stable-stringify": "^1.0.1",
