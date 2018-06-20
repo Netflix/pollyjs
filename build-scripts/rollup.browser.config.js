@@ -31,17 +31,13 @@ export default function createClientConfig(options = {}, targets) {
             'transform-runtime',
             ['transform-object-rest-spread', { useBuiltIns: true }]
           ],
-          ignore: [
-            'node_modules/core-js/**',
-            'node_modules/babel-runtime/**',
-            'node_modules/lodash-es/**',
-            'node_modules/url-parse/**',
-            'node_modules/blueimp-md5/**',
-            'node_modules/route-recognizer/**',
-            'node_modules/json-stable-stringify/**',
-            'node_modules/text-encoding/**',
-            'node_modules/nise/**'
-          ]
+          only: [
+            'packages/@pollyjs/*/src/**',
+            /* the following libs are not es5 compat. */
+            'node_modules/@sindresorhus/fnv1a/**',
+            'node_modules/merge-options/**'
+          ],
+          ignore: ['node_modules/**']
         })
       ],
       onwarn(message) {
