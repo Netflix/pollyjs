@@ -1,6 +1,6 @@
-import createConfig, { output, pkg } from './rollup.common.config';
-import babel from 'rollup-plugin-babel';
 import deepmerge from 'deepmerge';
+import babel from 'rollup-plugin-babel';
+import createConfig, { output, pkg } from './rollup.common.config';
 
 const external = Object.keys(pkg.dependencies || {});
 

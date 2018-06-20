@@ -21,7 +21,7 @@ export default function createClientConfig(options = {}, targets) {
               {
                 modules: false,
                 targets: targets || {
-                  browsers: ['last 2 versions', 'safari >= 7']
+                  browsers: ['ie 11', 'last 2 versions', 'safari >= 7']
                 }
               }
             ]
@@ -31,8 +31,17 @@ export default function createClientConfig(options = {}, targets) {
             'transform-runtime',
             ['transform-object-rest-spread', { useBuiltIns: true }]
           ],
-          exclude: ['node_modules/**'],
-          ignore: 'node_modules/**'
+          ignore: [
+            'node_modules/core-js/**',
+            'node_modules/babel-runtime/**',
+            'node_modules/lodash-es/**',
+            'node_modules/url-parse/**',
+            'node_modules/blueimp-md5/**',
+            'node_modules/route-recognizer/**',
+            'node_modules/json-stable-stringify/**',
+            'node_modules/text-encoding/**',
+            'node_modules/nise/**'
+          ]
         })
       ],
       onwarn(message) {
