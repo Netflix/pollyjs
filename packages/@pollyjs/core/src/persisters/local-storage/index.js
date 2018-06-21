@@ -1,5 +1,4 @@
 import Persister from '@pollyjs/persister';
-import get from 'lodash-es/get';
 import stringify from 'json-stable-stringify';
 
 export default class LocalStoragePersister extends Persister {
@@ -17,13 +16,6 @@ export default class LocalStoragePersister extends Persister {
 
   set db(db) {
     this._store.setItem(this._namespace, stringify(db));
-  }
-
-  findRecordingEntry(pollyRequest) {
-    const { id, order, recordingId } = pollyRequest;
-    const entries = get(this.db, `${recordingId}.entries.${id}`) || [];
-
-    return entries[order] || null;
   }
 
   findRecording(recordingId) {

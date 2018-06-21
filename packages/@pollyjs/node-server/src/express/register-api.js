@@ -1,32 +1,25 @@
-import path from 'path';
-import express from 'express';
 import bodyParser from 'body-parser';
+import express from 'express';
 import nocache from 'nocache';
 import API from '../api';
 import DefaultConfig from '../config';
 
+function prependSlash(slash = '') {
+  if (slash.startsWith('/')) {
+    return slash;
+  }
+
+  return `/${slash}`;
+}
+
 export default function registerAPI(app, config) {
   config = { ...DefaultConfig, ...config };
-  config.apiNamespace = path.join('/', config.apiNamespace);
+  config.apiNamespace = prependSlash(config.apiNamespace);
 
   const router = express.Router();
   const api = new API(config.recordingsDir);
 
   router.use(nocache());
-
-  router.get('/:recording/:entryId', function(req, res) {
-    const { recording, entryId } = req.params;
-    const { order } = req.query;
-    const { status, body } = api.getRecordingEntry(recording, entryId, order);
-
-    res.status(status);
-
-    if (status === 200) {
-      res.json(body);
-    } else {
-      res.end();
-    }
-  });
 
   router.get('/:recording', function(req, res) {
     const { recording } = req.params;
@@ -41,10 +34,7 @@ export default function registerAPI(app, config) {
     }
   });
 
-  router.post('/:recording', bodyParser.json({ limit: '50mb' }), function(
-    req,
-    res
-  ) {
+  router.post('/:recording', bodyParser.json(), function(req, res) {
     const { recording } = req.params;
     const { status, body } = api.saveRecording(recording, req.body);
 

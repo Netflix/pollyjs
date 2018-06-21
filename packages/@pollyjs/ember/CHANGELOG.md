@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@0.2.0...@pollyjs/ember@0.2.1) (2018-06-21)
+
+
+### Bug Fixes
+
+* Ensure polly's middleware goes before ember-cli's ([#36](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/36)) ([43db361](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/43db361))
+
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@0.1.0...@pollyjs/ember@0.2.0) (2018-06-16)
 

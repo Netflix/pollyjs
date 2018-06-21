@@ -6,21 +6,6 @@ export default class API {
     this.recordingsDir = recordingsDir;
   }
 
-  getRecordingEntry(recording, entryId, order) {
-    const recordingFilename = this.filenameFor(recording);
-
-    if (fs.existsSync(recordingFilename)) {
-      const data = fs.readJsonSync(recordingFilename);
-      const entries = data.entries[entryId];
-
-      if (entries && entries[order]) {
-        return this.respond(200, entries[order]);
-      }
-    }
-
-    return this.respond(204);
-  }
-
   getRecording(recording) {
     const recordingFilename = this.filenameFor(recording);
 

@@ -32,7 +32,7 @@ export default class Persister {
 
     for (const [recordingId, { name, requests }] of this.pending) {
       const entries = [];
-      let recording = await this.findRecording(recordingId);
+      let recording = await this.find(recordingId);
 
       for (const request of requests) {
         const entry = new HAR.Entry(request);
@@ -77,7 +77,7 @@ export default class Persister {
       }
 
       recording.addEntries(entries);
-      promises.push(this.saveRecording(recordingId, recording));
+      promises.push(this.save(recordingId, recording));
     }
 
     await Promise.all(promises);
@@ -132,8 +132,39 @@ export default class Persister {
     this.pending.get(recordingId).requests.push(pollyRequest);
   }
 
-  findRecordingEntry() {
-    assert('[Persister] Must implement the `findRecordingEntry` hook.', false);
+  async find(recordingId) {
+    if (this.cache.has(recordingId)) {
+      return this.cache.get(recordingId);
+    }
+
+    const recording = await this.findRecording(recordingId);
+
+    if (recording) {
+      this.cache.set(recordingId, recording);
+    }
+
+    return recording;
+  }
+
+  async save(recordingId) {
+    await this.saveRecording(...arguments);
+    this.cache.delete(recordingId);
+  }
+
+  async delete(recordingId) {
+    await this.deleteRecording(...arguments);
+    this.cache.delete(recordingId);
+  }
+
+  async findEntry(pollyRequest) {
+    const { id, order, recordingId } = pollyRequest;
+    const recording = await this.find(recordingId);
+
+    if (!recording) {
+      return null;
+    }
+
+    return (recording.entries[id] || [])[order] || null;
   }
 
   findRecording() {
