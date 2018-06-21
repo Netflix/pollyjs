@@ -35,13 +35,11 @@ function readBlob(blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
-    // The split here removes the 'data:image/png;base64,' prefix
-    // to just leave the base64 encoded data.
-    reader.onload = () => resolve((reader.result || '').split(',')[1]);
     reader.onend = reject;
     reader.onabort = reject;
+    reader.onload = () => resolve(reader.result);
 
-    reader.readAsDataURL(new Blob([blob], { type: blob.type }));
+    reader.readAsText(new Blob([blob], { type: blob.type }));
   });
 }
 

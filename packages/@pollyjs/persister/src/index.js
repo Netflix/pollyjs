@@ -1,10 +1,11 @@
 import { timestamp, assert } from '@pollyjs/utils';
-
-const SCHEMA_VERSION = 0.1;
+import uniqWith from 'lodash-es/uniqWith';
+import HAR from './har';
 
 export default class Persister {
   constructor(polly) {
     this.polly = polly;
+    this.cache = new Map();
     this.pending = new Map();
   }
 
@@ -29,10 +30,13 @@ export default class Persister {
     const createdAt = timestamp();
     const promises = [];
 
-    for (const [recordingId, { name, entries }] of this.pending) {
+    for (const [recordingId, { name, requests }] of this.pending) {
+      const entries = [];
       let recording = await this.findRecording(recordingId);
 
-      for (const { request, entry } of entries) {
+      for (const request of requests) {
+        const entry = new HAR.Entry(request);
+
         assert(
           `Cannot persist response for [${entry.request.method}] ${
             entry.request.url
@@ -43,7 +47,7 @@ export default class Persister {
         );
 
         // Add the created at timestamp to each new entry
-        entry.created_at = createdAt;
+        entry._pollyjs_meta.createdAt = createdAt;
 
         /*
           Trigger the `beforePersist` event on each new recorded entry.
@@ -52,19 +56,27 @@ export default class Persister {
                 modify the payload (i.e. encrypting the request & response).
         */
         await request._trigger('beforePersist', entry);
+
+        entries.push(entry);
       }
 
-      if (recording) {
-        // If a recording already exists, merge the new entries with it
-        this.addEntriesToRecording(recording, entries);
-      } else {
+      if (!recording) {
         // If not, create a new one
-        recording = this.createRecording(name, entries);
-
-        // Add created at timestamp to the new recording
-        recording.created_at = createdAt;
+        recording = {
+          log: new HAR.Log({
+            creator: {
+              name: 'Polly.JS',
+              version: this.polly.VERSION
+            },
+            _pollyjs_meta: {
+              recordingName: name,
+              createdAt
+            }
+          })
+        };
       }
 
+      recording.addEntries(entries);
       promises.push(this.saveRecording(recordingId, recording));
     }
 
@@ -72,62 +84,52 @@ export default class Persister {
     this.pending.clear();
   }
 
-  createEntry(pollyRequest) {
-    const { response } = pollyRequest;
-
+  createRecording(requests) {
     return {
-      request: {
-        url: pollyRequest.url,
-        body: pollyRequest.serializedBody,
-        method: pollyRequest.method,
-        headers: pollyRequest.headers,
-        timestamp: pollyRequest.timestamp
-      },
-      response: {
-        status: response.statusCode,
-        headers: response.headers,
-        body: response.body,
-        timestamp: response.timestamp
+      log: new HAR.Log({
+        creator: {
+          name: 'Polly.JS',
+          version: this.polly.VERSION
+        },
+        _pollyjs_meta: {
+          recordingName: name,
+          createdAt
+        }
+      })
+    };
+  }
+
+  addEntries(recording, entries = []) {
+    recording.log.entries = uniqWith(
+      [...entries, ...recording.log.entries],
+      (a, b) => {
+        a._pollyjs_meta.id !== b._pollyjs_meta.id &&
+          a._pollyjs_meta.order !== b._pollyjs_meta.order;
       }
-    };
+    );
+
+    this.sortEntries();
   }
 
-  createRecording(name, entries) {
-    const recording = {
-      name,
-      entries: {},
-      schema_version: SCHEMA_VERSION
-    };
+  sortEntries() {
+    const { entries } = this;
 
-    this.addEntriesToRecording(recording, entries);
-
-    return recording;
-  }
-
-  addEntriesToRecording(recording, entries = []) {
-    entries.forEach(({ id, order, entry }) => {
-      recording.entries[id] = recording.entries[id] || [];
-      recording.entries[id][order] = entry;
-    });
+    this.entries = entries.sort(
+      (a, b) => new Date(a.startedDateTime) - new Date(b.startedDateTime)
+    );
   }
 
   recordRequest(pollyRequest) {
     assert(`You must pass a PollyRequest to 'recordRequest'.`, pollyRequest);
-
     assert(`Cannot save a request with no response.`, pollyRequest.didRespond);
 
-    const { recordingId, recordingName, id, order } = pollyRequest;
+    const { recordingId, recordingName } = pollyRequest;
 
     if (!this.pending.has(recordingId)) {
-      this.pending.set(recordingId, { name: recordingName, entries: [] });
+      this.pending.set(recordingId, { name: recordingName, requests: [] });
     }
 
-    this.pending.get(recordingId).entries.push({
-      id,
-      order,
-      request: pollyRequest,
-      entry: this.createEntry(pollyRequest)
-    });
+    this.pending.get(recordingId).requests.push(pollyRequest);
   }
 
   findRecordingEntry() {

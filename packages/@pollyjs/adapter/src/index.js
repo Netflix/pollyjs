@@ -30,7 +30,7 @@ export default class Adapter {
   shouldReRecord(recordingEntry) {
     const { config } = this.polly;
 
-    if (isExpired(recordingEntry.created_at, config.expiresIn)) {
+    if (isExpired(recordingEntry._pollyjs_meta.createdAt, config.expiresIn)) {
       if (!config.recordIfExpired) {
         console.warn(
           '[Polly] Recording for the following request has expired but `recordIfExpired` is `false`.\n' +

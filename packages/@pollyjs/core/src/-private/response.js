@@ -1,7 +1,8 @@
 import stringify from 'json-stable-stringify';
-import { assert } from '@pollyjs/utils';
+import { assert, HTTP_STATUS_CODES } from '@pollyjs/utils';
 
 const { freeze } = Object;
+const DEFAULT_STATUS_CODE = 200;
 
 function formatHeader(name) {
   return (name || '').toLowerCase();
@@ -9,13 +10,20 @@ function formatHeader(name) {
 
 export default class PollyResponse {
   constructor(statusCode, headers, body) {
-    this.status(statusCode || 200);
+    this.status(statusCode || DEFAULT_STATUS_CODE);
     this.headers = headers || {};
     this.body = body;
   }
 
   get ok() {
     return this.statusCode && this.statusCode >= 200 && this.statusCode < 300;
+  }
+
+  get statusText() {
+    return (
+      HTTP_STATUS_CODES[this.statusCode] ||
+      HTTP_STATUS_CODES[DEFAULT_STATUS_CODE]
+    );
   }
 
   status(statusCode) {
