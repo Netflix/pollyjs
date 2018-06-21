@@ -1,13 +1,20 @@
-import path from 'path';
-import express from 'express';
 import bodyParser from 'body-parser';
+import express from 'express';
 import nocache from 'nocache';
 import API from '../api';
 import DefaultConfig from '../config';
 
+function prependSlash(slash = '') {
+  if (slash.startsWith('/')) {
+    return slash;
+  }
+
+  return `/${slash}`;
+}
+
 export default function registerAPI(app, config) {
   config = { ...DefaultConfig, ...config };
-  config.apiNamespace = path.join('/', config.apiNamespace);
+  config.apiNamespace = prependSlash(config.apiNamespace);
 
   const router = express.Router();
   const api = new API(config.recordingsDir);
