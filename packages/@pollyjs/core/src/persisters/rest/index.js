@@ -10,19 +10,6 @@ export default class RestPersister extends Persister {
     return ajax(buildUrl(host, apiNamespace, url), ...args);
   }
 
-  async findRecordingEntry(pollyRequest) {
-    const { id, order, recordingId } = pollyRequest;
-
-    const response = await this.ajax(
-      `/${encodeURIComponent(recordingId)}/${id}?order=${order}`,
-      {
-        Accept: 'application/json; charset=utf-8'
-      }
-    );
-
-    return this._normalize(response);
-  }
-
   async findRecording(recordingId) {
     const response = await this.ajax(`/${encodeURIComponent(recordingId)}`, {
       Accept: 'application/json; charset=utf-8'

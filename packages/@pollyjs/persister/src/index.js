@@ -5,6 +5,7 @@ const SCHEMA_VERSION = 0.1;
 export default class Persister {
   constructor(polly) {
     this.polly = polly;
+    this.cache = new Map();
     this.pending = new Map();
   }
 
@@ -130,8 +131,35 @@ export default class Persister {
     });
   }
 
-  findRecordingEntry() {
-    assert('[Persister] Must implement the `findRecordingEntry` hook.', false);
+  async findRecordingEntry(pollyRequest) {
+    const { id, order, recordingId } = pollyRequest;
+    const recording = await this._findRecording(recordingId);
+
+    if (!recording) {
+      return null;
+    }
+
+    return (
+      recording.log.entries.find(
+        entry =>
+          entry._pollyjs_meta.id === id && entry._pollyjs_meta.order === order
+      ) || null
+    );
+  }
+
+  // TODO: Bust the cache!
+  async _findRecording(recordingId) {
+    if (this.cache.has(recordingId)) {
+      return this.cache.get(recordingId);
+    }
+
+    const recording = await this.findRecording(recordingId);
+
+    if (recording) {
+      this.cache.set(recordingId, recording);
+    }
+
+    return recording;
   }
 
   findRecording() {

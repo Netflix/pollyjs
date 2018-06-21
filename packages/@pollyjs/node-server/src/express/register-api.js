@@ -14,20 +14,6 @@ export default function registerAPI(app, config) {
 
   router.use(nocache());
 
-  router.get('/:recording/:entryId', function(req, res) {
-    const { recording, entryId } = req.params;
-    const { order } = req.query;
-    const { status, body } = api.getRecordingEntry(recording, entryId, order);
-
-    res.status(status);
-
-    if (status === 200) {
-      res.json(body);
-    } else {
-      res.end();
-    }
-  });
-
   router.get('/:recording', function(req, res) {
     const { recording } = req.params;
     const { status, body } = api.getRecording(recording);
@@ -41,10 +27,7 @@ export default function registerAPI(app, config) {
     }
   });
 
-  router.post('/:recording', bodyParser.json({ limit: '50mb' }), function(
-    req,
-    res
-  ) {
+  router.post('/:recording', bodyParser.json(), function(req, res) {
     const { recording } = req.params;
     const { status, body } = api.saveRecording(recording, req.body);
 
