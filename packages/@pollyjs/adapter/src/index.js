@@ -119,9 +119,7 @@ export default class Adapter {
 
   async replay(pollyRequest) {
     const { config } = this.polly;
-    const recordingEntry = await this.persister.findRecordingEntry(
-      pollyRequest
-    );
+    const recordingEntry = await this.persister.findEntry(pollyRequest);
 
     if (recordingEntry) {
       await pollyRequest._trigger('beforeReplay', recordingEntry);
