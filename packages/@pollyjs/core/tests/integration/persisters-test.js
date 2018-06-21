@@ -13,7 +13,7 @@ describe('Integration | Persisters', function() {
       setupFetch.beforeEach(defaults.adapters[0]);
 
       afterEach(async function() {
-        await this.polly.persister.deleteRecording(this.polly.recordingId);
+        await this.polly.persister.delete(this.polly.recordingId);
       });
 
       setupFetch.afterEach();
@@ -26,7 +26,7 @@ describe('Integration | Persisters', function() {
         await this.fetch('/api/db/foo?order=1');
         await persister.persist();
 
-        const recording = await persister.findRecording(recordingId);
+        const recording = await persister.find(recordingId);
         const entriesKeys = keys(recording.entries);
 
         // Top Level Schema
@@ -81,7 +81,7 @@ describe('Integration | Persisters', function() {
         await this.fetch('/api/db/foo?order=1');
         await persister.persist();
 
-        let savedRecording = await persister.findRecording(recordingId);
+        let savedRecording = await persister.find(recordingId);
         let entryKeys = keys(savedRecording.entries);
 
         expect(entryKeys.length).to.equal(1);
@@ -98,7 +98,7 @@ describe('Integration | Persisters', function() {
         await this.fetch('/api/db/foo?order=2');
         await persister.persist();
 
-        savedRecording = await persister.findRecording(recordingId);
+        savedRecording = await persister.find(recordingId);
         entryKeys = keys(savedRecording.entries).sort();
 
         expect(entryKeys.length).to.equal(2);
@@ -138,7 +138,7 @@ describe('Integration | Persisters', function() {
       setupFetch.beforeEach(defaults.adapters[0]);
 
       afterEach(function() {
-        return this.polly.persister.deleteRecording(this.polly.recordingId);
+        return this.polly.persister.delete(this.polly.recordingId);
       });
 
       setupFetch.afterEach();
@@ -152,7 +152,7 @@ describe('Integration | Persisters', function() {
         } catch (e) {
           error = e;
         } finally {
-          const savedRecording = await this.polly.persister.findRecording(
+          const savedRecording = await this.polly.persister.find(
             this.polly.recordingId
           );
 
@@ -170,7 +170,7 @@ describe('Integration | Persisters', function() {
       setupFetch.beforeEach(defaults.adapters[0]);
 
       afterEach(function() {
-        return this.polly.persister.deleteRecording(this.polly.recordingId);
+        return this.polly.persister.delete(this.polly.recordingId);
       });
 
       setupFetch.afterEach();
@@ -180,7 +180,7 @@ describe('Integration | Persisters', function() {
         await this.fetch('/should-not-exist-also');
         await this.polly.stop();
 
-        const savedRecording = await this.polly.persister.findRecording(
+        const savedRecording = await this.polly.persister.find(
           this.polly.recordingId
         );
 

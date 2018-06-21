@@ -58,9 +58,9 @@ describe('Integration | Adapters', function() {
 
         server.get(this.recordUrl()).passthrough();
 
-        expect(await persister.findRecording(recordingId)).to.be.null;
+        expect(await persister.find(recordingId)).to.be.null;
         expect((await this.fetchRecord()).status).to.equal(404);
-        expect(await persister.findRecording(recordingId)).to.be.null;
+        expect(await persister.find(recordingId)).to.be.null;
       });
 
       it('should handle recording requests posting FormData + Blob/File', async function() {

@@ -31,7 +31,7 @@ export default class Persister {
     const promises = [];
 
     for (const [recordingId, { name, entries }] of this.pending) {
-      let recording = await this.findRecording(recordingId);
+      let recording = await this.find(recordingId);
 
       for (const { request, entry } of entries) {
         assert(
@@ -66,7 +66,7 @@ export default class Persister {
         recording.created_at = createdAt;
       }
 
-      promises.push(this.saveRecording(recordingId, recording));
+      promises.push(this.save(recordingId, recording));
     }
 
     await Promise.all(promises);
@@ -131,24 +131,7 @@ export default class Persister {
     });
   }
 
-  async findRecordingEntry(pollyRequest) {
-    const { id, order, recordingId } = pollyRequest;
-    const recording = await this._findRecording(recordingId);
-
-    if (!recording) {
-      return null;
-    }
-
-    return (
-      recording.log.entries.find(
-        entry =>
-          entry._pollyjs_meta.id === id && entry._pollyjs_meta.order === order
-      ) || null
-    );
-  }
-
-  // TODO: Bust the cache!
-  async _findRecording(recordingId) {
+  async find(recordingId) {
     if (this.cache.has(recordingId)) {
       return this.cache.get(recordingId);
     }
@@ -160,6 +143,27 @@ export default class Persister {
     }
 
     return recording;
+  }
+
+  async save(recordingId) {
+    await this.saveRecording(...arguments);
+    this.cache.delete(recordingId);
+  }
+
+  async delete(recordingId) {
+    await this.deleteRecording(...arguments);
+    this.cache.delete(recordingId);
+  }
+
+  async findEntry(pollyRequest) {
+    const { id, order, recordingId } = pollyRequest;
+    const recording = await this.find(recordingId);
+
+    if (!recording) {
+      return null;
+    }
+
+    return (recording.entries[id] || [])[order] || null;
   }
 
   findRecording() {
