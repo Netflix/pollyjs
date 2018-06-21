@@ -1,13 +1,12 @@
-import path from 'path';
-import express from 'express';
 import bodyParser from 'body-parser';
+import express from 'express';
 import nocache from 'nocache';
 import API from '../api';
 import DefaultConfig from '../config';
 
 export default function registerAPI(app, config) {
   config = { ...DefaultConfig, ...config };
-  config.apiNamespace = path.join('/', config.apiNamespace);
+  config.apiNamespace = `/${config.apiNamespace}`;
 
   const router = express.Router();
   const api = new API(config.recordingsDir);
