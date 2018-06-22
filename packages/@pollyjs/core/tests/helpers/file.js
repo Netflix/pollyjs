@@ -50,7 +50,7 @@ try {
         value: 'File'
       });
     }
-    
+
     return _this;
   };
 }
