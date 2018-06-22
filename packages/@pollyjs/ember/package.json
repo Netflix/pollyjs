@@ -45,7 +45,8 @@
     "broccoli-source": "^1.1.0",
     "browser-resolve": "^1.11.2",
     "debug": "^3.1.0",
-    "ember-cli-babel": "^6.6.0"
+    "ember-cli-babel": "^6.6.0",
+    "ember-auto-import": "^0.2.6"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
