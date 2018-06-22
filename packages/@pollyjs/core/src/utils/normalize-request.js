@@ -1,21 +1,23 @@
 import URL from 'url-parse';
 import removeHostFromUrl from './remove-host-from-url';
 import isObjectLike from 'lodash-es/isObjectLike';
+import isAbsoluteUrl from 'is-absolute-url';
 
 const { keys } = Object;
-
-function isAbsoluteUrl(url) {
-  /^[a-z][a-z0-9+.-]*:/.test(url);
-}
 
 export function method(method) {
   return (method || 'GET').toUpperCase();
 }
 
 export function url(url, config = {}) {
-  let isRelative = !isAbsoluteUrl(url);
   const parsedUrl = new URL(url, true);
 
+  // Remove the host if the url is relative
+  if (!isAbsoluteUrl(url)) {
+    removeHostFromUrl(parsedUrl);
+  }
+
+  // Remove any url properties that have been disabled via the config
   keys(config).forEach(key => !config[key] && parsedUrl.set(key, ''));
 
   // Sort Query Params
@@ -33,9 +35,6 @@ export function url(url, config = {}) {
     parsedUrl.set('query', sortedQuery);
   }
 
-  if (isRelative) {
-    return removeHostFromUrl(parsedUrl);
-  }
   return parsedUrl.href;
 }
 
