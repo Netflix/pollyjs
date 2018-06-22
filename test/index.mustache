@@ -27,6 +27,9 @@
 
     <script>
         mocha.checkLeaks();
+        mocha.globals([
+          '$0', '$1', '$2', '$3', '$4', '$_', '__BROWSERTOOLS_DOMEXPLORER_ADDED' // IE/Edge developer tools
+        ]);
         mocha.run();
     </script>
   </body>
