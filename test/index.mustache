@@ -27,6 +27,14 @@
 
     <script>
         mocha.checkLeaks();
+        mocha.globals([
+          /**
+           * The follow globals are inserted by Internet Explorer's developer tools.
+           * IE injects these into the running context for debugging.
+           * This confuses mocha and it thinks it's observing a memory leak between runs.
+           */
+          '$0', '$1', '$2', '$3', '$4', '$_', '__BROWSERTOOLS_DOMEXPLORER_ADDED'
+        ]);
         mocha.run();
     </script>
   </body>
