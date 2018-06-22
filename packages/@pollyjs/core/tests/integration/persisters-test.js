@@ -102,8 +102,8 @@ describe('Integration | Persisters', function() {
         entryKeys = keys(savedRecording.entries).sort();
 
         expect(entryKeys.length).to.equal(2);
-        expect(savedRecording.entries[entryKeys[0]].length).to.equal(2);
-        expect(savedRecording.entries[entryKeys[1]].length).to.equal(1);
+        expect(savedRecording.entries[entryKeys[0]].length).to.equal(1);
+        expect(savedRecording.entries[entryKeys[1]].length).to.equal(2);
       });
 
       it('should emit beforePersist', async function() {

@@ -5,6 +5,7 @@ import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
 import removeHostFromUrl from '../utils/remove-host-from-url';
 import serializeRequestBody from '../utils/serialize-request-body';
+import isAbsoluteUrl from 'is-absolute-url';
 import { assert, timestamp } from '@pollyjs/utils';
 
 const { keys, freeze } = Object;
@@ -47,11 +48,11 @@ export default class PollyRequest {
     const url = new URL(value, true);
 
     /*
-      If the url starts with a '/', setup the parsed url to reflect just that
+      If the url is relative, setup the parsed url to reflect just that
       by removing the host. By default URL sets the host via window.location if
       it does not exist.
     */
-    if (value.startsWith('/')) {
+    if (!isAbsoluteUrl(value)) {
       removeHostFromUrl(url);
     }
 
