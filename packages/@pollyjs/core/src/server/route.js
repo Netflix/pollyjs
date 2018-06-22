@@ -3,13 +3,20 @@ import Handler from './handler';
 async function invoke(fn, route, req, ...args) {
   if (typeof fn === 'function') {
     const proxyReq = new Proxy(req, {
+      set(source, prop, value) {
+        /* NOTE: IE's `Reflect.set` swallows the read-only assignment error */
+        /* see: https://codepen.io/jasonmit/pen/LrmLaz */
+        source[prop] = value;
+        
+        return true;
+      },
       get(source, prop) {
         if (prop === 'params') {
           // Set the request's params to given route's matched params
           return route.params;
         }
 
-        return source[prop];
+        return Reflect.get(source, prop);
       }
     });
 
