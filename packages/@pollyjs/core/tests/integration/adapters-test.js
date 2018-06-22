@@ -1,5 +1,8 @@
+import 'formdata-polyfill';
+
 import { setupMocha as setupPolly } from '../../src';
 import * as setupFetch from '../helpers/setup-fetch';
+import File from '../helpers/file';
 import Configs from './configs';
 
 const { parse } = JSON;
