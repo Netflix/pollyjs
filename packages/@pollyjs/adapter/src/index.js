@@ -30,7 +30,7 @@ export default class Adapter {
   shouldReRecord(recordingEntry) {
     const { config } = this.polly;
 
-    if (isExpired(recordingEntry._pollyjs_meta.createdAt, config.expiresIn)) {
+    if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
       if (!config.recordIfExpired) {
         console.warn(
           '[Polly] Recording for the following request has expired but `recordIfExpired` is `false`.\n' +
@@ -57,11 +57,11 @@ export default class Adapter {
     return false;
   }
 
-  timeout(pollyRequest, { request, response }) {
+  timeout(pollyRequest, { time }) {
     const { timing } = this.polly.config;
 
     if (typeof timing === 'function') {
-      return timing(request.timestamp, response.timestamp);
+      return timing(time);
     }
   }
 

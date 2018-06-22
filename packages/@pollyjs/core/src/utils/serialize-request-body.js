@@ -1,5 +1,3 @@
-import stringify from 'json-stable-stringify';
-
 const supportsFormData = typeof FormData !== 'undefined';
 const supportsBlob = (() => {
   try {
@@ -11,17 +9,17 @@ const supportsBlob = (() => {
 
 async function serialize(body) {
   if (supportsFormData && body instanceof FormData) {
-    const serialized = {};
+    const data = [];
 
     for (const [key, value] of body.entries()) {
       if (supportsBlob && value instanceof Blob) {
-        serialized[key] = await readBlob(value);
+        data.push(`${key}=${await readBlob(value)}`);
       } else {
-        serialized[key] = value;
+        data.push(`${key}=${value}`);
       }
     }
 
-    return stringify(serialized);
+    return data.join('\n');
   }
 
   if (supportsBlob && body instanceof Blob) {

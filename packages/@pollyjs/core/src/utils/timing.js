@@ -6,10 +6,6 @@ export default {
   },
 
   relative(ratio) {
-    return (reqTimestamp, resTimestamp) =>
-      timeout(
-        ratio *
-          (new Date(resTimestamp).getTime() - new Date(reqTimestamp).getTime())
-      );
+    return ms => timeout(ratio * ms);
   }
 };

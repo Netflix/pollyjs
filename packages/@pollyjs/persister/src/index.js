@@ -1,6 +1,6 @@
-import { timestamp, assert } from '@pollyjs/utils';
-import uniqWith from 'lodash-es/uniqWith';
+import { assert } from '@pollyjs/utils';
 import HAR from './har';
+import Entry from './har/entry';
 
 export default class Persister {
   constructor(polly) {
@@ -27,15 +27,24 @@ export default class Persister {
       return;
     }
 
-    const createdAt = timestamp();
     const promises = [];
 
     for (const [recordingId, { name, requests }] of this.pending) {
       const entries = [];
-      let recording = await this.find(recordingId);
+      const recording = (await this.find(recordingId)) || { log: {} };
+      const har = new HAR({
+        log: {
+          creator: {
+            name: 'Polly.JS',
+            version: this.polly.VERSION
+          },
+          _recordingName: name,
+          ...recording.log
+        }
+      });
 
       for (const request of requests) {
-        const entry = new HAR.Entry(request);
+        const entry = new Entry(request);
 
         assert(
           `Cannot persist response for [${entry.request.method}] ${
@@ -45,9 +54,6 @@ export default class Persister {
           } and \`recordFailedRequests\` is \`false\``,
           request.response.ok || this.polly.config.recordFailedRequests
         );
-
-        // Add the created at timestamp to each new entry
-        entry._pollyjs_meta.createdAt = createdAt;
 
         /*
           Trigger the `beforePersist` event on each new recorded entry.
@@ -60,63 +66,12 @@ export default class Persister {
         entries.push(entry);
       }
 
-      if (!recording) {
-        // If not, create a new one
-        recording = {
-          log: new HAR.Log({
-            creator: {
-              name: 'Polly.JS',
-              version: this.polly.VERSION
-            },
-            _pollyjs_meta: {
-              recordingName: name,
-              createdAt
-            }
-          })
-        };
-      }
-
-      recording.addEntries(entries);
-      promises.push(this.save(recordingId, recording));
+      har.addEntries(entries);
+      promises.push(this.save(recordingId, har));
     }
 
     await Promise.all(promises);
     this.pending.clear();
-  }
-
-  createRecording(requests) {
-    return {
-      log: new HAR.Log({
-        creator: {
-          name: 'Polly.JS',
-          version: this.polly.VERSION
-        },
-        _pollyjs_meta: {
-          recordingName: name,
-          createdAt
-        }
-      })
-    };
-  }
-
-  addEntries(recording, entries = []) {
-    recording.log.entries = uniqWith(
-      [...entries, ...recording.log.entries],
-      (a, b) => {
-        a._pollyjs_meta.id !== b._pollyjs_meta.id &&
-          a._pollyjs_meta.order !== b._pollyjs_meta.order;
-      }
-    );
-
-    this.sortEntries();
-  }
-
-  sortEntries() {
-    const { entries } = this;
-
-    this.entries = entries.sort(
-      (a, b) => new Date(a.startedDateTime) - new Date(b.startedDateTime)
-    );
   }
 
   recordRequest(pollyRequest) {
