@@ -89,5 +89,9 @@ describe('Unit | Utils | Normalize Request', function() {
         });
       });
     });
+
+    it('should not add a domain to relative urls', function() {
+      expect(url('/some/path')).to.equal('/some/path');
+    });
   });
 });
