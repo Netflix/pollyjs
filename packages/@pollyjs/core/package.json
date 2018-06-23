@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/core",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Record, replay, and stub HTTP Interactions",
   "main": "dist/cjs/pollyjs-core.js",
   "module": "dist/es/pollyjs-core.js",
@@ -51,6 +51,7 @@
     "@pollyjs/utils": "^0.1.0",
     "@sindresorhus/fnv1a": "^1.0.0",
     "blueimp-md5": "^2.10.0",
+    "is-absolute-url": "^2.1.0",
     "json-stable-stringify": "^1.0.1",
     "lodash-es": "^4.17.10",
     "merge-options": "^1.0.1",

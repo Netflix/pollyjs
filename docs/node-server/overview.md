@@ -122,3 +122,20 @@ registerExpressAPI(app, {
   apiNamespace: 'polly_js'
 });
 ```
+
+### recordingSizeLimit
+
+_Type_: `String`
+_Default_: `'50mb'`
+
+A recording size can not exceed 50mb by default.  If your application exceeds this limit, bump this value to a reasonable limit.
+
+```js
+new Server({
+  recordingSizeLimit: '50mb'
+});
+
+registerExpressAPI(app, {
+  recordingSizeLimit: '50mb'
+});
+```

@@ -38,7 +38,8 @@ module.exports = function(defaults) {
       // Server Configuration Options
       server: {
         apiNamespace: 'polly',
-        recordingsDir: 'recordings'
+        recordingsDir: 'recordings',
+        recordingSizeLimit: '50mb'
       }
     }
   });

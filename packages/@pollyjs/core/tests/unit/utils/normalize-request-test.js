@@ -89,5 +89,9 @@ describe('Unit | Utils | Normalize Request', function() {
         });
       });
     });
+
+    it('should respect relative urls', function() {
+      expect(url('/some/path')).to.equal('/some/path');
+    });
   });
 });

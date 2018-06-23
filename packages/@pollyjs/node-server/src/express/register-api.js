@@ -34,12 +34,16 @@ export default function registerAPI(app, config) {
     }
   });
 
-  router.post('/:recording', bodyParser.json(), function(req, res) {
-    const { recording } = req.params;
-    const { status, body } = api.saveRecording(recording, req.body);
+  router.post(
+    '/:recording',
+    bodyParser.json({ limit: config.recordingSizeLimit }),
+    function(req, res) {
+      const { recording } = req.params;
+      const { status, body } = api.saveRecording(recording, req.body);
 
-    res.status(status).send(body);
-  });
+      res.status(status).send(body);
+    }
+  );
 
   router.delete('/:recording', function(req, res) {
     const { recording } = req.params;

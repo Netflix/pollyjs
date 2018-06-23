@@ -7,7 +7,7 @@ async function invoke(fn, route, req, ...args) {
         /* NOTE: IE's `Reflect.set` swallows the read-only assignment error */
         /* see: https://codepen.io/jasonmit/pen/LrmLaz */
         source[prop] = value;
-        
+
         return true;
       },
       get(source, prop) {
