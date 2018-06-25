@@ -4,6 +4,7 @@ import isObjectLike from 'lodash-es/isObjectLike';
 import isAbsoluteUrl from 'is-absolute-url';
 
 const { keys } = Object;
+const { isArray } = Array;
 
 export function method(method) {
   return (method || 'GET').toUpperCase();
@@ -39,18 +40,31 @@ export function url(url, config = {}) {
 }
 
 export function headers(headers, config) {
-  if (isObjectLike(config) && isObjectLike(headers) && config.exclude) {
-    // Filter out excluded headers
-    return keys(headers).reduce((h, k) => {
-      if (!config.exclude.includes(k)) {
-        h[k] = headers[k];
-      }
+  let normalizedHeaders = headers;
 
-      return h;
+  if (isObjectLike(normalizedHeaders)) {
+    // Lower case all headers so 'content-type' will be the same as 'Content-Type'
+    normalizedHeaders = keys(normalizedHeaders).reduce((accum, k) => {
+      accum[k.toLowerCase()] = normalizedHeaders[k];
+
+      return accum;
     }, {});
+
+    // Filter out excluded headers
+    if (isObjectLike(config) && isArray(config.exclude)) {
+      const exclude = config.exclude.map(e => e.toLowerCase());
+
+      normalizedHeaders = keys(normalizedHeaders).reduce((accum, k) => {
+        if (!exclude.includes(k)) {
+          accum[k] = normalizedHeaders[k];
+        }
+
+        return accum;
+      }, {});
+    }
   }
 
-  return headers;
+  return normalizedHeaders;
 }
 
 export function body(body) {
