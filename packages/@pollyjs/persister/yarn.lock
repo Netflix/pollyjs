@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@pollyjs/utils@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@pollyjs/utils/-/utils-0.1.0.tgz#e64d92e8becd05cf3b145b1f88da559b5cbd6f79"
-
 acorn-jsx@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-3.0.1.tgz#afdf9488fb1ecefc8348f6fb22f464e32a58b36b"

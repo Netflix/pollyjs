@@ -1,17 +1,14 @@
 import stringify from 'json-stable-stringify';
 import { assert, HTTP_STATUS_CODES } from '@pollyjs/utils';
+import HTTPEntity from './http-entity';
 
-const { freeze } = Object;
 const DEFAULT_STATUS_CODE = 200;
 
-function formatHeader(name) {
-  return (name || '').toLowerCase();
-}
-
-export default class PollyResponse {
+export default class PollyResponse extends HTTPEntity {
   constructor(statusCode, headers, body) {
+    super();
     this.status(statusCode || DEFAULT_STATUS_CODE);
-    this.headers = headers || {};
+    this.setHeaders(headers);
     this.body = body;
   }
 
@@ -37,34 +34,6 @@ export default class PollyResponse {
     this.statusCode = status;
 
     return this;
-  }
-
-  getHeader(name) {
-    return this.headers[formatHeader(name)];
-  }
-
-  setHeader(name, value) {
-    const { headers } = this;
-
-    if (!value) {
-      delete headers[formatHeader(name)];
-    } else {
-      headers[formatHeader(name)] = value;
-    }
-
-    return this;
-  }
-
-  setHeaders(headers = {}) {
-    for (const name in headers) {
-      this.setHeader(name, headers[name]);
-    }
-
-    return this;
-  }
-
-  hasHeader(name) {
-    return !!this.getHeader(name);
   }
 
   type(type) {
@@ -121,12 +90,5 @@ export default class PollyResponse {
     }
 
     return this.send(stringify(obj));
-  }
-
-  end() {
-    freeze(this);
-    freeze(this.headers);
-
-    return this;
   }
 }

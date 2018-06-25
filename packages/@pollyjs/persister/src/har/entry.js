@@ -15,9 +15,9 @@ function harRequest(request) {
     queryString: toNVPairs(request.query)
   };
 
-  if (request.body) {
+  if (request.serializedBody || request.hasHeader('Content-Type')) {
     req.postData = {
-      mimeType: 'text/plain',
+      mimeType: request.getHeader('Content-Type') || 'text/plain',
       text: request.serializedBody
     };
   }
