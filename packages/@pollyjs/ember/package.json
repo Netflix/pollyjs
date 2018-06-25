@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/ember",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "Use @pollyjs in your Ember-CLI application",
   "keywords": [
     "polly",
@@ -38,7 +38,7 @@
     "clean": "rimraf dist tmp"
   },
   "dependencies": {
-    "@pollyjs/core": "^0.3.0",
+    "@pollyjs/core": "^0.4.0",
     "@pollyjs/node-server": "^0.2.0",
     "broccoli-funnel": "^2.0.1",
     "broccoli-merge-trees": "^3.0.0",

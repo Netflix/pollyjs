@@ -51,6 +51,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-prettier": "^2.6.0",
+    "formdata-polyfill": "^3.0.10",
     "husky": "^0.14.3",
     "lerna": "^2.11.0",
     "lerna-alias": "^3.0.2",
@@ -68,6 +69,6 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
     "start-server-and-test": "^1.4.1",
-    "testem": "^2.2.1"
+    "testem": "^2.8.2"
   }
 }

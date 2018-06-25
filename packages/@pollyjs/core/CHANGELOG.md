@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/@pollyjs/core@0.3.0...@pollyjs/core@0.4.0) (2018-06-22)
+
+
+### Bug Fixes
+
+* Correctly normalize relative URLs ([b9b23cd](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/b9b23cd))
+
+
+### BREAKING CHANGES
+
+* Relative URLs will have different hashes and will
+require to re-record.
+
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/@pollyjs/core@0.2.0...@pollyjs/core@0.3.0) (2018-06-21)
 

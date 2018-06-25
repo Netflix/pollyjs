@@ -25,6 +25,11 @@ cli
     'recordings directory',
     Polly.Defaults.recordingsDir
   )
+  .option(
+    '-s, --recording-size-limit <limit>',
+    'recording size limit',
+    Polly.Defaults.recordingSizeLimit
+  )
   .option('-q, --quiet', 'disable the logging')
   .action(function(options) {
     new Polly.Server(options).listen();
