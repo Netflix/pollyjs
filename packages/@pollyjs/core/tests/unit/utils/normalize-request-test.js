@@ -28,6 +28,33 @@ describe('Unit | Utils | Normalize Request', function() {
     });
   });
 
+  describe('headers', function() {
+    it('should lower-case all header keys', function() {
+      expect(
+        headers({
+          Accept: 'foo',
+          'Content-Type': 'Bar'
+        })
+      ).to.deep.equal({
+        accept: 'foo',
+        'content-type': 'Bar'
+      });
+    });
+
+    it('should exclude specified headers', function() {
+      expect(
+        headers(
+          {
+            Accept: 'foo',
+            test: 'test',
+            'Content-Type': 'Bar'
+          },
+          { exclude: ['test', 'content-type'] }
+        )
+      ).to.deep.equal({ accept: 'foo' });
+    });
+  });
+
   describe('url', function() {
     it('should sort query params', function() {
       expect(url('http://foo.com?b=1&c=1&a=1')).to.equal(
