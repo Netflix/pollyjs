@@ -32,7 +32,7 @@ export default class Response {
       mimeType: response.getHeader('Content-Type') || 'text/plain'
     };
 
-    if (response.body) {
+    if (typeof response.body === 'string') {
       this.content.text = response.body;
     }
 

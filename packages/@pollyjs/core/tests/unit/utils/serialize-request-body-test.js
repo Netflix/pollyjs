@@ -17,12 +17,14 @@ describe('Unit | Utils | serializeRequestBody', function() {
   });
 
   it('should handle blobs', async function() {
-    expect(await serializeRequestBody(new Blob(['blob']))).to.equal('blob');
+    expect(
+      await serializeRequestBody(new Blob(['blob'], { type: 'text/plain' }))
+    ).to.equal(`data:text/plain;base64,${btoa('blob')}`);
   });
 
   it('should handle files', async function() {
     expect(await serializeRequestBody(new File(['file'], 'file.txt'))).to.equal(
-      'file'
+      `data:;base64,${btoa('file')}`
     );
   });
 
@@ -38,7 +40,7 @@ describe('Unit | Utils | serializeRequestBody', function() {
 
     expect(data).to.include('string=string');
     expect(data).to.include('array=1,2');
-    expect(data).to.include('blob=blob');
-    expect(data).to.include('file=file');
+    expect(data).to.include(`blob=data:;base64,${btoa('blob')}`);
+    expect(data).to.include(`file=data:;base64,${btoa('file')}`);
   });
 });

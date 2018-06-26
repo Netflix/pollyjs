@@ -30,11 +30,14 @@ export default class Request {
     this.queryString = toNVPairs(request.query);
     this.cookies = [];
 
-    if (request.serializedBody || request.hasHeader('Content-Type')) {
+    if (request.body || request.hasHeader('Content-Type')) {
       this.postData = {
-        mimeType: request.getHeader('Content-Type') || 'text/plain',
-        text: request.serializedBody
+        mimeType: request.getHeader('Content-Type') || 'text/plain'
       };
+
+      if (typeof request.body === 'string') {
+        this.postData.text = request.body;
+      }
     }
 
     if (request.hasHeader('Content-Length')) {

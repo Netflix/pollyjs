@@ -83,8 +83,10 @@ describe('Integration | Adapters', function() {
           expect(body).to.include(
             `array=${[recordingName, recordingName].toString()}`
           );
-          expect(body).to.include(`blob=${recordingName}`);
-          expect(body).to.include(`file=${recordingName}`);
+          expect(body).to.include(
+            `blob=data:text/plain;base64,${btoa(recordingName)}`
+          );
+          expect(body).to.include(`file=data:;base64,${btoa(recordingName)}`);
 
           res.sendStatus(200);
         });
@@ -98,10 +100,12 @@ describe('Integration | Adapters', function() {
         const { server, recordingName } = this.polly;
 
         server.post('/submit').intercept((req, res) => {
-          // Make sure the form data exists in the identifiers
-          expect(req.identifiers.body).to.include(recordingName);
+          const dataUrl = `data:text/plain;base64,${btoa(recordingName)}`;
 
-          expect(req.serializedBody).to.equal(recordingName);
+          // Make sure the form data exists in the identifiers
+          expect(req.identifiers.body).to.equal(dataUrl);
+
+          expect(req.serializedBody).to.equal(dataUrl);
 
           res.sendStatus(200);
         });

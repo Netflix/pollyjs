@@ -19,7 +19,7 @@ async function serialize(body) {
       }
     }
 
-    return data.join('\n');
+    return data.join('\r\n');
   }
 
   if (supportsBlob && body instanceof Blob) {
@@ -37,7 +37,7 @@ function readBlob(blob) {
     reader.onabort = reject;
     reader.onload = () => resolve(reader.result);
 
-    reader.readAsText(new Blob([blob], { type: blob.type }));
+    reader.readAsDataURL(new Blob([blob], { type: blob.type }));
   });
 }
 
