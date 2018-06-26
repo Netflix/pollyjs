@@ -26,6 +26,7 @@ export default class Request {
     this.url = request.url;
     this.method = request.method;
     this.headers = toNVPairs(request.headers);
+    this.headersSize = headersSize(this);
     this.queryString = toNVPairs(request.query);
     this.cookies = [];
 
@@ -36,10 +37,13 @@ export default class Request {
       };
     }
 
-    this.headersSize = headersSize(this);
-    this.bodySize =
-      this.postData && this.postData.text
-        ? getByteLength(this.postData.text)
-        : 0;
+    if (request.hasHeader('Content-Length')) {
+      this.bodySize = parseInt(request.getHeader('Content-Length'), 10);
+    } else {
+      this.bodySize =
+        this.postData && this.postData.text
+          ? getByteLength(this.postData.text)
+          : 0;
+    }
   }
 }

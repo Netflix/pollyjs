@@ -35,7 +35,7 @@ export default class API {
   }
 
   filenameFor(recording) {
-    return path.join(this.recordingsDir, recording, 'recording.json');
+    return path.join(this.recordingsDir, recording, 'recording.har');
   }
 
   respond(status, body) {

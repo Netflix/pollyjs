@@ -24,13 +24,17 @@ export default class Response {
     this.status = response.statusCode;
     this.statusText = response.statusText;
     this.headers = toNVPairs(response.headers);
+    this.headersSize = headersSize(this);
     this.cookies = [];
     this.redirectURL = '';
 
     this.content = {
-      mimeType: response.getHeader('Content-Type') || 'text/html',
-      text: response.body
+      mimeType: response.getHeader('Content-Type') || 'text/plain',
     };
+
+    if (response.body) {
+      this.content.text = response.body;
+    }
 
     if (response.hasHeader('Content-Length')) {
       this.content.size = parseInt(response.getHeader('Content-Length'), 10);
@@ -40,7 +44,6 @@ export default class Response {
         : 0;
     }
 
-    this.headersSize = headersSize(this);
     this.bodySize = this.content ? this.content.size : 0;
   }
 }
