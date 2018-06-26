@@ -27,6 +27,7 @@ export default class Log {
 
   addEntries(entries = []) {
     this.entries = uniqWith(
+      // Add the new entries to the front so they take priority
       [...entries, ...this.entries],
       (a, b) => a._id === b._id && a._order === b._order
     );

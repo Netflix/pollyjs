@@ -31,8 +31,7 @@ export default class HARRequest {
 
     if (request.serializedBody || request.hasHeader('Content-Type')) {
       this.postData = {
-        mimeType:
-          request.getHeader('Content-Type') || 'text/plain',
+        mimeType: request.getHeader('Content-Type') || 'text/plain',
         text: request.serializedBody
       };
     }

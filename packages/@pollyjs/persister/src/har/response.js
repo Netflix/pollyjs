@@ -28,8 +28,7 @@ export default class HARResponse {
     this.redirectURL = '';
 
     this.content = {
-      mimeType:
-        response.getHeader('Content-Type') || 'text/html',
+      mimeType: response.getHeader('Content-Type') || 'text/html',
       text: response.body
     };
 
