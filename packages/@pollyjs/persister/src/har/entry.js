@@ -1,61 +1,23 @@
-import HAR from 'har';
+import HARRequest from './request';
+import HARResponse from './response';
 
-const { keys } = Object;
-
-function toNVPairs(o) {
-  return keys(o || {}).map(name => ({ name, value: o[name] }));
-}
-
-function harRequest(request) {
-  const req = {
-    method: request.method,
-    url: request.url,
-    httpVersion: 'HTTP/1.1',
-    headers: toNVPairs(request.headers),
-    queryString: toNVPairs(request.query)
-  };
-
-  if (request.serializedBody || request.hasHeader('Content-Type')) {
-    req.postData = {
-      mimeType: request.getHeader('Content-Type') || 'text/plain',
-      text: request.serializedBody
+export default class Entry {
+  constructor(request) {
+    this._id = request.id;
+    this._order = request.order;
+    this.startedDateTime = request.timestamp;
+    this.time = request.responseTime;
+    this.request = new HARRequest(request);
+    this.response = new HARResponse(request.response);
+    this.cache = {};
+    this.timings = {
+      blocked: -1,
+      dns: -1,
+      connect: -1,
+      send: 0,
+      wait: request.responseTime,
+      receive: 0,
+      ssl: -1
     };
   }
-
-  return req;
-}
-
-function harResponse(response) {
-  const res = {
-    status: response.statusCode,
-    statusText: response.statusText,
-    httpVersion: 'HTTP/1.1',
-    headers: toNVPairs(response.headers)
-  };
-
-  if (response.body || response.hasHeader('Content-Type')) {
-    res.content = {
-      mimeType: response.getHeader('Content-Type'),
-      text: response.body
-    };
-  }
-
-  return res;
-}
-
-export default function Entry(request) {
-  const entry = new HAR.Entry({
-    startedDateTime: request.timestamp,
-    request: harRequest(request),
-    response: harResponse(request.response),
-    time: request.responseTime,
-    timings: {
-      wait: request.responseTime
-    }
-  });
-
-  entry._id = request.id;
-  entry._order = request.order;
-
-  return entry;
 }

@@ -31,17 +31,22 @@ export default class Persister {
 
     for (const [recordingId, { name, requests }] of this.pending) {
       const entries = [];
-      const recording = (await this.find(recordingId)) || { log: {} };
-      const har = new HAR({
-        log: {
-          creator: {
-            name: 'Polly.JS',
-            version: this.polly.VERSION
-          },
-          _recordingName: name,
-          ...recording.log
-        }
-      });
+      const recording = await this.find(recordingId);
+      let har;
+
+      if (!recording) {
+        har = new HAR({
+          log: {
+            creator: {
+              name: 'Polly.JS',
+              version: this.polly.VERSION
+            },
+            _recordingName: name
+          }
+        });
+      } else {
+        har = new HAR(recording);
+      }
 
       for (const request of requests) {
         const entry = new Entry(request);
@@ -66,7 +71,8 @@ export default class Persister {
         entries.push(entry);
       }
 
-      har.addEntries(entries);
+      har.log.addEntries(entries);
+      console.log(har);
       promises.push(this.save(recordingId, har));
     }
 
@@ -119,7 +125,11 @@ export default class Persister {
       return null;
     }
 
-    return (recording.entries[id] || [])[order] || null;
+    return (
+      recording.log.entries.find(
+        entry => entry._id === id && entry._order === order
+      ) || null
+    );
   }
 
   findRecording() {

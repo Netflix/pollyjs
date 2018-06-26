@@ -1,47 +1,41 @@
 {
   "log": {
-    "_pollyjs_meta": {
-      "createdAt": "2018-06-20T18:23:29.286Z",
-      "recordingName": "@pollyjs/core/Integration | Adapters/XHR Adapter + Rest Persister/should respect request order"
-    },
+    "_recordingName": "@pollyjs/core/Integration | Adapters/XHR Adapter + Rest Persister/should respect request order",
     "browser": {
       "name": "Chrome",
-      "version": "67"
+      "version": "67.0"
     },
     "creator": {
       "name": "Polly.JS",
-      "version": "0.2.0"
+      "version": "0.4.0"
     },
     "entries": [
       {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:29.286Z",
-          "id": "a50cd52528f4b6e3ff5502b656c9b296",
-          "order": 0
-        },
+        "_id": "eb39d9b2d7c8db449ab804432be6291a",
+        "_order": 0,
+        "cache": {},
         "request": {
-          "bodySize": -1,
+          "bodySize": 0,
           "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
+          "headers": [],
+          "headersSize": 179,
           "httpVersion": "HTTP/1.1",
           "method": "GET",
           "queryString": [],
           "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
         },
         "response": {
-          "bodySize": -1,
-          "content": {},
+          "bodySize": 0,
+          "content": {
+            "mimeType": "text/html",
+            "size": 0,
+            "text": ""
+          },
           "cookies": [],
           "headers": [
             {
               "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
+              "value": "Tue, 26 Jun 2018 06"
             },
             {
               "name": "connection",
@@ -56,14 +50,14 @@
               "value": "0"
             }
           ],
-          "headersSize": -1,
+          "headersSize": 90,
           "httpVersion": "HTTP/1.1",
           "redirectURL": "",
           "status": 404,
           "statusText": "Not Found"
         },
-        "startedDateTime": "2018-06-20T18:23:29.012Z",
-        "time": 133,
+        "startedDateTime": "2018-06-26T06:56:59.276Z",
+        "time": 119,
         "timings": {
           "blocked": -1,
           "connect": -1,
@@ -71,44 +65,44 @@
           "receive": 0,
           "send": 0,
           "ssl": -1,
-          "wait": 133
+          "wait": 119
         }
       },
       {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:29.286Z",
-          "id": "1077f062f8b12b51733933f86fb7ebc4",
-          "order": 0
-        },
+        "_id": "9d9ab11036c774a1876f2715ed671ed3",
+        "_order": 0,
+        "cache": {},
         "request": {
-          "bodySize": -1,
+          "bodySize": 13,
           "cookies": [],
           "headers": [
             {
-              "name": "Content-Type",
-              "value": "application/json;charset=utf-8"
+              "name": "content-type",
+              "value": "application/json"
             }
           ],
-          "headersSize": -1,
+          "headersSize": 210,
           "httpVersion": "HTTP/1.1",
           "method": "POST",
           "postData": {
-            "mimeType": "text/plain"
+            "mimeType": "application/json",
+            "text": "{\"foo\":\"bar\"}"
           },
           "queryString": [],
           "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
         },
         "response": {
-          "bodySize": -1,
+          "bodySize": 13,
           "content": {
             "mimeType": "application/json; charset=utf-8",
+            "size": 13,
             "text": "{\"foo\":\"bar\"}"
           },
           "cookies": [],
           "headers": [
             {
               "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
+              "value": "Tue, 26 Jun 2018 06"
             },
             {
               "name": "etag",
@@ -131,14 +125,14 @@
               "value": "application/json; charset=utf-8"
             }
           ],
-          "headersSize": -1,
+          "headersSize": 179,
           "httpVersion": "HTTP/1.1",
           "redirectURL": "",
           "status": 200,
           "statusText": "OK"
         },
-        "startedDateTime": "2018-06-20T18:23:29.152Z",
-        "time": 65,
+        "startedDateTime": "2018-06-26T06:56:59.407Z",
+        "time": 43,
         "timings": {
           "blocked": -1,
           "connect": -1,
@@ -146,41 +140,35 @@
           "receive": 0,
           "send": 0,
           "ssl": -1,
-          "wait": 65
+          "wait": 43
         }
       },
       {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:29.286Z",
-          "id": "a50cd52528f4b6e3ff5502b656c9b296",
-          "order": 1
-        },
+        "_id": "eb39d9b2d7c8db449ab804432be6291a",
+        "_order": 1,
+        "cache": {},
         "request": {
-          "bodySize": -1,
+          "bodySize": 0,
           "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
+          "headers": [],
+          "headersSize": 179,
           "httpVersion": "HTTP/1.1",
           "method": "GET",
           "queryString": [],
           "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
         },
         "response": {
-          "bodySize": -1,
+          "bodySize": 13,
           "content": {
             "mimeType": "application/json; charset=utf-8",
+            "size": 13,
             "text": "{\"foo\":\"bar\"}"
           },
           "cookies": [],
           "headers": [
             {
               "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
+              "value": "Tue, 26 Jun 2018 06"
             },
             {
               "name": "etag",
@@ -203,14 +191,14 @@
               "value": "application/json; charset=utf-8"
             }
           ],
-          "headersSize": -1,
+          "headersSize": 179,
           "httpVersion": "HTTP/1.1",
           "redirectURL": "",
           "status": 200,
           "statusText": "OK"
         },
-        "startedDateTime": "2018-06-20T18:23:29.220Z",
-        "time": 14,
+        "startedDateTime": "2018-06-26T06:56:59.453Z",
+        "time": 43,
         "timings": {
           "blocked": -1,
           "connect": -1,
@@ -218,368 +206,35 @@
           "receive": 0,
           "send": 0,
           "ssl": -1,
-          "wait": 14
+          "wait": 43
         }
       },
       {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:29.286Z",
-          "id": "70d74380485b3d40cc52f32a0c49d166",
-          "order": 0
-        },
+        "_id": "e6f2c8956e4eedd0937533b32388c842",
+        "_order": 0,
+        "cache": {},
         "request": {
-          "bodySize": -1,
+          "bodySize": 0,
           "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
+          "headers": [],
+          "headersSize": 182,
           "httpVersion": "HTTP/1.1",
           "method": "DELETE",
           "queryString": [],
           "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
         },
         "response": {
-          "bodySize": -1,
-          "content": {},
-          "cookies": [],
-          "headers": [
-            {
-              "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
-            },
-            {
-              "name": "connection",
-              "value": "close"
-            },
-            {
-              "name": "x-powered-by",
-              "value": "Express"
-            },
-            {
-              "name": "content-length",
-              "value": "0"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "redirectURL": "",
-          "status": 200,
-          "statusText": "OK"
-        },
-        "startedDateTime": "2018-06-20T18:23:29.238Z",
-        "time": 14,
-        "timings": {
-          "blocked": -1,
-          "connect": -1,
-          "dns": -1,
-          "receive": 0,
-          "send": 0,
-          "ssl": -1,
-          "wait": 14
-        }
-      },
-      {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:29.286Z",
-          "id": "a50cd52528f4b6e3ff5502b656c9b296",
-          "order": 2
-        },
-        "request": {
-          "bodySize": -1,
-          "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "method": "GET",
-          "queryString": [],
-          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
-        },
-        "response": {
-          "bodySize": -1,
-          "content": {},
-          "cookies": [],
-          "headers": [
-            {
-              "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
-            },
-            {
-              "name": "connection",
-              "value": "close"
-            },
-            {
-              "name": "x-powered-by",
-              "value": "Express"
-            },
-            {
-              "name": "content-length",
-              "value": "0"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "redirectURL": "",
-          "status": 404,
-          "statusText": "Not Found"
-        },
-        "startedDateTime": "2018-06-20T18:23:29.254Z",
-        "time": 15,
-        "timings": {
-          "blocked": -1,
-          "connect": -1,
-          "dns": -1,
-          "receive": 0,
-          "send": 0,
-          "ssl": -1,
-          "wait": 15
-        }
-      },
-      {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:31.144Z",
-          "id": "a50cd52528f4b6e3ff5502b656c9b296",
-          "order": 0
-        },
-        "request": {
-          "bodySize": -1,
-          "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "method": "GET",
-          "queryString": [],
-          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
-        },
-        "response": {
-          "bodySize": -1,
-          "content": {},
-          "cookies": [],
-          "headers": [
-            {
-              "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
-            },
-            {
-              "name": "connection",
-              "value": "close"
-            },
-            {
-              "name": "x-powered-by",
-              "value": "Express"
-            },
-            {
-              "name": "content-length",
-              "value": "0"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "redirectURL": "",
-          "status": 404,
-          "statusText": "Not Found"
-        },
-        "startedDateTime": "2018-06-20T18:23:30.958Z",
-        "time": 27,
-        "timings": {
-          "blocked": -1,
-          "connect": -1,
-          "dns": -1,
-          "receive": 0,
-          "send": 0,
-          "ssl": -1,
-          "wait": 27
-        }
-      },
-      {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:31.144Z",
-          "id": "1077f062f8b12b51733933f86fb7ebc4",
-          "order": 0
-        },
-        "request": {
-          "bodySize": -1,
-          "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "application/json;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "method": "POST",
-          "postData": {
-            "mimeType": "text/plain"
-          },
-          "queryString": [],
-          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
-        },
-        "response": {
-          "bodySize": -1,
+          "bodySize": 0,
           "content": {
-            "mimeType": "application/json; charset=utf-8",
-            "text": "{\"foo\":\"bar\"}"
+            "mimeType": "text/html",
+            "size": 0,
+            "text": ""
           },
           "cookies": [],
           "headers": [
             {
               "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
-            },
-            {
-              "name": "etag",
-              "value": "W/\"d-pedE0BZFQNM7HX6mFsKPL6l+dUo\""
-            },
-            {
-              "name": "connection",
-              "value": "close"
-            },
-            {
-              "name": "x-powered-by",
-              "value": "Express"
-            },
-            {
-              "name": "content-length",
-              "value": "13"
-            },
-            {
-              "name": "content-type",
-              "value": "application/json; charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "redirectURL": "",
-          "status": 200,
-          "statusText": "OK"
-        },
-        "startedDateTime": "2018-06-20T18:23:30.988Z",
-        "time": 19,
-        "timings": {
-          "blocked": -1,
-          "connect": -1,
-          "dns": -1,
-          "receive": 0,
-          "send": 0,
-          "ssl": -1,
-          "wait": 19
-        }
-      },
-      {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:31.144Z",
-          "id": "a50cd52528f4b6e3ff5502b656c9b296",
-          "order": 1
-        },
-        "request": {
-          "bodySize": -1,
-          "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "method": "GET",
-          "queryString": [],
-          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
-        },
-        "response": {
-          "bodySize": -1,
-          "content": {
-            "mimeType": "application/json; charset=utf-8",
-            "text": "{\"foo\":\"bar\"}"
-          },
-          "cookies": [],
-          "headers": [
-            {
-              "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
-            },
-            {
-              "name": "etag",
-              "value": "W/\"d-pedE0BZFQNM7HX6mFsKPL6l+dUo\""
-            },
-            {
-              "name": "connection",
-              "value": "close"
-            },
-            {
-              "name": "x-powered-by",
-              "value": "Express"
-            },
-            {
-              "name": "content-length",
-              "value": "13"
-            },
-            {
-              "name": "content-type",
-              "value": "application/json; charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "redirectURL": "",
-          "status": 200,
-          "statusText": "OK"
-        },
-        "startedDateTime": "2018-06-20T18:23:31.009Z",
-        "time": 96,
-        "timings": {
-          "blocked": -1,
-          "connect": -1,
-          "dns": -1,
-          "receive": 0,
-          "send": 0,
-          "ssl": -1,
-          "wait": 96
-        }
-      },
-      {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:31.144Z",
-          "id": "70d74380485b3d40cc52f32a0c49d166",
-          "order": 0
-        },
-        "request": {
-          "bodySize": -1,
-          "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
-          "httpVersion": "HTTP/1.1",
-          "method": "DELETE",
-          "queryString": [],
-          "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
-        },
-        "response": {
-          "bodySize": -1,
-          "content": {},
-          "cookies": [],
-          "headers": [
-            {
-              "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
+              "value": "Tue, 26 Jun 2018 06"
             },
             {
               "name": "connection",
@@ -594,13 +249,13 @@
               "value": "0"
             }
           ],
-          "headersSize": -1,
+          "headersSize": 90,
           "httpVersion": "HTTP/1.1",
           "redirectURL": "",
           "status": 200,
           "statusText": "OK"
         },
-        "startedDateTime": "2018-06-20T18:23:31.107Z",
+        "startedDateTime": "2018-06-26T06:56:59.500Z",
         "time": 12,
         "timings": {
           "blocked": -1,
@@ -613,34 +268,31 @@
         }
       },
       {
-        "_pollyjs_meta": {
-          "createdAt": "2018-06-20T18:23:31.144Z",
-          "id": "a50cd52528f4b6e3ff5502b656c9b296",
-          "order": 2
-        },
+        "_id": "eb39d9b2d7c8db449ab804432be6291a",
+        "_order": 2,
+        "cache": {},
         "request": {
-          "bodySize": -1,
+          "bodySize": 0,
           "cookies": [],
-          "headers": [
-            {
-              "name": "Content-Type",
-              "value": "text/plain;charset=utf-8"
-            }
-          ],
-          "headersSize": -1,
+          "headers": [],
+          "headersSize": 179,
           "httpVersion": "HTTP/1.1",
           "method": "GET",
           "queryString": [],
           "url": "/api/db/-pollyjs_2160168770%2Fcore_3713949822%2FIntegration-Adapters_529408267%2FXHR-Adapter-Rest-Persister_3659812972%2Fshould-respect-request-order_2914185093"
         },
         "response": {
-          "bodySize": -1,
-          "content": {},
+          "bodySize": 0,
+          "content": {
+            "mimeType": "text/html",
+            "size": 0,
+            "text": ""
+          },
           "cookies": [],
           "headers": [
             {
               "name": "date",
-              "value": "Wed, 20 Jun 2018 18"
+              "value": "Tue, 26 Jun 2018 06"
             },
             {
               "name": "connection",
@@ -655,13 +307,13 @@
               "value": "0"
             }
           ],
-          "headersSize": -1,
+          "headersSize": 90,
           "httpVersion": "HTTP/1.1",
           "redirectURL": "",
           "status": 404,
           "statusText": "Not Found"
         },
-        "startedDateTime": "2018-06-20T18:23:31.120Z",
+        "startedDateTime": "2018-06-26T06:56:59.513Z",
         "time": 12,
         "timings": {
           "blocked": -1,

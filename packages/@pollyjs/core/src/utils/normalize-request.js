@@ -2,6 +2,7 @@ import URL from 'url-parse';
 import removeHostFromUrl from './remove-host-from-url';
 import isObjectLike from 'lodash-es/isObjectLike';
 import isAbsoluteUrl from 'is-absolute-url';
+import HTTPHeaders from './http-headers';
 
 const { keys } = Object;
 const { isArray } = Array;
@@ -43,24 +44,11 @@ export function headers(headers, config) {
   let normalizedHeaders = headers;
 
   if (isObjectLike(normalizedHeaders)) {
-    // Lower case all headers so 'content-type' will be the same as 'Content-Type'
-    normalizedHeaders = keys(normalizedHeaders).reduce((accum, k) => {
-      accum[k.toLowerCase()] = normalizedHeaders[k];
-
-      return accum;
-    }, {});
+    normalizedHeaders = new HTTPHeaders(normalizedHeaders);
 
     // Filter out excluded headers
     if (isObjectLike(config) && isArray(config.exclude)) {
-      const exclude = config.exclude.map(e => e.toLowerCase());
-
-      normalizedHeaders = keys(normalizedHeaders).reduce((accum, k) => {
-        if (!exclude.includes(k)) {
-          accum[k] = normalizedHeaders[k];
-        }
-
-        return accum;
-      }, {});
+      config.exclude.forEach(header => (normalizedHeaders[header] = null));
     }
   }
 

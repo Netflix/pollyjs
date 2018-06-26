@@ -76,17 +76,17 @@ describe('Integration | Adapters', function() {
         form.append('file', new File([recordingName], 'test.txt'));
 
         server.post('/submit').intercept((req, res) => {
-          const body = parse(req.serializedBody);
+          const body = req.serializedBody;
 
           // Make sure the form data exists in the identifiers
           expect(req.identifiers.body).to.include(recordingName);
 
-          expect(body.string).to.equal(recordingName);
-          expect(body.array).to.equal(
-            [recordingName, recordingName].toString()
+          expect(body).to.include(`string=${recordingName}`);
+          expect(body).to.include(
+            `array=${[recordingName, recordingName].toString()}`
           );
-          expect(body.blob).to.equal(btoa(recordingName));
-          expect(body.file).to.equal(btoa(recordingName));
+          expect(body).to.include(`blob=${recordingName}`);
+          expect(body).to.include(`file=${recordingName}`);
 
           res.sendStatus(200);
         });
@@ -101,9 +101,9 @@ describe('Integration | Adapters', function() {
 
         server.post('/submit').intercept((req, res) => {
           // Make sure the form data exists in the identifiers
-          expect(req.identifiers.body).to.include(btoa(recordingName));
+          expect(req.identifiers.body).to.include(recordingName);
 
-          expect(req.serializedBody).to.equal(btoa(recordingName));
+          expect(req.serializedBody).to.equal(recordingName);
 
           res.sendStatus(200);
         });

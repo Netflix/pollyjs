@@ -14,9 +14,9 @@
   ],
   "scripts": {
     "commitmsg": "commitlint -E GIT_PARAMS",
-    "build": "lerna run build --ignore=@pollyjs/ember --parallel",
+    "build": "lerna run build --ignore=@pollyjs/ember",
     "build:watch": "npm-run-all clean watch",
-    "watch": "lerna run watch --ignore=@pollyjs/ember --parallel",
+    "watch": "lerna run watch --ignore=@pollyjs/ember",
     "clean": "lerna run clean --parallel",
     "bootstrap": "lerna bootstrap",
     "format": "lerna run format",
