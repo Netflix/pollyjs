@@ -1,6 +1,7 @@
-import createConfig, { output, pkg } from './rollup.common.config';
-import babel from 'rollup-plugin-babel';
 import deepmerge from 'deepmerge';
+import babel from 'rollup-plugin-babel';
+import resolve from 'rollup-plugin-node-resolve';
+import createConfig, { output, pkg } from './rollup.common.config';
 
 const external = Object.keys(pkg.dependencies || {});
 
@@ -10,6 +11,7 @@ export default function createServerConfig(options = {}) {
       output: [output('cjs'), output('es')],
       external,
       plugins: [
+        resolve(),
         babel({
           babelrc: false,
           runtimeHelpers: true,

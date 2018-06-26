@@ -2,6 +2,7 @@ import deepmerge from 'deepmerge';
 import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
 import { rollup as lerna } from 'lerna-alias';
+import resolve from 'rollup-plugin-node-resolve';
 import builtins from 'rollup-plugin-node-builtins';
 import createCommonConfig, { output, pkg } from './rollup.common.config';
 
@@ -11,6 +12,7 @@ export default function createClientConfig(options = {}, targets) {
       output: deepmerge(output('umd'), { name: pkg.name }),
       plugins: [
         alias(lerna()),
+        resolve({ browser: true }),
         builtins(),
         babel({
           babelrc: false,

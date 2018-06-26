@@ -1,6 +1,5 @@
 /* globals require process */
 
-import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify';
 import json from 'rollup-plugin-json';
@@ -35,7 +34,6 @@ export default function createCommonConfig(options = {}) {
         json({
           exclude: ['node_modules/**']
         }),
-        resolve(),
         commonjs(),
         production && uglify()
       ]
