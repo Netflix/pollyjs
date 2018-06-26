@@ -3,10 +3,15 @@ import isObjectLike from 'lodash-es/isObjectLike';
 const { keys } = Object;
 const HANDLER = {
   get(obj, prop) {
-    return obj[prop.toLowerCase()];
+    // `prop` can be a Symbol so only lower-case string based props.
+    return obj[typeof prop === 'string' ? prop.toLowerCase() : prop];
   },
 
   set(obj, prop, value) {
+    if (typeof prop !== 'string') {
+      return false;
+    }
+
     if (!value) {
       delete obj[prop.toLowerCase()];
     } else {

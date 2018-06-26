@@ -72,7 +72,6 @@ export default class Persister {
       }
 
       har.log.addEntries(entries);
-      console.log(har);
       promises.push(this.save(recordingId, har));
     }
 

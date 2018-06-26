@@ -26,9 +26,10 @@ export default class Log {
   }
 
   addEntries(entries = []) {
-    this.entries = uniqWith([...entries, ...this.entries], (a, b) => {
-      a._id === b._id && a._order === b._order;
-    });
+    this.entries = uniqWith(
+      [...entries, ...this.entries],
+      (a, b) => a._id === b._id && a._order === b._order
+    );
 
     this.sortEntries();
   }
