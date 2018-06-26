@@ -1,7 +1,9 @@
 import Adapter from '@pollyjs/adapter';
 import serializeHeaders from './utils/serialize-headers';
+import URL from 'url-parse';
 
 const nativeFetch = self.fetch;
+const { defineProperty } = Object;
 
 export default class FetchAdapter extends Adapter {
   onConnect() {
@@ -68,12 +70,26 @@ export default class FetchAdapter extends Adapter {
   async respond(pollyRequest, status, headers, body) {
     await pollyRequest.respond(status, headers, body);
 
-    const { response } = pollyRequest;
+    const { url, response } = pollyRequest;
 
-    return new Response(response.body, {
+    const fetchResponse = new Response(response.body, {
       status: response.statusCode,
       headers: response.headers
     });
+
+    /*
+      Response does not allow `url` to be set manually (either via the
+      constructor or assignment) so force the url property via `defineProperty`.
+    */
+    defineProperty(fetchResponse, 'url', {
+      /*
+        Since `url` can be a relative url and Response always has an absolute
+        one, use URL to stitch together the origin if necessary.
+      */
+      value: new URL(url).href
+    });
+
+    return fetchResponse;
   }
 
   toString() {
