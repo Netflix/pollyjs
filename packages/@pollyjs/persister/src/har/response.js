@@ -1,5 +1,5 @@
 import toNVPairs from './utils/to-nv-pairs';
-import getByteLength from './utils/get-byte-length';
+import getByteLength from 'utf8-byte-length';
 
 function headersSize(response) {
   const keys = [];
