@@ -18,7 +18,7 @@ function headersSize(response) {
   return getByteLength(headersString) + keys.length * 2 + 2 + 2;
 }
 
-export default class HARResponse {
+export default class Response {
   constructor(response) {
     this.httpVersion = 'HTTP/1.1';
     this.status = response.statusCode;

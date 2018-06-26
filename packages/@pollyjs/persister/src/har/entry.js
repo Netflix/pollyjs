@@ -1,5 +1,5 @@
-import HARRequest from './request';
-import HARResponse from './response';
+import Request from './request';
+import Response from './response';
 
 export default class Entry {
   constructor(request) {
@@ -7,8 +7,8 @@ export default class Entry {
     this._order = request.order;
     this.startedDateTime = request.timestamp;
     this.time = request.responseTime;
-    this.request = new HARRequest(request);
-    this.response = new HARResponse(request.response);
+    this.request = new Request(request);
+    this.response = new Response(request.response);
     this.cache = {};
     this.timings = {
       blocked: -1,

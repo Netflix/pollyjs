@@ -20,7 +20,7 @@ function headersSize(request) {
   return getByteLength(headersString) + keys.length * 2 + 2 + 12 + 2;
 }
 
-export default class HARRequest {
+export default class Request {
   constructor(request) {
     this.httpVersion = 'HTTP/1.1';
     this.url = request.url;
