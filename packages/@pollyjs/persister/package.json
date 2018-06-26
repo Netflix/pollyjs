@@ -18,7 +18,7 @@
     "rollup": "rollup -c ../../../rollup.config.js",
     "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
-    "lint": "eslint ./*.js src",
+    "lint": "eslint ./*.js src tests",
     "prepublishOnly": "NODE_ENV=production yarn build"
   },
   "keywords": [

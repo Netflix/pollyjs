@@ -5,8 +5,6 @@ import * as setupFetch from '../helpers/setup-fetch';
 import File from '../helpers/file';
 import Configs from './configs';
 
-const { parse } = JSON;
-
 describe('Integration | Adapters', function() {
   for (const name in Configs) {
     const defaults = Configs[name];
