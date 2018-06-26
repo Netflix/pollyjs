@@ -29,7 +29,7 @@ export default class Response {
     this.redirectURL = '';
 
     this.content = {
-      mimeType: response.getHeader('Content-Type') || 'text/plain',
+      mimeType: response.getHeader('Content-Type') || 'text/plain'
     };
 
     if (response.body) {
