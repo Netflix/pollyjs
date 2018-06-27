@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/core",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Record, replay, and stub HTTP Interactions",
   "main": "dist/cjs/pollyjs-core.js",
   "module": "dist/es/pollyjs-core.js",
