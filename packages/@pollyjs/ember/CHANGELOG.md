@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@0.3.1...@pollyjs/ember@0.4.0) (2018-06-27)
+
+
+### Bug Fixes
+
+* **core:** Set `url` on the fetch Response object ([#44](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/44)) ([f5980cf](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/f5980cf)), closes [#43](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/issues/43)
+
+
+### Features
+
+* Make recording size limit configurable ([#40](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/40)) ([d4be431](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/d4be431))
+
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@0.3.0...@pollyjs/ember@0.3.1) (2018-06-22)
 
