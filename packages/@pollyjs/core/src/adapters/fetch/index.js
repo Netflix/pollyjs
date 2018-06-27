@@ -84,7 +84,7 @@ export default class FetchAdapter extends Adapter {
     defineProperty(fetchResponse, 'url', {
       /*
         Since `url` can be a relative url and Response always has an absolute
-        one, use URL to stitch together the origin if necessary.
+        one, use URL to attach the host if necessary.
       */
       value: new URL(url).href
     });
