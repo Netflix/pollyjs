@@ -35,13 +35,14 @@
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",
     "rollup": "rollup -c",
+    "rollup:prod": "NODE_ENV=production yarn rollup",
     "watch": "rollup -c -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test": "",
     "test:build": "",
     "test:clean": "",
     "lint": "eslint ./*.js src bin",
-    "prepublishOnly": "NODE_ENV=production yarn build"
+    "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
