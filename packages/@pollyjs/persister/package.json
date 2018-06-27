@@ -44,7 +44,6 @@
   "dependencies": {
     "@pollyjs/utils": "^0.1.1",
     "bowser": "^1.9.3",
-    "har": "^1.0.0",
     "lodash-es": "^4.17.10",
     "utf8-byte-length": "^1.0.4"
   },
