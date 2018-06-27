@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/core",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Record, replay, and stub HTTP Interactions",
   "main": "dist/cjs/pollyjs-core.js",
   "module": "dist/es/pollyjs-core.js",
@@ -16,10 +16,11 @@
     "test:clean": "rimraf build",
     "clean": "rimraf dist",
     "rollup": "rollup -c ../../../rollup.config.js",
+    "rollup:prod": "NODE_ENV=production yarn rollup",
     "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "lint": "eslint ./*.js src tests",
-    "prepublishOnly": "NODE_ENV=production yarn build"
+    "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "keywords": [
     "polly",
@@ -46,9 +47,9 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@pollyjs/adapter": "^0.3.0",
-    "@pollyjs/persister": "^0.2.0",
-    "@pollyjs/utils": "^0.1.0",
+    "@pollyjs/adapter": "^0.3.1",
+    "@pollyjs/persister": "^0.2.1",
+    "@pollyjs/utils": "^0.1.1",
     "@sindresorhus/fnv1a": "^1.0.0",
     "blueimp-md5": "^2.10.0",
     "is-absolute-url": "^2.1.0",

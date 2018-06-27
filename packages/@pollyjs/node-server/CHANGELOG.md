@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/compare/@pollyjs/node-server@0.2.0...@pollyjs/node-server@0.3.0) (2018-06-27)
+
+
+### Features
+
+* Make recording size limit configurable ([#40](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/node-server/issues/40)) ([d4be431](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/commit/d4be431))
+
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/compare/@pollyjs/node-server@0.1.0...@pollyjs/node-server@0.2.0) (2018-06-21)
 

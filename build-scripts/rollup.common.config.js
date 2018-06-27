@@ -20,7 +20,9 @@ const banner = `/**
 export const output = format => {
   return {
     format,
-    file: `./dist/${format}/${pkg.name.replace('@pollyjs/', 'pollyjs-')}.js`,
+    file: `./dist/${format}/${pkg.name.replace('@pollyjs/', 'pollyjs-')}.${
+      production ? 'min.js' : 'js'
+    }`,
     sourcemap: production,
     banner
   };
