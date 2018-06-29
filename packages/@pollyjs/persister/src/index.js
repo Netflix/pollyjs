@@ -2,6 +2,8 @@ import { assert } from '@pollyjs/utils';
 import HAR from './har';
 import Entry from './har/entry';
 
+const CREATOR_NAME = 'Polly.JS';
+
 export default class Persister {
   constructor(polly) {
     this.polly = polly;
@@ -38,7 +40,7 @@ export default class Persister {
         har = new HAR({
           log: {
             creator: {
-              name: 'Polly.JS',
+              name: CREATOR_NAME,
               version: this.polly.VERSION
             },
             _recordingName: name
@@ -100,6 +102,10 @@ export default class Persister {
     const recording = await this.findRecording(recordingId);
 
     if (recording) {
+      assert(
+        `Recording with id '${recordingId}' is invalid. Please delete the recording so a new one can be created.`,
+        recording.log && recording.log.creator.name === CREATOR_NAME
+      );
       this.cache.set(recordingId, recording);
     }
 
@@ -120,14 +126,12 @@ export default class Persister {
     const { id, order, recordingId } = pollyRequest;
     const recording = await this.find(recordingId);
 
-    if (!recording) {
-      return null;
-    }
-
     return (
-      recording.log.entries.find(
-        entry => entry._id === id && entry._order === order
-      ) || null
+      (recording &&
+        recording.log.entries.find(
+          entry => entry._id === id && entry._order === order
+        )) ||
+      null
     );
   }
 
