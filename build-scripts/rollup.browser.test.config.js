@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import multiEntry from 'rollup-plugin-multi-entry';
 import createClientConfig from './rollup.browser.config';
-import { pkg } from './rollup.common.config';
+import { pkg } from './rollup.utils';
 
 export default function createClientTestConfig(options = {}) {
   return deepmerge(
@@ -18,15 +18,7 @@ export default function createClientTestConfig(options = {}) {
           `,
           outro: '});'
         },
-        plugins: [multiEntry()],
-        onwarn(warning) {
-          if (
-            warning.code !== 'CIRCULAR_DEPENDENCY' &&
-            !(/nise/.test(warning) && /eval/.test(warning))
-          ) {
-            console.error(`(!) ${warning.message}`);
-          }
-        }
+        plugins: [multiEntry()]
       },
       /* target override */
       {

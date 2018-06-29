@@ -23,7 +23,7 @@ function headersSize(request) {
 export default class Request {
   constructor(request) {
     this.httpVersion = 'HTTP/1.1';
-    this.url = request.url;
+    this.url = request.absoluteUrl;
     this.method = request.method;
     this.headers = toNVPairs(request.headers);
     this.headersSize = headersSize(this);
@@ -35,7 +35,7 @@ export default class Request {
         mimeType: request.getHeader('Content-Type') || 'text/plain'
       };
 
-      if (typeof request.body === 'string') {
+      if (request.body && typeof request.body === 'string') {
         this.postData.text = request.body;
       }
     }

@@ -21,10 +21,6 @@ export default class Log {
     );
   }
 
-  addEntry(entry) {
-    this.addEntries([entry]);
-  }
-
   addEntries(entries = []) {
     this.entries = uniqWith(
       // Add the new entries to the front so they take priority

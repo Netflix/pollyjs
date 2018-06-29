@@ -109,7 +109,7 @@ The above test case would generate the following recording HAR which Polly will 
               "value": "application/json; charset=utf-8"
             }
           ],
-          "headersSize": 78,
+          "headersSize": 97,
           "httpVersion": "HTTP/1.1",
           "method": "POST",
           "postData": {
@@ -117,7 +117,7 @@ The above test case would generate the following recording HAR which Polly will 
             "text": "{\"email\":\"polly@netflix.com\",\"password\":\"@pollyjs\"}"
           },
           "queryString": [],
-          "url": "/api/v1/login"
+          "url": "https://netflix.com/api/v1/login"
         },
         "response": {
           "bodySize": 0,

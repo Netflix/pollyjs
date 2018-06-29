@@ -6,6 +6,7 @@ module.exports = {
   launch_in_ci: ['Chrome'],
   launch_in_dev: ['Chrome'],
   watch_files: [
+    './build-scripts/**/*',
     './packages/@pollyjs/*/src/**/*',
     './packages/@pollyjs/*/tests/*/*'
   ],

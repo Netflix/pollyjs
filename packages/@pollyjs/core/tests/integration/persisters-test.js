@@ -1,7 +1,7 @@
 import { setupMocha as setupPolly, Polly } from '../../src';
 import * as setupFetch from '../helpers/setup-fetch';
 import Configs from './configs';
-import * as validate from 'har-validator';
+import * as validate from 'har-validator/lib/async';
 
 const { keys } = Object;
 
@@ -20,7 +20,7 @@ describe('Integration | Persisters', function() {
       setupFetch.afterEach();
       setupPolly.afterEach();
 
-      it('should have the correct schema', async function() {
+      it('should persist valid HAR', async function() {
         const { recordingId, persister } = this.polly;
 
         this.polly.record();
@@ -70,10 +70,14 @@ describe('Integration | Persisters', function() {
 
         expect(har.log.entries).to.have.lengthOf(3);
         expect(
-          har.log.entries.filter(e => e.request.url === '/api/db/foo?order=1')
+          har.log.entries.filter(e =>
+            e.request.url.includes('/api/db/foo?order=1')
+          )
         ).to.have.lengthOf(2);
         expect(
-          har.log.entries.filter(e => e.request.url === '/api/db/foo?order=2')
+          har.log.entries.filter(e =>
+            e.request.url.includes('/api/db/foo?order=2')
+          )
         ).to.have.lengthOf(1);
       });
 
