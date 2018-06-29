@@ -2,7 +2,7 @@ import uniqWith from 'lodash-es/uniqWith';
 import bowser from 'bowser';
 
 const browser =
-  bowser.name && bowser.version
+  bowser && bowser.name && bowser.version
     ? { name: bowser.name, version: bowser.version }
     : null;
 

@@ -1,10 +1,10 @@
 import stringify from 'json-stable-stringify';
 import { assert, HTTP_STATUS_CODES } from '@pollyjs/utils';
-import HTTPEntity from './http-entity';
+import HTTPBase from './http-base';
 
 const DEFAULT_STATUS_CODE = 200;
 
-export default class PollyResponse extends HTTPEntity {
+export default class PollyResponse extends HTTPBase {
   constructor(statusCode, headers, body) {
     super();
     this.status(statusCode || DEFAULT_STATUS_CODE);

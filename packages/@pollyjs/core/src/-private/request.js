@@ -7,7 +7,7 @@ import removeHostFromUrl from '../utils/remove-host-from-url';
 import serializeRequestBody from '../utils/serialize-request-body';
 import isAbsoluteUrl from 'is-absolute-url';
 import { assert, timestamp } from '@pollyjs/utils';
-import HTTPEntity from './http-entity';
+import HTTPBase from './http-base';
 
 const { keys, freeze } = Object;
 
@@ -15,7 +15,7 @@ const PARSED_URL = Symbol();
 const ROUTE = Symbol();
 const POLLY = Symbol();
 
-export default class PollyRequest extends HTTPEntity {
+export default class PollyRequest extends HTTPBase {
   constructor(polly, request) {
     super();
 

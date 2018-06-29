@@ -10,7 +10,13 @@ describe('Unit | Persister', function() {
 
     beforeEach(function() {
       callCounts = { find: 0, save: 0, delete: 0 };
-      recording = {};
+      recording = {
+        log: {
+          creator: {
+            name: 'Polly.JS'
+          }
+        }
+      };
 
       class CustomPersister extends Persister {
         findRecording() {

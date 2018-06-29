@@ -2,7 +2,7 @@ import HTTPHeaders from '../utils/http-headers';
 
 const { freeze } = Object;
 
-export default class HTTPEntity {
+export default class HTTPBase {
   constructor() {
     this.headers = new HTTPHeaders();
   }
