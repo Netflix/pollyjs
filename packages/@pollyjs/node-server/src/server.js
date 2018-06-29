@@ -36,7 +36,9 @@ export default class Server {
     this.server = this.app
       .listen(port, host)
       .on('listening', () => {
-        console.log(`Listening on http://${host || 'localhost'}:${port}/\n`);
+        if (!this.config.quiet) {
+          console.log(`Listening on http://${host || 'localhost'}:${port}/\n`);
+        }
       })
       .on('error', e => {
         if (e.code === 'EADDRINUSE') {
