@@ -1,5 +1,6 @@
 /* global process */
 
+import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
 import gracefulShutdown from 'http-graceful-shutdown';
@@ -10,6 +11,7 @@ export default class Server {
   constructor(config = {}) {
     this.config = { ...DefaultConfig, ...config };
     this.app = express();
+    this.app.use(cors());
 
     if (!this.config.quiet) {
       this.app.use(morgan('dev'));
