@@ -75,6 +75,21 @@ module.exports = {
       : null;
   },
 
+  treeForAddon() {
+    if (!this._config.enabled) {
+      return;
+    }
+
+    const tree = this._super.treeForAddon.apply(this, arguments);
+
+    return mergeTrees([
+      tree,
+      funnel(`${__dirname}/vendor/`, {
+        files: ['~preconfigure-polly.js']
+      })
+    ]);
+  },
+
   treeForVendor() {
     if (!this._config.enabled) {
       return;
