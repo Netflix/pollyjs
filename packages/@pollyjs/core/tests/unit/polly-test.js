@@ -178,6 +178,28 @@ describe('Unit | Polly', function() {
       expect(this.polly.config.adapters.length).to.equal(1);
     });
 
+    it('should merge static configure() with instance configure()', async function() {
+      expect(Polly.configure).to.be.a('function');
+      expect(Polly.clearConfig).to.be.a('function');
+
+      Polly.configure({ foo: 'foo', bar: 'bar' });
+      const polly = new Polly('foo', { adapters: [], foo: 'bar' });
+
+      polly.configure({ bar: 'baz' });
+      expect(polly.config.foo).to.equal('bar');
+      expect(polly.config.bar).to.equal('baz');
+
+      polly.configure({ foo: 'instance configure() can override' });
+      expect(polly.config.foo).to.equal('instance configure() can override');
+
+      /* should not mutate this.polly.config */
+      Polly.configure({ foo: 'static configure() cannot' });
+      expect(polly.config.foo).to.equal('instance configure() can override');
+      Polly.clearConfig();
+
+      await polly.stop();
+    });
+
     it('should connect to new adapters', async function() {
       expect(nativeFetch).to.equal(self.fetch);
       this.polly.configure({ adapters: ['fetch'] });

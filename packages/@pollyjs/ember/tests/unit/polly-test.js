@@ -6,6 +6,13 @@ module('Unit | Polly | General', function() {
     test('it works', function(assert) {
       assert.equal(typeof Polly, 'function');
     });
+
+    test('it defaults to an empty string for persisterOptions.host', function(assert) {
+      const polly = new Polly('abc');
+      assert.equal(polly.config.persisterOptions.host, '');
+
+      return polly.stop();
+    });
   });
 
   module('setupPolly', function(hooks) {

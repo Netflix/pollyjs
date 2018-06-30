@@ -49,7 +49,7 @@ module.exports = {
     {
       files: ['**/*/tests/**/*-test.js'],
       env: {
-        mocha: true,
+        mocha: true
       },
       globals: {
         chai: true,

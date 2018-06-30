@@ -32,7 +32,7 @@ const { Server } = require('@pollyjs/node-server');
 const server = new Server({
   quiet: true,
   port: 4000,
-  apiNamespace: 'pollyjs'
+  apiNamespace: '/pollyjs'
 });
 
 // Add custom business logic to the express server
