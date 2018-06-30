@@ -10,7 +10,7 @@ import uglify from 'rollup-plugin-uglify';
 import json from 'rollup-plugin-json';
 import { input, output, pkg, production } from './rollup.utils';
 
-export default function createClientConfig(options = {}, targets) {
+export default function createBrowserConfig(options = {}, targets) {
   return deepmerge(
     {
       input,

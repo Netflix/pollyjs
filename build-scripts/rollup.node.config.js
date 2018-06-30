@@ -8,7 +8,7 @@ import { input, output, pkg, production } from './rollup.utils';
 
 const external = Object.keys(pkg.dependencies || {});
 
-export default function createServerConfig(options = {}) {
+export default function createNodeConfig(options = {}) {
   return deepmerge(
     {
       input,
