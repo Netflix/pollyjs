@@ -61,7 +61,7 @@ export default class Route {
    * @return {*}
    */
   async intercept() {
-    await invoke(this.handler._intercept, this, ...arguments);z
+    await invoke(this.handler._intercept, this, ...arguments);
   }
 
   /**

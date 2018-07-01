@@ -11,13 +11,17 @@ import RestPersister from './persisters/rest';
 import Server from './server';
 import { version } from '../package.json';
 import { MODES, assert } from '@pollyjs/utils';
+import EventEmitter from './-private/event-emitter';
 
 const RECORDING_NAME = Symbol();
-const CLASS_CONFIG = Symbol();
 const RECORDING_ID = Symbol();
 const PAUSED_MODE = Symbol();
 const { isArray } = Array;
 const { values } = Object;
+
+const EVENT_EMITTER = new EventEmitter({
+  eventNames: ['create', 'stop']
+});
 
 /**
  * @export
@@ -38,6 +42,7 @@ export default class Polly {
     this._requests = [];
 
     this.registerDefaultTypes();
+    EVENT_EMITTER.emit('create', this);
     this.configure(config);
     this.logger.connect();
   }
@@ -116,12 +121,7 @@ export default class Polly {
 
     const { _container: container } = this;
 
-    this.config = mergeOptions(
-      DefaultConfig,
-      Polly[CLASS_CONFIG],
-      this.config,
-      config
-    );
+    this.config = mergeOptions(DefaultConfig, this.config, config);
 
     // Handle Adapters
     this.config.adapters.forEach(adapter => {
@@ -159,18 +159,22 @@ export default class Polly {
     this.persister = new (container.get(`persister:${persisterName}`))(this);
   }
 
-  /**
-   * Do not use `configure` this will be removed in the future in favor of
-   * eventing `Polly.on('create', (instance) => {})`
-   * @private
-   */
-  static configure(config) {
-    Polly[CLASS_CONFIG] = mergeOptions({}, Polly[CLASS_CONFIG], config);
+  static on() {
+    EVENT_EMITTER.on(...arguments);
+
+    return this;
   }
 
-  /** @private **/
-  static clearConfig() {
-    Polly[CLASS_CONFIG] = undefined;
+  static once() {
+    EVENT_EMITTER.once(...arguments);
+
+    return this;
+  }
+
+  static off() {
+    EVENT_EMITTER.off(...arguments);
+
+    return this;
   }
 
   /**
@@ -231,6 +235,8 @@ export default class Polly {
       this.logger.disconnect();
       await this.persister.persist();
       this.mode = MODES.STOPPED;
+
+      EVENT_EMITTER.emit('stop', this);
     }
   }
 

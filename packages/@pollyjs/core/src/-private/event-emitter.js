@@ -26,7 +26,7 @@ function assertListener(listener) {
   );
 }
 
-export default class Evented {
+export default class EventEmitter {
   constructor({ eventNames = [] }) {
     this[EVENTS] = new Map();
     this[EVENT_NAMES] = new Set(eventNames);
@@ -93,14 +93,14 @@ export default class Evented {
   }
 
   async emit(eventName, ...args) {
-    await Promise.all(
-      this.listeners(eventName).map(listener => listener(...args))
-    );
-  }
-
-  async emitSerial(eventName, ...args) {
     for (const listener of this.listeners(eventName)) {
       await listener(...args);
     }
+  }
+
+  async emitParallel(eventName, ...args) {
+    await Promise.all(
+      this.listeners(eventName).map(listener => listener(...args))
+    );
   }
 }

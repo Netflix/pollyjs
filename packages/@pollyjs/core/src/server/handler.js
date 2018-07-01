@@ -1,6 +1,6 @@
-import Evented from '../-private/evented';
+import EventEmitter from '../-private/event-emitter';
 
-export default class Handler extends Evented {
+export default class Handler extends EventEmitter {
   constructor() {
     super({
       eventNames: [
