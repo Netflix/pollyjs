@@ -109,16 +109,16 @@ export default class PollyRequest extends HTTPBase {
   }
 
   get shouldPassthrough() {
-    return this[ROUTE].handler.get('passthrough') === true;
+    return this[ROUTE].handler._passthrough === true;
   }
 
   get shouldIntercept() {
-    return typeof this[ROUTE].handler.get('intercept') === 'function';
+    return typeof this[ROUTE].handler._intercept === 'function';
   }
 
   async setup() {
     // Trigger the `request` event
-    await this._trigger('request');
+    await this._emit('request');
 
     // Setup the response
     this.response = new PollyResponse();
@@ -150,7 +150,7 @@ export default class PollyRequest extends HTTPBase {
     this.response.body = body;
 
     // Trigger the `beforeResponse` event
-    await this._trigger('beforeResponse', this.response);
+    await this._emit('beforeResponse', this.response);
 
     // End the response so it can no longer be modified
     this.response.end();
@@ -164,19 +164,19 @@ export default class PollyRequest extends HTTPBase {
     this.end();
 
     // Trigger the `response` event
-    await this._trigger('response', this.response);
+    await this._emit('response', this.response);
   }
 
   async serializeBody() {
     return serializeRequestBody(this.body);
   }
 
-  _invoke(methodName, ...args) {
-    return this[ROUTE].invoke(methodName, this, ...args);
+  _intercept() {
+    return this[ROUTE].intercept(this, this.response);
   }
 
-  _trigger(eventName, ...args) {
-    return this[ROUTE].trigger(eventName, this, ...args);
+  _emit(eventName, ...args) {
+    return this[ROUTE].emit(eventName, this, ...args);
   }
 
   _identify() {

@@ -24,8 +24,8 @@ async function invoke(fn, route, req, ...args) {
   }
 }
 
-async function trigger(route, eventName, ...args) {
-  const handlers = route.handler._getEventHandlers(eventName);
+async function emit(route, eventName, ...args) {
+  const handlers = route.handler.listeners(eventName);
 
   for (const handler of handlers) {
     await invoke(handler, route, ...args);
@@ -55,29 +55,28 @@ export default class Route {
   }
 
   /**
-   * Invokes a method registered on the handler and returns its return value.
-   * @param {String} methodName
+   * Invokes the intercept method defined on the route-handler.
    * @param {PollyRequest} req
    * @param {...args} ...args
    * @return {*}
    */
-  invoke(methodName, ...args) {
-    return invoke(this.handler.get(methodName), this, ...args);
+  async intercept() {
+    await invoke(this.handler._intercept, this, ...arguments);z
   }
 
   /**
-   * Trigger an event registered on the handler + all middleware handler events
+   * Emit an event registered on the handler + all middleware handler events
    * @param {String} eventName
    * @param {PollyRequest} req
    * @param {...args} ...args
    */
-  async trigger() {
+  async emit() {
     const { middleware } = this;
 
     for (const m of middleware) {
-      await trigger(m, ...arguments);
+      await emit(m, ...arguments);
     }
 
-    await trigger(this, ...arguments);
+    await emit(this, ...arguments);
   }
 }
