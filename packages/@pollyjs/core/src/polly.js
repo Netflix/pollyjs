@@ -42,9 +42,9 @@ export default class Polly {
     this._requests = [];
 
     this.registerDefaultTypes();
-    EVENT_EMITTER.emit('create', this);
-    this.configure(config);
     this.logger.connect();
+    EVENT_EMITTER.emitSync('create', this);
+    this.configure(config);
   }
 
   /**
@@ -236,7 +236,7 @@ export default class Polly {
       await this.persister.persist();
       this.mode = MODES.STOPPED;
 
-      EVENT_EMITTER.emit('stop', this);
+      await EVENT_EMITTER.emit('stop', this);
     }
   }
 

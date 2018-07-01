@@ -41,12 +41,20 @@ export default class EventEmitter {
   }
 
   /**
-   * Returns an array listing the supported events.
+   * Returns an array listing the events for which the emitter has
+   * registered listeners
    *
    * @returns {String[]}
    */
   eventNames() {
-    return [...this[EVENT_NAMES]];
+    const eventNames = [];
+
+    this[EVENTS].forEach(
+      (_, eventName) =>
+        this.hasListeners(eventName) && eventNames.push(eventName)
+    );
+
+    return eventNames;
   }
 
   /**
@@ -181,6 +189,26 @@ export default class EventEmitter {
       await Promise.all(
         this.listeners(eventName).map(listener => listener(...args))
       );
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Synchronously calls each of the `listeners` registered for the event named
+   * `eventName`, in the order they were registered, passing the supplied
+   * arguments to each.
+   *
+   * Returns `true` if the event had listeners, `false` otherwise.
+   *
+   * @param {String} eventName - The name of the event.
+   * @returns {Boolean}
+   */
+  emitSync(eventName, ...args) {
+    if (this.hasListeners(eventName)) {
+      this.listeners(eventName).forEach(listener => listener(...args));
 
       return true;
     }
