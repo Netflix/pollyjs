@@ -1,20 +1,27 @@
+const common = {
+  recordFailedRequests: true,
+  persisterOptions: {
+    host: ''
+  }
+};
+
 export default {
   'XHR Adapter + Rest Persister': {
     adapters: ['xhr'],
-    recordFailedRequests: true
+    ...common
   },
   'Fetch Adapter + Rest Persister': {
     adapters: ['fetch'],
-    recordFailedRequests: true
+    ...common
   },
   'Fetch Adapter + Local Storage Persister': {
     adapters: ['fetch'],
     persister: 'local-storage',
-    recordFailedRequests: true
+    ...common
   },
   'XHR Adapter + Local Storage Persister': {
     adapters: ['xhr'],
     persister: 'local-storage',
-    recordFailedRequests: true
+    ...common
   }
 };

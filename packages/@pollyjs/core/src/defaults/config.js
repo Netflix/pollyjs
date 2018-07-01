@@ -16,7 +16,7 @@ export default {
 
   persister: 'rest',
   persisterOptions: {
-    host: '',
+    host: 'http://localhost:3000',
     apiNamespace: '/polly'
   },
 
