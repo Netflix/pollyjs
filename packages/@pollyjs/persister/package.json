@@ -42,10 +42,14 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@pollyjs/utils": "^0.1.1"
+    "@pollyjs/utils": "^0.1.1",
+    "bowser": "^1.9.3",
+    "lodash-es": "^4.17.10",
+    "utf8-byte-length": "^1.0.4"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
+    "har-validator": "^5.1.0",
     "npm-run-all": "^4.1.2",
     "prettier": "^1.10.2",
     "rimraf": "^2.6.2",

@@ -26,8 +26,7 @@ function relativeTest(ratio) {
     // Fail the test if it exceeds timeout + 10ms buffer
     this.timeout(timeout + 10);
 
-    const now = new Date().getTime();
-    const promise = Timing.relative(ratio)(now, now + 100);
+    const promise = Timing.relative(ratio)(100);
     let resolved = false;
 
     promise.then(() => (resolved = true));

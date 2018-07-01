@@ -1,5 +1,5 @@
-import createServerConfig from '../../../build-scripts/rollup.node.config';
+import createNodeConfig from '../../../build-scripts/rollup.node.config';
 
-export default createServerConfig({
+export default createNodeConfig({
   external: ['path']
 });

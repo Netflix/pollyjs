@@ -2,16 +2,24 @@ import deepmerge from 'deepmerge';
 import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
 import { rollup as lerna } from 'lerna-alias';
+import resolve from 'rollup-plugin-node-resolve';
+import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
-import createCommonConfig, { output, pkg } from './rollup.common.config';
+import commonjs from 'rollup-plugin-commonjs';
+import uglify from 'rollup-plugin-uglify';
+import json from 'rollup-plugin-json';
+import { input, output, pkg, production } from './rollup.utils';
 
-export default function createClientConfig(options = {}, targets) {
+export default function createBrowserConfig(options = {}, targets) {
   return deepmerge(
-    createCommonConfig({
+    {
+      input,
       output: deepmerge(output('umd'), { name: pkg.name }),
       plugins: [
         alias(lerna()),
-        builtins(),
+        json(),
+        resolve({ browser: true }),
+        commonjs(),
         babel({
           babelrc: false,
           runtimeHelpers: true,
@@ -33,7 +41,10 @@ export default function createClientConfig(options = {}, targets) {
           ],
           exclude: ['node_modules/**'],
           ignore: 'node_modules/**'
-        })
+        }),
+        globals(),
+        builtins(),
+        production && uglify()
       ],
       onwarn(message) {
         /* nise uses eval for strings within native fns setTimeout('alert("foo")', 10) */
@@ -43,7 +54,7 @@ export default function createClientConfig(options = {}, targets) {
 
         console.error(message);
       }
-    }),
+    },
     options
   );
 }

@@ -5,8 +5,6 @@ import * as setupFetch from '../helpers/setup-fetch';
 import File from '../helpers/file';
 import Configs from './configs';
 
-const { parse } = JSON;
-
 describe('Integration | Adapters', function() {
   for (const name in Configs) {
     const defaults = Configs[name];
@@ -76,17 +74,19 @@ describe('Integration | Adapters', function() {
         form.append('file', new File([recordingName], 'test.txt'));
 
         server.post('/submit').intercept((req, res) => {
-          const body = parse(req.serializedBody);
+          const body = req.serializedBody;
 
           // Make sure the form data exists in the identifiers
           expect(req.identifiers.body).to.include(recordingName);
 
-          expect(body.string).to.equal(recordingName);
-          expect(body.array).to.equal(
-            [recordingName, recordingName].toString()
+          expect(body).to.include(`string=${recordingName}`);
+          expect(body).to.include(
+            `array=${[recordingName, recordingName].toString()}`
           );
-          expect(body.blob).to.equal(btoa(recordingName));
-          expect(body.file).to.equal(btoa(recordingName));
+          expect(body).to.include(
+            `blob=data:text/plain;base64,${btoa(recordingName)}`
+          );
+          expect(body).to.include(`file=data:;base64,${btoa(recordingName)}`);
 
           res.sendStatus(200);
         });
@@ -100,10 +100,12 @@ describe('Integration | Adapters', function() {
         const { server, recordingName } = this.polly;
 
         server.post('/submit').intercept((req, res) => {
-          // Make sure the form data exists in the identifiers
-          expect(req.identifiers.body).to.include(btoa(recordingName));
+          const dataUrl = `data:text/plain;base64,${btoa(recordingName)}`;
 
-          expect(req.serializedBody).to.equal(btoa(recordingName));
+          // Make sure the form data exists in the identifiers
+          expect(req.identifiers.body).to.equal(dataUrl);
+
+          expect(req.serializedBody).to.equal(dataUrl);
 
           res.sendStatus(200);
         });

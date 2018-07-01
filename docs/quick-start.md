@@ -81,36 +81,75 @@ describe('Netflix Homepage', function() {
 });
 ```
 
-The above test case would generate the following recording which Polly will use
-to replay the sign-in request/response when the test is rerun:
+The above test case would generate the following recording HAR which Polly will
+use to replay the sign-in request/response when the test is rerun:
 
 ```json
 {
-  "created_at": "2018-06-01T20:36:46.198Z",
-  "entries": {
-    "1077f062f8b12b51733933f86fb7ebc4": [
+  "log": {
+    "_recordingName": "Sign In",
+    "browser": {
+      "name": "Chrome",
+      "version": "67.0"
+    },
+    "creator": {
+      "name": "Polly.JS",
+      "version": "0.5.0"
+    },
+    "entries": [
       {
-        "created_at": "2018-06-01T20:36:46.198Z",
+        "_id": "06f06e6d125cbb80896c41786f9a696a",
+        "_order": 0,
+        "cache": {},
         "request": {
-          "body": "{\"email\":\"polly@netflix.com\",\"password\":\"@pollyjs\"}",
-          "headers": {
-            "Content-Type": "application/json;charset=utf-8"
-          },
+          "bodySize": 51,
+          "cookies": [],
+          "headers": [
+            {
+              "name": "content-type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "headersSize": 97,
+          "httpVersion": "HTTP/1.1",
           "method": "POST",
-          "timestamp": "2018-06-01T20:36:46.070Z",
-          "url": "/api/v1/login"
+          "postData": {
+            "mimeType": "application/json; charset=utf-8",
+            "text": "{\"email\":\"polly@netflix.com\",\"password\":\"@pollyjs\"}"
+          },
+          "queryString": [],
+          "url": "https://netflix.com/api/v1/login"
         },
         "response": {
-          "body": "",
-          "headers": {},
+          "bodySize": 0,
+          "content": {
+            "mimeType": "text/plain; charset=utf-8",
+            "size": 0
+          },
+          "cookies": [],
+          "headers": [],
+          "headersSize": 0,
+          "httpVersion": "HTTP/1.1",
+          "redirectURL": "",
           "status": 200,
-          "timestamp": "2018-06-01T20:36:46.119Z"
+          "statusText": "OK"
+        },
+        "startedDateTime": "2018-06-29T17:31:55.348Z",
+        "time": 11,
+        "timings": {
+          "blocked": -1,
+          "connect": -1,
+          "dns": -1,
+          "receive": 0,
+          "send": 0,
+          "ssl": -1,
+          "wait": 11
         }
       }
-    ]
-  },
-  "name": "Sign In",
-  "schema_version": 0.1
+    ],
+    "pages": [],
+    "version": "1.2"
+  }
 }
 ```
 

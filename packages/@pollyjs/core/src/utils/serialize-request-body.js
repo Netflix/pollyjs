@@ -1,5 +1,3 @@
-import stringify from 'json-stable-stringify';
-
 const supportsFormData = typeof FormData !== 'undefined';
 const supportsBlob = (() => {
   try {
@@ -11,17 +9,17 @@ const supportsBlob = (() => {
 
 async function serialize(body) {
   if (supportsFormData && body instanceof FormData) {
-    const serialized = {};
+    const data = [];
 
     for (const [key, value] of body.entries()) {
       if (supportsBlob && value instanceof Blob) {
-        serialized[key] = await readBlob(value);
+        data.push(`${key}=${await readBlob(value)}`);
       } else {
-        serialized[key] = value;
+        data.push(`${key}=${value}`);
       }
     }
 
-    return stringify(serialized);
+    return data.join('\r\n');
   }
 
   if (supportsBlob && body instanceof Blob) {
@@ -35,11 +33,9 @@ function readBlob(blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
-    // The split here removes the 'data:image/png;base64,' prefix
-    // to just leave the base64 encoded data.
-    reader.onload = () => resolve((reader.result || '').split(',')[1]);
     reader.onend = reject;
     reader.onabort = reject;
+    reader.onload = () => resolve(reader.result);
 
     reader.readAsDataURL(new Blob([blob], { type: blob.type }));
   });

@@ -7,6 +7,7 @@ import removeHostFromUrl from '../utils/remove-host-from-url';
 import serializeRequestBody from '../utils/serialize-request-body';
 import isAbsoluteUrl from 'is-absolute-url';
 import { assert, timestamp } from '@pollyjs/utils';
+import HTTPBase from './http-base';
 
 const { keys, freeze } = Object;
 
@@ -14,15 +15,17 @@ const PARSED_URL = Symbol();
 const ROUTE = Symbol();
 const POLLY = Symbol();
 
-export default class PollyRequest {
+export default class PollyRequest extends HTTPBase {
   constructor(polly, request) {
+    super();
+
     assert('Url is required.', typeof request.url === 'string');
     assert('Method is required.', typeof request.method === 'string');
 
     this.url = request.url;
     this.method = request.method.toUpperCase();
     this.body = request.body;
-    this.headers = request.headers || {};
+    this.setHeaders(request.headers);
     this.recordingName = polly.recordingName;
     this.recordingId = polly.recordingId;
     this.requestArguments = freeze(request.requestArguments || []);
@@ -57,6 +60,16 @@ export default class PollyRequest {
     }
 
     this[PARSED_URL] = url;
+  }
+
+  get absoluteUrl() {
+    const { url } = this;
+
+    if (!isAbsoluteUrl(url)) {
+      return new URL(url).href;
+    }
+
+    return url;
   }
 
   get protocol() {
@@ -148,7 +161,7 @@ export default class PollyRequest {
 
     this.didRespond = true;
 
-    freeze(this);
+    this.end();
 
     // Trigger the `response` event
     await this._trigger('response', this.response);

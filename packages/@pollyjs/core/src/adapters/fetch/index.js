@@ -1,6 +1,5 @@
 import Adapter from '@pollyjs/adapter';
 import serializeHeaders from './utils/serialize-headers';
-import URL from 'url-parse';
 
 const nativeFetch = self.fetch;
 const { defineProperty } = Object;
@@ -37,9 +36,15 @@ export default class FetchAdapter extends Adapter {
   }
 
   onReplay(pollyRequest, recordingEntry) {
-    const { status, headers, body } = recordingEntry.response;
+    const { status, headers, content } = recordingEntry.response;
+    const headersObj = headers.reduce((accum, { name, value }) => {
+      accum[name] = value;
 
-    return this.respond(pollyRequest, status, headers, body);
+      return accum;
+    }, {});
+    const body = content && content.text;
+
+    return this.respond(pollyRequest, status, headersObj, body);
   }
 
   async onPassthrough(pollyRequest) {
@@ -70,7 +75,7 @@ export default class FetchAdapter extends Adapter {
   async respond(pollyRequest, status, headers, body) {
     await pollyRequest.respond(status, headers, body);
 
-    const { url, response } = pollyRequest;
+    const { absoluteUrl, response } = pollyRequest;
 
     const fetchResponse = new Response(response.body, {
       status: response.statusCode,
@@ -81,13 +86,7 @@ export default class FetchAdapter extends Adapter {
       Response does not allow `url` to be set manually (either via the
       constructor or assignment) so force the url property via `defineProperty`.
     */
-    defineProperty(fetchResponse, 'url', {
-      /*
-        Since `url` can be a relative url and Response always has an absolute
-        one, use URL to attach the host if necessary.
-      */
-      value: new URL(url).href
-    });
+    defineProperty(fetchResponse, 'url', { value: absoluteUrl });
 
     return fetchResponse;
   }
