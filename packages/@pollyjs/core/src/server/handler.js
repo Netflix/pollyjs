@@ -1,8 +1,9 @@
 import EventEmitter from '../-private/event-emitter';
 
-export default class Handler extends EventEmitter {
+export default class Handler extends Map {
   constructor() {
-    super({
+    super();
+    this._eventEmitter = new EventEmitter({
       eventNames: [
         'request',
         'beforeReplay',
@@ -11,5 +12,23 @@ export default class Handler extends EventEmitter {
         'response'
       ]
     });
+  }
+
+  on() {
+    this._eventEmitter.on(...arguments);
+
+    return this;
+  }
+
+  once() {
+    this._eventEmitter.once(...arguments);
+
+    return this;
+  }
+
+  off() {
+    this._eventEmitter.off(...arguments);
+
+    return this;
   }
 }

@@ -25,10 +25,10 @@ async function invoke(fn, route, req, ...args) {
 }
 
 async function emit(route, eventName, ...args) {
-  const handlers = route.handler.listeners(eventName);
+  const listeners = route.handler._eventEmitter.listeners(eventName);
 
-  for (const handler of handlers) {
-    await invoke(handler, route, ...args);
+  for (const listener of listeners) {
+    await invoke(listener, route, ...args);
   }
 }
 
@@ -61,7 +61,7 @@ export default class Route {
    * @return {*}
    */
   async intercept() {
-    await invoke(this.handler._intercept, this, ...arguments);
+    await invoke(this.handler.get('intercept'), this, ...arguments);
   }
 
   /**

@@ -6,14 +6,14 @@ describe('Unit | Server | RouteHandler', function() {
   });
 
   it('should default passthrough to false', function() {
-    expect(new RouteHandler()._passthrough).to.be.false;
+    expect(new RouteHandler().get('passthrough')).to.be.false;
   });
 
   it('registers an intercept handler', function() {
     const handler = new RouteHandler();
 
     handler.intercept(() => {});
-    expect(handler._intercept).to.be.a('function');
+    expect(handler.has('intercept')).to.be.true;
   });
 
   it('throws when passing a non-function to intercept', function() {
@@ -30,22 +30,22 @@ describe('Unit | Server | RouteHandler', function() {
     const handler = new RouteHandler();
 
     handler.intercept(() => {});
-    expect(handler._intercept).to.be.a('function');
+    expect(handler.has('intercept')).to.be.true;
 
     handler.passthrough();
-    expect(handler._passthrough).to.be.true;
-    expect(handler._intercept).to.not.be.a('function');
+    expect(handler.get('passthrough')).to.be.true;
+    expect(handler.has('intercept')).to.be.false;
   });
 
   it('disables passthrough on intercept', function() {
     const handler = new RouteHandler();
 
     handler.passthrough();
-    expect(handler._passthrough).to.be.true;
-    expect(handler._intercept).to.not.be.a('function');
+    expect(handler.get('passthrough')).to.be.true;
+    expect(handler.has('intercept')).to.be.false;
 
     handler.intercept(() => {});
-    expect(handler._passthrough).to.be.false;
-    expect(handler._intercept).to.be.a('function');
+    expect(handler.has('intercept')).to.be.true;
+    expect(handler.get('passthrough')).to.be.false;
   });
 });

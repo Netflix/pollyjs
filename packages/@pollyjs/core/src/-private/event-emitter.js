@@ -148,8 +148,9 @@ export default class EventEmitter {
    * Returns a promise that will resolve to `true` if the event had listeners,
    * `false` otherwise.
    *
+   * @async
    * @param {String} eventName - The name of the event.
-   * @returns {Promise}
+   * @returns {Promise<Boolean>}
    */
   async emit(eventName, ...args) {
     if (this.hasListeners(eventName)) {
@@ -171,8 +172,9 @@ export default class EventEmitter {
    * Returns a promise that will resolve to `true` if the event had listeners,
    * `false` otherwise.
    *
+   * @async
    * @param {String} eventName - The name of the event.
-   * @returns {Promise}
+   * @returns {Promise<Boolean>}
    */
   async emitParallel(eventName, ...args) {
     if (this.hasListeners(eventName)) {

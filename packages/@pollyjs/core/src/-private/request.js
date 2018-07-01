@@ -109,11 +109,11 @@ export default class PollyRequest extends HTTPBase {
   }
 
   get shouldPassthrough() {
-    return this[ROUTE].handler._passthrough === true;
+    return this[ROUTE].handler.get('passthrough') === true;
   }
 
   get shouldIntercept() {
-    return typeof this[ROUTE].handler._intercept === 'function';
+    return typeof this[ROUTE].handler.get('intercept') === 'function';
   }
 
   async setup() {
@@ -172,7 +172,7 @@ export default class PollyRequest extends HTTPBase {
   }
 
   _intercept() {
-    return this[ROUTE].intercept(this, this.response);
+    return this[ROUTE].intercept(this, this.response, ...arguments);
   }
 
   _emit(eventName, ...args) {

@@ -4,7 +4,7 @@ import { assert } from '@pollyjs/utils';
 export default class RouteHandler extends Handler {
   constructor() {
     super(...arguments);
-    this._passthrough = false;
+    this.set('passthrough', false);
   }
 
   intercept(fn) {
@@ -13,15 +13,15 @@ export default class RouteHandler extends Handler {
       typeof fn === 'function'
     );
 
-    this._intercept = fn;
-    this._passthrough = false;
+    this.set('intercept', fn);
+    this.set('passthrough', false);
 
     return this;
   }
 
   passthrough() {
-    this._passthrough = true;
-    delete this._intercept;
+    this.set('passthrough', true);
+    this.delete('intercept');
 
     return this;
   }
