@@ -1,7 +1,7 @@
 import Adapter from '@pollyjs/adapter';
 import serializeHeaders from './utils/serialize-headers';
 
-const nativeFetch = self.fetch;
+const nativeFetch = global.fetch;
 const { defineProperty } = Object;
 
 export default class FetchAdapter extends Adapter {
@@ -9,11 +9,11 @@ export default class FetchAdapter extends Adapter {
     this.assert('Fetch global not found.', nativeFetch);
     this.assert(
       'Running concurrent fetch adapters is unsupported, stop any running Polly instances.',
-      self.fetch === nativeFetch
+      global.fetch === nativeFetch
     );
 
     this.native = nativeFetch;
-    self.fetch = (url, options = {}) =>
+    global.fetch = (url, options = {}) =>
       this.handleRequest({
         url,
         method: options.method || 'GET',
@@ -24,7 +24,7 @@ export default class FetchAdapter extends Adapter {
   }
 
   onDisconnect() {
-    self.fetch = nativeFetch;
+    global.fetch = nativeFetch;
   }
 
   async onRecord(pollyRequest) {
@@ -50,7 +50,7 @@ export default class FetchAdapter extends Adapter {
   async onPassthrough(pollyRequest) {
     const [, options] = pollyRequest.requestArguments;
 
-    const response = await this.native.apply(self, [
+    const response = await this.native.apply(global, [
       pollyRequest.url,
       {
         ...options,

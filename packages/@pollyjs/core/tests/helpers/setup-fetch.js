@@ -1,12 +1,13 @@
+/* globals beforeEach, afterEach */
 import xhrRequest from './xhr-request';
 
 export default function setupFetch(fetchType) {
-  beforeEach(fetchType);
-  afterEach();
+  beforeEachWrapper(fetchType);
+  afterEachWrapper();
 }
 
-export function beforeEach(fetchType) {
-  self.beforeEach(function() {
+function beforeEachWrapper(fetchType) {
+  beforeEach(function() {
     this.fetch = (...args) => {
       if (fetchType === 'xhr') {
         return xhrRequest(...args);
@@ -23,10 +24,12 @@ export function beforeEach(fetchType) {
   });
 }
 
-export function afterEach() {
-  self.afterEach(async function() {
+export function afterEachWrapper() {
+  afterEach(async function() {
     this.polly.stop();
 
     await this.fetchRecord({ method: 'DELETE' });
   });
 }
+export { beforeEachWrapper as beforeEach };
+export { afterEachWrapper as afterEach };
