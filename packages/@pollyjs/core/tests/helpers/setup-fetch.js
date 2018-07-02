@@ -1,3 +1,4 @@
+/* globals beforeEach, afterEach */
 import xhrRequest from './xhr-request';
 
 export default function setupFetch(fetchType) {

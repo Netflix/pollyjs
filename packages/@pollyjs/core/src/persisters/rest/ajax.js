@@ -1,5 +1,6 @@
 const { keys } = Object;
-const REQUEST_ASYNC = !('navigator' in global) || !/PhantomJS/.test(global.navigator.userAgent);
+const REQUEST_ASYNC =
+  !('navigator' in global) || !/PhantomJS/.test(global.navigator.userAgent);
 const NativeXMLHttpRequest = global.XMLHttpRequest;
 
 export default function ajax(url, options = {}) {

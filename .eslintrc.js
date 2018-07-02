@@ -9,6 +9,9 @@ module.exports = {
   },
   plugins: ['prettier'],
   extends: ['eslint:recommended', 'prettier'],
+  globals: {
+    global: true
+  },
   env: {
     browser: true,
     es6: true
