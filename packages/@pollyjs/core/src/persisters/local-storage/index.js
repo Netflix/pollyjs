@@ -2,7 +2,7 @@ import Persister from '@pollyjs/persister';
 import stringify from 'json-stable-stringify';
 
 export default class LocalStoragePersister extends Persister {
-  constructor(polly, store = self.localStorage) {
+  constructor(polly, store = global.localStorage) {
     super(polly);
     this._store = store;
     this._namespace = '__pollyjs__';

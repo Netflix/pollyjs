@@ -5,7 +5,7 @@ import Adapter from '@pollyjs/adapter';
 import Persister from '@pollyjs/persister';
 import { MODES } from '@pollyjs/utils';
 
-const nativeFetch = self.fetch;
+const nativeFetch = global.fetch;
 
 describe('Unit | Polly', function() {
   it('should exist', function() {
@@ -201,9 +201,9 @@ describe('Unit | Polly', function() {
     });
 
     it('should connect to new adapters', async function() {
-      expect(nativeFetch).to.equal(self.fetch);
+      expect(nativeFetch).to.equal(global.fetch);
       this.polly.configure({ adapters: ['fetch'] });
-      expect(nativeFetch).to.not.equal(self.fetch);
+      expect(nativeFetch).to.not.equal(global.fetch);
     });
   });
 

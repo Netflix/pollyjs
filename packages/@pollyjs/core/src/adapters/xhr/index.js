@@ -10,7 +10,7 @@ export default class XHRAdapter extends Adapter {
     this.assert('XHR global not found.', FakeXHR.xhr.supportsXHR);
     this.assert(
       'Running concurrent XHR adapters is unsupported, stop any running Polly instances.',
-      self.XMLHttpRequest === FakeXHR.xhr.GlobalXMLHttpRequest
+      global.XMLHttpRequest === FakeXHR.xhr.GlobalXMLHttpRequest
     );
 
     this.native = FakeXHR.xhr.GlobalXMLHttpRequest;
