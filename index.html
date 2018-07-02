@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Polly.JS</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Standalone, framework-agnostic JavaScript library that enables recording, replaying, and stubbing HTTP interactions.">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="twitter:title" content="Polly.JS">
+  <meta name="twitter:description" content="Standalone, framework-agnostic JavaScript library that enables recording, replaying, and stubbing HTTP interactions.">
+  <meta name="twitter:image" content="https://netflix.github.io/pollyjs/assets/images/wordmark-logo-alt-twitter.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    window.$docsify = {
+      name: '<img src="assets/images/logo.png" alt="Polly.JS Logo" class="sidebar-logo">',
+      loadSidebar: true,
+      coverpage: true,
+      onlyCover: true,
+      auto2top: true,
+      autoHeader: false,
+      subMaxLevel: 3,
+      maxLevel: 4,
+      repo: 'https://github.com/Netflix/pollyjs',
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '.*?/CHANGELOG': 'https://raw.githubusercontent.com/Netflix/pollyjs/master/CHANGELOG',
+        '.*?/CONTRIBUTING': 'https://raw.githubusercontent.com/Netflix/pollyjs/master/CONTRIBUTING'
+      },
+      homepage: 'https://raw.githubusercontent.com/Netflix/pollyjs/master/README.md',
+      search: {
+        paths: 'auto',
+        placeholder: 'Search',
+        noData: 'No Results.'
+      },
+      ga: 'UA-120716183-1'
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-bash.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-json.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/docsify-copy-code@2"></script>
+  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/ga.min.js"></script>
+</body>
+</html>
