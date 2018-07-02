@@ -159,20 +159,20 @@ export default class Polly {
     this.persister = new (container.get(`persister:${persisterName}`))(this);
   }
 
-  static on() {
-    EVENT_EMITTER.on(...arguments);
+  static on(eventName, listener) {
+    EVENT_EMITTER.on(eventName, listener);
 
     return this;
   }
 
-  static once() {
-    EVENT_EMITTER.once(...arguments);
+  static once(eventName, listener) {
+    EVENT_EMITTER.once(eventName, listener);
 
     return this;
   }
 
-  static off() {
-    EVENT_EMITTER.off(...arguments);
+  static off(eventName, listener) {
+    EVENT_EMITTER.off(eventName, listener);
 
     return this;
   }

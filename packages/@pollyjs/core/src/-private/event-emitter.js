@@ -58,10 +58,10 @@ export default class EventEmitter {
   }
 
   /**
-   * Adds the `listener` function to the end of the listeners array for t
-   * he event named `eventName`
+   * Adds the `listener` function to the end of the listeners array for the
+   * event named `eventName`
    *
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
    * @param {Function} listener - The callback function
    * @returns {EventEmitter}
    */
@@ -85,17 +85,20 @@ export default class EventEmitter {
    * The next time `eventName` is triggered, this listener is removed and
    * then invoked.
    *
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
    * @param {Function} listener - The callback function
    * @returns {EventEmitter}
    */
   once(eventName, listener) {
+    assertEventName(eventName, this[EVENT_NAMES]);
     assertListener(listener);
 
-    this.on(eventName, async (...args) => {
-      this.off(eventName, listener);
+    const once = async (...args) => {
+      this.off(eventName, once);
       await listener(...args);
-    });
+    };
+
+    this.on(eventName, once);
 
     return this;
   }
@@ -105,7 +108,7 @@ export default class EventEmitter {
    * the event named `eventName`. If `listener` is not provided then it removes
    * all listeners, or those of the specified `eventName`.
    *
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
    * @param {Function} [listener] - The callback function
    * @returns {EventEmitter}
    */
@@ -128,10 +131,12 @@ export default class EventEmitter {
   /**
    * Returns a copy of the array of listeners for the event named `eventName`.
    *
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
    * @returns {Function[]}
    */
   listeners(eventName) {
+    assertEventName(eventName, this[EVENT_NAMES]);
+
     return this.hasListeners(eventName) ? [...this[EVENTS].get(eventName)] : [];
   }
 
@@ -139,10 +144,12 @@ export default class EventEmitter {
    * Returns `true` if there are any listeners for the event named `eventName`
    * or `false` otherwise.
    *
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
    * @returns {Boolean}
    */
   hasListeners(eventName) {
+    assertEventName(eventName, this[EVENT_NAMES]);
+
     const events = this[EVENTS];
 
     return events.has(eventName) && events.get(eventName).size > 0;
@@ -157,10 +164,13 @@ export default class EventEmitter {
    * `false` otherwise.
    *
    * @async
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
+   * @param {any} ...args - The arguments to pass to the listeners
    * @returns {Promise<Boolean>}
    */
   async emit(eventName, ...args) {
+    assertEventName(eventName, this[EVENT_NAMES]);
+
     if (this.hasListeners(eventName)) {
       for (const listener of this.listeners(eventName)) {
         await listener(...args);
@@ -181,10 +191,13 @@ export default class EventEmitter {
    * `false` otherwise.
    *
    * @async
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
+   * @param {any} ...args - The arguments to pass to the listeners
    * @returns {Promise<Boolean>}
    */
   async emitParallel(eventName, ...args) {
+    assertEventName(eventName, this[EVENT_NAMES]);
+
     if (this.hasListeners(eventName)) {
       await Promise.all(
         this.listeners(eventName).map(listener => listener(...args))
@@ -203,10 +216,13 @@ export default class EventEmitter {
    *
    * Returns `true` if the event had listeners, `false` otherwise.
    *
-   * @param {String} eventName - The name of the event.
+   * @param {String} eventName - The name of the event
+   * @param {any} ...args - The arguments to pass to the listeners
    * @returns {Boolean}
    */
   emitSync(eventName, ...args) {
+    assertEventName(eventName, this[EVENT_NAMES]);
+
     if (this.hasListeners(eventName)) {
       this.listeners(eventName).forEach(listener => listener(...args));
 

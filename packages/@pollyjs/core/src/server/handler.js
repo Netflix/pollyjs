@@ -14,20 +14,20 @@ export default class Handler extends Map {
     });
   }
 
-  on() {
-    this._eventEmitter.on(...arguments);
+  on(eventName, listener) {
+    this._eventEmitter.on(eventName, listener);
 
     return this;
   }
 
-  once() {
-    this._eventEmitter.once(...arguments);
+  once(eventName, listener) {
+    this._eventEmitter.once(eventName, listener);
 
     return this;
   }
 
-  off() {
-    this._eventEmitter.off(...arguments);
+  off(eventName, listener) {
+    this._eventEmitter.off(eventName, listener);
 
     return this;
   }

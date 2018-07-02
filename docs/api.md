@@ -16,6 +16,38 @@ __Example__
 new Polly('<Recording Name>', { /* ... */ });
 ```
 
+## Events
+
+### create
+
+Emitted when a Polly instance gets created.
+
+!> This is a synchronous event.
+
+__Example__
+
+```js
+const listener = polly => { /* Do Something */ };
+
+Polly.on('create', listener);
+Polly.off('create', listener);
+Polly.once('create', polly => { /* Do Something Once */ });
+```
+
+### stop
+
+Emitted when a Polly instance has successfully stopped.
+
+__Example__
+
+```js
+const listener = polly => { /* Do Something */ };
+
+Polly.on('stop', listener);
+Polly.off('stop', listener);
+Polly.once('stop', polly => { /* Do Something Once */ });
+```
+
 ## Properties
 
 ### recordingName

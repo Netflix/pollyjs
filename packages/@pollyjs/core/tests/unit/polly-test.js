@@ -185,7 +185,7 @@ describe('Unit | Polly', function() {
     });
   });
 
-  describe('api', function() {
+  describe('API', function() {
     setupPolly({ adapters: [] });
 
     it('.record()', async function() {
@@ -309,6 +309,55 @@ describe('Unit | Polly', function() {
       expect(disconnects.length).to.equal(0);
       expect(this.polly.disconnect());
       expect(disconnects.length).to.equal(2);
+    });
+  });
+
+  describe('Class Events', function() {
+    it('should be event-able', function() {
+      expect(Polly.on).to.be.a('function');
+      expect(Polly.once).to.be.a('function');
+      expect(Polly.off).to.be.a('function');
+    });
+
+    it('create', async function() {
+      let createCalled = false;
+
+      Polly.once('create', polly => {
+        expect(polly).to.be.an.instanceof(Polly);
+        createCalled = true;
+      });
+
+      const polly = new Polly('Test');
+
+      expect(createCalled).to.be.true;
+      await polly.stop();
+    });
+
+    it('create - configuration order should be preserved', async function() {
+      Polly.once('create', polly => {
+        polly.configure({ logging: true, recordIfMissing: false });
+      });
+
+      const polly = new Polly('Test', { recordIfMissing: true });
+
+      expect(polly.config.logging).to.be.true;
+      expect(polly.config.recordIfMissing).to.be.true;
+      await polly.stop();
+    });
+
+    it('stop', async function() {
+      let stopCalled = false;
+
+      Polly.once('stop', polly => {
+        expect(polly).to.be.an.instanceof(Polly);
+        expect(polly.mode).to.equal(MODES.STOPPED);
+        stopCalled = true;
+      });
+
+      const polly = new Polly('Test');
+
+      await polly.stop();
+      expect(stopCalled).to.be.true;
     });
   });
 });
