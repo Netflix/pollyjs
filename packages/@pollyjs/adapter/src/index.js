@@ -106,7 +106,7 @@ export default class Adapter {
 
   async intercept(pollyRequest) {
     pollyRequest.action = ACTIONS.INTERCEPT;
-    await pollyRequest._invoke('intercept', pollyRequest.response);
+    await pollyRequest._intercept();
 
     return this.onIntercept(pollyRequest, pollyRequest.response);
   }
@@ -122,7 +122,7 @@ export default class Adapter {
     const recordingEntry = await this.persister.findEntry(pollyRequest);
 
     if (recordingEntry) {
-      await pollyRequest._trigger('beforeReplay', recordingEntry);
+      await pollyRequest._emit('beforeReplay', recordingEntry);
 
       if (this.shouldReRecord(recordingEntry)) {
         return this.record(pollyRequest);

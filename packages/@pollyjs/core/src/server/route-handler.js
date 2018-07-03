@@ -4,10 +4,7 @@ import { assert } from '@pollyjs/utils';
 export default class RouteHandler extends Handler {
   constructor() {
     super(...arguments);
-
-    if (!this.has('passthrough')) {
-      this.set('passthrough', false);
-    }
+    this.set('passthrough', false);
   }
 
   intercept(fn) {

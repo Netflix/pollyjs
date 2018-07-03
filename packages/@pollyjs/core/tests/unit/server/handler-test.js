@@ -19,33 +19,35 @@ describe('Unit | Server | Handler', function() {
 
   it('registers a known event via .on()', function() {
     const handler = new Handler();
+    const { _eventEmitter: eventEmitter } = handler;
 
-    expect(handler._hasEventHandlers('request')).to.be.false;
-
-    handler.on('request', () => {});
-    expect(handler._hasEventHandlers('request')).to.be.true;
+    expect(eventEmitter.hasListeners('request')).to.be.false;
 
     handler.on('request', () => {});
-    expect(handler._getEventHandlers('request').length).to.equal(2);
+    expect(eventEmitter.hasListeners('request')).to.be.true;
+
+    handler.on('request', () => {});
+    expect(eventEmitter.listeners('request')).to.have.lengthOf(2);
   });
 
   it('un-registers a known event via .off()', function() {
     const handler = new Handler();
+    const { _eventEmitter: eventEmitter } = handler;
     const fn = () => {};
 
     handler.on('request', fn);
     handler.on('request', () => {});
     handler.on('request', () => {});
-    expect(handler._hasEventHandlers('request')).to.be.true;
-    expect(handler._getEventHandlers('request').length).to.equal(3);
+    expect(eventEmitter.hasListeners('request')).to.be.true;
+    expect(eventEmitter.listeners('request')).to.have.lengthOf(3);
 
     handler.off('request', fn);
-    expect(handler._hasEventHandlers('request')).to.be.true;
-    expect(handler._getEventHandlers('request').length).to.equal(2);
-    expect(handler._getEventHandlers('request').includes(fn)).to.be.false;
+    expect(eventEmitter.hasListeners('request')).to.be.true;
+    expect(eventEmitter.listeners('request')).to.have.lengthOf(2);
+    expect(eventEmitter.listeners('request').includes(fn)).to.be.false;
 
     handler.off('request');
-    expect(handler._hasEventHandlers('request')).to.be.false;
-    expect(handler._getEventHandlers('request').length).to.equal(0);
+    expect(eventEmitter.hasListeners('request')).to.be.false;
+    expect(eventEmitter.listeners('request')).to.have.lengthOf(0);
   });
 });

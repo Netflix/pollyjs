@@ -39,5 +39,4 @@
   - [API](api.md)
   - [Configuration](configuration.md)
 
-- [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)

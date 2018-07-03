@@ -178,28 +178,6 @@ describe('Unit | Polly', function() {
       expect(this.polly.config.adapters.length).to.equal(1);
     });
 
-    it('should merge static configure() with instance configure()', async function() {
-      expect(Polly.configure).to.be.a('function');
-      expect(Polly.clearConfig).to.be.a('function');
-
-      Polly.configure({ foo: 'foo', bar: 'bar' });
-      const polly = new Polly('foo', { adapters: [], foo: 'bar' });
-
-      polly.configure({ bar: 'baz' });
-      expect(polly.config.foo).to.equal('bar');
-      expect(polly.config.bar).to.equal('baz');
-
-      polly.configure({ foo: 'instance configure() can override' });
-      expect(polly.config.foo).to.equal('instance configure() can override');
-
-      /* should not mutate this.polly.config */
-      Polly.configure({ foo: 'static configure() cannot' });
-      expect(polly.config.foo).to.equal('instance configure() can override');
-      Polly.clearConfig();
-
-      await polly.stop();
-    });
-
     it('should connect to new adapters', async function() {
       expect(nativeFetch).to.equal(global.fetch);
       this.polly.configure({ adapters: ['fetch'] });
@@ -207,7 +185,7 @@ describe('Unit | Polly', function() {
     });
   });
 
-  describe('api', function() {
+  describe('API', function() {
     setupPolly({ adapters: [] });
 
     it('.record()', async function() {
@@ -331,6 +309,62 @@ describe('Unit | Polly', function() {
       expect(disconnects.length).to.equal(0);
       expect(this.polly.disconnect());
       expect(disconnects.length).to.equal(2);
+    });
+  });
+
+  describe('Class Events', function() {
+    it('should be event-able', function() {
+      expect(Polly.on).to.be.a('function');
+      expect(Polly.once).to.be.a('function');
+      expect(Polly.off).to.be.a('function');
+    });
+
+    it('create', async function() {
+      let createCalled = false;
+
+      Polly.once('create', polly => {
+        expect(polly).to.be.an.instanceof(Polly);
+        createCalled = true;
+      });
+
+      const polly = new Polly('Test');
+
+      expect(createCalled).to.be.true;
+      await polly.stop();
+    });
+
+    it('create - should throw with an async listener', async function() {
+      Polly.once('create', () => {});
+      Polly.once('create', () => Promise.resolve());
+
+      expect(() => new Polly('Test', { adapters: [] })).to.throw(Error);
+    });
+
+    it('create - configuration order should be preserved', async function() {
+      Polly.once('create', polly => {
+        polly.configure({ logging: true, recordIfMissing: false });
+      });
+
+      const polly = new Polly('Test', { recordIfMissing: true });
+
+      expect(polly.config.logging).to.be.true;
+      expect(polly.config.recordIfMissing).to.be.true;
+      await polly.stop();
+    });
+
+    it('stop', async function() {
+      let stopCalled = false;
+
+      Polly.once('stop', polly => {
+        expect(polly).to.be.an.instanceof(Polly);
+        expect(polly.mode).to.equal(MODES.STOPPED);
+        stopCalled = true;
+      });
+
+      const polly = new Polly('Test');
+
+      await polly.stop();
+      expect(stopCalled).to.be.true;
     });
   });
 });

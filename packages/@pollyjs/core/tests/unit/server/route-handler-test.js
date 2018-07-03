@@ -9,11 +9,6 @@ describe('Unit | Server | RouteHandler', function() {
     expect(new RouteHandler().get('passthrough')).to.be.false;
   });
 
-  it('should respect default passthrough', function() {
-    expect(new RouteHandler([['passthrough', true]]).get('passthrough')).to.be
-      .true;
-  });
-
   it('registers an intercept handler', function() {
     const handler = new RouteHandler();
 

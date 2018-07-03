@@ -68,7 +68,7 @@ export default class Persister {
           NOTE: This must be triggered last as this entry can be used to
                 modify the payload (i.e. encrypting the request & response).
         */
-        await request._trigger('beforePersist', entry);
+        await request._emit('beforePersist', entry);
 
         entries.push(entry);
       }

@@ -1,70 +1,34 @@
-import Events from './events';
-import { assert } from '@pollyjs/utils';
-
-const EVENTS = Symbol();
-
-function assertEventName(eventName) {
-  assert(
-    `Invalid event name provided. Expected string, received: "${typeof eventName}".`,
-    typeof eventName === 'string'
-  );
-
-  assert(
-    `Invalid event name provided: "${eventName}". Possible events: ${Events.join(
-      ', '
-    )}.`,
-    Events.includes(eventName)
-  );
-}
+import EventEmitter from '../-private/event-emitter';
 
 export default class Handler extends Map {
   constructor() {
-    super(...arguments);
-    this.set(EVENTS, new Map());
+    super();
+    this._eventEmitter = new EventEmitter({
+      eventNames: [
+        'request',
+        'beforeReplay',
+        'beforePersist',
+        'beforeResponse',
+        'response'
+      ]
+    });
   }
 
-  on(eventName, handler) {
-    assertEventName(eventName);
-
-    assert(
-      `Attempted to register "${eventName}" but invalid handler provided.  Expected function, received: "${typeof handler}".`,
-      typeof handler === 'function'
-    );
-
-    const events = this.get(EVENTS);
-
-    if (!events.has(eventName)) {
-      events.set(eventName, []);
-    }
-
-    events.get(eventName).push(handler);
+  on(eventName, listener) {
+    this._eventEmitter.on(eventName, listener);
 
     return this;
   }
 
-  off(eventName, handler) {
-    assertEventName(eventName);
-
-    const events = this.get(EVENTS);
-
-    if (this._hasEventHandlers(eventName)) {
-      if (typeof handler === 'function') {
-        events.set(eventName, events.get(eventName).filter(h => h !== handler));
-      } else {
-        events.delete(eventName);
-      }
-    }
+  once(eventName, listener) {
+    this._eventEmitter.once(eventName, listener);
 
     return this;
   }
 
-  _hasEventHandlers(eventName) {
-    return this._getEventHandlers(eventName).length > 0;
-  }
+  off(eventName, listener) {
+    this._eventEmitter.off(eventName, listener);
 
-  _getEventHandlers(eventName) {
-    const events = this.get(EVENTS);
-
-    return events.has(eventName) ? events.get(eventName) : [];
+    return this;
   }
 }
