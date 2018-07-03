@@ -12,7 +12,6 @@ import Server from './server';
 import { version } from '../package.json';
 import { MODES, assert } from '@pollyjs/utils';
 import EventEmitter from './-private/event-emitter';
-import assertSync from './utils/assert-sync';
 
 const RECORDING_NAME = Symbol();
 const RECORDING_ID = Symbol();
@@ -44,10 +43,7 @@ export default class Polly {
 
     this.registerDefaultTypes();
     this.logger.connect();
-    assertSync(
-      'Attempted to emit an synchronous event "create" but an async listener was called.',
-      EVENT_EMITTER.emit('create', this)
-    );
+    EVENT_EMITTER.emitSync('create', this);
     this.configure(config);
   }
 
