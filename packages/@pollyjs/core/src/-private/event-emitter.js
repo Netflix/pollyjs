@@ -1,4 +1,5 @@
 import { assert } from '@pollyjs/utils';
+import isObjectLike from 'lodash-es/isObjectLike';
 
 const EVENTS = Symbol();
 const EVENT_NAMES = Symbol();
@@ -93,9 +94,10 @@ export default class EventEmitter {
     assertEventName(eventName, this[EVENT_NAMES]);
     assertListener(listener);
 
-    const once = async (...args) => {
+    const once = (...args) => {
       this.off(eventName, once);
-      await listener(...args);
+
+      return listener(...args);
     };
 
     this.on(eventName, once);
@@ -214,6 +216,8 @@ export default class EventEmitter {
    * `eventName`, in the order they were registered, passing the supplied
    * arguments to each.
    *
+   * Throws if a listener's return value is promise-like.
+   *
    * Returns `true` if the event had listeners, `false` otherwise.
    *
    * @param {String} eventName - The name of the event
@@ -224,7 +228,14 @@ export default class EventEmitter {
     assertEventName(eventName, this[EVENT_NAMES]);
 
     if (this.hasListeners(eventName)) {
-      this.listeners(eventName).forEach(listener => listener(...args));
+      this.listeners(eventName).forEach(listener => {
+        const returnValue = listener(...args);
+
+        assert(
+          `Attempted to emit a synchronous event "${eventName}" but an asynchronous listener was called.`,
+          !(isObjectLike(returnValue) && typeof returnValue.then === 'function')
+        );
+      });
 
       return true;
     }
