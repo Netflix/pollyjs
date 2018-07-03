@@ -3,7 +3,7 @@ import Polly from '../../src/polly';
 import setupPolly from '../../src/test-helpers/mocha';
 import Adapter from '@pollyjs/adapter';
 import Persister from '@pollyjs/persister';
-import { MODES, timeout } from '@pollyjs/utils';
+import { MODES } from '@pollyjs/utils';
 
 const nativeFetch = self.fetch;
 
@@ -335,7 +335,7 @@ describe('Unit | Polly', function() {
 
     it('create - should throw with an async listener', async function() {
       Polly.once('create', () => {});
-      Polly.once('create', () => timeout(5));
+      Polly.once('create', () => Promise.resolve());
 
       expect(() => new Polly('Test', { adapters: [] })).to.throw(Error);
     });

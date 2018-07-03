@@ -176,5 +176,25 @@ describe('Unit | EventEmitter', function() {
       expect(await emitter.emitParallel('a')).to.be.true;
       expect(array).to.have.ordered.members([1, 3, 2]);
     });
+
+    it('.emitSync()', async function() {
+      // No listeners should resolve to `false`
+      expect(emitter.emitSync('a')).to.be.false;
+
+      emitter.once('a', () => Promise.resolve());
+      expect(() => emitter.emitSync('a')).to.throw(
+        Error,
+        /Attempted to emit a synchronous event/
+      );
+
+      const array = [];
+
+      emitter.on('a', () => array.push(1));
+      emitter.on('a', () => array.push(2));
+      emitter.on('a', () => array.push(3));
+
+      expect(emitter.emitSync('a')).to.be.true;
+      expect(array).to.have.ordered.members([1, 2, 3]);
+    });
   });
 });
