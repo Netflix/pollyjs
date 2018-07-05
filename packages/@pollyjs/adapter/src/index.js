@@ -1,3 +1,4 @@
+import Interceptor from './-private/interceptor';
 import isExpired from './utils/is-expired';
 import { ACTIONS, MODES, assert } from '@pollyjs/utils';
 
@@ -72,15 +73,25 @@ export default class Adapter {
   async [REQUEST_HANDLER](request) {
     const { mode } = this.polly;
     const pollyRequest = this.polly.registerRequest(request);
+    let interceptor;
 
     await pollyRequest.setup();
 
-    if (mode === MODES.PASSTHROUGH || pollyRequest.shouldPassthrough) {
-      return this.passthrough(pollyRequest);
+    if (pollyRequest.shouldIntercept) {
+      interceptor = new Interceptor();
+      const response = await this.intercept(pollyRequest, interceptor);
+
+      if (interceptor.shouldIntercept) {
+        return response;
+      }
     }
 
-    if (pollyRequest.shouldIntercept) {
-      return this.intercept(pollyRequest);
+    if (
+      mode === MODES.PASSTHROUGH ||
+      pollyRequest.shouldPassthrough ||
+      (interceptor && interceptor.shouldPassthrough)
+    ) {
+      return this.passthrough(pollyRequest);
     }
 
     if (mode === MODES.RECORD) {
@@ -104,11 +115,13 @@ export default class Adapter {
     return this.onPassthrough(pollyRequest);
   }
 
-  async intercept(pollyRequest) {
+  async intercept(pollyRequest, interceptor) {
     pollyRequest.action = ACTIONS.INTERCEPT;
-    await pollyRequest._intercept();
+    await pollyRequest._intercept(interceptor);
 
-    return this.onIntercept(pollyRequest, pollyRequest.response);
+    if (interceptor.shouldIntercept) {
+      return this.onIntercept(pollyRequest, pollyRequest.response);
+    }
   }
 
   async record(pollyRequest) {

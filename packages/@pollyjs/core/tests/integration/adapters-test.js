@@ -4,6 +4,7 @@ import { setupMocha as setupPolly } from '../../src';
 import * as setupFetch from '../helpers/setup-fetch';
 import File from '../helpers/file';
 import Configs from './configs';
+import { ACTIONS } from '@pollyjs/utils';
 
 describe('Integration | Adapters', function() {
   for (const name in Configs) {
@@ -62,6 +63,56 @@ describe('Integration | Adapters', function() {
         expect(await persister.find(recordingId)).to.be.null;
         expect((await this.fetchRecord()).status).to.equal(404);
         expect(await persister.find(recordingId)).to.be.null;
+      });
+
+      it('should be able to intercept when in passthrough mode', async function() {
+        const { server } = this.polly;
+
+        this.polly.configure({ mode: 'passthrough' });
+
+        server
+          .get('/ping')
+          .intercept((req, res) => res.status(200).send('pong'));
+
+        const res = await this.fetch('/ping');
+        const text = await res.text();
+
+        expect(res.status).to.equal(200);
+        expect(text).to.equal('pong');
+      });
+
+      it('should be able to abort from an intercept', async function() {
+        const { server } = this.polly;
+        let responseCalled = false;
+
+        server
+          .get(this.recordUrl())
+          .intercept((req, res, interceptor) => interceptor.abort())
+          .on('response', req => {
+            responseCalled = true;
+            expect(req.action).to.not.equal(ACTIONS.INTERCEPT);
+          });
+
+        expect((await this.fetchRecord()).status).to.equal(404);
+        expect(responseCalled).to.be.true;
+      });
+
+      it('should be able to passthrough from an intercept', async function() {
+        const { server, persister, recordingId } = this.polly;
+        let responseCalled = false;
+
+        server
+          .get(this.recordUrl())
+          .intercept((req, res, interceptor) => interceptor.passthrough())
+          .on('response', req => {
+            responseCalled = true;
+            expect(req.action).to.equal(ACTIONS.PASSTHROUGH);
+          });
+
+        expect(await persister.find(recordingId)).to.be.null;
+        expect((await this.fetchRecord()).status).to.equal(404);
+        expect(await persister.find(recordingId)).to.be.null;
+        expect(responseCalled).to.be.true;
       });
 
       it('should handle recording requests posting FormData + Blob/File', async function() {
