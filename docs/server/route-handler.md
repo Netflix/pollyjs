@@ -72,11 +72,59 @@ __Example__
 ```js
 server
   .get('/session/:id')
-  .intercept((req, res) => {
+  .intercept((req, res, interceptor) => {
+    if (req.params.id === '1') {
+      res.status(200).json({ token: 'ABC123XYZ' });
+    } else if (req.params.id === '2') {
+      res.status(404).json({ error: 'Unknown Session' });
+    } else {
+      interceptor.abort();
+    }
+  });
+```
+
+#### Interceptor
+
+The `intercept` handler receives a third `interceptor` argument that provides
+some utilities.
+
+##### abort
+
+Calling the `abort` method on the interceptor tells the Polly instance to
+continue handling the request as if it hasn't been intercepted. This allows you
+to only intercept specific types of requests while opting out of others.
+
+__Example__
+
+```js
+server
+  .get('/session/:id')
+  .intercept((req, res, interceptor) => {
     if (req.params.id === '1') {
       res.status(200).json({ token: 'ABC123XYZ' });
     } else {
-      res.status(404).json({ error: 'Unknown Session' });
+      interceptor.abort();
+    }
+  });
+```
+
+##### passthrough
+
+Calling the `passthrough` method on the interceptor tells the Polly instance to
+continue handling the request as if it has been declared as a passthrough.
+This allows you to only intercept specific types of requests while passing
+others through.
+
+__Example__
+
+```js
+server
+  .get('/session/:id')
+  .intercept((req, res, interceptor) => {
+    if (req.params.id === '1') {
+      res.status(200).json({ token: 'ABC123XYZ' });
+    } else {
+      interceptor.passthrough();
     }
   });
 ```

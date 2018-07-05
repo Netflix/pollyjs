@@ -73,24 +73,25 @@ export default class Adapter {
   async [REQUEST_HANDLER](request) {
     const { mode } = this.polly;
     const pollyRequest = this.polly.registerRequest(request);
+    let interceptor;
 
     await pollyRequest.setup();
 
-    if (mode === MODES.PASSTHROUGH || pollyRequest.shouldPassthrough) {
-      return this.passthrough(pollyRequest);
-    }
-
     if (pollyRequest.shouldIntercept) {
-      const interceptor = new Interceptor();
+      interceptor = new Interceptor();
       const response = await this.intercept(pollyRequest, interceptor);
 
       if (interceptor.shouldIntercept) {
         return response;
       }
+    }
 
-      if (interceptor.shouldPassthrough) {
-        return this.passthrough(pollyRequest);
-      }
+    if (
+      mode === MODES.PASSTHROUGH ||
+      pollyRequest.shouldPassthrough ||
+      (interceptor && interceptor.shouldPassthrough)
+    ) {
+      return this.passthrough(pollyRequest);
     }
 
     if (mode === MODES.RECORD) {

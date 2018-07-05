@@ -65,6 +65,22 @@ describe('Integration | Adapters', function() {
         expect(await persister.find(recordingId)).to.be.null;
       });
 
+      it('should be able to intercept when in passthrough mode', async function() {
+        const { server } = this.polly;
+
+        this.polly.configure({ mode: 'passthrough' });
+
+        server
+          .get('/ping')
+          .intercept((req, res) => res.status(200).send('pong'));
+
+        const res = await this.fetch('/ping');
+        const text = await res.text();
+
+        expect(res.status).to.equal(200);
+        expect(text).to.equal('pong');
+      });
+
       it('should be able to abort from an intercept', async function() {
         const { server } = this.polly;
         let responseCalled = false;
