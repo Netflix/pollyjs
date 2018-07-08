@@ -1,5 +1,6 @@
 import toNVPairs from './utils/to-nv-pairs';
 import getByteLength from 'utf8-byte-length';
+import setCookies from 'set-cookie-parser';
 
 function headersSize(response) {
   const keys = [];
@@ -25,7 +26,7 @@ export default class Response {
     this.statusText = response.statusText;
     this.headers = toNVPairs(response.headers);
     this.headersSize = headersSize(this);
-    this.cookies = [];
+    this.cookies = setCookies.parse(response.getHeader('Set-Cookie'));
     this.redirectURL = '';
 
     this.content = {

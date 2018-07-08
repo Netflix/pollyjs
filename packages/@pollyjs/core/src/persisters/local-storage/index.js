@@ -1,5 +1,4 @@
 import Persister from '@pollyjs/persister';
-import stringify from 'json-stable-stringify';
 
 export default class LocalStoragePersister extends Persister {
   constructor(polly, store = global.localStorage) {
@@ -15,7 +14,7 @@ export default class LocalStoragePersister extends Persister {
   }
 
   set db(db) {
-    this._store.setItem(this._namespace, stringify(db));
+    this._store.setItem(this._namespace, this.stringify(db));
   }
 
   findRecording(recordingId) {

@@ -35,16 +35,8 @@ export default class FetchAdapter extends Adapter {
     return response;
   }
 
-  onReplay(pollyRequest, recordingEntry) {
-    const { status, headers, content } = recordingEntry.response;
-    const headersObj = headers.reduce((accum, { name, value }) => {
-      accum[name] = value;
-
-      return accum;
-    }, {});
-    const body = content && content.text;
-
-    return this.respond(pollyRequest, status, headersObj, body);
+  onReplay(pollyRequest, { status, headers, body }) {
+    return this.respond(pollyRequest, status, headers, body);
   }
 
   async onPassthrough(pollyRequest) {

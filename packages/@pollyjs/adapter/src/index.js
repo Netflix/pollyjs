@@ -144,7 +144,19 @@ export default class Adapter {
       await this.timeout(pollyRequest, recordingEntry);
       pollyRequest.action = ACTIONS.REPLAY;
 
-      return this.onReplay(pollyRequest, recordingEntry);
+      const { status, statusText, headers, content } = recordingEntry.response;
+      const normalizedResponse = {
+        status,
+        statusText,
+        headers: (headers || []).reduce((accum, { name, value }) => {
+          accum[name] = value;
+
+          return accum;
+        }, {}),
+        body: content && content.text
+      };
+
+      return this.onReplay(pollyRequest, normalizedResponse, recordingEntry);
     }
 
     if (config.recordIfMissing) {

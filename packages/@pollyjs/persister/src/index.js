@@ -1,6 +1,7 @@
-import { assert } from '@pollyjs/utils';
 import HAR from './har';
 import Entry from './har/entry';
+import stringify from 'fast-json-stable-stringify';
+import { assert } from '@pollyjs/utils';
 
 const CREATOR_NAME = 'Polly.JS';
 
@@ -133,6 +134,10 @@ export default class Persister {
         )) ||
       null
     );
+  }
+
+  stringify() {
+    return stringify(...arguments);
   }
 
   findRecording() {
