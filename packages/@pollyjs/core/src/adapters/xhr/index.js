@@ -39,16 +39,8 @@ export default class XHRAdapter extends Adapter {
     this.respondToXhr(pollyRequest);
   }
 
-  async onReplay(pollyRequest, recordingEntry) {
-    const { status, headers, content } = recordingEntry.response;
-    const headersObj = headers.reduce((accum, { name, value }) => {
-      accum[name] = value;
-
-      return accum;
-    }, {});
-    const body = content && content.text;
-
-    await pollyRequest.respond(status, headersObj, body);
+  async onReplay(pollyRequest, { status, headers, body }) {
+    await pollyRequest.respond(status, headers, body);
     this.respondToXhr(pollyRequest);
   }
 

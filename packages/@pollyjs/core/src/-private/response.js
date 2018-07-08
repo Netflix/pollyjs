@@ -1,4 +1,4 @@
-import stringify from 'json-stable-stringify';
+import stringify from 'fast-json-stable-stringify';
 import { assert, HTTP_STATUS_CODES } from '@pollyjs/utils';
 import HTTPBase from './http-base';
 

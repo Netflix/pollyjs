@@ -44,7 +44,9 @@
   "dependencies": {
     "@pollyjs/utils": "^0.1.1",
     "bowser": "^1.9.3",
+    "fast-json-stable-stringify": "^2.0.0",
     "lodash-es": "^4.17.10",
+    "set-cookie-parser": "^2.2.0",
     "utf8-byte-length": "^1.0.4"
   },
   "devDependencies": {

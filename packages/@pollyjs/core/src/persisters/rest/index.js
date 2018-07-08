@@ -1,5 +1,4 @@
 import Persister from '@pollyjs/persister';
-import stringify from 'json-stable-stringify';
 import buildUrl from '../../utils/build-url';
 import ajax from './ajax';
 
@@ -21,7 +20,7 @@ export default class RestPersister extends Persister {
   async saveRecording(recordingId, data) {
     await this.ajax(`/${encodeURIComponent(recordingId)}`, {
       method: 'POST',
-      body: stringify(data),
+      body: this.stringify(data),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         Accept: 'application/json; charset=utf-8'

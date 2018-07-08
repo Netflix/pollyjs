@@ -1,6 +1,6 @@
 import md5 from 'blueimp-md5';
 import URL from 'url-parse';
-import stringify from 'json-stable-stringify';
+import stringify from 'fast-json-stable-stringify';
 import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
 import removeHostFromUrl from '../utils/remove-host-from-url';

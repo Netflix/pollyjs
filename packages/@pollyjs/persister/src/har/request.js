@@ -1,5 +1,6 @@
 import toNVPairs from './utils/to-nv-pairs';
 import getByteLength from 'utf8-byte-length';
+import setCookies from 'set-cookie-parser';
 
 function headersSize(request) {
   const keys = [];
@@ -28,7 +29,7 @@ export default class Request {
     this.headers = toNVPairs(request.headers);
     this.headersSize = headersSize(this);
     this.queryString = toNVPairs(request.query);
-    this.cookies = [];
+    this.cookies = setCookies.parse(request.getHeader('Set-Cookie'));
 
     if (request.body || request.hasHeader('Content-Type')) {
       this.postData = {

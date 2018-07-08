@@ -13,12 +13,15 @@ export default class Log {
       this,
       {
         version: '1.2',
-        browser,
         entries: [],
         pages: []
       },
       opts
     );
+
+    if (!this.browser && browser) {
+      this.browser = browser;
+    }
   }
 
   addEntries(entries = []) {
