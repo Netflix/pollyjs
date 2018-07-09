@@ -8,9 +8,7 @@ Polly.on('create', polly => {
      * is preferred here. Can be overridden at runtime in cases where the
      * Polly server is externally hosted.
      */
-    persisterOptions: {
-      host: ''
-    }
+    persisterOptions: { rest: { host: '' } }
   });
 });
 

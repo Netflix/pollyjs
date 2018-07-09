@@ -5,6 +5,10 @@ const nativeFetch = global.fetch;
 const { defineProperty } = Object;
 
 export default class FetchAdapter extends Adapter {
+  static get name() {
+    return 'fetch';
+  }
+
   onConnect() {
     this.assert('Fetch global not found.', nativeFetch);
     this.assert(
@@ -81,9 +85,5 @@ export default class FetchAdapter extends Adapter {
     defineProperty(fetchResponse, 'url', { value: absoluteUrl });
 
     return fetchResponse;
-  }
-
-  toString() {
-    return '[Adapter: Fetch]';
   }
 }

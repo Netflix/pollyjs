@@ -1,20 +1,38 @@
 import Persister from '@pollyjs/persister';
 
+const { parse } = JSON;
+
 export default class LocalStoragePersister extends Persister {
-  constructor(polly, store = global.localStorage) {
-    super(polly);
-    this._store = store;
-    this._namespace = '__pollyjs__';
+  static get name() {
+    return 'local-storage';
+  }
+
+  get defaultOptions() {
+    return {
+      key: 'pollyjs',
+      context: global
+    };
+  }
+
+  get localStorage() {
+    const { context } = this.options;
+
+    this.assert(
+      `Could not find "localStorage" on the given context "${context}".`,
+      context && context.localStorage
+    );
+
+    return context.localStorage;
   }
 
   get db() {
-    const items = this._store.getItem(this._namespace);
+    const items = this.localStorage.getItem(this.options.key);
 
-    return items ? JSON.parse(items) : {};
+    return items ? parse(items) : {};
   }
 
   set db(db) {
-    this._store.setItem(this._namespace, this.stringify(db));
+    this.localStorage.setItem(this.options.key, this.stringify(db));
   }
 
   findRecording(recordingId) {

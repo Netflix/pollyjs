@@ -12,6 +12,27 @@ export default class Persister {
     this.pending = new Map();
   }
 
+  static get type() {
+    return 'persister';
+  }
+
+  static get name() {
+    assert('Must override the static `name` getter.', false);
+  }
+
+  get defaultOptions() {
+    return {};
+  }
+
+  get options() {
+    const { name } = this.constructor;
+
+    return {
+      ...(this.defaultOptions || {}),
+      ...((this.polly.config.persisterOptions || {})[name] || {})
+    };
+  }
+
   get hasPending() {
     /*
       Although the pending map is bucketed by recordingId, the bucket will always
@@ -19,10 +40,6 @@ export default class Persister {
       exists, then it has items in it.
     */
     return this.pending.size > 0;
-  }
-
-  get config() {
-    return this.polly.config.persisterOptions;
   }
 
   async persist() {
@@ -54,7 +71,7 @@ export default class Persister {
       for (const request of requests) {
         const entry = new Entry(request);
 
-        assert(
+        this.assert(
           `Cannot persist response for [${entry.request.method}] ${
             entry.request.url
           } because the status code was ${
@@ -83,8 +100,14 @@ export default class Persister {
   }
 
   recordRequest(pollyRequest) {
-    assert(`You must pass a PollyRequest to 'recordRequest'.`, pollyRequest);
-    assert(`Cannot save a request with no response.`, pollyRequest.didRespond);
+    this.assert(
+      `You must pass a PollyRequest to 'recordRequest'.`,
+      pollyRequest
+    );
+    this.assert(
+      `Cannot save a request with no response.`,
+      pollyRequest.didRespond
+    );
 
     const { recordingId, recordingName } = pollyRequest;
 
@@ -103,7 +126,7 @@ export default class Persister {
     const recording = await this.findRecording(recordingId);
 
     if (recording) {
-      assert(
+      this.assert(
         `Recording with id '${recordingId}' is invalid. Please delete the recording so a new one can be created.`,
         recording.log && recording.log.creator.name === CREATOR_NAME
       );
@@ -140,15 +163,22 @@ export default class Persister {
     return stringify(...arguments);
   }
 
+  assert(message, ...args) {
+    assert(
+      `[${this.constructor.type}:${this.constructor.name}] ${message}`,
+      ...args
+    );
+  }
+
   findRecording() {
-    assert('[Persister] Must implement the `findRecording` hook.', false);
+    this.assert('Must implement the `findRecording` hook.', false);
   }
 
   saveRecording() {
-    assert('[Persister] Must implement the `saveRecording` hook.', false);
+    this.assert('Must implement the `saveRecording` hook.', false);
   }
 
   deleteRecording() {
-    assert('[Persister] Must implement the `deleteRecording` hook.', false);
+    this.assert('Must implement the `deleteRecording` hook.', false);
   }
 }

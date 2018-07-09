@@ -6,6 +6,10 @@ import serializeResponseHeaders from './utils/serialize-response-headers';
 const SEND = Symbol();
 
 export default class XHRAdapter extends Adapter {
+  static get name() {
+    return 'xhr';
+  }
+
   onConnect() {
     this.assert('XHR global not found.', FakeXHR.xhr.supportsXHR);
     this.assert(
@@ -92,9 +96,5 @@ export default class XHRAdapter extends Adapter {
       serializeResponseHeaders(xhr.getAllResponseHeaders()),
       xhr.responseText
     );
-  }
-
-  toString() {
-    return '[Adapter: XHR]';
   }
 }

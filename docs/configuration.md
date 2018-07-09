@@ -141,6 +141,28 @@ polly.configure({
 });
 ```
 
+## adapterOptions
+
+_Type_: `Object`
+_Default_: `{}`
+
+Options to be passed into the adapters keyed by the adapter name.
+
+?> __Note:__ Check out the appropriate documentation pages for each adapter
+for more details.
+
+__Example__
+
+```js
+polly.configure({
+  adapterOptions: {
+    fetch: {
+      context: win
+    }
+  }
+});
+```
+
 ## persister
 
 _Type_: `String`
@@ -159,17 +181,9 @@ polly.configure({
 ## persisterOptions
 
 _Type_: `Object`
+_Default_: `{}`
 
-_Default_:
-
-```js
-{
-  host: '',
-  apiNamespace: '/polly'
-}
-```
-
-Options to be passed into the persister.
+Options to be passed into the persister keyed by the persister name.
 
 ?> __Note:__ Check out the appropriate documentation pages for each persister
 for more details.
@@ -179,7 +193,9 @@ __Example__
 ```js
 polly.configure({
   persisterOptions: {
-    apiNamespace: '/pollyjs'
+    rest: {
+      apiNamespace: '/pollyjs'
+    }
   }
 });
 ```

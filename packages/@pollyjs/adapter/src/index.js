@@ -10,6 +10,27 @@ export default class Adapter {
     this.isConnected = false;
   }
 
+  static get type() {
+    return 'adapter';
+  }
+
+  static get name() {
+    assert('Must override the static `name` getter.', false);
+  }
+
+  get defaultOptions() {
+    return {};
+  }
+
+  get options() {
+    const { name } = this.constructor;
+
+    return {
+      ...(this.defaultOptions || {}),
+      ...((this.polly.config.adapterOptions || {})[name] || {})
+    };
+  }
+
   get persister() {
     return this.polly.persister;
   }
@@ -42,7 +63,7 @@ export default class Adapter {
         return false;
       }
 
-      if (!navigator.onLine) {
+      if (navigator && !navigator.onLine) {
         console.warn(
           '[Polly] Recording for the following request has expired but the browser is offline.\n' +
             `${recordingEntry.request.method} ${recordingEntry.request.url}\n`,
@@ -171,24 +192,18 @@ export default class Adapter {
   }
 
   assert(message, ...args) {
-    assert(`${this} ${message}`, ...args);
-  }
-
-  toString() {
-    /* cannot use this.assert since `this` calls toString */
-    assert('Must implement the the `toString` hook.', false);
+    assert(
+      `[${this.constructor.type}:${this.constructor.name}] ${message}`,
+      ...args
+    );
   }
 
   onConnect() {
     this.assert('Must implement the `onConnect` hook.', false);
   }
 
-  onPassthrough() {
-    this.assert('Must implement the `onPassthrough` hook.', false);
-  }
-
-  onIntercept() {
-    this.assert('Must implement the `onIntercept` hook.', false);
+  onDisconnect() {
+    this.assert('Must implement the `onDisconnect` hook.', false);
   }
 
   onRecord() {
@@ -199,7 +214,11 @@ export default class Adapter {
     this.assert('Must implement the `onReplay` hook.', false);
   }
 
-  onDisconnect() {
-    this.assert('Must implement the `onDisconnect` hook.', false);
+  onIntercept() {
+    this.assert('Must implement the `onIntercept` hook.', false);
+  }
+
+  onPassthrough() {
+    this.assert('Must implement the `onPassthrough` hook.', false);
   }
 }

@@ -14,8 +14,10 @@ as well as a [CLI](cli/overview) to get you up and running.
 new Polly('<Recording Name>', {
   persister: 'rest',
   persisterOptions: {
-    host: '',
-    apiNamespace: '/polly'
+    rest: {
+      host: '',
+      apiNamespace: '/polly'
+    }
   }
 });
 ```
@@ -25,7 +27,7 @@ new Polly('<Recording Name>', {
 ### host
 
 _Type_: `String`
-_Default_: `''`
+_Default_: `'http://localhost:3000'`
 
 The host that the API exists on.
 
@@ -34,7 +36,9 @@ __Example__
 ```js
 polly.configure({
   persisterOptions: {
-    host: 'http://netflix.com:3000'
+    rest: {
+      host: 'http://localhost.com:4000'
+    }
   }
 });
 ```
@@ -58,7 +62,9 @@ __Example__
 ```js
 polly.configure({
   persisterOptions: {
-    apiNamespace: '/pollyjs'
+    rest: {
+      apiNamespace: '/pollyjs'
+    }
   }
 });
 ```

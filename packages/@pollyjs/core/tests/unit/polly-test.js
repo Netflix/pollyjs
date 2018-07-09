@@ -80,16 +80,16 @@ describe('Unit | Polly', function() {
     let connectCalled, disconnectCalled;
 
     class MockAdapter extends Adapter {
+      static get name() {
+        return 'mock';
+      }
+
       onConnect() {
         connectCalled = true;
       }
 
       onDisconnect() {
         disconnectCalled = true;
-      }
-
-      toString() {
-        return 'MockAdapter';
       }
     }
 
@@ -239,15 +239,15 @@ describe('Unit | Polly', function() {
       let connectCalled;
 
       class MockAdapter extends Adapter {
+        static get name() {
+          return 'mock';
+        }
+
         onConnect() {
           connectCalled = true;
         }
 
         onDisconnect() {}
-
-        toString() {
-          return 'MockAdapter';
-        }
       }
 
       this.polly.configure({ adapters: [['mock-adapter', MockAdapter]] });
@@ -264,14 +264,14 @@ describe('Unit | Polly', function() {
       let disconnectCalled = false;
 
       class MockAdapter extends Adapter {
+        static get name() {
+          return 'mock';
+        }
+
         onConnect() {}
 
         onDisconnect() {
           disconnectCalled = true;
-        }
-
-        toString() {
-          return 'MockAdapter';
         }
       }
 
@@ -287,14 +287,14 @@ describe('Unit | Polly', function() {
       const disconnects = [];
 
       class MockAdapter extends Adapter {
+        static get name() {
+          return 'mock';
+        }
+
         onConnect() {}
 
         onDisconnect() {
           disconnects.push(true);
-        }
-
-        toString() {
-          return 'MockAdapter';
         }
       }
 

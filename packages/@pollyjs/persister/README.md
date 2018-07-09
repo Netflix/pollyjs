@@ -36,6 +36,10 @@ documentation for more details.
 import Persister from '@pollyjs/persister';
 
 class CustomPersister extends Persister {
+  static get name() {
+    return 'custom';
+  }
+
   findRecording() {}
 
   saveRecording() {}
