@@ -2,8 +2,8 @@ import fs from 'fs-extra';
 import path from 'path';
 
 export default class API {
-  constructor(recordingsDir) {
-    this.recordingsDir = recordingsDir;
+  constructor(options = {}) {
+    this.recordingsDir = options.recordingsDir;
   }
 
   getRecording(recording) {
