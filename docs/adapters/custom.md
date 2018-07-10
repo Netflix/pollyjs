@@ -29,16 +29,16 @@ yarn add @pollyjs/adapter -D
 import Adapter from '@pollyjs/adapter';
 
 class CustomAdapter extends Adapter {
+  static get name() {
+    return 'custom';
+  }
+
   onConnect() {
     /* Do something when the adapter is connect to */
   }
 
   onDisconnect() {
     /* Do something when the adapter is disconnected from */
-  }
-
-  toString() {
-    return '[Adapter: CustomAdapter]';
   }
 }
 ```

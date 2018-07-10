@@ -1,7 +1,7 @@
 const common = {
   recordFailedRequests: true,
   persisterOptions: {
-    host: ''
+    rest: { host: '' }
   }
 };
 

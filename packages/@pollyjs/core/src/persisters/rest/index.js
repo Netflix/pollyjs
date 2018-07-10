@@ -3,8 +3,19 @@ import buildUrl from '../../utils/build-url';
 import ajax from './ajax';
 
 export default class RestPersister extends Persister {
+  static get name() {
+    return 'rest';
+  }
+
+  get defaultOptions() {
+    return {
+      host: 'http://localhost:3000',
+      apiNamespace: '/polly'
+    };
+  }
+
   ajax(url, ...args) {
-    const { host, apiNamespace } = this.config;
+    const { host, apiNamespace } = this.options;
 
     return ajax(buildUrl(host, apiNamespace, url), ...args);
   }

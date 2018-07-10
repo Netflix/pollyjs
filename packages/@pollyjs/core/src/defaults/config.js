@@ -3,7 +3,9 @@ import Timing from '../utils/timing';
 
 export default {
   mode: MODES.REPLAY,
+
   adapters: ['fetch', 'xhr'],
+  adapterOptions: {},
 
   logging: false,
 
@@ -15,10 +17,7 @@ export default {
   timing: Timing.fixed(0),
 
   persister: 'rest',
-  persisterOptions: {
-    host: 'http://localhost:3000',
-    apiNamespace: '/polly'
-  },
+  persisterOptions: {},
 
   matchRequestsBy: {
     method: true,

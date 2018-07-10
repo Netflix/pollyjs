@@ -7,9 +7,9 @@ module('Unit | Polly | General', function() {
       assert.equal(typeof Polly, 'function');
     });
 
-    test('it defaults to an empty string for persisterOptions.host', function(assert) {
+    test('it defaults to an empty string for persisterOptions.rest.host', function(assert) {
       const polly = new Polly('abc');
-      assert.equal(polly.config.persisterOptions.host, '');
+      assert.equal(polly.config.persisterOptions.rest.host, '');
 
       return polly.stop();
     });
