@@ -3,8 +3,8 @@
 module.exports = {
   test_page: 'test/index.mustache',
   before_tests: 'yarn test:build',
-  launch_in_ci: ['Chrome', 'Mocha'],
-  launch_in_dev: ['Chrome', 'Mocha'],
+  launch_in_ci: ['Chrome', 'Mocha', 'ESLint'],
+  launch_in_dev: ['Chrome', 'Mocha', 'ESLint'],
   watch_files: [
     './build-scripts/**/*',
     './packages/@pollyjs/*/src/**/*',
@@ -26,8 +26,12 @@ module.exports = {
   },
   launchers: {
     Mocha: {
-      command: 'mocha',
+      command:
+        'mocha ./packages/@pollyjs/*/build/node/*.js --ui bdd --reporter tap --require test/node-setup.js',
       protocol: 'tap'
+    },
+    ESLint: {
+      command: 'yarn lint'
     }
   },
   proxies: {

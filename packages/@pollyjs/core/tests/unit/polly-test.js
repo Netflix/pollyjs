@@ -5,8 +5,6 @@ import Adapter from '@pollyjs/adapter';
 import Persister from '@pollyjs/persister';
 import { MODES } from '@pollyjs/utils';
 
-const nativeFetch = global.fetch;
-
 describe('Unit | Polly', function() {
   it('should exist', function() {
     expect(Polly).to.be.a('function');
