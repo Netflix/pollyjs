@@ -23,16 +23,29 @@
     "docs:serve": "docsify serve ./docs",
     "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
     "lint": "lerna run lint",
-    "pretest": "npm-run-all bootstrap test:clean server:build",
-    "test": "server-test server:start :4000 test:start",
-    "test:ci": "yarn pretest && server-test server:start :4000 test:start-ci ; yarn posttest",
-    "test:build": "lerna run test:build --ignore=@pollyjs/ember --parallel",
-    "test:start": "testem",
-    "test:start-ci": "testem ci",
-    "test:clean": "lerna run test:clean --parallel",
-    "posttest": "yarn test:clean",
+
+    "test": "npm-run-all --continue-on-error --aggregate-output --parallel test:node test:browser:ci test:ember",
+    "test:ember": "lerna run test --scope=@pollyjs/ember",
+
+    "pretest:node": "npm-run-all test:node:clean test:node:build",
+    "test:node": "mocha",
+    "test:node:watch": "yarn test:node --watch ",
+    "test:node:build": "lerna run test:node:build --parallel",
+    "test:node:clean": "rimraf packages/@pollyjs/*/build/node",
+    "posttest:node": "yarn test:node:clean",
+
+    "pretest:browser": "npm-run-all test:browser:clean server:build",
+    "test:browser": "server-test server:start :4000 test:browser:start",
+    "test:browser:ci": "yarn pretest:browser && server-test server:start :4000 test:browser:start-ci ; yarn posttest:browser",
+    "test:browser:build": "lerna run test:browser:build --parallel",
+    "test:browser:start": "testem",
+    "test:browser:start-ci": "testem ci",
+    "test:browser:clean": "rimraf packages/@pollyjs/*/build/browser",
+    "posttest:browser": "yarn test:browser:clean",
+
     "server:build": "lerna run build --scope=@pollyjs/node-server",
     "server:start": "node ./test/server.js",
+
     "release": "lerna publish",
     "postrelease": "yarn docs:publish"
   },

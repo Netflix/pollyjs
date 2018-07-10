@@ -1,0 +1,4 @@
+packages/@pollyjs/*/build/node/*.js
+--ui bdd
+--reporter tap
+--require test/node-setup.js

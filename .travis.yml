@@ -28,5 +28,4 @@ before_script:
 script:
   - commitlint-travis
   - yarn run lint
-  - yarn run test:ci
-  - lerna run test --scope=@pollyjs/ember
+  - yarn run test

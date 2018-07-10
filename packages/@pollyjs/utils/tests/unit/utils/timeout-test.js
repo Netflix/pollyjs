@@ -22,7 +22,7 @@ describe('Unit | Utils | timeout', function() {
     promise.then(() => (resolved = true));
 
     setTimeout(() => expect(resolved).to.be.false, 50);
-    setTimeout(() => expect(resolved).to.be.true, 100);
+    setTimeout(() => expect(resolved).to.be.true, 101);
 
     await promise;
   });
