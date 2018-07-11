@@ -1,5 +1,7 @@
 # Contributing
 
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
+
 ## Getting Started
 
 Install required global dependencies:
@@ -13,6 +15,13 @@ Check out the code and go into the pollyjs directory:
 ```bash
 git clone https://github.com/netflix/pollyjs.git
 cd pollyjs
+```
+
+Install the dependencies and bootstrap the monorepo:
+
+```bash
+yarn
+yarn run bootstrap
 ```
 
 The code for individual packages of this monorepo are in `packages/@pollyjs/*`.

@@ -11,7 +11,7 @@ export default function createBrowserTestConfig(options = {}) {
         output: {
           format: 'es',
           name: `${pkg.name}-tests`,
-          file: `./build/browser/tests-bundle-es.js`,
+          file: `./build/browser/test-bundle.es.js`,
           intro: `
             'use strict'
             describe('${pkg.name}', function() {
