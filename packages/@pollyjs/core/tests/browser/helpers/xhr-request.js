@@ -1,4 +1,4 @@
-import serializeResponseHeaders from '../../src/adapters/xhr/utils/serialize-response-headers';
+import serializeResponseHeaders from '../../../src/adapters/xhr/utils/serialize-response-headers';
 
 export default function request(url, obj = {}) {
   return new Promise(resolve => {

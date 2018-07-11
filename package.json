@@ -31,7 +31,6 @@
     "test:start-ci": "testem ci",
     "test:clean": "rimraf packages/@pollyjs/*/build",
     "test:ember": "lerna run test --scope=@pollyjs/ember",
-    "test:all": "npm-run-all --continue-on-error --aggregate-output --parallel test:ci test:ember",
     "posttest": "yarn test:clean",
     "server:build": "lerna run build --scope=@pollyjs/node-server",
     "server:start": "node ./test/server.js",

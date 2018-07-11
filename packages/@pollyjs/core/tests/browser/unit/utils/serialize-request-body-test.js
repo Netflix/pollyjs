@@ -1,4 +1,4 @@
-import serializeRequestBody from '../../../src/utils/serialize-request-body';
+import serializeRequestBody from '../../../../src/utils/serialize-request-body';
 import File from '../../helpers/file';
 
 describe('Unit | Utils | serializeRequestBody', function() {

@@ -6,7 +6,7 @@ import { pkg } from './rollup.utils';
 export default function createNodeTestConfig(options = {}) {
   return deepmerge(
     createNodeConfig({
-      input: ['tests/**/*-test.js', 'tests-node/**/*-test.js'],
+      input: 'tests/!(browser)/**/*-test.js',
       output: {
         format: 'cjs',
         name: `${pkg.name}-tests`,

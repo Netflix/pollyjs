@@ -7,7 +7,7 @@ export default function createBrowserTestConfig(options = {}) {
   return deepmerge(
     createBrowserConfig(
       {
-        input: ['tests/**/*-test.js', 'tests-browser/**/*-test.js'],
+        input: 'tests/!(node)/**/*-test.js',
         output: {
           format: 'es',
           name: `${pkg.name}-tests`,
