@@ -20,7 +20,7 @@ export default class FSPersister extends Persister {
   }
 
   findRecording(recordingId) {
-    return this.api.getRecording(recordingId).body;
+    return this.api.getRecording(recordingId).body || null;
   }
 
   saveRecording(recordingId, data) {
