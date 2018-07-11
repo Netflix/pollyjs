@@ -13,13 +13,12 @@
   "scripts": {
     "build": "npm-run-all clean rollup",
     "test:build": "rollup -c rollup.config.test.js",
-    "test:clean": "rimraf build",
     "clean": "rimraf dist",
     "rollup": "rollup -c ../../../rollup.config.js",
     "rollup:prod": "NODE_ENV=production yarn rollup",
     "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
-    "lint": "eslint ./*.js src",
+    "lint": "eslint ./*.js src tests",
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "keywords": [

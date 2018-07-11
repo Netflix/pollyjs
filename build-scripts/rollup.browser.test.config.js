@@ -3,15 +3,15 @@ import multiEntry from 'rollup-plugin-multi-entry';
 import createBrowserConfig from './rollup.browser.config';
 import { pkg } from './rollup.utils';
 
-export default function createClientTestConfig(options = {}) {
+export default function createBrowserTestConfig(options = {}) {
   return deepmerge(
     createBrowserConfig(
       {
-        input: 'tests/**/*-test.js',
+        input: 'tests/!(node)/**/*-test.js',
         output: {
           format: 'es',
           name: `${pkg.name}-tests`,
-          file: `./build/tests/bundle-es.js`,
+          file: `./build/browser/test-bundle.es.js`,
           intro: `
             'use strict'
             describe('${pkg.name}', function() {

@@ -1,4 +1,4 @@
-import { setupMocha as setupPolly, Polly } from '../../src';
+import { setupMocha as setupPolly, Polly } from '../../../src';
 import * as setupFetch from '../helpers/setup-fetch';
 import Configs from './configs';
 import * as validate from 'har-validator/lib/async';

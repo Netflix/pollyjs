@@ -1,3 +1,4 @@
-import createClientTestConfig from '../../../build-scripts/rollup.browser.test.config';
+import createNodeTestConfig from '../../../build-scripts/rollup.node.test.config';
+import createBrowserTestConfig from '../../../build-scripts/rollup.browser.test.config';
 
-export default createClientTestConfig();
+export default [createNodeTestConfig(), createBrowserTestConfig()];

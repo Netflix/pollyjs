@@ -1,8 +1,16 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { assert } from '@pollyjs/utils';
 
 export default class API {
-  constructor(recordingsDir) {
+  constructor(options = {}) {
+    const { recordingsDir } = options;
+
+    assert(
+      `Invalid recordings directory provided. Expected string, received: "${typeof recordingsDir}".`,
+      typeof recordingsDir === 'string'
+    );
+
     this.recordingsDir = recordingsDir;
   }
 

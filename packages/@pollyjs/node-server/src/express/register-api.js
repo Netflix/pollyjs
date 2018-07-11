@@ -17,7 +17,7 @@ export default function registerAPI(app, config) {
   config.apiNamespace = prependSlash(config.apiNamespace);
 
   const router = express.Router();
-  const api = new API(config.recordingsDir);
+  const api = new API({ recordingsDir: config.recordingsDir });
 
   router.use(nocache());
 

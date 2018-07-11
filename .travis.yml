@@ -22,11 +22,9 @@ install:
   - yarn install --no-lockfile --non-interactive
 
 before_script:
-  - lerna bootstrap
+  - yarn run bootstrap
   - yarn run build
 
 script:
   - commitlint-travis
-  - yarn run lint
   - yarn run test:ci
-  - lerna run test --scope=@pollyjs/ember

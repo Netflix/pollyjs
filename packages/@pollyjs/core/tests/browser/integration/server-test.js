@@ -1,4 +1,4 @@
-import { setupMocha as setupPolly } from '../../src';
+import { setupMocha as setupPolly } from '../../../src';
 
 describe('Integration | Server', function() {
   setupPolly();

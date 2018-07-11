@@ -13,7 +13,7 @@ function fixedTest(ms) {
     if (ms) {
       setTimeout(() => expect(resolved).to.be.false, ms / 2);
     }
-    setTimeout(() => expect(resolved).to.be.true, ms);
+    setTimeout(() => expect(resolved).to.be.true, ms + 1);
 
     await promise;
   });
@@ -34,7 +34,7 @@ function relativeTest(ratio) {
     if (timeout) {
       setTimeout(() => expect(resolved).to.be.false, timeout / 2);
     }
-    setTimeout(() => expect(resolved).to.be.true, timeout);
+    setTimeout(() => expect(resolved).to.be.true, timeout + 1);
 
     await promise;
   });

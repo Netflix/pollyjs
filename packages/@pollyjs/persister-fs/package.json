@@ -1,14 +1,14 @@
 {
-  "name": "@pollyjs/node-server",
-  "version": "0.4.0",
-  "description": "Standalone node server and express integration for @pollyjs",
-  "main": "dist/cjs/pollyjs-node-server.js",
-  "module": "dist/es/pollyjs-node-server.js",
+  "name": "@pollyjs/persister-fs",
+  "version": "0.0.0",
+  "description": "File system persister for @pollyjs",
+  "main": "dist/cjs/pollyjs-persister-fs.js",
+  "module": "dist/es/pollyjs-persister-fs.js",
   "files": [
     "src",
     "dist"
   ],
-  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server",
+  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-fs",
   "license": "Apache-2.0",
   "contributors": [
     {
@@ -23,10 +23,10 @@
   "keywords": [
     "polly",
     "pollyjs",
-    "server",
     "record",
     "replay",
-    "express"
+    "fs",
+    "file"
   ],
   "publishConfig": {
     "access": "public"
@@ -38,24 +38,19 @@
     "rollup:prod": "NODE_ENV=production yarn rollup",
     "watch": "rollup -c -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
-    "test": "",
-    "test:build": "",
-    "test:clean": "",
-    "lint": "eslint ./*.js src bin",
+    "test:build": "rollup -c rollup.config.test.js",
+    "lint": "eslint ./*.js src tests",
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
-    "@pollyjs/utils": "^0.1.1",
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "fs-extra": "^5.0.0",
-    "http-graceful-shutdown": "^2.1.1",
-    "morgan": "^1.9.0",
-    "nocache": "^2.0.0"
+    "@pollyjs/node-server": "^0.4.0",
+    "@pollyjs/persister": "^0.2.1"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^4.18.1",
+    "mocha": "^5.1.0",
+    "mock-fs": "^4.5.0",
     "npm-run-all": "^4.1.2",
     "prettier": "^1.10.2",
     "rimraf": "^2.6.2",

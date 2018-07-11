@@ -28,7 +28,7 @@ describe('Unit | Test Helpers | mocha', function() {
   it('should invoke beforeEach and afterEach', function() {
     const stub = new Sandbox();
 
-    setupPolly({}, stub);
+    setupPolly({ adapters: [] }, stub);
     expect(stub.beforeEachCalled.size).to.equal(1);
     expect(stub.afterEachCalled.size).to.equal(1);
   });
@@ -42,7 +42,7 @@ describe('Unit | Test Helpers | mocha', function() {
 
     const stub = new Sandbox(ctx);
 
-    setupPolly({}, stub);
+    setupPolly({ adapters: [] }, stub);
     expect(ctx.polly).to.be.a('object');
     expect(ctx.polly.recordingName).to.equal('foo');
   });
@@ -62,7 +62,7 @@ describe('Unit | Test Helpers | mocha', function() {
 
     const stub = new Sandbox(ctx);
 
-    setupPolly({}, stub);
+    setupPolly({ adapters: [] }, stub);
     expect(ctx.polly.recordingName).to.equal('baz/bar/foo');
   });
 });
