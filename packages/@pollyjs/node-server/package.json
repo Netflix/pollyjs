@@ -45,6 +45,7 @@
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
+    "@pollyjs/utils": "^0.1.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",

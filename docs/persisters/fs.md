@@ -34,7 +34,8 @@ new Polly('<Recording Name>', {
 _Type_: `String`
 _Default_: `'recordings'`
 
-The root directory to store all recordings.
+The root directory to store all recordings. Supports both relative and
+absolute paths.
 
 __Example__
 
