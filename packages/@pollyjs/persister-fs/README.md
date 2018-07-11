@@ -4,7 +4,7 @@
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
 [![Build Status](https://travis-ci.org/Netflix/pollyjs.svg?branch=master)](https://travis-ci.org/Netflix/pollyjs)
-[![npm version](https://badge.fury.io/js/%40pollyjs%2Fnode-server.svg)](https://badge.fury.io/js/%40pollyjs%2Fnode-server)
+[![npm version](https://badge.fury.io/js/%40pollyjs%2Fnode-server.svg)](https://badge.fury.io/js/%40pollyjs%2Fpersister-fs)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 The `@pollyjs/persister-fs` package provides a node file-system persister
