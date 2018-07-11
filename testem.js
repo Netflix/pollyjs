@@ -35,7 +35,8 @@ module.exports = {
       protocol: 'tap'
     },
     ESLint: {
-      command: 'yarn lint'
+      command: 'yarn lint -- -- --format tap',
+      protocol: 'tap'
     }
   },
   proxies: {
