@@ -35,8 +35,10 @@ documentation for more details.
 import { Polly } from '@pollyjs/core';
 import FSPersister from '@pollyjs/persister-fs';
 
+Polly.register(FSPersister);
+
 new Polly('<Recording Name>', {
-  persister: ['fs', FSPersister]
+  persister: ['fs']
 });
 ```
 
