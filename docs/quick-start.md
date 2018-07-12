@@ -50,7 +50,15 @@ Now that you've installed Polly and have setup your server, you're ready to
 fly. Lets take a look at what an example test case would look like using Polly.
 
 ```js
-import { Polly } from '@pollyjs/core';
+import { Polly, FetchAdapter, XHRAdapter, RESTPersister } from '@pollyjs/core';
+
+/*
+  Register the adapters and persisters we want to use. This way all future
+  polly instances can access them by name.
+*/
+Polly.register(XHRAdapter)
+Polly.register(FetchAdapter)
+Polly.register(RESTPersister)
 
 describe('Netflix Homepage', function() {
   it('should be able to sign in', async function() {
@@ -61,7 +69,19 @@ describe('Netflix Homepage', function() {
       will record any requests that it hasn't yet seen while replaying ones it
       has already recorded.
     */
-    const polly = new Polly('Sign In');
+    const polly = new Polly('Sign In', {
+      adapters: ['xhr', 'fetch'],
+      persister: 'rest'
+    });
+    const { server } = polly;
+
+    /* Intercept all Google Analytic requests and respond with a 200 */
+    server
+      .get('/google-analytics/*path')
+      .intercept((req, res) => res.sendStatus(200));
+
+    /* Pass-through all GET requests to /coverage */
+    server.get('/coverage').passthrough();
 
     /* start: pseudo test code */
     await visit('/login');
@@ -169,7 +189,10 @@ import { Polly } from '@pollyjs/core';
 
 describe('Netflix Homepage', function() {
   it('should handle a failed sign in attempt', async function() {
-    const polly = new Polly('Failed Sign In');
+    const polly = new Polly('Failed Sign In', {
+      adapters: ['xhr', 'fetch'],
+      persister: 'rest'
+    });
     const { server } = polly;
 
     /*
