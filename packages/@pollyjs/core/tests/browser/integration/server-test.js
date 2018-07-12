@@ -1,7 +1,14 @@
-import { setupMocha as setupPolly } from '../../../src';
+import {
+  setupMocha as setupPolly,
+  FetchAdapter,
+  RESTPersister
+} from '../../../src';
 
 describe('Integration | Server', function() {
-  setupPolly();
+  setupPolly({
+    adapters: [FetchAdapter],
+    persister: RESTPersister
+  });
 
   describe('Events & Middleware', function() {
     it('event: request', async function() {

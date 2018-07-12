@@ -1,13 +1,9 @@
 import mergeOptions from 'merge-options';
-import XHRAdapter from './adapters/xhr';
-import FetchAdapter from './adapters/fetch';
 import Logger from './-private/logger';
 import Container from './-private/container';
 import DefaultConfig from './defaults/config';
 import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
-import LocalStoragePersister from './persisters/local-storage';
-import RestPersister from './persisters/rest';
 import Server from './server';
 import { version } from '../package.json';
 import { MODES, assert } from '@pollyjs/utils';
@@ -16,11 +12,11 @@ import EventEmitter from './-private/event-emitter';
 const RECORDING_NAME = Symbol();
 const RECORDING_ID = Symbol();
 const PAUSED_MODE = Symbol();
-const { isArray } = Array;
 const { values } = Object;
 
+const FACTORY_REGISTRATION = new WeakMap();
 const EVENT_EMITTER = new EventEmitter({
-  eventNames: ['create', 'stop']
+  eventNames: ['register', 'create', 'stop']
 });
 
 /**
@@ -33,15 +29,19 @@ export default class Polly {
     this.logger = new Logger(this);
     this.server = new Server();
     this.config = {};
-    this._container = new Container();
+    this.container = new Container();
+
+    EVENT_EMITTER.emitSync('register', this.container);
 
     /* running adapter instances */
-    this._adapters = new Map();
+    this.adapters = new Map();
+
+    /* running persister instance */
+    this.persister = null;
 
     /* requests over the lifetime of the polly instance */
     this._requests = [];
 
-    this.registerDefaultTypes();
     this.logger.connect();
     EVENT_EMITTER.emitSync('create', this);
     this.configure(config);
@@ -110,6 +110,8 @@ export default class Polly {
    * @memberof Polly
    */
   configure(config = {}) {
+    const { container } = this;
+
     assert(
       'Cannot call `configure` once requests have been handled.',
       this._requests.length === 0
@@ -119,44 +121,32 @@ export default class Polly {
       this.mode !== MODES.STOPPED
     );
 
-    const { _container: container } = this;
-
     this.config = mergeOptions(DefaultConfig, this.config, config);
 
-    // Handle Adapters
-    this.config.adapters.forEach(adapter => {
-      let adapterName = adapter;
+    /* Handle Adapters */
 
-      if (isArray(adapterName)) {
-        const [name, AdapterType] = adapterName;
+    // Disconnect from all current adapters
+    this.disconnect();
 
-        adapterName = name;
-        container.set(`adapter:${adapterName}`, AdapterType);
-      }
+    // Register and connect to all specified adapters
+    this.config.adapters.forEach(adapter => this.connectTo(adapter));
 
-      if (typeof adapterName === 'string') {
-        this.connectTo(adapterName);
+    /* Handle Persister */
+    let { persister } = this.config;
 
-        return;
+    if (persister) {
+      if (typeof persister === 'function') {
+        container.register(persister);
+        persister = persister.name;
       }
 
       assert(
-        `Invalid argument "${adapterName}" passed into \`configure({ adapters: [...] })\``,
-        false
+        `Persister matching the name \`${persister}\` was not registered.`,
+        container.has(`persister:${persister}`)
       );
-    });
 
-    // Handle Persister
-    let { persister: persisterName } = this.config;
-
-    if (isArray(persisterName)) {
-      const [name, PersisterType] = persisterName;
-
-      persisterName = name;
-      container.set(`persister:${persisterName}`, PersisterType);
+      this.persister = new (container.lookup(`persister:${persister}`))(this);
     }
-
-    this.persister = new (container.get(`persister:${persisterName}`))(this);
   }
 
   static on(eventName, listener) {
@@ -177,16 +167,24 @@ export default class Polly {
     return this;
   }
 
-  /**
-   *
-   * @private
-   * @memberof Polly
-   */
-  registerDefaultTypes() {
-    this._container.set('adapter:xhr', XHRAdapter);
-    this._container.set('adapter:fetch', FetchAdapter);
-    this._container.set('persister:rest', RestPersister);
-    this._container.set('persister:local-storage', LocalStoragePersister);
+  static register(Factory) {
+    if (!FACTORY_REGISTRATION.has(Factory)) {
+      FACTORY_REGISTRATION.set(Factory, container =>
+        container.register(Factory)
+      );
+    }
+
+    this.on('register', FACTORY_REGISTRATION.get(Factory));
+
+    return this;
+  }
+
+  static unregister(Factory) {
+    if (FACTORY_REGISTRATION.has(Factory)) {
+      this.off('register', FACTORY_REGISTRATION.get(Factory));
+    }
+
+    return this;
   }
 
   /**
@@ -233,7 +231,7 @@ export default class Polly {
     if (this.mode !== MODES.STOPPED) {
       this.disconnect();
       this.logger.disconnect();
-      await this.persister.persist();
+      await (this.persister && this.persister.persist());
       this.mode = MODES.STOPPED;
 
       await EVENT_EMITTER.emit('stop', this);
@@ -246,26 +244,24 @@ export default class Polly {
    * @memberof Polly
    */
   connectTo(adapterName) {
+    const { container, adapters } = this;
+
+    if (typeof adapterName === 'function') {
+      container.register(adapterName);
+      adapterName = adapterName.name;
+    }
+
     assert(
       `Adapter matching the name \`${adapterName}\` was not registered.`,
-      this._container.has(`adapter:${adapterName}`)
+      container.has(`adapter:${adapterName}`)
     );
 
-    if (this._adapters.has(adapterName)) {
-      return;
-    }
+    this.disconnectFrom(adapterName);
 
-    const AdapterType = this._container.get(`adapter:${adapterName}`);
+    const adapter = new (container.lookup(`adapter:${adapterName}`))(this);
 
-    /* disconnect from running adapter when registering a new type */
-    if (this._container.get(`adapter:${adapterName}`) !== AdapterType) {
-      this.disconnectFrom(adapterName);
-    }
-
-    const adapter = new AdapterType(this);
-
-    this._adapters.set(adapterName, adapter);
     adapter.connect();
+    adapters.set(adapterName, adapter);
   }
 
   /**
@@ -274,12 +270,12 @@ export default class Polly {
    * @memberof Polly
    */
   disconnectFrom(adapterName) {
-    if (!this._adapters.has(adapterName)) {
-      return;
-    }
+    const { adapters } = this;
 
-    this._adapters.get(adapterName).disconnect();
-    this._adapters.delete(adapterName);
+    if (adapters.has(adapterName)) {
+      adapters.get(adapterName).disconnect();
+      adapters.delete(adapterName);
+    }
   }
 
   /**
@@ -287,7 +283,7 @@ export default class Polly {
    * @memberof Polly
    */
   disconnect() {
-    for (const adapterName of this._adapters.keys()) {
+    for (const adapterName of this.adapters.keys()) {
       this.disconnectFrom(adapterName);
     }
   }

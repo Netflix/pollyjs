@@ -12,7 +12,7 @@ describe('Integration | Adapters', function() {
 
     describe(name, function() {
       setupPolly.beforeEach(defaults);
-      setupFetch.beforeEach(defaults.adapters[0]);
+      setupFetch.beforeEach();
       setupFetch.afterEach();
       setupPolly.afterEach();
 

@@ -6,17 +6,15 @@ export default function setupFetch(fetchType) {
   afterEachWrapper();
 }
 
-function beforeEachWrapper(fetchType) {
+function beforeEachWrapper() {
   beforeEach(function() {
-    this.fetch = (...args) => {
-      if (fetchType === 'xhr') {
-        return xhrRequest(...args);
-      } else if (fetchType === 'fetch') {
-        return fetch(...args);
-      } else {
-        throw new TypeError(`Unknown fetch type: ${fetchType}.`);
-      }
-    };
+    if (this.polly.adapters.has('xhr')) {
+      this.fetch = (...args) => xhrRequest(...args);
+    } else if (this.polly.adapters.has('fetch')) {
+      this.fetch = (...args) => fetch(...args);
+    } else {
+      throw new TypeError(`[setupFetch] No usable network adapter.`);
+    }
 
     this.recordUrl = () =>
       `/api/db/${encodeURIComponent(this.polly.recordingId)}`;
@@ -26,9 +24,9 @@ function beforeEachWrapper(fetchType) {
 
 export function afterEachWrapper() {
   afterEach(async function() {
-    this.polly.stop();
-
+    this.polly.pause();
     await this.fetchRecord({ method: 'DELETE' });
+    this.polly.play();
   });
 }
 export { beforeEachWrapper as beforeEach };
