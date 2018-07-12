@@ -65,8 +65,8 @@ describe('Netflix Homepage', function() {
     /*
       Create a new polly instance.
 
-      By default, Polly will connect to both fetch and XHR browser APIs and
-      will record any requests that it hasn't yet seen while replaying ones it
+      Connect Polly to both fetch and XHR browser APIs. By default, it will
+      record any requests that it hasn't yet seen while replaying ones it
       has already recorded.
     */
     const polly = new Polly('Sign In', {
