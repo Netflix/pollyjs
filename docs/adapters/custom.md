@@ -67,33 +67,13 @@ adapter class.
 ```js
 // Register and connect to a custom adapter:
 new Polly('Custom Adapter', {
-  adapters: [
-    ['my-custom-adapter', MyCustomAdapterClass]
-  ]
-});
-
-// Register and connect to the default adapters + a custom adapter:
-new Polly('Defaults + Custom Adapter', {
-  adapters: [
-    'fetch',
-    'xhr',
-    ['my-custom-adapter', MyCustomAdapterClass]
-  ]
-});
-
-// Register and connect to a custom fetch adapter:
-new Polly('Custom Fetch Adapter', {
-  adapters: [
-    ['fetch', MyCustomFetchAdapterClass]
-  ]
+  adapters: [MyCustomAdapterClass]
 });
 
 // Register and connect to a custom adapter via .configure():
 const polly = new Polly('Custom Adapter');
 
 polly.configure({
-  adapters: [
-    ['my-custom-adapter', MyCustomAdapterClass]
-  ]
+  adapters: [MyCustomAdapterClass]
 });
 ```

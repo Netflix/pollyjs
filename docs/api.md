@@ -218,12 +218,13 @@ Connect to an adapter.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| name | `String` | The name of the adapter to connect to |
+| name | `String|Function` | The adapter name of class to connect to |
 
 __Example__
 
 ```js
 polly.connectTo('xhr');
+polly.connectTo(XHRAdapter);
 ```
 
 ### disconnectFrom
@@ -232,12 +233,13 @@ Disconnect from an adapter.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| name | `String` | The name of the adapter to disconnect from |
+| name | `String|Function` | The adapter name of class to disconnect from |
 
 __Example__
 
 ```js
 polly.disconnectFrom('xhr');
+polly.disconnectFrom(XHRAdapter);
 ```
 
 ### disconnect

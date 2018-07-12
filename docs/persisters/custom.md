@@ -29,6 +29,10 @@ yarn add @pollyjs/persister -D
 import Persister from '@pollyjs/persister';
 
 class CustomPersister extends Persister {
+  static get name() {
+    return 'custom';
+  }
+
   findRecording() {}
 
   saveRecording() {}
@@ -61,13 +65,13 @@ persister class.
 ```js
 // Register and connect to a custom persister:
 new Polly('Custom Persister', {
-  persister: ['my-custom-persister', MyCustomPersisterClass]
+  persister: MyCustomPersisterClass
 });
 
 // Register and connect to a custom persister via .configure():
 const polly = new Polly('Custom Persister');
 
 polly.configure({
-  persister: ['my-custom-persister', MyCustomPersisterClass]
+  persister: MyCustomPersisterClass
 });
 ```

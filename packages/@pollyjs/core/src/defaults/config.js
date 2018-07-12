@@ -4,7 +4,7 @@ import Timing from '../utils/timing';
 export default {
   mode: MODES.REPLAY,
 
-  adapters: ['fetch', 'xhr'],
+  adapters: [],
   adapterOptions: {},
 
   logging: false,
@@ -16,7 +16,7 @@ export default {
   expiresIn: null,
   timing: Timing.fixed(0),
 
-  persister: 'rest',
+  persister: null,
   persisterOptions: {},
 
   matchRequestsBy: {

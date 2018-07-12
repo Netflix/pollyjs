@@ -11,7 +11,7 @@ describe('Integration | Persisters', function() {
 
     describe(name, function() {
       setupPolly.beforeEach(defaults);
-      setupFetch.beforeEach(defaults.adapters[0]);
+      setupFetch.beforeEach();
 
       afterEach(async function() {
         await this.polly.persister.delete(this.polly.recordingId);
@@ -100,26 +100,11 @@ describe('Integration | Persisters', function() {
         await persister.persist();
         expect(beforePersistCalled).to.be.true;
       });
-    });
 
-    describe(`${name} | recordFailedRequests set to false`, function() {
-      beforeEach(function() {
-        this.polly = new Polly(`${name} | with recordFailedRequests`, {
-          ...defaults,
-          recordFailedRequests: false
-        });
-      });
-
-      setupFetch.beforeEach(defaults.adapters[0]);
-
-      afterEach(function() {
-        return this.polly.persister.delete(this.polly.recordingId);
-      });
-
-      setupFetch.afterEach();
-
-      it('should not persist by default when a request fails', async function() {
+      it('should error when persisting a failed request', async function() {
         let error;
+
+        this.polly.configure({ recordFailedRequests: false });
 
         try {
           await this.fetch('/should-not-exist');
@@ -133,24 +118,16 @@ describe('Integration | Persisters', function() {
 
           expect(savedRecording).to.be.null;
           expect(error.message).to.contain('Cannot persist response for');
+
+          // Clear the pending requests so `this.polly.stop()` in the
+          // afterEach hook won't bomb.
+          this.polly.persister.pending.clear();
         }
       });
-    });
 
-    describe(`${name} | recordFailedRequests set to true`, function() {
-      beforeEach(function() {
-        this.polly = new Polly(`${name} | with recordFailedRequests`, defaults);
-      });
+      it('should not error when persisting a failed request and `recordFailedRequests` is true', async function() {
+        this.polly.configure({ recordFailedRequests: true });
 
-      setupFetch.beforeEach(defaults.adapters[0]);
-
-      afterEach(function() {
-        return this.polly.persister.delete(this.polly.recordingId);
-      });
-
-      setupFetch.afterEach();
-
-      it('should not persist by default when a request fails', async function() {
         await this.fetch('/should-not-exist-either');
         await this.fetch('/should-not-exist-also');
         await this.polly.stop();

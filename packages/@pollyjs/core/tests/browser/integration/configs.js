@@ -1,3 +1,10 @@
+import {
+  XHRAdapter,
+  FetchAdapter,
+  RESTPersister,
+  LocalStoragePersister
+} from '../../../src';
+
 const common = {
   recordFailedRequests: true,
   persisterOptions: {
@@ -7,21 +14,23 @@ const common = {
 
 export default {
   'XHR Adapter + Rest Persister': {
-    adapters: ['xhr'],
+    adapters: [XHRAdapter],
+    persister: RESTPersister,
     ...common
   },
   'Fetch Adapter + Rest Persister': {
-    adapters: ['fetch'],
+    adapters: [FetchAdapter],
+    persister: RESTPersister,
     ...common
   },
   'Fetch Adapter + Local Storage Persister': {
-    adapters: ['fetch'],
-    persister: 'local-storage',
+    adapters: [FetchAdapter],
+    persister: LocalStoragePersister,
     ...common
   },
   'XHR Adapter + Local Storage Persister': {
-    adapters: ['xhr'],
-    persister: 'local-storage',
+    adapters: [XHRAdapter],
+    persister: LocalStoragePersister,
     ...common
   }
 };

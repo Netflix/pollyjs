@@ -22,8 +22,11 @@ yarn add @pollyjs/persister-fs -D
 import { Polly } from '@pollyjs/core';
 import FSPersister from '@pollyjs/persister-fs';
 
+// Register the fs persister so its accessible by all future polly instances
+Polly.register(FSPersister);
+
 new Polly('<Recording Name>', {
-  persister: ['fs', FSPersister]
+  persister: 'fs'
 });
 ```
 

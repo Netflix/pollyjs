@@ -8,7 +8,7 @@ module.exports = {
   watch_files: [
     './build-scripts/**/*',
     './packages/@pollyjs/*/src/**/*',
-    './packages/@pollyjs/*/tests*/*/*'
+    './packages/@pollyjs/*/tests/*/*'
   ],
   serve_files: ['./packages/@pollyjs/*/build/browser/*.js'],
   browser_args: {

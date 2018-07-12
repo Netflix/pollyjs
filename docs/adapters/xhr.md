@@ -12,6 +12,11 @@ The XHR adapter is connected to by default but you can use the
 adapter.
 
 ```js
+import { Polly, XHRAdapter } from '@pollyjs/core';
+
+// Register the xhr adapter so its accessible by all future polly instances
+Polly.register(XHRAdapter);
+
 const polly = new Polly('<Recording Name>', {
   adapters: ['xhr']
 });
