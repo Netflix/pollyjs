@@ -39,8 +39,8 @@ export default class FetchAdapter extends Adapter {
     return response;
   }
 
-  onReplay(pollyRequest, { status, headers, body }) {
-    return this.respond(pollyRequest, status, headers, body);
+  onReplay(pollyRequest, { statusCode, headers, body }) {
+    return this.respond(pollyRequest, statusCode, headers, body);
   }
 
   async onPassthrough(pollyRequest) {
