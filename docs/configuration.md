@@ -136,7 +136,10 @@ The adapter(s) polly will hook into.
 __Example__
 
 ```js
-import { FetchAdapter } from '@pollyjs/core';
+import { XHRAdapter, FetchAdapter } from '@pollyjs/core';
+
+// Register the xhr adapter so its accessible by all future polly instances
+Polly.register(XHRAdapter);
 
 polly.configure({
   adapters: ['xhr', FetchAdapter]
