@@ -5,7 +5,12 @@ Read and write recordings to and from the browser's Local Storage.
 ## Usage
 
 ```js
-const polly = new Polly('<Recording Name>', {
+import { Polly, LocalStoragePersister } from '@pollyjs/core';
+
+// Register the local-storage persister so its accessible by all future polly instances
+Polly.register(LocalStoragePersister);
+
+new Polly('<Recording Name>', {
   persister: 'local-storage'
 });
 ```

@@ -128,16 +128,18 @@ polly.configure({
 
 ## adapters
 
-_Type_: `Array`
-_Default_: `['fetch', 'xhr']`
+_Type_: `Array[String|Function]`
+_Default_: `[]`
 
 The adapter(s) polly will hook into.
 
 __Example__
 
 ```js
+import { FetchAdapter } from '@pollyjs/core';
+
 polly.configure({
-  adapters: ['xhr']
+  adapters: ['xhr', FetchAdapter]
 });
 ```
 
@@ -165,16 +167,25 @@ polly.configure({
 
 ## persister
 
-_Type_: `String`
-_Default_: `'rest'`
+_Type_: `String|Function`
+_Default_: `null`
 
 The persister to use for recording and replaying requests.
 
 __Example__
 
 ```js
+import { LocalStoragePersister, RESTPersister } from '@pollyjs/core';
+
+// Register the local-storage persister so its accessible by all future polly instances
+Polly.register(LocalStoragePersister);
+
 polly.configure({
   persister: 'local-storage'
+});
+
+polly.configure({
+  persister: RESTPersister
 });
 ```
 

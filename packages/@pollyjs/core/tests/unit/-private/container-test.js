@@ -73,10 +73,16 @@ describe('Unit | Container', function() {
       expect(container.lookup('factory:bar')).to.be.null;
     });
 
-    it('.has()', function() {
+    it('.has() - by key', function() {
       container.register(Factory);
       expect(container.has('factory:foo')).to.be.true;
       expect(container.has('factory:bar')).to.be.false;
+    });
+
+    it('.has() - by factory', function() {
+      container.register(Factory);
+      expect(container.has(Factory)).to.be.true;
+      expect(container.has(class Foo extends Factory {})).to.be.false;
     });
   });
 });

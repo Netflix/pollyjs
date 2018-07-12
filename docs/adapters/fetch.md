@@ -11,6 +11,11 @@ The fetch adapter is connected to by default but you can use the
 adapter.
 
 ```js
+import { Polly, FetchAdapter } from '@pollyjs/core';
+
+// Register the fetch adapter so its accessible by all future polly instances
+Polly.register(FetchAdapter);
+
 const polly = new Polly('<Recording Name>', {
   adapters: ['fetch']
 });

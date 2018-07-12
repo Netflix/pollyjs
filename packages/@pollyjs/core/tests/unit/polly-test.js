@@ -203,6 +203,32 @@ describe('Unit | Polly', function() {
       this.polly.configure({ adapters: [MockAdapter] });
       expect(connectCalled).to.be.true;
     });
+
+    it('should disconnect from adapters before connecting', async function() {
+      let connectCount = 0;
+      let disconnectCount = 0;
+
+      class MockAdapter extends Adapter {
+        static get name() {
+          return 'mock';
+        }
+
+        onConnect() {
+          connectCount++;
+        }
+        onDisconnect() {
+          disconnectCount++;
+        }
+      }
+
+      this.polly.configure({ adapters: [MockAdapter] });
+      expect(connectCount).to.equal(1);
+      expect(disconnectCount).to.equal(0);
+
+      this.polly.configure({ adapters: [MockAdapter] });
+      expect(connectCount).to.equal(2);
+      expect(disconnectCount).to.equal(1);
+    });
   });
 
   describe('API', function() {
@@ -256,7 +282,8 @@ describe('Unit | Polly', function() {
     });
 
     it('.connectTo()', async function() {
-      let connectCalled;
+      let connectCount = 0;
+      let disconnectCount = 0;
 
       class MockAdapter extends Adapter {
         static get name() {
@@ -264,43 +291,54 @@ describe('Unit | Polly', function() {
         }
 
         onConnect() {
-          connectCalled = true;
+          connectCount++;
         }
 
-        onDisconnect() {}
+        onDisconnect() {
+          disconnectCount++;
+        }
       }
 
-      this.polly.configure({ adapters: [MockAdapter] });
-      // configure automatically connects to the new adapter
-      this.polly.disconnectFrom('mock');
-      connectCalled = false;
+      this.polly.container.register(MockAdapter);
 
-      expect(connectCalled).to.be.false;
-      expect(this.polly.connectTo('mock'));
-      expect(connectCalled).to.be.true;
+      this.polly.connectTo('mock');
+      expect(connectCount).to.equal(1);
+      expect(disconnectCount).to.equal(0);
+
+      this.polly.connectTo(MockAdapter);
+      expect(connectCount).to.equal(2);
+      expect(disconnectCount).to.equal(1);
     });
 
-    it('.disconnectFrom()', async function() {
-      let disconnectCalled = false;
+    it('.disconnectTo()', async function() {
+      let connectCount = 0;
+      let disconnectCount = 0;
 
       class MockAdapter extends Adapter {
         static get name() {
           return 'mock';
         }
 
-        onConnect() {}
+        onConnect() {
+          connectCount++;
+        }
 
         onDisconnect() {
-          disconnectCalled = true;
+          disconnectCount++;
         }
       }
 
-      // configure automatically connects to the new adapter
-      this.polly.configure({ adapters: [MockAdapter] });
+      this.polly.container.register(MockAdapter);
 
-      expect(disconnectCalled).to.be.false;
-      expect(this.polly.disconnectFrom('mock'));
-      expect(disconnectCalled).to.be.true;
+      this.polly.connectTo('mock');
+      expect(connectCount).to.equal(1);
+      this.polly.disconnectFrom('mock');
+      expect(disconnectCount).to.equal(1);
+
+      this.polly.connectTo(MockAdapter);
+      expect(connectCount).to.equal(2);
+      this.polly.disconnectFrom(MockAdapter);
+      expect(disconnectCount).to.equal(2);
     });
 
     it('.disconnect()', async function() {

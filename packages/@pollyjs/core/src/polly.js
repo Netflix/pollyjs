@@ -239,16 +239,17 @@ export default class Polly {
   }
 
   /**
-   * @param {String} adapterName
+   * @param {String|Function} nameOrFactory
    * @public
    * @memberof Polly
    */
-  connectTo(adapterName) {
+  connectTo(nameOrFactory) {
     const { container, adapters } = this;
+    let adapterName = nameOrFactory;
 
-    if (typeof adapterName === 'function') {
-      container.register(adapterName);
-      adapterName = adapterName.name;
+    if (typeof nameOrFactory === 'function') {
+      container.register(nameOrFactory);
+      adapterName = nameOrFactory.name;
     }
 
     assert(
@@ -265,12 +266,17 @@ export default class Polly {
   }
 
   /**
-   * @param {String} adapterName
+   * @param {String|Function} nameOrFactory
    * @public
    * @memberof Polly
    */
-  disconnectFrom(adapterName) {
+  disconnectFrom(nameOrFactory) {
     const { adapters } = this;
+    let adapterName = nameOrFactory;
+
+    if (typeof nameOrFactory === 'function') {
+      adapterName = nameOrFactory.name;
+    }
 
     if (adapters.has(adapterName)) {
       adapters.get(adapterName).disconnect();

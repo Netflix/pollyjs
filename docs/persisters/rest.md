@@ -11,14 +11,13 @@ as well as a [CLI](cli/overview) to get you up and running.
 ## Usage
 
 ```js
+import { Polly, RESTPersister } from '@pollyjs/core';
+
+// Register the REST persister so its accessible by all future polly instances
+Polly.register(RESTPersister);
+
 new Polly('<Recording Name>', {
-  persister: 'rest',
-  persisterOptions: {
-    rest: {
-      host: '',
-      apiNamespace: '/polly'
-    }
-  }
+  persister: 'rest'
 });
 ```
 

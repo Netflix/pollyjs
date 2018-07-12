@@ -1,5 +1,9 @@
 import { assert } from '@pollyjs/utils';
 
+function keyFor(Factory) {
+  return `${Factory.type}:${Factory.name}`;
+}
+
 export default class Container {
   constructor() {
     this._registry = new Map();
@@ -28,31 +32,21 @@ export default class Container {
       typeof type === 'string'
     );
 
-    this._registry.set(`${type}:${name}`, Factory);
+    this._registry.set(keyFor(Factory), Factory);
   }
 
   /**
    * Unregister a factory from the container via a key (e.g. `adapter:fetch`)
-   * or the Factory class.
+   * or Factory class.
    *
    * @param {String|Function} keyOrFactory
    */
   unregister(keyOrFactory) {
     const { _registry: registry } = this;
+    const key =
+      typeof keyOrFactory === 'function' ? keyFor(keyOrFactory) : keyOrFactory;
 
-    // Unregister by key
-    if (typeof keyOrFactory === 'string') {
-      registry.delete(keyOrFactory);
-    }
-
-    // Unregister by Factory
-    if (typeof keyOrFactory === 'function') {
-      for (const [key, Factory] of registry.entries()) {
-        if (Factory === keyOrFactory) {
-          registry.delete(key);
-        }
-      }
-    }
+    registry.delete(key);
   }
 
   /**
@@ -66,13 +60,17 @@ export default class Container {
   }
 
   /**
-   * Check if a factory has been registered by the
-   * given key (e.g. `adapter:fetch`)
+   * Check if a factory has been registered via a key (e.g. `adapter:fetch`)
+   * or Factory class.
    *
-   * @param {String} key
+   * @param {String|Function} keyOrFactory
    * @returns {Boolean}
    */
-  has(key) {
-    return this._registry.has(key);
+  has(keyOrFactory) {
+    const { _registry: registry } = this;
+    const key =
+      typeof keyOrFactory === 'function' ? keyFor(keyOrFactory) : keyOrFactory;
+
+    return registry.has(key);
   }
 }
