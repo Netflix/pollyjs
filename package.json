@@ -22,7 +22,7 @@
     "format": "lerna run format",
     "docs:serve": "docsify serve ./docs",
     "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
-    "lint": "lerna run lint",
+    "lint": "lerna exec --bail=false -- yarn run lint",
     "pretest": "npm-run-all test:clean server:build",
     "test": "server-test server:start :4000 test:start",
     "test:ci": "yarn pretest && server-test server:start :4000 test:start-ci ; yarn posttest",
@@ -73,6 +73,7 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
     "start-server-and-test": "^1.4.1",
+    "tap-merge": "^0.3.1",
     "testem": "^2.8.2"
   }
 }

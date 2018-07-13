@@ -3,8 +3,10 @@
 module.exports = {
   test_page: 'test/index.mustache',
   before_tests: 'yarn test:build',
-  launch_in_ci: ['Chrome', 'Node', 'Ember', 'ESLint'],
-  launch_in_dev: ['Chrome', 'Node', 'Ember', 'ESLint'],
+  // launch_in_ci: ['Chrome', 'Node', 'Ember', 'ESLint'],
+  // launch_in_dev: ['Chrome', 'Node', 'Ember', 'ESLint'],
+  launch_in_dev: ['Node', 'ESLint'],
+  launch_in_ci: ['Node', 'ESLint'],
   watch_files: [
     './build-scripts/**/*',
     './packages/@pollyjs/*/src/**/*',
@@ -35,7 +37,7 @@ module.exports = {
       protocol: 'tap'
     },
     ESLint: {
-      command: 'yarn lint -- -- --format tap',
+      command: 'yarn lint -- -- --format tap >&1 | tap-merge',
       protocol: 'tap'
     }
   },

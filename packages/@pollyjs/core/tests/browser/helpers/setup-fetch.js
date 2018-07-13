@@ -1,8 +1,8 @@
 /* globals beforeEach, afterEach */
 import xhrRequest from './xhr-request';
 
-export default function setupFetch(fetchType) {
-  beforeEachWrapper(fetchType);
+export default function setupFetch() {
+  beforeEachWrapper();
   afterEachWrapper();
 }
 

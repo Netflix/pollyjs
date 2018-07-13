@@ -37,6 +37,8 @@ export default class PuppeteerAdapter extends Adapter {
   onConnect() {
     const { browser } = this.polly.config.adapterOptions.puppeteer;
 
+    this.assert('A puppeteer browser instance is required.', browser);
+
     LISTENERS.set(browser, {
       targetcreated: async target => {
         const page = await target.page();
@@ -79,7 +81,7 @@ export default class PuppeteerAdapter extends Adapter {
   async onRecord(pollyRequest) {
     await this._passthroughRequest(pollyRequest);
     await this.persister.recordRequest(pollyRequest);
-    this.respondToPuppeteerRequest(pollyRequest);
+        this.respondToPuppeteerRequest(pollyRequest);
   }
 
   async onReplay(pollyRequest, { statusCode, headers, body }) {
