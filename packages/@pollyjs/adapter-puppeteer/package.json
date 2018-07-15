@@ -1,14 +1,14 @@
 {
-  "name": "@pollyjs/persister-fs",
+  "name": "@pollyjs/adapter-puppeteer",
   "version": "0.0.0",
   "description": "File system persister for @pollyjs",
-  "main": "dist/cjs/pollyjs-persister-fs.js",
-  "module": "dist/es/pollyjs-persister-fs.js",
+  "main": "dist/cjs/pollyjs-adapter-puppeteer.js",
+  "module": "dist/es/pollyjs-adapter-puppeteer.js",
   "files": [
     "src",
     "dist"
   ],
-  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-fs",
+  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-puppeteer",
   "license": "Apache-2.0",
   "contributors": [
     {
@@ -43,18 +43,19 @@
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
-    "@pollyjs/node-server": "^0.4.0",
-    "@pollyjs/persister": "^0.2.1"
+    "@pollyjs/adapter": "^0.3.1",
+    "@pollyjs/utils": "^0.1.1"
   },
   "devDependencies": {
     "@pollyjs/core": "^0.5.0",
+    "@pollyjs/persister-fs": "^0.0.0",
     "chai": "^4.1.2",
     "eslint": "^4.18.1",
     "mocha": "^5.1.0",
-    "mock-fs": "^4.5.0",
     "node-fetch": "^2.1.2",
     "npm-run-all": "^4.1.2",
     "prettier": "^1.10.2",
+    "puppeteer": "^1.5.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.56.3"
   }

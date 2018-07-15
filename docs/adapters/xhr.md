@@ -6,8 +6,7 @@ for seamless recording and replaying of requests.
 
 ## Usage
 
-The XHR adapter is connected to by default but you can use the
-[configure](api#configure), [connectTo](api#connectto), and
+Use the [configure](api#configure), [connectTo](api#connectto), and
 [disconnectFrom](api#disconnectfrom) APIs to connect or disconnect from the
 adapter.
 

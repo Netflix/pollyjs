@@ -1,7 +1,8 @@
 import deepmerge from 'deepmerge';
 import multiEntry from 'rollup-plugin-multi-entry';
+import alias from 'rollup-plugin-alias';
 import createNodeConfig from './rollup.node.config';
-import { pkg } from './rollup.utils';
+import { pkg, testsPath } from './rollup.utils';
 
 export default function createNodeTestConfig(options = {}) {
   return deepmerge(
@@ -14,7 +15,7 @@ export default function createNodeTestConfig(options = {}) {
         intro: `describe('${pkg.name}', function() {`,
         outro: '});'
       },
-      plugins: [multiEntry()],
+      plugins: [alias({ '@pollyjs-tests': testsPath }), multiEntry()],
       external: ['chai']
     }),
     options

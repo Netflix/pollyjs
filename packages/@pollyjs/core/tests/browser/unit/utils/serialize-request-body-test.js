@@ -1,5 +1,5 @@
 import serializeRequestBody from '../../../../src/utils/serialize-request-body';
-import File from '../../helpers/file';
+import File from '@pollyjs-tests/helpers/file';
 
 describe('Unit | Utils | serializeRequestBody', function() {
   it('should exist', function() {

@@ -1,7 +1,8 @@
 import deepmerge from 'deepmerge';
 import multiEntry from 'rollup-plugin-multi-entry';
+import alias from 'rollup-plugin-alias';
 import createBrowserConfig from './rollup.browser.config';
-import { pkg } from './rollup.utils';
+import { pkg, testsPath } from './rollup.utils';
 
 export default function createBrowserTestConfig(options = {}) {
   return deepmerge(
@@ -18,7 +19,7 @@ export default function createBrowserTestConfig(options = {}) {
           `,
           outro: '});'
         },
-        plugins: [multiEntry()]
+        plugins: [alias({ '@pollyjs-tests': testsPath }), multiEntry()]
       },
       /* target override */
       {

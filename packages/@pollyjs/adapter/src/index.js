@@ -167,8 +167,8 @@ export default class Adapter {
 
       const { status, statusText, headers, content } = recordingEntry.response;
       const normalizedResponse = {
-        status,
         statusText,
+        statusCode: status,
         headers: (headers || []).reduce((accum, { name, value }) => {
           accum[name] = value;
 

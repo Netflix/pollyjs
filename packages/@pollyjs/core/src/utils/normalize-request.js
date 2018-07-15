@@ -3,9 +3,11 @@ import removeHostFromUrl from './remove-host-from-url';
 import isObjectLike from 'lodash-es/isObjectLike';
 import isAbsoluteUrl from 'is-absolute-url';
 import HTTPHeaders from './http-headers';
+import stringify from 'fast-json-stable-stringify';
 
 const { keys } = Object;
 const { isArray } = Array;
+const { parse } = JSON;
 
 export function method(method) {
   return (method || 'GET').toUpperCase();
@@ -23,18 +25,8 @@ export function url(url, config = {}) {
   keys(config).forEach(key => !config[key] && parsedUrl.set(key, ''));
 
   // Sort Query Params
-  const { query } = parsedUrl;
-
-  if (isObjectLike(query)) {
-    const sortedQuery = keys(query)
-      .sort()
-      .reduce((q, k) => {
-        q[k] = query[k];
-
-        return q;
-      }, {});
-
-    parsedUrl.set('query', sortedQuery);
+  if (isObjectLike(parsedUrl.query)) {
+    parsedUrl.set('query', parse(stringify(parsedUrl.query)));
   }
 
   return parsedUrl.href;

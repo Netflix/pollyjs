@@ -1,7 +1,7 @@
 import FakeXHR from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
+import { XHR as XHRUtils } from '@pollyjs/utils';
 import resolveXhr from './utils/resolve-xhr';
-import serializeResponseHeaders from './utils/serialize-response-headers';
 
 const SEND = Symbol();
 
@@ -38,18 +38,18 @@ export default class XHRAdapter extends Adapter {
   }
 
   async onRecord(pollyRequest) {
-    await this._passthroughRequest(pollyRequest);
+    await this.passthroughRequest(pollyRequest);
     await this.persister.recordRequest(pollyRequest);
     this.respondToXhr(pollyRequest);
   }
 
-  async onReplay(pollyRequest, { status, headers, body }) {
-    await pollyRequest.respond(status, headers, body);
+  async onReplay(pollyRequest, { statusCode, headers, body }) {
+    await pollyRequest.respond(statusCode, headers, body);
     this.respondToXhr(pollyRequest);
   }
 
   async onPassthrough(pollyRequest) {
-    await this._passthroughRequest(pollyRequest);
+    await this.passthroughRequest(pollyRequest);
     this.respondToXhr(pollyRequest);
   }
 
@@ -66,7 +66,7 @@ export default class XHRAdapter extends Adapter {
     fakeXhr.respond(response.statusCode, response.headers, response.body);
   }
 
-  async _passthroughRequest(pollyRequest) {
+  async passthroughRequest(pollyRequest) {
     const [fakeXhr] = pollyRequest.requestArguments;
 
     const xhr = new this.native();
@@ -93,7 +93,7 @@ export default class XHRAdapter extends Adapter {
     await resolveXhr(xhr, pollyRequest.body);
     await pollyRequest.respond(
       xhr.status,
-      serializeResponseHeaders(xhr.getAllResponseHeaders()),
+      XHRUtils.serializeResponseHeaders(xhr.getAllResponseHeaders()),
       xhr.responseText
     );
   }

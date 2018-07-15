@@ -1,5 +1,5 @@
 import Adapter from '@pollyjs/adapter';
-import serializeHeaders from './utils/serialize-headers';
+import { Fetch as FetchUtils } from '@pollyjs/utils';
 
 const nativeFetch = global.fetch;
 const { defineProperty } = Object;
@@ -21,7 +21,7 @@ export default class FetchAdapter extends Adapter {
       this.handleRequest({
         url,
         method: options.method || 'GET',
-        headers: serializeHeaders(options.headers),
+        headers: FetchUtils.serializeHeaders(options.headers),
         body: options.body,
         requestArguments: [url, options]
       });
@@ -39,8 +39,8 @@ export default class FetchAdapter extends Adapter {
     return response;
   }
 
-  onReplay(pollyRequest, { status, headers, body }) {
-    return this.respond(pollyRequest, status, headers, body);
+  onReplay(pollyRequest, { statusCode, headers, body }) {
+    return this.respond(pollyRequest, statusCode, headers, body);
   }
 
   async onPassthrough(pollyRequest) {
@@ -59,7 +59,7 @@ export default class FetchAdapter extends Adapter {
     return this.respond(
       pollyRequest,
       response.status,
-      serializeHeaders(response.headers),
+      FetchUtils.serializeHeaders(response.headers),
       await response.text()
     );
   }
