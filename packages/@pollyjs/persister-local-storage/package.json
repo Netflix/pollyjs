@@ -1,7 +1,7 @@
 {
   "name": "@pollyjs/persister-local-storage",
   "version": "0.0.0",
-  "description": "Local Storage persister for @pollyjs",
+  "description": "Local storage persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-local-storage.js",
   "module": "dist/es/pollyjs-persister-local-storage.js",
   "files": [

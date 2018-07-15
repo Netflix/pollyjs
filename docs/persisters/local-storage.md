@@ -2,10 +2,25 @@
 
 Read and write recordings to and from the browser's Local Storage.
 
+## Installation
+
+_Note that you must have node (and npm) installed._
+
+```bash
+npm install @pollyjs/persister-local-storage -D
+```
+
+If you want to install it with [yarn](https://yarnpkg.com):
+
+```bash
+yarn add @pollyjs/persister-local-storage -D
+```
+
 ## Usage
 
 ```js
-import { Polly, LocalStoragePersister } from '@pollyjs/core';
+import { Polly } from '@pollyjs/core';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
 
 // Register the local-storage persister so its accessible by all future polly instances
 Polly.register(LocalStoragePersister);

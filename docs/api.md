@@ -109,7 +109,7 @@ polly.mode // → 'record'
 ### persister
 
 _Type_: `Persister`
-_Default_: `RestPersister`
+_Default_: `null`
 
 The persister used to find and save recordings.
 
