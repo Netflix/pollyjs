@@ -38,7 +38,7 @@ export default class XHRAdapter extends Adapter {
   }
 
   async onRecord(pollyRequest) {
-    await this._passthroughRequest(pollyRequest);
+    await this.passthroughRequest(pollyRequest);
     await this.persister.recordRequest(pollyRequest);
     this.respondToXhr(pollyRequest);
   }
@@ -49,7 +49,7 @@ export default class XHRAdapter extends Adapter {
   }
 
   async onPassthrough(pollyRequest) {
-    await this._passthroughRequest(pollyRequest);
+    await this.passthroughRequest(pollyRequest);
     this.respondToXhr(pollyRequest);
   }
 
@@ -66,7 +66,7 @@ export default class XHRAdapter extends Adapter {
     fakeXhr.respond(response.statusCode, response.headers, response.body);
   }
 
-  async _passthroughRequest(pollyRequest) {
+  async passthroughRequest(pollyRequest) {
     const [fakeXhr] = pollyRequest.requestArguments;
 
     const xhr = new this.native();

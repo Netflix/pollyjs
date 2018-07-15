@@ -1,4 +1,3 @@
-/* globals beforeEach */
 import { Response } from 'node-fetch';
 
 export default function() {

@@ -1,4 +1,3 @@
-/* globals beforeEach */
 import xhrRequest from '@pollyjs-tests/helpers/xhr-request';
 
 export default function setupFetch() {

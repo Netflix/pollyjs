@@ -1,8 +1,9 @@
 import Adapter from '@pollyjs/adapter';
-import fetch from 'node-fetch';
-import { Fetch as FetchUtils } from '@pollyjs/utils';
 
 const LISTENERS = Symbol();
+const PASSTHROUGH_PROMISE = Symbol();
+const PASSTHROUGH_PROMISES = Symbol();
+const PASSTHROUGH_REQ_ID_HEADER = 'x-pollyjs-passthrough-request-id';
 
 export default class PuppeteerAdapter extends Adapter {
   static get name() {
@@ -20,6 +21,7 @@ export default class PuppeteerAdapter extends Adapter {
     const { page } = this.options;
 
     this[LISTENERS] = new Map();
+    this[PASSTHROUGH_PROMISES] = new Map();
     this.assert('A puppeteer page instance is required.', page);
     this.attachToPageEvents(page);
   }
@@ -36,16 +38,49 @@ export default class PuppeteerAdapter extends Adapter {
     this[LISTENERS].set(page, {
       request: request => {
         if (requestResourceTypes.includes(request.resourceType())) {
-          this.handleRequest({
-            url: request.url(),
-            method: request.method() || 'GET',
-            headers: request.headers(),
-            body: request.postData(),
-            requestArguments: [request]
-          });
+          const headers = request.headers();
+
+          // If this is a polly passthrough request
+          if (headers[PASSTHROUGH_REQ_ID_HEADER]) {
+            // Get the associated promise object for the request id and set it
+            // on the request
+            request[PASSTHROUGH_PROMISE] = this[PASSTHROUGH_PROMISES].get(
+              headers[PASSTHROUGH_REQ_ID_HEADER]
+            );
+
+            // Delete the header to remove any pollyjs footprint
+            delete headers[PASSTHROUGH_REQ_ID_HEADER];
+
+            // Continue the request with the headers override
+            request.continue({ headers });
+          } else {
+            this.handleRequest({
+              headers,
+              url: request.url(),
+              method: request.method(),
+              body: request.postData(),
+              requestArguments: [request]
+            });
+          }
         } else {
           request.continue();
         }
+      },
+      response: response => {
+        const request = response.request();
+
+        // Resolve the passthrough promise with the response if it exists
+        request[PASSTHROUGH_PROMISE] &&
+          request[PASSTHROUGH_PROMISE].resolve(response);
+
+        delete request[PASSTHROUGH_PROMISE];
+      },
+      requestfailed: request => {
+        // Reject the passthrough promise with the error object if it exists
+        request[PASSTHROUGH_PROMISE] &&
+          request[PASSTHROUGH_PROMISE].reject(request.failure());
+
+        delete request[PASSTHROUGH_PROMISE];
       },
       close: () => this[LISTENERS].delete(page)
     });
@@ -54,7 +89,7 @@ export default class PuppeteerAdapter extends Adapter {
   }
 
   async onRecord(pollyRequest) {
-    await this._passthroughRequest(pollyRequest);
+    await this.passthroughRequest(pollyRequest);
     await this.persister.recordRequest(pollyRequest);
     this.respondToPuppeteerRequest(pollyRequest);
   }
@@ -65,7 +100,7 @@ export default class PuppeteerAdapter extends Adapter {
   }
 
   async onPassthrough(pollyRequest) {
-    await this._passthroughRequest(pollyRequest);
+    await this.passthroughRequest(pollyRequest);
     this.respondToPuppeteerRequest(pollyRequest);
   }
 
@@ -81,18 +116,38 @@ export default class PuppeteerAdapter extends Adapter {
     request.respond({ status, headers, body });
   }
 
-  async _passthroughRequest(pollyRequest) {
-    const response = await fetch(pollyRequest.url, {
-      method: pollyRequest.method,
-      headers: pollyRequest.headers,
-      body: pollyRequest.body
-    });
+  async passthroughRequest(pollyRequest) {
+    const { page } = this.options;
+    const { id, order, url, method, body } = pollyRequest;
+    const requestId = `${this.polly.recordingId}:${id}:${order}`;
+    const headers = {
+      ...pollyRequest.headers,
+      [PASSTHROUGH_REQ_ID_HEADER]: requestId
+    };
 
-    return pollyRequest.respond(
-      response.status,
-      FetchUtils.serializeHeaders(response.headers),
-      await response.text()
-    );
+    try {
+      const response = await new Promise((resolve, reject) => {
+        this[PASSTHROUGH_PROMISES].set(requestId, { resolve, reject });
+
+        // This gets evaluated within the browser's context, meaning that
+        // this fetch call executes from within the browser.
+        page.evaluate((url, options) => fetch(url, options), url, {
+          method,
+          headers,
+          body
+        });
+      });
+
+      return pollyRequest.respond(
+        response.status(),
+        response.headers(),
+        await response.text()
+      );
+    } catch (error) {
+      throw error;
+    } finally {
+      this[PASSTHROUGH_PROMISES].delete(requestId);
+    }
   }
 
   _callListenersWith(methodName, target) {

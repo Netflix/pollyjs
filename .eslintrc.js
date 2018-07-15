@@ -50,7 +50,7 @@ module.exports = {
   overrides: [
     // test files
     {
-      files: ['tests/**/*.js', '**/*/tests/**/*-test.js'],
+      files: ['tests/**/*.js', '**/*/tests/**/*.js'],
       env: {
         mocha: true
       },
