@@ -3,6 +3,20 @@
 The fetch adapter wraps the global fetch method for seamless
 recording and replaying of requests.
 
+## Installation
+
+_Note that you must have node (and npm) installed._
+
+```bash
+npm install @pollyjs/adapter-fetch -D
+```
+
+If you want to install it with [yarn](https://yarnpkg.com):
+
+```bash
+yarn add @pollyjs/adapter-fetch -D
+```
+
 ## Usage
 
 Use the [configure](api#configure), [connectTo](api#connectto), and
@@ -10,7 +24,8 @@ Use the [configure](api#configure), [connectTo](api#connectto), and
 adapter.
 
 ```js
-import { Polly, FetchAdapter } from '@pollyjs/core';
+import { Polly } from '@pollyjs/core';
+import FetchAdapter from '@pollyjs/adapter-fetch';
 
 // Register the fetch adapter so its accessible by all future polly instances
 Polly.register(FetchAdapter);

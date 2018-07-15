@@ -23,15 +23,15 @@
   - [Express Integrations](node-server/express-integrations.md)
 
 - Adapters
-  - [XHR](adapters/xhr.md)
   - [Fetch](adapters/fetch.md)
   - [Puppeteer](adapters/puppeteer.md)
+  - [XHR](adapters/xhr.md)
   - [Custom](adapters/custom.md)
 
 - Persisters
-  - [REST](persisters/rest.md)
-  - [Local Storage](persisters/local-storage.md)
   - [File System](persisters/fs.md)
+  - [Local Storage](persisters/local-storage.md)
+  - [REST](persisters/rest.md)
   - [Custom](persisters/custom.md)
 
 - Frameworks

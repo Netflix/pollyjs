@@ -2,7 +2,7 @@ import FSPersister from '@pollyjs/persister-fs';
 import PuppeteerAdapter from '../../src';
 import puppeteer from 'puppeteer';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
-import setupFetch from '../helpers/setup-fetch';
+import fetch from '../helpers/fetch';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import { setupMocha as setupPolly } from '@pollyjs/core';
 
@@ -36,8 +36,7 @@ describe('Integration | Puppeteer Adapter', function() {
     }
   });
 
-  setupFetch();
-  setupFetchRecord({ host: HOST });
+  setupFetchRecord({ host: HOST, fetch });
 
   beforeEach(async function() {
     this.page = await this.browser.newPage();

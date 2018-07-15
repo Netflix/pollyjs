@@ -50,15 +50,18 @@ Now that you've installed Polly and have setup your server, you're ready to
 fly. Lets take a look at what an example test case would look like using Polly.
 
 ```js
-import { Polly, FetchAdapter, XHRAdapter, RESTPersister } from '@pollyjs/core';
+import { Polly } from '@pollyjs/core';
+import XHRAdapter from '@pollyjs/adapter-xhr';
+import FetchAdapter from '@pollyjs/adapter-fetch';
+import RESTPersister from '@pollyjs/persister-rest';
 
 /*
   Register the adapters and persisters we want to use. This way all future
   polly instances can access them by name.
 */
-Polly.register(XHRAdapter)
-Polly.register(FetchAdapter)
-Polly.register(RESTPersister)
+Polly.register(XHRAdapter);
+Polly.register(FetchAdapter);
+Polly.register(RESTPersister);
 
 describe('Netflix Homepage', function() {
   it('should be able to sign in', async function() {

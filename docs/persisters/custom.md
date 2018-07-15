@@ -50,7 +50,8 @@ The `@pollyjs/core` package exports the `RESTPersister` and `LocalStoragePersist
 allowing you to modify them as needed.
 
 ```js
-import { RESTPersister, LocalStoragePersister } from '@pollyjs/core';
+import RESTPersister from '@pollyjs/persister-rest';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
 
 class CustomRESTPersister extends RESTPersister {}
 class CustomLocalStoragePersister extends LocalStoragePersister {}

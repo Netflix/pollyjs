@@ -52,7 +52,8 @@ The `@pollyjs/core` package exports the `XHRAdapter` and `FetchAdapter` classes,
 allowing you to modify them as needed.
 
 ```js
-import { XHRAdapter, FetchAdapter } from '@pollyjs/core';
+import XHRAdapter from '@pollyjs/adapter-xhr';
+import FetchAdapter from '@pollyjs/adapter-fetch';
 
 class CustomXHRAdapter extends XHRAdapter {}
 class CustomFetchAdapter extends FetchAdapter {}

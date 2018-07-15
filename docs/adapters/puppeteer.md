@@ -4,6 +4,20 @@ The [Puppeteer](https://pptr.dev/) adapter attaches events to a given
 [page](https://pptr.dev/#?product=Puppeteer&show=api-class-page) instance allowing
 you to get the full power of Polly and Puppeteer.
 
+## Installation
+
+_Note that you must have node (and npm) installed._
+
+```bash
+npm install @pollyjs/adapter-puppeteer -D
+```
+
+If you want to install it with [yarn](https://yarnpkg.com):
+
+```bash
+yarn add @pollyjs/adapter-puppeteer -D
+```
+
 ## Usage
 
 Use the [configure](api#configure), [connectTo](api#connectto), and

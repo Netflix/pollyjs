@@ -136,7 +136,8 @@ The adapter(s) polly will hook into.
 __Example__
 
 ```js
-import { XHRAdapter, FetchAdapter } from '@pollyjs/core';
+import XHRAdapter from '@pollyjs/adapter-xhr';
+import FetchAdapter from '@pollyjs/adapter-fetch';
 
 // Register the xhr adapter so its accessible by all future polly instances
 Polly.register(XHRAdapter);
@@ -178,7 +179,8 @@ The persister to use for recording and replaying requests.
 __Example__
 
 ```js
-import { LocalStoragePersister, RESTPersister } from '@pollyjs/core';
+import RESTPersister from '@pollyjs/persister-rest';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
 
 // Register the local-storage persister so its accessible by all future polly instances
 Polly.register(LocalStoragePersister);

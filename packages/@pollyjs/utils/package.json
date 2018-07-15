@@ -40,6 +40,9 @@
     }
   ],
   "license": "Apache-2.0",
+  "dependencies": {
+    "url-parse": "^1.4.1"
+  },
   "devDependencies": {
     "eslint": "^4.19.1",
     "npm-run-all": "^4.1.2",
