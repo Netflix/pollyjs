@@ -4,10 +4,9 @@ import Route from './route';
 import Handler from './handler';
 import RouteHandler from './route-handler';
 import Middleware from './middleware';
-import buildUrl from '../utils/build-url';
 import removeHostFromUrl from '../utils/remove-host-from-url';
 import castArray from 'lodash-es/castArray';
-import { assert, timeout } from '@pollyjs/utils';
+import { assert, timeout, buildUrl } from '@pollyjs/utils';
 
 const HOST = Symbol();
 const NAMESPACES = Symbol();
