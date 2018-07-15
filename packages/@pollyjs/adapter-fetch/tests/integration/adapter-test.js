@@ -2,16 +2,17 @@ import { setupMocha as setupPolly } from '@pollyjs/core';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
-import LocalStoragePersister from '@pollyjs/persister-local-storage';
+import RESTPersister from '@pollyjs/persister-rest';
+import FetchAdapter from '../../src';
 
 describe('Integration | Fetch Adapter', function() {
-  beforeEach(function() {
-    this.fetch = (...args) => fetch(...args);
-  });
-
   setupPolly.beforeEach({
     recordFailedRequests: true,
-    persister: LocalStoragePersister
+    adapters: [FetchAdapter],
+    persister: RESTPersister,
+    persisterOptions: {
+      rest: { host: '' }
+    }
   });
 
   setupFetchRecord();
