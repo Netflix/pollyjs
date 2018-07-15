@@ -1,7 +1,7 @@
 import FakeXHR from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
+import { XHR as XHRUtils } from '@pollyjs/utils';
 import resolveXhr from './utils/resolve-xhr';
-import serializeResponseHeaders from './utils/serialize-response-headers';
 
 const SEND = Symbol();
 
@@ -93,7 +93,7 @@ export default class XHRAdapter extends Adapter {
     await resolveXhr(xhr, pollyRequest.body);
     await pollyRequest.respond(
       xhr.status,
-      serializeResponseHeaders(xhr.getAllResponseHeaders()),
+      XHRUtils.serializeResponseHeaders(xhr.getAllResponseHeaders()),
       xhr.responseText
     );
   }

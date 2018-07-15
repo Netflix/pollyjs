@@ -1,27 +1,22 @@
-/* globals beforeEach, afterEach */
+/* globals beforeEach */
+import { Response } from 'node-fetch';
 
 export default function() {
   beforeEach(function() {
-    this.fetch = (...args) =>
-      this.page.evaluate((...args) => {
+    this.fetch = async (...args) => {
+      const res = await this.page.evaluate((...args) => {
+        // This is run within the browser's context meaning it's using the
+        // browser's native window.fetch method.
         return fetch(...args).then(res => {
+          const { url, status, headers } = res;
+
           return res.text().then(body => {
-            return {
-              status: res.status,
-              body
-            };
+            return { url, status, body, headers };
           });
         });
       }, ...args);
 
-    this.recordUrl = () =>
-      `/api/db/${encodeURIComponent(this.polly.recordingId)}`;
-    this.fetchRecord = (...args) => this.fetch(this.recordUrl(), ...args);
-  });
-
-  afterEach(async function() {
-    this.polly.pause();
-    await this.fetchRecord({ method: 'DELETE' });
-    this.polly.play();
+      return new Response(res.body, res);
+    };
   });
 }

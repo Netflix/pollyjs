@@ -23,7 +23,6 @@ install:
 
 before_script:
   - yarn run bootstrap
-  - yarn run build
 
 script:
   - commitlint-travis

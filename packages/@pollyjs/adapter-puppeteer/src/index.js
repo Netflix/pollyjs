@@ -1,87 +1,62 @@
 import Adapter from '@pollyjs/adapter';
 import fetch from 'node-fetch';
+import { Fetch as FetchUtils } from '@pollyjs/utils';
 
-const LISTENERS = new Map();
-
-/**
- * Serialize a Headers instance into a pojo since it cannot be stringified.
- * @param {*} headers
- */
-function serializeHeaders(headers) {
-  if (headers && typeof headers.forEach === 'function') {
-    const serializedHeaders = {};
-
-    headers.forEach((value, key) => (serializedHeaders[key] = value));
-
-    return serializedHeaders;
-  }
-
-  return headers || {};
-}
-
-function callListenersWith(methodName, target) {
-  if (LISTENERS.has(target)) {
-    const listeners = LISTENERS.get(target);
-
-    for (const eventName in listeners) {
-      target[methodName].apply(target, [eventName, listeners[eventName]]);
-    }
-  }
-}
+const LISTENERS = Symbol();
 
 export default class PuppeteerAdapter extends Adapter {
   static get name() {
     return 'puppeteer';
   }
 
+  get defaultOptions() {
+    return {
+      page: null,
+      requestResourceTypes: ['xhr', 'fetch']
+    };
+  }
+
   onConnect() {
-    const { browser } = this.polly.config.adapterOptions.puppeteer;
+    const { page } = this.options;
 
-    this.assert('A puppeteer browser instance is required.', browser);
-
-    LISTENERS.set(browser, {
-      targetcreated: async target => {
-        const page = await target.page();
-
-        if (page) {
-          await page.setRequestInterception(true);
-
-          LISTENERS.set(page, {
-            request: request => {
-              if (['xhr', 'fetch'].includes(request.resourceType())) {
-                this.handleRequest({
-                  url: request.url(),
-                  method: request.method() || 'GET',
-                  headers: request.headers(),
-                  body: request.postData(),
-                  requestArguments: [request]
-                });
-              } else {
-                request.continue();
-              }
-            },
-            close: () => LISTENERS.delete(page)
-          });
-
-          callListenersWith('prependListener', page);
-        }
-      },
-      targetdestroyed: () => LISTENERS.delete(browser)
-    });
-
-    callListenersWith('prependListener', browser);
+    this[LISTENERS] = new Map();
+    this.assert('A puppeteer page instance is required.', page);
+    this.attachToPageEvents(page);
   }
 
   onDisconnect() {
-    LISTENERS.forEach((_, target) =>
-      callListenersWith('removeListener', target)
+    this[LISTENERS].forEach((_, target) =>
+      this._callListenersWith('removeListener', target)
     );
+  }
+
+  attachToPageEvents(page) {
+    const { requestResourceTypes } = this.options;
+
+    this[LISTENERS].set(page, {
+      request: request => {
+        if (requestResourceTypes.includes(request.resourceType())) {
+          this.handleRequest({
+            url: request.url(),
+            method: request.method() || 'GET',
+            headers: request.headers(),
+            body: request.postData(),
+            requestArguments: [request]
+          });
+        } else {
+          request.continue();
+        }
+      },
+      close: () => this[LISTENERS].delete(page)
+    });
+
+    this._callListenersWith('prependListener', page);
   }
 
   async onRecord(pollyRequest) {
     await this._passthroughRequest(pollyRequest);
     await this.persister.recordRequest(pollyRequest);
-        this.respondToPuppeteerRequest(pollyRequest);
+    this.respondToPuppeteerRequest(pollyRequest);
   }
 
   async onReplay(pollyRequest, { statusCode, headers, body }) {
@@ -115,8 +90,18 @@ export default class PuppeteerAdapter extends Adapter {
 
     return pollyRequest.respond(
       response.status,
-      serializeHeaders(response.headers),
+      FetchUtils.serializeHeaders(response.headers),
       await response.text()
     );
+  }
+
+  _callListenersWith(methodName, target) {
+    if (this[LISTENERS].has(target)) {
+      const listeners = this[LISTENERS].get(target);
+
+      for (const eventName in listeners) {
+        target[methodName].apply(target, [eventName, listeners[eventName]]);
+      }
+    }
   }
 }

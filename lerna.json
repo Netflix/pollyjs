@@ -9,7 +9,6 @@
       "conventionalCommits": true,
       "message": "chore: Publish",
       "ignoreChanges": [
-        "**/test/**",
         "**/tests/**",
         "**/*.md"
       ]

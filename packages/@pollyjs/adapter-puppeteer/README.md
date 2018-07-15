@@ -38,13 +38,18 @@ import PuppeteerAdapter from '@pollyjs/adapter-puppeteer';
 Polly.register(PuppeteerAdapter);
 
 const browser = await puppeteer.launch();
+const page = await this.browser.newPage();
+
+await page.setRequestInterception(true);
 
 new Polly('<Recording Name>', {
   adapters: ['puppeteer'],
   adapterOptions: {
-    puppeteer: { browser }
+    puppeteer: { page }
   }
 });
+
+await page.goto('https://netflix.com');
 ```
 
 ## License

@@ -1,4 +1,4 @@
-# REST Persister
+# File System Persister
 
 Read and write recordings to and from the file system.
 

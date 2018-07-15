@@ -1,14 +1,13 @@
 /* eslint-env node */
 
 module.exports = {
-  test_page: 'test/index.mustache',
+  test_page: 'tests/index.mustache',
   before_tests: 'yarn test:build',
-  // launch_in_ci: ['Chrome', 'Node', 'Ember', 'ESLint'],
-  // launch_in_dev: ['Chrome', 'Node', 'Ember', 'ESLint'],
-  launch_in_dev: ['Node', 'ESLint'],
-  launch_in_ci: ['Node', 'ESLint'],
+  launch_in_ci: ['Chrome', 'Node', 'Ember', 'ESLint'],
+  launch_in_dev: ['Chrome', 'Node', 'Ember', 'ESLint'],
   watch_files: [
     './build-scripts/**/*',
+    './tests/**/*',
     './packages/@pollyjs/*/src/**/*',
     './packages/@pollyjs/*/tests/*/*'
   ],
@@ -29,7 +28,7 @@ module.exports = {
   launchers: {
     Node: {
       command:
-        'mocha ./packages/@pollyjs/*/build/node/*.js --ui bdd --reporter tap --require test/node-setup.js',
+        'mocha ./packages/@pollyjs/*/build/node/*.js --ui bdd --reporter tap --require tests/node-setup.js',
       protocol: 'tap'
     },
     Ember: {

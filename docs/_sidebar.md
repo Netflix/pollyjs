@@ -25,11 +25,13 @@
 - Adapters
   - [XHR](adapters/xhr.md)
   - [Fetch](adapters/fetch.md)
+  - [Puppeteer](adapters/puppeteer.md)
   - [Custom](adapters/custom.md)
 
 - Persisters
   - [REST](persisters/rest.md)
   - [Local Storage](persisters/local-storage.md)
+  - [File System](persisters/fs.md)
   - [Custom](persisters/custom.md)
 
 - Frameworks
