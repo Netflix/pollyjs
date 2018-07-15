@@ -22,7 +22,10 @@ export default class PuppeteerAdapter extends Adapter {
 
     this[LISTENERS] = new Map();
     this[PASSTHROUGH_PROMISES] = new Map();
-    this.assert('A puppeteer page instance is required.', page);
+    this.assert(
+      'A puppeteer page instance is required.',
+      !!(page && typeof page === 'object')
+    );
     this.attachToPageEvents(page);
   }
 
