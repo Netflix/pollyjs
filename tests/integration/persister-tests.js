@@ -23,6 +23,30 @@ export default function persisterTests() {
     expect(await validate.har(await persister.find(recordingId))).to.be.true;
   });
 
+  it('should have the correct metadata', async function() {
+    const { recordingId, recordingName, persister } = this.polly;
+
+    this.polly.record();
+    await this.fetch('/api/db/foo');
+    await persister.persist();
+
+    const har = await persister.find(recordingId);
+    const { _recordingName, creator, entries } = har.log;
+    const entry = entries[0];
+
+    expect(_recordingName).to.equal(recordingName);
+
+    expect(creator.name).to.equal('Polly.JS');
+    expect(creator.version).to.be.a('string');
+    expect(creator.comment).to.equal(
+      `${persister.constructor.type}:${persister.constructor.name}`
+    );
+
+    expect(entry).to.be.an('object');
+    expect(entry._id).to.a('string');
+    expect(entry._order).to.equal(0);
+  });
+
   it('should add new entries to an existing recording', async function() {
     const { recordingId, recordingName, config } = this.polly;
     let { persister } = this.polly;
