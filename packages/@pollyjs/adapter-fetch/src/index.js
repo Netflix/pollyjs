@@ -1,23 +1,32 @@
 import Adapter from '@pollyjs/adapter';
 import { Fetch as FetchUtils } from '@pollyjs/utils';
 
-const nativeFetch = global.fetch;
 const { defineProperty } = Object;
+const STUB_META = Symbol();
 
 export default class FetchAdapter extends Adapter {
   static get name() {
     return 'fetch';
   }
 
+  get defaultOptions() {
+    return {
+      context: global
+    };
+  }
+
   onConnect() {
-    this.assert('Fetch global not found.', nativeFetch);
+    const { context } = this.options;
+
+    this.assert('Fetch global not found.', !!(context && context.fetch));
     this.assert(
       'Running concurrent fetch adapters is unsupported, stop any running Polly instances.',
-      global.fetch === nativeFetch
+      !(STUB_META in context.fetch)
     );
 
-    this.native = nativeFetch;
-    global.fetch = (url, options = {}) =>
+    this.native = context.fetch;
+
+    context.fetch = (url, options = {}) =>
       this.handleRequest({
         url,
         method: options.method || 'GET',
@@ -25,10 +34,13 @@ export default class FetchAdapter extends Adapter {
         body: options.body,
         requestArguments: [url, options]
       });
+
+    defineProperty(context.fetch, STUB_META, { value: true });
   }
 
   onDisconnect() {
-    global.fetch = nativeFetch;
+    this.options.context.fetch = this.native;
+    this.native = null;
   }
 
   async onRecord(pollyRequest) {
