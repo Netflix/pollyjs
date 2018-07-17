@@ -58,6 +58,12 @@ module.exports = {
         chai: true,
         expect: true
       }
+    },
+    {
+      files: ['**/*/tests/node/**/*.js'],
+      env: {
+        browser: false
+      }
     }
   ]
 };

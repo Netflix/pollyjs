@@ -23,7 +23,7 @@
     "docs:serve": "docsify serve ./docs",
     "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
     "lint": "lerna exec --bail=false -- yarn run lint",
-    "pretest": "npm-run-all test:clean build",
+    "pretest": "yarn test:clean",
     "test": "server-test server:start :4000 test:start",
     "test:ci": "yarn pretest && server-test server:start :4000 test:start-ci ; yarn posttest",
     "test:build": "lerna run test:build --parallel",

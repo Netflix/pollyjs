@@ -1,13 +1,15 @@
 /* eslint-env node */
 
 module.exports = {
+  fail_on_zero_tests: true,
   test_page: 'tests/index.mustache',
-  before_tests: 'yarn test:build',
-  launch_in_ci: ['Chrome', 'Node', 'Ember', 'ESLint'],
+  before_tests: 'npm-run-all --parallel build test:build',
+  launch_in_ci: ['Node', 'Ember', 'ESLint'],
   launch_in_dev: ['Chrome', 'Node', 'Ember', 'ESLint'],
   watch_files: [
     './build-scripts/**/*',
-    './tests/**/*',
+    './tests/*',
+    './tests/!(recordings)/**/*',
     './packages/@pollyjs/*/src/**/*',
     './packages/@pollyjs/*/tests/*/*'
   ],

@@ -36,7 +36,7 @@
     "clean": "rimraf dist",
     "rollup": "rollup -c",
     "rollup:prod": "NODE_ENV=production yarn rollup",
-    "watch": "rollup -c -w",
+    "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test": "",
     "test:build": "",

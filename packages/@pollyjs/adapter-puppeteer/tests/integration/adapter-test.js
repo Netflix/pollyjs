@@ -36,7 +36,12 @@ describe('Integration | Puppeteer Adapter', function() {
     }
   });
 
-  setupFetchRecord({ host: HOST, fetch });
+  setupFetchRecord({ host: HOST });
+
+  beforeEach(function() {
+    // Override this.fetch here since it needs access to the current context
+    this.fetch = fetch.bind(this);
+  });
 
   beforeEach(async function() {
     this.page = await this.browser.newPage();

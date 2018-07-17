@@ -16,11 +16,7 @@ setupFetchRecord.beforeEach = function(options = {}) {
   beforeEach(function() {
     const { host, fetch } = options;
 
-    this.fetch = fetch && fetch.bind(this);
-
-    if (!this.fetch) {
-      throw new Error('[setup-fetch-record] `this.fetch` not set.');
-    }
+    this.fetch = fetch;
 
     this.recordUrl = () =>
       `${host}/api/db/${encodeURIComponent(this.polly.recordingId)}`;

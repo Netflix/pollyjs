@@ -4,6 +4,7 @@
   "description": "REST persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-rest.js",
   "module": "dist/es/pollyjs-persister-rest.js",
+  "browser": "dist/umd/pollyjs-persister-rest.js",
   "files": [
     "src",
     "dist"
@@ -34,9 +35,9 @@
   "scripts": {
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",
-    "rollup": "rollup -c",
+    "rollup": "rollup -c ../../../rollup.config.js",
     "rollup:prod": "NODE_ENV=production yarn rollup",
-    "watch": "rollup -c -w",
+    "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test:build": "rollup -c rollup.config.test.js",
     "lint": "eslint ./*.js src tests",

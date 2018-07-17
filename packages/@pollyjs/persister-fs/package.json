@@ -36,7 +36,7 @@
     "clean": "rimraf dist",
     "rollup": "rollup -c",
     "rollup:prod": "NODE_ENV=production yarn rollup",
-    "watch": "rollup -c -w",
+    "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test:build": "rollup -c rollup.config.test.js",
     "lint": "eslint ./*.js src tests",
@@ -47,6 +47,7 @@
     "@pollyjs/persister": "^0.2.1"
   },
   "devDependencies": {
+    "@pollyjs/adapter-fetch": "^0.0.0",
     "@pollyjs/core": "^0.5.0",
     "chai": "^4.1.2",
     "eslint": "^4.18.1",

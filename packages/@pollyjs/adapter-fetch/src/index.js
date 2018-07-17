@@ -19,6 +19,7 @@ export default class FetchAdapter extends Adapter {
     const { context } = this.options;
 
     this.assert('Fetch global not found.', !!(context && context.fetch));
+    this.assert('Response global not found.', !!(context && context.Response));
     this.assert(
       'Running concurrent fetch adapters is unsupported, stop any running Polly instances.',
       !(STUB_META in context.fetch)
@@ -81,6 +82,8 @@ export default class FetchAdapter extends Adapter {
   }
 
   async respond(pollyRequest, status, headers, body) {
+    const { Response } = this.options.context;
+
     await pollyRequest.respond(status, headers, body);
 
     const { absoluteUrl, response } = pollyRequest;
