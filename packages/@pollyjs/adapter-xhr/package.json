@@ -4,6 +4,7 @@
   "description": "XHR adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-xhr.js",
   "module": "dist/es/pollyjs-adapter-xhr.js",
+  "browser": "dist/umd/pollyjs-adapter-xhr.js",
   "files": [
     "src",
     "dist"
@@ -34,9 +35,9 @@
   "scripts": {
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",
-    "rollup": "rollup -c",
+    "rollup": "rollup -c ../../../rollup.config.js",
     "rollup:prod": "NODE_ENV=production yarn rollup",
-    "watch": "rollup -c -w",
+    "watch": "yarn rollup -w",
     "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test:build": "rollup -c rollup.config.test.js",
     "lint": "eslint ./*.js src tests",
