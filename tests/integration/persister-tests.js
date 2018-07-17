@@ -37,7 +37,7 @@ export default function persisterTests() {
     expect(_recordingName).to.equal(recordingName);
 
     expect(creator.name).to.equal('Polly.JS');
-    expect(creator.version).to.be.a('string');
+    expect(creator.version).to.equal(Polly.VERSION);
     expect(creator.comment).to.equal(
       `${persister.constructor.type}:${persister.constructor.name}`
     );
