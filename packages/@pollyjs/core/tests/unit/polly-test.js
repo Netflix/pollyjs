@@ -11,6 +11,10 @@ describe('Unit | Polly', function() {
     expect(Polly).to.be.a('function');
   });
 
+  it('should have a version', function() {
+    expect(Polly.VERSION).to.be.a('string');
+  });
+
   it('should instantiate without throwing', async function() {
     await expect(async function() {
       const polly = new Polly('recording name');
