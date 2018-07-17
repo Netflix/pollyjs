@@ -48,6 +48,11 @@ export default class Persister {
     }
 
     const promises = [];
+    const creator = {
+      name: CREATOR_NAME,
+      version: this.polly.constructor.VERSION,
+      comment: `${this.constructor.type}:${this.constructor.name}`
+    };
 
     for (const [recordingId, { name, requests }] of this.pending) {
       const entries = [];
@@ -55,15 +60,7 @@ export default class Persister {
       let har;
 
       if (!recording) {
-        har = new HAR({
-          log: {
-            creator: {
-              name: CREATOR_NAME,
-              version: this.polly.VERSION
-            },
-            _recordingName: name
-          }
-        });
+        har = new HAR({ log: { creator, _recordingName: name } });
       } else {
         har = new HAR(recording);
       }

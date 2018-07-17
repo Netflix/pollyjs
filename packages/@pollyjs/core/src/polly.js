@@ -50,13 +50,11 @@ export default class Polly {
   /**
    * Package version.
    *
-   * Gets populated on build time via rollup-plugin-replace
-   *
    * @readonly
    * @public
    * @memberof Polly
    */
-  get VERSION() {
+  static get VERSION() {
     return version;
   }
 
@@ -102,6 +100,38 @@ export default class Polly {
     );
 
     this.config.mode = mode;
+  }
+
+  static once(eventName, listener) {
+    EVENT_EMITTER.once(eventName, listener);
+
+    return this;
+  }
+
+  static off(eventName, listener) {
+    EVENT_EMITTER.off(eventName, listener);
+
+    return this;
+  }
+
+  static register(Factory) {
+    if (!FACTORY_REGISTRATION.has(Factory)) {
+      FACTORY_REGISTRATION.set(Factory, container =>
+        container.register(Factory)
+      );
+    }
+
+    this.on('register', FACTORY_REGISTRATION.get(Factory));
+
+    return this;
+  }
+
+  static unregister(Factory) {
+    if (FACTORY_REGISTRATION.has(Factory)) {
+      this.off('register', FACTORY_REGISTRATION.get(Factory));
+    }
+
+    return this;
   }
 
   /**
@@ -151,38 +181,6 @@ export default class Polly {
 
   static on(eventName, listener) {
     EVENT_EMITTER.on(eventName, listener);
-
-    return this;
-  }
-
-  static once(eventName, listener) {
-    EVENT_EMITTER.once(eventName, listener);
-
-    return this;
-  }
-
-  static off(eventName, listener) {
-    EVENT_EMITTER.off(eventName, listener);
-
-    return this;
-  }
-
-  static register(Factory) {
-    if (!FACTORY_REGISTRATION.has(Factory)) {
-      FACTORY_REGISTRATION.set(Factory, container =>
-        container.register(Factory)
-      );
-    }
-
-    this.on('register', FACTORY_REGISTRATION.get(Factory));
-
-    return this;
-  }
-
-  static unregister(Factory) {
-    if (FACTORY_REGISTRATION.has(Factory)) {
-      this.off('register', FACTORY_REGISTRATION.get(Factory));
-    }
 
     return this;
   }

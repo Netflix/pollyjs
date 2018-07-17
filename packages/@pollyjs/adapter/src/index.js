@@ -115,6 +115,11 @@ export default class Adapter {
       return this.passthrough(pollyRequest);
     }
 
+    this.assert(
+      'A persister must be configured in order to record and replay requests.',
+      !!this.persister
+    );
+
     if (mode === MODES.RECORD) {
       return this.record(pollyRequest);
     }
