@@ -121,12 +121,10 @@ export default class Polly {
       this.mode !== MODES.STOPPED
     );
 
-    this.config = mergeOptions(DefaultConfig, this.config, config);
-
-    /* Handle Adapters */
-
-    // Disconnect from all current adapters
+    // Disconnect from all current adapters before updating the config
     this.disconnect();
+
+    this.config = mergeOptions(DefaultConfig, this.config, config);
 
     // Register and connect to all specified adapters
     this.config.adapters.forEach(adapter => this.connectTo(adapter));
