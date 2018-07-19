@@ -11,7 +11,10 @@ describe('Integration | FS Persister', function() {
   setupPolly.beforeEach({
     recordFailedRequests: true,
     adapters: [FetchAdapter],
-    persister: FSPersister
+    persister: FSPersister,
+    persisterOptions: {
+      fs: { recordingsDir: 'tests/recordings' }
+    }
   });
 
   setupFetchRecord({ host: 'http://localhost:4000' });

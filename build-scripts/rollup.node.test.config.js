@@ -11,7 +11,7 @@ const pollyDependencies = Object.keys(pkg.devDependencies || {}).filter(d =>
 export default function createNodeTestConfig(options = {}) {
   return deepmerge(
     createNodeConfig({
-      input: 'tests/!(browser)/**/*-test.js',
+      input: 'tests/!(browser|jest)/**/*-test.js',
       output: {
         format: 'cjs',
         name: `${pkg.name}-tests`,

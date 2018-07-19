@@ -64,6 +64,12 @@ module.exports = {
       env: {
         browser: false
       }
+    },
+    {
+      files: ['**/*/tests/jest/**/*.js'],
+      env: {
+        jest: false
+      }
     }
   ]
 };
