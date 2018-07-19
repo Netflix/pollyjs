@@ -2,7 +2,7 @@ import Adapter from '@pollyjs/adapter';
 import { Fetch as FetchUtils } from '@pollyjs/utils';
 
 const { defineProperty } = Object;
-const STUB_META = Symbol();
+const IS_STUBBED = Symbol();
 
 export default class FetchAdapter extends Adapter {
   static get name() {
@@ -22,7 +22,7 @@ export default class FetchAdapter extends Adapter {
     this.assert('Response global not found.', !!(context && context.Response));
     this.assert(
       'Running concurrent fetch adapters is unsupported, stop any running Polly instances.',
-      !(STUB_META in context.fetch)
+      !context.fetch[IS_STUBBED]
     );
 
     this.native = context.fetch;
@@ -36,7 +36,7 @@ export default class FetchAdapter extends Adapter {
         requestArguments: [url, options]
       });
 
-    defineProperty(context.fetch, STUB_META, { value: true });
+    defineProperty(context.fetch, IS_STUBBED, { value: true });
   }
 
   onDisconnect() {

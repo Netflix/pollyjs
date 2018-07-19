@@ -1,9 +1,10 @@
 import FakeXHR from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
-import { XHR as XHRUtils } from '@pollyjs/utils';
 import resolveXhr from './utils/resolve-xhr';
+import { XHR as XHRUtils } from '@pollyjs/utils';
 
 const SEND = Symbol();
+const IS_STUBBED = Symbol();
 
 export default class XHRAdapter extends Adapter {
   static get name() {
@@ -14,10 +15,10 @@ export default class XHRAdapter extends Adapter {
     this.assert('XHR global not found.', FakeXHR.xhr.supportsXHR);
     this.assert(
       'Running concurrent XHR adapters is unsupported, stop any running Polly instances.',
-      global.XMLHttpRequest === FakeXHR.xhr.GlobalXMLHttpRequest
+      !global.XMLHttpRequest[IS_STUBBED]
     );
 
-    this.native = FakeXHR.xhr.GlobalXMLHttpRequest;
+    this.native = global.XMLHttpRequest;
     this.xhr = FakeXHR.useFakeXMLHttpRequest();
 
     this.xhr.onCreate = xhr => {
@@ -31,9 +32,12 @@ export default class XHRAdapter extends Adapter {
           body
         });
     };
+
+    global.XMLHttpRequest[IS_STUBBED] = true;
   }
 
   onDisconnect() {
+    delete global.XMLHttpRequest[IS_STUBBED];
     this.xhr.restore();
   }
 
