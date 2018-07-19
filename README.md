@@ -95,7 +95,8 @@ describe('Netflix Homepage', function() {
 });
 ```
 
-The above test case would generate the following recording HAR which Polly will use to replay the sign-in request/response when the test is rerun:
+The above test case would generate the following [HAR](http://www.softwareishard.com/blog/har-12-spec/)
+file which Polly will use to replay the sign-in response when the test is rerun:
 
 ```json
 {
@@ -107,7 +108,8 @@ The above test case would generate the following recording HAR which Polly will 
     },
     "creator": {
       "name": "Polly.JS",
-      "version": "0.5.0"
+      "version": "0.5.0",
+      "comment": "persister:rest"
     },
     "entries": [
       {

@@ -5,7 +5,7 @@ as `server.any()`.
 
 ## Methods
 
-?> __Note:__ Event & Intercept handlers can be asynchronous. An `async`
+?> __NOTE:__ Event & Intercept handlers can be asynchronous. An `async`
 function can be used or a `Promise` can be returned.
 
 ### on
@@ -61,7 +61,7 @@ Register an intercept handler. Once set, the [request](server/request) will
 never go to server but instead defer to the provided handler to handle
 the [response](server/response).
 
-!> __Note:__ This method is not available when using `server.any()`.
+!> __NOTE:__ This method is not available when using `server.any()`.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
@@ -135,7 +135,7 @@ The server passthrough handler. Use this to declare a route as a passthrough
 meaning any request that matches that route will directly use the native
 implementation. Passthrough requests will not be recorded.
 
-!> __Note:__ This method is not available when using `server.any()`.
+!> __NOTE:__ This method is not available when using `server.any()`.
 
 __Example__
 

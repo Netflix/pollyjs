@@ -35,9 +35,10 @@ new Polly('<Recording Name>', {
 ### context
 
 _Type_: `Object`
-_Default_: `global`
+_Default_: `global|self|window`
 
-The context object of where the `localStorage` reference exists.
+The context object which contains the localStorage API.
+Typically this is `window` or `self` in the browser and `global` in node.
 
 __Example__
 
@@ -45,7 +46,7 @@ __Example__
 polly.configure({
   persisterOptions: {
     'local-storage': {
-      context: win
+      context: window
     }
   }
 });

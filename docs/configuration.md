@@ -154,7 +154,7 @@ _Default_: `{}`
 
 Options to be passed into the adapters keyed by the adapter name.
 
-?> __Note:__ Check out the appropriate documentation pages for each adapter
+?> __NOTE:__ Check out the appropriate documentation pages for each adapter
 for more details.
 
 __Example__
@@ -201,7 +201,7 @@ _Default_: `{}`
 
 Options to be passed into the persister keyed by the persister name.
 
-?> __Note:__ Check out the appropriate documentation pages for each persister
+?> __NOTE:__ Check out the appropriate documentation pages for each persister
 for more details.
 
 __Example__

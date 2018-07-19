@@ -5,7 +5,7 @@
 Events can be attached to a server route using `.on()` and detached via
 the `.off()` methods.
 
-?> __Note:__ Event handlers can be asynchronous. An `async` function can be used
+?> __NOTE:__ Event handlers can be asynchronous. An `async` function can be used
 or a `Promise` can be returned.
 
 ```js
@@ -138,7 +138,7 @@ server
 
 Middleware can be added via the `.any()` method.
 
-?> __Note:__ Middleware events will be executed by the order in which they were
+?> __NOTE:__ Middleware events will be executed by the order in which they were
 declared.
 
 ### Global Middleware

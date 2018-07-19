@@ -60,7 +60,7 @@ polly.disconnectFrom('puppeteer');
 _Type_: [Page](https://pptr.dev/#?product=Puppeteer&show=api-class-page)
 _Default_: `null`
 
-!> __Note:__ This is a _required_ option.
+!> __NOTE:__ This is a _required_ option.
 
 The Puppeteer page instance Polly should attach events to in order to intercept
 requests.

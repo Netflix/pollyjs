@@ -2,25 +2,12 @@
   - [Overview](README.md)
   - [Quick Start](quick-start.md)
 
-- Test Helpers
-  - [Mocha](test-helpers/mocha.md)
-  - [QUnit](test-helpers/qunit.md)
+- Test Frameworks
+  - [Mocha](test-frameworks/mocha.md)
+  - [QUnit](test-frameworks/qunit.md)
 
-- Server
-  - [Overview](server/overview.md)
-  - [API](server/api.md)
-  - [Events & Middleware](server/events-and-middleware.md)
-  - [Route Handler](server/route-handler.md)
-  - [Request](server/request.md)
-  - [Response](server/response.md)
-
-- CLI
-  - [Overview](cli/overview.md)
-  - [Commands](cli/commands.md)
-
-- Node Server
-  - [Overview](node-server/overview.md)
-  - [Express Integrations](node-server/express-integrations.md)
+- Frameworks
+  - [Ember CLI](frameworks/ember-cli.md)
 
 - Adapters
   - [Fetch](adapters/fetch.md)
@@ -34,8 +21,21 @@
   - [REST](persisters/rest.md)
   - [Custom](persisters/custom.md)
 
-- Frameworks
-  - [Ember CLI](frameworks/ember-cli.md)
+- Client Server
+  - [Overview](server/overview.md)
+  - [API](server/api.md)
+  - [Events & Middleware](server/events-and-middleware.md)
+  - [Route Handler](server/route-handler.md)
+  - [Request](server/request.md)
+  - [Response](server/response.md)
+
+- Node Server
+  - [Overview](node-server/overview.md)
+  - [Express Integrations](node-server/express-integrations.md)
+
+- CLI
+  - [Overview](cli/overview.md)
+  - [Commands](cli/commands.md)
 
 - Reference
   - [API](api.md)
