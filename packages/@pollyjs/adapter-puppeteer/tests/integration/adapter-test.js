@@ -45,6 +45,8 @@ describe('Integration | Puppeteer Adapter', function() {
 
   beforeEach(async function() {
     this.page = await this.browser.newPage();
+
+    await this.page.goto(`${HOST}/api`);
     await this.page.setRequestInterception(true);
 
     this.polly.configure({
@@ -53,8 +55,6 @@ describe('Integration | Puppeteer Adapter', function() {
         puppeteer: { page: this.page }
       }
     });
-
-    await this.page.goto(HOST);
   });
 
   afterEach(async function() {

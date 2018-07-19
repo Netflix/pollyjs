@@ -1,9 +1,13 @@
 /* eslint-env node */
+const attachMiddleware = require('./tests/middleware');
 
 module.exports = {
+  port: 4000,
   fail_on_zero_tests: true,
   test_page: 'tests/index.mustache',
+  on_start: 'yarn test:clean',
   before_tests: 'npm-run-all --parallel build test:build',
+  on_exit: 'yarn test:clean',
   launch_in_ci: ['Chrome', 'Node', 'Ember', 'ESLint'],
   launch_in_dev: ['Chrome', 'Node', 'Ember', 'ESLint'],
   watch_files: [
@@ -27,6 +31,7 @@ module.exports = {
       ].filter(Boolean)
     }
   },
+  middleware: [attachMiddleware],
   launchers: {
     Node: {
       command:
@@ -40,14 +45,6 @@ module.exports = {
     ESLint: {
       command: 'yarn lint -- -- --format tap >&1 | tap-merge',
       protocol: 'tap'
-    }
-  },
-  proxies: {
-    '/api': {
-      target: 'http://localhost:4000'
-    },
-    '/polly': {
-      target: 'http://localhost:4000'
     }
   }
 };

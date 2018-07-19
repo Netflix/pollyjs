@@ -20,19 +20,17 @@
     "clean": "lerna run clean --parallel",
     "bootstrap": "lerna bootstrap",
     "format": "lerna run format",
-    "docs:serve": "docsify serve ./docs",
-    "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
     "lint": "lerna exec --bail=false -- yarn run lint",
-    "pretest": "npm-run-all test:clean build",
-    "test": "server-test server:start :4000 test:start",
-    "test:ci": "yarn pretest && server-test server:start :4000 test:start-ci ; yarn posttest",
+    "pretest": "yarn server:build",
+    "pretest:ci": "yarn pretest",
+    "test": "testem",
+    "test:ci": "testem ci",
     "test:build": "lerna run test:build --parallel",
-    "test:start": "testem",
-    "test:start-ci": "testem ci",
     "test:clean": "rimraf packages/@pollyjs/*/build",
     "test:ember": "lerna run test --scope=@pollyjs/ember",
-    "posttest": "yarn test:clean",
-    "server:start": "node ./tests/server.js",
+    "server:build": "yarn build --scope=@pollyjs/node-server --scope=@pollyjs/utils",
+    "docs:serve": "docsify serve ./docs",
+    "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
     "release": "lerna publish",
     "postrelease": "yarn docs:publish"
   },
@@ -73,8 +71,7 @@
     "rollup-plugin-node-globals": "^1.2.1",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
-    "start-server-and-test": "^1.4.1",
     "tap-merge": "^0.3.1",
-    "testem": "^2.8.2"
+    "testem": "^2.9.0"
   }
 }
