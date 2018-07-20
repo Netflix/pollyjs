@@ -64,6 +64,13 @@ module.exports = {
       env: {
         browser: false
       }
+    },
+    {
+      files: ['**/*/tests/jest/**/*.js'],
+      env: {
+        jest: true,
+        mocha: false
+      }
     }
   ]
 };

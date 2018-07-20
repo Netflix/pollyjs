@@ -8,8 +8,8 @@ module.exports = {
   on_start: 'yarn test:clean',
   before_tests: 'npm-run-all --parallel build test:build',
   on_exit: 'yarn test:clean',
-  launch_in_ci: ['Chrome', 'Node', 'Ember', 'ESLint'],
-  launch_in_dev: ['Chrome', 'Node', 'Ember', 'ESLint'],
+  launch_in_ci: ['Chrome', 'Node', 'Jest', 'Ember', 'ESLint'],
+  launch_in_dev: ['Chrome', 'Node', 'Jest', 'Ember', 'ESLint'],
   watch_files: [
     './build-scripts/**/*',
     './tests/*',
@@ -36,6 +36,10 @@ module.exports = {
     Node: {
       command:
         'mocha ./packages/@pollyjs/*/build/node/*.js --ui bdd --reporter tap --require tests/node-setup.js',
+      protocol: 'tap'
+    },
+    Jest: {
+      command: 'jest',
       protocol: 'tap'
     },
     Ember: {
