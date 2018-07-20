@@ -68,7 +68,8 @@ module.exports = {
     {
       files: ['**/*/tests/jest/**/*.js'],
       env: {
-        jest: false
+        jest: true,
+        mocha: false
       }
     }
   ]
