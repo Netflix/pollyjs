@@ -3,6 +3,20 @@
 Read and write recordings to and from the file system via a CRUD API hosted
 on a server.
 
+## Installation
+
+_Note that you must have node (and npm) installed._
+
+```bash
+npm install @pollyjs/persister-rest -D
+```
+
+If you want to install it with [yarn](https://yarnpkg.com):
+
+```bash
+yarn add @pollyjs/persister-rest -D
+```
+
 ## Setup
 
 This library provides a fully functional [node server](node-server/overview)
@@ -11,12 +25,14 @@ as well as a [CLI](cli/overview) to get you up and running.
 ## Usage
 
 ```js
+import { Polly } from '@pollyjs/core';
+import RESTPersister from '@pollyjs/persister-rest';
+
+// Register the rest persister so its accessible by all future polly instances
+Polly.register(RESTPersister);
+
 new Polly('<Recording Name>', {
-  persister: 'rest',
-  persisterOptions: {
-    host: '',
-    apiNamespace: '/polly'
-  }
+  persister: 'rest'
 });
 ```
 
@@ -25,7 +41,7 @@ new Polly('<Recording Name>', {
 ### host
 
 _Type_: `String`
-_Default_: `''`
+_Default_: `'http://localhost:3000'`
 
 The host that the API exists on.
 
@@ -34,7 +50,9 @@ __Example__
 ```js
 polly.configure({
   persisterOptions: {
-    host: 'http://netflix.com:3000'
+    rest: {
+      host: 'http://localhost.com:4000'
+    }
   }
 });
 ```
@@ -58,7 +76,9 @@ __Example__
 ```js
 polly.configure({
   persisterOptions: {
-    apiNamespace: '/pollyjs'
+    rest: {
+      apiNamespace: '/pollyjs'
+    }
   }
 });
 ```

@@ -2,11 +2,26 @@
   - [Overview](README.md)
   - [Quick Start](quick-start.md)
 
-- Test Helpers
-  - [Mocha](test-helpers/mocha.md)
-  - [QUnit](test-helpers/qunit.md)
+- Test Frameworks
+  - [Mocha](test-frameworks/mocha.md)
+  - [QUnit](test-frameworks/qunit.md)
 
-- Server
+- Frameworks
+  - [Ember CLI](frameworks/ember-cli.md)
+
+- Adapters
+  - [Fetch](adapters/fetch.md)
+  - [Puppeteer](adapters/puppeteer.md)
+  - [XHR](adapters/xhr.md)
+  - [Custom](adapters/custom.md)
+
+- Persisters
+  - [File System](persisters/fs.md)
+  - [Local Storage](persisters/local-storage.md)
+  - [REST](persisters/rest.md)
+  - [Custom](persisters/custom.md)
+
+- Client Server
   - [Overview](server/overview.md)
   - [API](server/api.md)
   - [Events & Middleware](server/events-and-middleware.md)
@@ -14,30 +29,16 @@
   - [Request](server/request.md)
   - [Response](server/response.md)
 
-- CLI
-  - [Overview](cli/overview.md)
-  - [Commands](cli/commands.md)
-
 - Node Server
   - [Overview](node-server/overview.md)
   - [Express Integrations](node-server/express-integrations.md)
 
-- Adapters
-  - [XHR](adapters/xhr.md)
-  - [Fetch](adapters/fetch.md)
-  - [Custom](adapters/custom.md)
-
-- Persisters
-  - [REST](persisters/rest.md)
-  - [Local Storage](persisters/local-storage.md)
-  - [Custom](persisters/custom.md)
-
-- Frameworks
-  - [Ember CLI](frameworks/ember-cli.md)
+- CLI
+  - [Overview](cli/overview.md)
+  - [Commands](cli/commands.md)
 
 - Reference
   - [API](api.md)
   - [Configuration](configuration.md)
 
-- [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)

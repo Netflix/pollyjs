@@ -29,6 +29,10 @@ yarn add @pollyjs/persister -D
 import Persister from '@pollyjs/persister';
 
 class CustomPersister extends Persister {
+  static get name() {
+    return 'custom';
+  }
+
   findRecording() {}
 
   saveRecording() {}
@@ -46,7 +50,8 @@ The `@pollyjs/core` package exports the `RESTPersister` and `LocalStoragePersist
 allowing you to modify them as needed.
 
 ```js
-import { RESTPersister, LocalStoragePersister } from '@pollyjs/core';
+import RESTPersister from '@pollyjs/persister-rest';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
 
 class CustomRESTPersister extends RESTPersister {}
 class CustomLocalStoragePersister extends LocalStoragePersister {}
@@ -61,13 +66,13 @@ persister class.
 ```js
 // Register and connect to a custom persister:
 new Polly('Custom Persister', {
-  persister: ['my-custom-persister', MyCustomPersisterClass]
+  persister: MyCustomPersisterClass
 });
 
 // Register and connect to a custom persister via .configure():
 const polly = new Polly('Custom Persister');
 
 polly.configure({
-  persister: ['my-custom-persister', MyCustomPersisterClass]
+  persister: MyCustomPersisterClass
 });
 ```

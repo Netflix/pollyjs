@@ -16,6 +16,38 @@ __Example__
 new Polly('<Recording Name>', { /* ... */ });
 ```
 
+## Events
+
+### create
+
+Emitted when a Polly instance gets created.
+
+!> This is a synchronous event.
+
+__Example__
+
+```js
+const listener = polly => { /* Do Something */ };
+
+Polly.on('create', listener);
+Polly.off('create', listener);
+Polly.once('create', polly => { /* Do Something Once */ });
+```
+
+### stop
+
+Emitted when a Polly instance has successfully stopped.
+
+__Example__
+
+```js
+const listener = polly => { /* Do Something */ };
+
+Polly.on('stop', listener);
+Polly.off('stop', listener);
+Polly.once('stop', polly => { /* Do Something Once */ });
+```
+
 ## Properties
 
 ### recordingName
@@ -77,7 +109,7 @@ polly.mode // → 'record'
 ### persister
 
 _Type_: `Persister`
-_Default_: `RestPersister`
+_Default_: `null`
 
 The persister used to find and save recordings.
 
@@ -186,12 +218,13 @@ Connect to an adapter.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| name | `String` | The name of the adapter to connect to |
+| name | `String|Function` | The adapter name of class to connect to |
 
 __Example__
 
 ```js
 polly.connectTo('xhr');
+polly.connectTo(XHRAdapter);
 ```
 
 ### disconnectFrom
@@ -200,12 +233,13 @@ Disconnect from an adapter.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
-| name | `String` | The name of the adapter to disconnect from |
+| name | `String|Function` | The adapter name of class to disconnect from |
 
 __Example__
 
 ```js
 polly.disconnectFrom('xhr');
+polly.disconnectFrom(XHRAdapter);
 ```
 
 ### disconnect

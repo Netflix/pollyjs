@@ -5,7 +5,7 @@ as `server.any()`.
 
 ## Methods
 
-?> __Note:__ Event & Intercept handlers can be asynchronous. An `async`
+?> __NOTE:__ Event & Intercept handlers can be asynchronous. An `async`
 function can be used or a `Promise` can be returned.
 
 ### on
@@ -61,7 +61,7 @@ Register an intercept handler. Once set, the [request](server/request) will
 never go to server but instead defer to the provided handler to handle
 the [response](server/response).
 
-!> __Note:__ This method is not available when using `server.any()`.
+!> __NOTE:__ This method is not available when using `server.any()`.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
@@ -72,11 +72,59 @@ __Example__
 ```js
 server
   .get('/session/:id')
-  .intercept((req, res) => {
+  .intercept((req, res, interceptor) => {
+    if (req.params.id === '1') {
+      res.status(200).json({ token: 'ABC123XYZ' });
+    } else if (req.params.id === '2') {
+      res.status(404).json({ error: 'Unknown Session' });
+    } else {
+      interceptor.abort();
+    }
+  });
+```
+
+#### Interceptor
+
+The `intercept` handler receives a third `interceptor` argument that provides
+some utilities.
+
+##### abort
+
+Calling the `abort` method on the interceptor tells the Polly instance to
+continue handling the request as if it hasn't been intercepted. This allows you
+to only intercept specific types of requests while opting out of others.
+
+__Example__
+
+```js
+server
+  .get('/session/:id')
+  .intercept((req, res, interceptor) => {
     if (req.params.id === '1') {
       res.status(200).json({ token: 'ABC123XYZ' });
     } else {
-      res.status(404).json({ error: 'Unknown Session' });
+      interceptor.abort();
+    }
+  });
+```
+
+##### passthrough
+
+Calling the `passthrough` method on the interceptor tells the Polly instance to
+continue handling the request as if it has been declared as a passthrough.
+This allows you to only intercept specific types of requests while passing
+others through.
+
+__Example__
+
+```js
+server
+  .get('/session/:id')
+  .intercept((req, res, interceptor) => {
+    if (req.params.id === '1') {
+      res.status(200).json({ token: 'ABC123XYZ' });
+    } else {
+      interceptor.passthrough();
     }
   });
 ```
@@ -87,7 +135,7 @@ The server passthrough handler. Use this to declare a route as a passthrough
 meaning any request that matches that route will directly use the native
 implementation. Passthrough requests will not be recorded.
 
-!> __Note:__ This method is not available when using `server.any()`.
+!> __NOTE:__ This method is not available when using `server.any()`.
 
 __Example__
 

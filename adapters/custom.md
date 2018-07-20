@@ -29,16 +29,16 @@ yarn add @pollyjs/adapter -D
 import Adapter from '@pollyjs/adapter';
 
 class CustomAdapter extends Adapter {
+  static get name() {
+    return 'custom';
+  }
+
   onConnect() {
     /* Do something when the adapter is connect to */
   }
 
   onDisconnect() {
     /* Do something when the adapter is disconnected from */
-  }
-
-  toString() {
-    return '[Adapter: CustomAdapter]';
   }
 }
 ```
@@ -52,7 +52,8 @@ The `@pollyjs/core` package exports the `XHRAdapter` and `FetchAdapter` classes,
 allowing you to modify them as needed.
 
 ```js
-import { XHRAdapter, FetchAdapter } from '@pollyjs/core';
+import XHRAdapter from '@pollyjs/adapter-xhr';
+import FetchAdapter from '@pollyjs/adapter-fetch';
 
 class CustomXHRAdapter extends XHRAdapter {}
 class CustomFetchAdapter extends FetchAdapter {}
@@ -67,33 +68,13 @@ adapter class.
 ```js
 // Register and connect to a custom adapter:
 new Polly('Custom Adapter', {
-  adapters: [
-    ['my-custom-adapter', MyCustomAdapterClass]
-  ]
-});
-
-// Register and connect to the default adapters + a custom adapter:
-new Polly('Defaults + Custom Adapter', {
-  adapters: [
-    'fetch',
-    'xhr',
-    ['my-custom-adapter', MyCustomAdapterClass]
-  ]
-});
-
-// Register and connect to a custom fetch adapter:
-new Polly('Custom Fetch Adapter', {
-  adapters: [
-    ['fetch', MyCustomFetchAdapterClass]
-  ]
+  adapters: [MyCustomAdapterClass]
 });
 
 // Register and connect to a custom adapter via .configure():
 const polly = new Polly('Custom Adapter');
 
 polly.configure({
-  adapters: [
-    ['my-custom-adapter', MyCustomAdapterClass]
-  ]
+  adapters: [MyCustomAdapterClass]
 });
 ```

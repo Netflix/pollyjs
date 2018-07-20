@@ -128,50 +128,80 @@ polly.configure({
 
 ## adapters
 
-_Type_: `Array`
-_Default_: `['fetch', 'xhr']`
+_Type_: `Array[String|Function]`
+_Default_: `[]`
 
 The adapter(s) polly will hook into.
 
 __Example__
 
 ```js
+import XHRAdapter from '@pollyjs/adapter-xhr';
+import FetchAdapter from '@pollyjs/adapter-fetch';
+
+// Register the xhr adapter so its accessible by all future polly instances
+Polly.register(XHRAdapter);
+
 polly.configure({
-  adapters: ['xhr']
+  adapters: ['xhr', FetchAdapter]
+});
+```
+
+## adapterOptions
+
+_Type_: `Object`
+_Default_: `{}`
+
+Options to be passed into the adapters keyed by the adapter name.
+
+?> __NOTE:__ Check out the appropriate documentation pages for each adapter
+for more details.
+
+__Example__
+
+```js
+polly.configure({
+  adapterOptions: {
+    fetch: {
+      context: win
+    }
+  }
 });
 ```
 
 ## persister
 
-_Type_: `String`
-_Default_: `'rest'`
+_Type_: `String|Function`
+_Default_: `null`
 
 The persister to use for recording and replaying requests.
 
 __Example__
 
 ```js
+import RESTPersister from '@pollyjs/persister-rest';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
+
+// Register the local-storage persister so its accessible by all future polly instances
+Polly.register(LocalStoragePersister);
+
 polly.configure({
   persister: 'local-storage'
+});
+
+polly.configure({
+  persister: RESTPersister
 });
 ```
 
 ## persisterOptions
 
 _Type_: `Object`
+_Default_: `{}`
 
-_Default_:
+Options to be passed into the persister keyed by the persister name.
 
-```js
-{
-  host: '',
-  apiNamespace: '/polly'
-}
-```
-
-Options to be passed into the persister.
-
-?> __Note:__ Check out the appropriate documentation pages for each persister
+?> __NOTE:__ Check out the appropriate documentation pages for each persister
 for more details.
 
 __Example__
@@ -179,7 +209,9 @@ __Example__
 ```js
 polly.configure({
   persisterOptions: {
-    apiNamespace: '/pollyjs'
+    rest: {
+      apiNamespace: '/pollyjs'
+    }
   }
 });
 ```
