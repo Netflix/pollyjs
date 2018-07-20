@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/@pollyjs/persister@0.2.1...@pollyjs/persister@1.0.0) (2018-07-20)
+
+
+### Bug Fixes
+
+* Creator cleanup and persister assertion ([#67](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/67)) ([19fee5a](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/19fee5a))
+
+
+### Features
+
+* Class events and EventEmitter ([#52](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/52)) ([0a3d591](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/0a3d591))
+* Convert recordings to be HAR compliant ([#45](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/45)) ([e622640](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/e622640))
+* Keyed persister & adapter options ([#60](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/60)) ([29ed8e1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/29ed8e1))
+* Node File System Persister ([#61](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/61)) ([0a0eeca](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/0a0eeca))
+
+
+### BREAKING CHANGES
+
+* Recordings now produce HAR compliant json. Please delete existing recordings.
+
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/@pollyjs/persister@0.2.0...@pollyjs/persister@0.2.1) (2018-06-27)
 

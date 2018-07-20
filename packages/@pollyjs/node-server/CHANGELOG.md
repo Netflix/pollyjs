@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/compare/@pollyjs/node-server@0.4.0...@pollyjs/node-server@1.0.0) (2018-07-20)
+
+
+### Features
+
+* Convert recordings to be HAR compliant ([#45](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/node-server/issues/45)) ([e622640](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/commit/e622640))
+* Node File System Persister ([#61](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/node-server/issues/61)) ([0a0eeca](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/commit/0a0eeca))
+* Presets persisterOptions.host to the node server default ([0b47838](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/commit/0b47838))
+
+
+### BREAKING CHANGES
+
+* Recordings now produce HAR compliant json. Please delete existing recordings.
+
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/compare/@pollyjs/node-server@0.3.0...@pollyjs/node-server@0.4.0) (2018-06-29)
 
