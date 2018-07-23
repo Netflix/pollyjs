@@ -6,7 +6,7 @@ import NormalizeRequest from '../utils/normalize-request';
 import removeHostFromUrl from '../utils/remove-host-from-url';
 import serializeRequestBody from '../utils/serialize-request-body';
 import isAbsoluteUrl from 'is-absolute-url';
-import { assert, timestamp } from '@pollyjs/utils';
+import { assert, timestamp, DeferredPromise } from '@pollyjs/utils';
 import HTTPBase from './http-base';
 
 const { keys, freeze } = Object;
@@ -29,6 +29,7 @@ export default class PollyRequest extends HTTPBase {
     this.recordingName = polly.recordingName;
     this.recordingId = polly.recordingId;
     this.requestArguments = freeze(request.requestArguments || []);
+    this.promise = DeferredPromise();
     this[POLLY] = polly;
 
     /*

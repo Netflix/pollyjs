@@ -87,16 +87,26 @@ export default class Adapter {
     }
   }
 
-  handleRequest() {
-    return this[REQUEST_HANDLER](...arguments);
-  }
-
-  async [REQUEST_HANDLER](request) {
-    const { mode } = this.polly;
+  async handleRequest(request) {
     const pollyRequest = this.polly.registerRequest(request);
-    let interceptor;
 
     await pollyRequest.setup();
+
+    try {
+      const response = await this[REQUEST_HANDLER](pollyRequest);
+
+      pollyRequest.promise.resolve(response);
+
+      return response;
+    } catch (error) {
+      pollyRequest.promise.reject(error);
+      throw error;
+    }
+  }
+
+  async [REQUEST_HANDLER](pollyRequest) {
+    const { mode } = this.polly;
+    let interceptor;
 
     if (pollyRequest.shouldIntercept) {
       interceptor = new Interceptor();

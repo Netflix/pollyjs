@@ -234,6 +234,14 @@ export default class Polly {
     }
   }
 
+  async flush() {
+    const NOOP = () => {};
+
+    await Promise.all(
+      this._requests.map(r => Promise.resolve(r.promise).then(NOOP, NOOP))
+    );
+  }
+
   /**
    * @param {String|Function} nameOrFactory
    * @public

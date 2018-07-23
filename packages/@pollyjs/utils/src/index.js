@@ -6,6 +6,7 @@ export { default as assert } from './utils/assert';
 export { default as timeout } from './utils/timeout';
 export { default as timestamp } from './utils/timestamp';
 export { default as buildUrl } from './utils/build-url';
+export { default as DeferredPromise } from './utils/deferred-promise';
 
 export { default as XHR } from './utils/xhr';
 export { default as Fetch } from './utils/fetch';
