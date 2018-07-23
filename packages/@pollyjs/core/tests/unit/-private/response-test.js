@@ -58,10 +58,7 @@ describe('Unit | Response', function() {
 
     it('should be chainable', function() {
       expect(response.status(200)).to.equal(response);
-      expect(response.type('text/plain')).to.equal(response);
-      expect(response.send('body')).to.equal(response);
       expect(response.sendStatus(200)).to.equal(response);
-      expect(response.json({ foo: 'bar' })).to.equal(response);
     });
   });
 });
