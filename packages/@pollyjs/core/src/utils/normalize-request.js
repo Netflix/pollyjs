@@ -1,7 +1,5 @@
-import URL from 'url-parse';
-import removeHostFromUrl from './remove-host-from-url';
+import parseUrl from './parse-url';
 import isObjectLike from 'lodash-es/isObjectLike';
-import isAbsoluteUrl from 'is-absolute-url';
 import HTTPHeaders from './http-headers';
 import stringify from 'fast-json-stable-stringify';
 
@@ -14,12 +12,7 @@ export function method(method) {
 }
 
 export function url(url, config = {}) {
-  const parsedUrl = new URL(url, true);
-
-  // Remove the host if the url is relative
-  if (!isAbsoluteUrl(url)) {
-    removeHostFromUrl(parsedUrl);
-  }
+  const parsedUrl = parseUrl(url, true);
 
   // Remove any url properties that have been disabled via the config
   keys(config).forEach(key => !config[key] && parsedUrl.set(key, ''));

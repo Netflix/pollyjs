@@ -1,6 +1,7 @@
 import isObjectLike from 'lodash-es/isObjectLike';
 
 const { keys } = Object;
+
 const HANDLER = {
   get(obj, prop) {
     // `prop` can be a Symbol so only lower-case string based props.
