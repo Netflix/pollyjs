@@ -251,3 +251,17 @@ __Example__
 ```js
 polly.disconnect();
 ```
+
+### flush
+
+Returns a Promise that resolves once all requests handled by Polly have resolved.
+
+| Param | Type | Description |
+|  ---  | ---  |     ---     |
+| Returns | `Promise` | &nbsp; |
+
+__Example__
+
+```js
+await polly.flush();
+```

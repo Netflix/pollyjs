@@ -29,7 +29,7 @@ export default class PollyRequest extends HTTPBase {
     this.recordingName = polly.recordingName;
     this.recordingId = polly.recordingId;
     this.requestArguments = freeze(request.requestArguments || []);
-    this.promise = DeferredPromise();
+    this.promise = new DeferredPromise();
     this[POLLY] = polly;
 
     /*

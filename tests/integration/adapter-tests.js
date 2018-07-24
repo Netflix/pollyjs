@@ -99,4 +99,30 @@ export default function adapterTests() {
     expect(await persister.find(recordingId)).to.be.null;
     expect(responseCalled).to.be.true;
   });
+
+  it('should have responses after flushing', async function() {
+    const { server } = this.polly;
+    const requests = [];
+
+    server.get(this.recordUrl()).intercept(async (req, res) => {
+      requests.push(req);
+      await server.timeout(5 * requests.length);
+      res.sendStatus(200);
+    });
+
+    this.fetchRecord();
+    this.fetchRecord();
+    this.fetchRecord();
+
+    // Wait for all requests to be made
+    // (Puppeteer adapter takes some time to make the actual request)
+    while (requests.length !== 3) {
+      await server.timeout(5);
+    }
+
+    await this.polly.flush();
+
+    expect(requests).to.have.lengthOf(3);
+    requests.forEach(request => expect(request.didRespond).to.be.true);
+  });
 }

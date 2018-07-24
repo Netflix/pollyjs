@@ -3,15 +3,16 @@
  *
  * @returns {Promise}
  */
-export default function DeferredPromise() {
-  let resolve, reject;
-  const promise = new Promise((_resolve, _reject) => {
-    resolve = _resolve;
-    reject = _reject;
-  });
+export default class DeferredPromise extends Promise {
+  constructor() {
+    let resolve, reject;
 
-  promise.resolve = resolve;
-  promise.reject = reject;
+    super((_resolve, _reject) => {
+      resolve = _resolve;
+      reject = _reject;
+    });
 
-  return promise;
+    this.resolve = resolve;
+    this.reject = reject;
+  }
 }
