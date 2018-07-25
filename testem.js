@@ -20,8 +20,7 @@ module.exports = {
   serve_files: ['./packages/@pollyjs/*/build/browser/*.js'],
   browser_args: {
     Chrome: {
-      mode: 'ci',
-      args: [
+      ci: [
         // --no-sandbox is needed when running Chrome inside a container
         process.env.TRAVIS ? '--no-sandbox' : null,
         '--disable-gpu',

@@ -3,7 +3,7 @@ import URL from 'url-parse';
 import stringify from 'fast-json-stable-stringify';
 import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
-import removeHostFromUrl from '../utils/remove-host-from-url';
+import parseUrl from '../utils/parse-url';
 import serializeRequestBody from '../utils/serialize-request-body';
 import isAbsoluteUrl from 'is-absolute-url';
 import { assert, timestamp } from '@pollyjs/utils';
@@ -48,18 +48,7 @@ export default class PollyRequest extends HTTPBase {
   }
 
   set url(value) {
-    const url = new URL(value, true);
-
-    /*
-      If the url is relative, setup the parsed url to reflect just that
-      by removing the host. By default URL sets the host via window.location if
-      it does not exist.
-    */
-    if (!isAbsoluteUrl(value)) {
-      removeHostFromUrl(url);
-    }
-
-    this[PARSED_URL] = url;
+    this[PARSED_URL] = parseUrl(value, true);
   }
 
   get absoluteUrl() {
