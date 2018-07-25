@@ -1,7 +1,5 @@
 /**
  * Create a deferred promise with `resolve` and `reject` methods.
- *
- * @returns {Promise}
  */
 export default class DeferredPromise extends Promise {
   constructor() {

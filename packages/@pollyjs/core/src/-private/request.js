@@ -5,8 +5,9 @@ import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
 import removeHostFromUrl from '../utils/remove-host-from-url';
 import serializeRequestBody from '../utils/serialize-request-body';
+import DeferredPromise from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
-import { assert, timestamp, DeferredPromise } from '@pollyjs/utils';
+import { assert, timestamp } from '@pollyjs/utils';
 import HTTPBase from './http-base';
 
 const { keys, freeze } = Object;
