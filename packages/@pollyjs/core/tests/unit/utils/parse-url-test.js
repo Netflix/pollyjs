@@ -13,4 +13,12 @@ describe('Unit | Utils | parseUrl', function() {
       'http://netflix.com/movies/1?sort=title&dir=asc'
     ].forEach(url => expect(parseUrl(url).href).to.equal(url));
   });
+
+  it('should passthrough arguments to url-parse', function() {
+    // Passing true tells url-parse to transform the querystring into an object
+    expect(parseUrl('/movies/1?sort=title&dir=asc', true).query).to.deep.equal({
+      sort: 'title',
+      dir: 'asc'
+    });
+  });
 });
