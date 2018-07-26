@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/@pollyjs/adapter@1.0.0...@pollyjs/adapter@1.1.0) (2018-07-26)
+
+
+### Features
+
+* Wait for all handled requests to resolve via `.flush()` ([#75](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter/issues/75)) ([a3113b7](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/a3113b7))
+
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/@pollyjs/adapter@0.3.1...@pollyjs/adapter@1.0.0) (2018-07-20)
 

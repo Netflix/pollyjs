@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-xhr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "XHR adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-xhr.js",
   "module": "dist/es/pollyjs-adapter-xhr.js",
@@ -44,13 +44,13 @@
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
-    "@pollyjs/adapter": "^1.0.0",
+    "@pollyjs/adapter": "^1.1.0",
     "@pollyjs/utils": "^1.0.0",
     "nise": "^1.4.1"
   },
   "devDependencies": {
-    "@pollyjs/core": "^1.0.0",
-    "@pollyjs/persister-rest": "^1.0.0",
+    "@pollyjs/core": "^1.1.0",
+    "@pollyjs/persister-rest": "^1.0.1",
     "chai": "^4.1.2",
     "eslint": "^4.18.1",
     "mocha": "^5.1.0",

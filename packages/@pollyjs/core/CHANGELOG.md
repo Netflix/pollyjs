@@ -3,7 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="1.0.0"></a>
+  <a name="1.1.0"></a>
+# [1.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/@pollyjs/core@1.0.0...@pollyjs/core@1.1.0) (2018-07-26)
+
+
+### Bug Fixes
+
+* Improve support for relative URLs ([#78](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/78)) ([2c0083e](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/2c0083e)), closes [#76](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/issues/76)
+
+
+### Features
+
+* Move more response methods to shared base class ([#74](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/74)) ([4f845e5](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/4f845e5))
+* Wait for all handled requests to resolve via `.flush()` ([#75](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/75)) ([a3113b7](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/a3113b7))
+
+
+
+
+  <a name="1.0.0"></a>
 # [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/@pollyjs/core@0.5.0...@pollyjs/core@1.0.0) (2018-07-20)
 
 
@@ -62,7 +79,7 @@ persister: RESTPersister
 
 
 
-      <a name="0.5.0"></a>
+<a name="0.5.0"></a>
 # [0.5.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/@pollyjs/core@0.4.0...@pollyjs/core@0.5.0) (2018-06-27)
 
 

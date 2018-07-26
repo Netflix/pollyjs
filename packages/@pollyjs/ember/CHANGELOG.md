@@ -3,7 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="1.0.0"></a>
+  <a name="1.0.1"></a>
+## [1.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.0...@pollyjs/ember@1.0.1) (2018-07-26)
+
+
+
+
+**Note:** Version bump only for package @pollyjs/ember
+
+  <a name="1.0.0"></a>
 # [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@0.4.2...@pollyjs/ember@1.0.0) (2018-07-20)
 
 
@@ -51,7 +59,7 @@ persister: RESTPersister
 
 
 
-      <a name="0.4.2"></a>
+<a name="0.4.2"></a>
 ## [0.4.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@0.4.1...@pollyjs/ember@0.4.2) (2018-06-29)
 
 
