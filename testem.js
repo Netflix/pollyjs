@@ -15,7 +15,7 @@ module.exports = {
     './tests/*',
     './tests/!(recordings)/**/*',
     './packages/@pollyjs/*/src/**/*',
-    './packages/@pollyjs/*/tests/*/*'
+    './packages/@pollyjs/*/tests/**/*'
   ],
   serve_files: ['./packages/@pollyjs/*/build/browser/*.js'],
   browser_args: {
@@ -33,12 +33,11 @@ module.exports = {
   middleware: [attachMiddleware],
   launchers: {
     Node: {
-      command:
-        'mocha ./packages/@pollyjs/*/build/node/*.js --ui bdd --reporter tap --require tests/node-setup.js',
+      command: 'yarn test:node --reporter tap',
       protocol: 'tap'
     },
     Jest: {
-      command: 'jest',
+      command: 'yarn test:jest',
       protocol: 'tap'
     },
     Ember: {
