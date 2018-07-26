@@ -64,4 +64,40 @@ describe('Integration | Puppeteer Adapter', function() {
   setupPolly.afterEach();
 
   adapterTests();
+
+  it('should have resolved requests after flushing', async function() {
+    // Timeout after 500ms since we could have a hanging while loop
+    this.timeout(500);
+
+    const { server } = this.polly;
+    const requests = [];
+    const resolved = [];
+    let i = 1;
+
+    server
+      .get(this.recordUrl())
+      .intercept(async (req, res) => {
+        await server.timeout(5);
+        res.sendStatus(200);
+      })
+      .on('request', req => requests.push(req));
+
+    this.page.on('requestfinished', () => resolved.push(i++));
+
+    this.fetchRecord();
+    this.fetchRecord();
+    this.fetchRecord();
+
+    // Since it takes time for Puppeteer to execute the request in the browser's
+    // context, we have to wait until the requests have been made.
+    while (requests.length !== 3) {
+      await server.timeout(5);
+    }
+
+    await this.polly.flush();
+
+    expect(requests).to.have.lengthOf(3);
+    requests.forEach(request => expect(request.didRespond).to.be.true);
+    expect(resolved).to.have.members([1, 2, 3]);
+  });
 });

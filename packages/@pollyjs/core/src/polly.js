@@ -234,6 +234,16 @@ export default class Polly {
     }
   }
 
+  async flush() {
+    const NOOP = () => {};
+
+    await Promise.all(
+      // The NOOP is there to handle both a resolved and rejected promise
+      // to ensure the promise resolves regardless of the outcome.
+      this._requests.map(r => Promise.resolve(r.promise).then(NOOP, NOOP))
+    );
+  }
+
   /**
    * @param {String|Function} nameOrFactory
    * @public

@@ -5,6 +5,7 @@ import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
 import parseUrl from '../utils/parse-url';
 import serializeRequestBody from '../utils/serialize-request-body';
+import DeferredPromise from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
 import { assert, timestamp } from '@pollyjs/utils';
 import HTTPBase from './http-base';
@@ -29,6 +30,7 @@ export default class PollyRequest extends HTTPBase {
     this.recordingName = polly.recordingName;
     this.recordingId = polly.recordingId;
     this.requestArguments = freeze(request.requestArguments || []);
+    this.promise = new DeferredPromise();
     this[POLLY] = polly;
 
     /*
@@ -54,11 +56,7 @@ export default class PollyRequest extends HTTPBase {
   get absoluteUrl() {
     const { url } = this;
 
-    if (!isAbsoluteUrl(url)) {
-      return new URL(url).href;
-    }
-
-    return url;
+    return isAbsoluteUrl(url) ? url : new URL(url).href;
   }
 
   get protocol() {

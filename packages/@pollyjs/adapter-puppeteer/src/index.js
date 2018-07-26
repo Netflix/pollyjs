@@ -1,6 +1,7 @@
 import Adapter from '@pollyjs/adapter';
 
 const LISTENERS = Symbol();
+const POLLY_REQUEST = Symbol();
 const PASSTHROUGH_PROMISE = Symbol();
 const PASSTHROUGH_PROMISES = Symbol();
 const PASSTHROUGH_REQ_ID_HEADER = 'x-pollyjs-passthrough-request-id';
@@ -73,22 +74,66 @@ export default class PuppeteerAdapter extends Adapter {
         const request = response.request();
 
         // Resolve the passthrough promise with the response if it exists
-        request[PASSTHROUGH_PROMISE] &&
+        if (request[PASSTHROUGH_PROMISE]) {
           request[PASSTHROUGH_PROMISE].resolve(response);
-
-        delete request[PASSTHROUGH_PROMISE];
+          delete request[PASSTHROUGH_PROMISE];
+        }
+      },
+      requestfinished: request => {
+        // Resolve the deferred pollyRequest promise if it exists
+        if (request[POLLY_REQUEST]) {
+          request[POLLY_REQUEST].promise.resolve(request.response());
+          delete request[POLLY_REQUEST];
+        }
       },
       requestfailed: request => {
         // Reject the passthrough promise with the error object if it exists
-        request[PASSTHROUGH_PROMISE] &&
+        if (request[PASSTHROUGH_PROMISE]) {
           request[PASSTHROUGH_PROMISE].reject(request.failure());
+          delete request[PASSTHROUGH_PROMISE];
+        }
 
-        delete request[PASSTHROUGH_PROMISE];
+        // Reject the deferred pollyRequest promise with the error object if it exists
+        if (request[POLLY_REQUEST]) {
+          request[POLLY_REQUEST].promise.reject(request.failure());
+          delete request[POLLY_REQUEST];
+        }
       },
       close: () => this[LISTENERS].delete(page)
     });
 
     this._callListenersWith('prependListener', page);
+  }
+
+  onRequest(pollyRequest) {
+    const [request] = pollyRequest.requestArguments;
+
+    /*
+      Create an access point to the `pollyRequest` so it can be accessed from
+      the emitted page events
+    */
+    request[POLLY_REQUEST] = pollyRequest;
+  }
+
+  /**
+   * Override the onRequestFinished logic as it doesn't apply to this adapter.
+   * Instead, that logic is re-implemented via the `requestfinished` page
+   * event.
+   *
+   * @override
+   */
+  onRequestFinished() {}
+
+  /**
+   * Abort the request on failure. The parent `onRequestFailed` has been
+   * re-implemented via the `requestfailed` page event.
+   *
+   * @override
+   */
+  async onRequestFailed(pollyRequest) {
+    const [request] = pollyRequest.requestArguments;
+
+    await request.abort();
   }
 
   async onRecord(pollyRequest) {
