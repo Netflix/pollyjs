@@ -175,6 +175,22 @@ __Example__
 res.json({ Hello: 'World' });
 ```
 
+### jsonBody
+
+A shortcut method that calls JSON.parse on the response's body.
+
+!> This method will throw if the body is an invalid JSON string.
+
+| Param | Type | Description |
+|  ---  | ---  |     ---     |
+| __Returns__ | `Object` | The JSON parsed body |
+
+__Example__
+
+```js
+res.jsonBody();
+```
+
 ### end
 
 Freeze the response and headers so they can no longer be modified.
