@@ -91,15 +91,16 @@ export default class Adapter {
     const pollyRequest = this.polly.registerRequest(request);
 
     await pollyRequest.setup();
+    await this.onRequest(pollyRequest);
 
     try {
-      const response = await this[REQUEST_HANDLER](pollyRequest);
+      const result = await this[REQUEST_HANDLER](pollyRequest);
 
-      pollyRequest.promise.resolve(response);
+      await this.onRequestFinished(pollyRequest, result);
 
-      return response;
+      return result;
     } catch (error) {
-      pollyRequest.promise.reject(error);
+      await this.onRequestFailed(pollyRequest, error);
       throw error;
     }
   }
@@ -213,6 +214,7 @@ export default class Adapter {
     );
   }
 
+  /* Required Hooks */
   onConnect() {
     this.assert('Must implement the `onConnect` hook.', false);
   }
@@ -221,19 +223,60 @@ export default class Adapter {
     this.assert('Must implement the `onDisconnect` hook.', false);
   }
 
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @returns {*}
+   */
   onRecord() {
     this.assert('Must implement the `onRecord` hook.', false);
   }
 
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @param {Object} normalizedResponse The normalized response generated from the recording entry
+   * @param {Object} recordingEntry The entire recording entry
+   * @returns {*}
+   */
   onReplay() {
     this.assert('Must implement the `onReplay` hook.', false);
   }
 
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @param {PollyResponse} response
+   * @returns {*}
+   */
   onIntercept() {
     this.assert('Must implement the `onIntercept` hook.', false);
   }
 
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @returns {*}
+   */
   onPassthrough() {
     this.assert('Must implement the `onPassthrough` hook.', false);
+  }
+
+  /* Other Hooks */
+  /**
+   * @param {PollyRequest} pollyRequest
+   */
+  onRequest() {}
+
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @param {*} result The returned result value from the request handler
+   */
+  onRequestFinished(pollyRequest, result) {
+    pollyRequest.promise.resolve(result);
+  }
+
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @param {Error} error
+   */
+  onRequestFailed(pollyRequest, error) {
+    pollyRequest.promise.reject(error);
   }
 }

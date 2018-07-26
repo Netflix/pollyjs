@@ -56,11 +56,7 @@ export default class PollyRequest extends HTTPBase {
   get absoluteUrl() {
     const { url } = this;
 
-    if (!isAbsoluteUrl(url)) {
-      return new URL(url).href;
-    }
-
-    return url;
+    return isAbsoluteUrl(url) ? url : new URL(url).href;
   }
 
   get protocol() {

@@ -100,29 +100,32 @@ export default function adapterTests() {
     expect(responseCalled).to.be.true;
   });
 
-  it('should have responses after flushing', async function() {
+  it('should have resolved requests after flushing', async function() {
+    // The puppeteer adapter has its own implementation of this test
+    if (this.polly.adapters.has('puppeteer')) {
+      this.skip();
+    }
+
     const { server } = this.polly;
     const requests = [];
+    const resolved = [];
 
-    server.get(this.recordUrl()).intercept(async (req, res) => {
-      requests.push(req);
-      await server.timeout(5 * requests.length);
-      res.sendStatus(200);
-    });
+    server
+      .get(this.recordUrl())
+      .intercept(async (req, res) => {
+        await server.timeout(5);
+        res.sendStatus(200);
+      })
+      .on('request', req => requests.push(req));
 
-    this.fetchRecord();
-    this.fetchRecord();
-    this.fetchRecord();
-
-    // Wait for all requests to be made
-    // (Puppeteer adapter takes some time to make the actual request)
-    while (requests.length !== 3) {
-      await server.timeout(5);
-    }
+    this.fetchRecord().then(() => resolved.push(1));
+    this.fetchRecord().then(() => resolved.push(2));
+    this.fetchRecord().then(() => resolved.push(3));
 
     await this.polly.flush();
 
     expect(requests).to.have.lengthOf(3);
     requests.forEach(request => expect(request.didRespond).to.be.true);
+    expect(resolved).to.have.members([1, 2, 3]);
   });
 }
