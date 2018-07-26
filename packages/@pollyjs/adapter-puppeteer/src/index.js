@@ -82,7 +82,7 @@ export default class PuppeteerAdapter extends Adapter {
       requestfinished: request => {
         // Resolve the deferred pollyRequest promise if it exists
         if (request[POLLY_REQUEST]) {
-          request[POLLY_REQUEST].promise.resolve();
+          request[POLLY_REQUEST].promise.resolve(request.response());
           delete request[POLLY_REQUEST];
         }
       },
@@ -127,6 +127,7 @@ export default class PuppeteerAdapter extends Adapter {
   /**
    * Abort the request on failure. The parent `onRequestFailed` has been
    * re-implemented via the `requestfailed` page event.
+   *
    * @override
    */
   async onRequestFailed(pollyRequest) {
