@@ -74,7 +74,7 @@ export default class Persister {
           } because the status code was ${
             entry.response.status
           } and \`recordFailedRequests\` is \`false\``,
-          request.response.ok || this.polly.config.recordFailedRequests
+          request.response.ok || request.config.recordFailedRequests
         );
 
         /*

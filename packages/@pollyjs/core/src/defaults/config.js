@@ -7,6 +7,9 @@ export default {
   adapters: [],
   adapterOptions: {},
 
+  persister: null,
+  persisterOptions: {},
+
   logging: false,
 
   recordIfMissing: true,
@@ -15,9 +18,6 @@ export default {
 
   expiresIn: null,
   timing: Timing.fixed(0),
-
-  persister: null,
-  persisterOptions: {},
 
   matchRequestsBy: {
     method: true,

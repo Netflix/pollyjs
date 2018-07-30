@@ -29,7 +29,7 @@ describe('Unit | Polly', function() {
 
       expect(() => (polly.recordingName = value)).to.throw(
         Error,
-        /not a valid recording name/
+        /Invalid recording name provided/
       );
 
       await polly.stop();

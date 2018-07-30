@@ -2,11 +2,6 @@ import Handler from './handler';
 import { assert } from '@pollyjs/utils';
 
 export default class RouteHandler extends Handler {
-  constructor() {
-    super(...arguments);
-    this.set('passthrough', false);
-  }
-
   intercept(fn) {
     assert(
       `Invalid intercept handler provided. Expected function, received: "${typeof fn}".`,
@@ -14,14 +9,17 @@ export default class RouteHandler extends Handler {
     );
 
     this.set('intercept', fn);
-    this.set('passthrough', false);
+    this.passthrough(false);
 
     return this;
   }
 
   passthrough() {
-    this.set('passthrough', true);
-    this.delete('intercept');
+    super.passthrough(...arguments);
+
+    if (this.get('passthrough')) {
+      this.delete('intercept');
+    }
 
     return this;
   }

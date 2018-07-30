@@ -1,10 +1,12 @@
 import md5 from 'blueimp-md5';
 import URL from 'url-parse';
 import stringify from 'fast-json-stable-stringify';
+import mergeOptions from 'merge-options';
 import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
 import parseUrl from '../utils/parse-url';
 import serializeRequestBody from '../utils/serialize-request-body';
+import guidForRecording from '../utils/guid-for-recording';
 import DeferredPromise from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
 import { assert, timestamp } from '@pollyjs/utils';
@@ -41,6 +43,17 @@ export default class PollyRequest extends HTTPBase {
 
     // Lookup the associated route for this request
     this[ROUTE] = polly.server.lookup(this.method, this.url);
+
+    // Handle config overrides defined by the route
+    this.config = mergeOptions(polly.config, this[ROUTE].config());
+
+    // Handle recording name override defined by the route
+    const recordingNameOverride = this[ROUTE].recordingName();
+
+    if (recordingNameOverride) {
+      this.recordingName = recordingNameOverride;
+      this.recordingId = guidForRecording(recordingNameOverride);
+    }
   }
 
   get url() {
@@ -96,11 +109,11 @@ export default class PollyRequest extends HTTPBase {
   }
 
   get shouldPassthrough() {
-    return this[ROUTE].handler.get('passthrough') === true;
+    return this[ROUTE].shouldPassthrough();
   }
 
   get shouldIntercept() {
-    return typeof this[ROUTE].handler.get('intercept') === 'function';
+    return this[ROUTE].shouldIntercept();
   }
 
   async setup() {
@@ -168,8 +181,8 @@ export default class PollyRequest extends HTTPBase {
 
   _identify() {
     const polly = this[POLLY];
-    const { _requests: requests, config } = polly;
-    const { matchRequestsBy } = config;
+    const { _requests: requests } = polly;
+    const { matchRequestsBy } = this.config;
     const identifiers = {};
 
     // Iterate through each normalizer

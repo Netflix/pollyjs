@@ -102,6 +102,34 @@ export default function persisterTests() {
     expect(beforePersistCalled).to.be.true;
   });
 
+  it('should respect recording name overrides', async function() {
+    const { server, persister } = this.polly;
+    const recordingName = 'Default Override';
+    let recordingId;
+
+    server
+      .get(this.recordUrl())
+      .recordingName(recordingName)
+      .on('request', req => {
+        expect(req.recordingName).to.equal(recordingName);
+        recordingId = req.recordingId;
+      });
+
+    this.polly.record();
+    await this.fetchRecord();
+    await persister.persist();
+
+    expect(recordingId).to.include('Override');
+
+    const har = await persister.find(recordingId);
+
+    expect(await validate.har(har)).to.be.true;
+    expect(har.log.entries).to.have.lengthOf(1);
+
+    // Set the new recording name so the afterEach hook deletes the recording
+    this.polly.recordingName = recordingName;
+  });
+
   it('should error when persisting a failed request', async function() {
     let error;
 

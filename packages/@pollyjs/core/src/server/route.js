@@ -1,4 +1,5 @@
 import Handler from './handler';
+import mergeOptions from 'merge-options';
 
 async function invoke(fn, route, req, ...args) {
   if (typeof fn === 'function') {
@@ -54,6 +55,24 @@ export default class Route {
     this.handler = this.handler || new Handler();
   }
 
+  shouldPassthrough() {
+    return this._valueFor('passthrough') || false;
+  }
+
+  shouldIntercept() {
+    return this.handler.has('intercept');
+  }
+
+  recordingName() {
+    return this._valueFor('recordingName') || null;
+  }
+
+  config() {
+    return mergeOptions(
+      ...[...this.middleware, this].map(r => r.handler.get('config'))
+    );
+  }
+
   /**
    * Invokes the intercept method defined on the route-handler.
    * @param {PollyRequest} req
@@ -78,5 +97,17 @@ export default class Route {
     }
 
     await emit(this, ...arguments);
+  }
+
+  _valueFor(key) {
+    let value;
+
+    for (const route of [...this.middleware, this]) {
+      if (route.handler.has(key)) {
+        value = route.handler.get(key);
+      }
+    }
+
+    return value;
   }
 }

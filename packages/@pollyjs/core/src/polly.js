@@ -4,10 +4,11 @@ import Container from './-private/container';
 import DefaultConfig from './defaults/config';
 import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
+import EventEmitter from './-private/event-emitter';
 import Server from './server';
+import { validateRecordingName } from '../utils/validators';
 import { version } from '../package.json';
 import { MODES, assert } from '@pollyjs/utils';
-import EventEmitter from './-private/event-emitter';
 
 const RECORDING_NAME = Symbol();
 const RECORDING_ID = Symbol();
@@ -67,10 +68,7 @@ export default class Polly {
   }
 
   set recordingName(name) {
-    assert(
-      `'${name}' is not a valid recording name.`,
-      typeof name === 'string' && name.trim().length > 0
-    );
+    validateRecordingName(name);
 
     this[RECORDING_NAME] = name;
     this[RECORDING_ID] = guidForRecording(name);
@@ -100,6 +98,12 @@ export default class Polly {
     );
 
     this.config.mode = mode;
+  }
+
+  static on(eventName, listener) {
+    EVENT_EMITTER.on(eventName, listener);
+
+    return this;
   }
 
   static once(eventName, listener) {
@@ -175,12 +179,6 @@ export default class Polly {
 
       this.persister = new (container.lookup(`persister:${persister}`))(this);
     }
-  }
-
-  static on(eventName, listener) {
-    EVENT_EMITTER.on(eventName, listener);
-
-    return this;
   }
 
   /**
