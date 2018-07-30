@@ -1,7 +1,8 @@
 import EventEmitter from '../-private/event-emitter';
-import { validateRecordingName } from '../utils/validators';
-import isObjectLike from 'lodash-es/isObjectLike';
-import { assert } from '@pollyjs/utils';
+import {
+  validateRecordingName,
+  validateRequestConfig
+} from '../utils/validators';
 
 export default class Handler extends Map {
   constructor() {
@@ -54,25 +55,7 @@ export default class Handler extends Map {
   }
 
   configure(config) {
-    assert(
-      `Invalid config provided. Expected object, received: "${typeof config}".`,
-      isObjectLike(config)
-    );
-
-    // The following options cannot be overridden on a per request basis
-    [
-      'mode',
-      'adapters',
-      'adapterOptions',
-      'persister',
-      'persisterOptions'
-    ].forEach(key =>
-      assert(
-        `Invalid configuration option provided. The "${key}" option cannot be overridden.`,
-        !(key in config)
-      )
-    );
-
+    validateRequestConfig(config);
     this.set('config', config);
   }
 }

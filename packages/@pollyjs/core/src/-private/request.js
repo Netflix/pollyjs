@@ -9,8 +9,12 @@ import serializeRequestBody from '../utils/serialize-request-body';
 import guidForRecording from '../utils/guid-for-recording';
 import DeferredPromise from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
-import { assert, timestamp } from '@pollyjs/utils';
 import HTTPBase from './http-base';
+import { assert, timestamp } from '@pollyjs/utils';
+import {
+  validateRecordingName,
+  validateRequestConfig
+} from '../utils/validators';
 
 const { keys, freeze } = Object;
 
@@ -45,14 +49,13 @@ export default class PollyRequest extends HTTPBase {
     this[ROUTE] = polly.server.lookup(this.method, this.url);
 
     // Handle config overrides defined by the route
-    this.config = mergeOptions(polly.config, this[ROUTE].config());
+    this.configure(this[ROUTE].config());
 
     // Handle recording name override defined by the route
-    const recordingNameOverride = this[ROUTE].recordingName();
+    const recordingName = this[ROUTE].recordingName();
 
-    if (recordingNameOverride) {
-      this.recordingName = recordingNameOverride;
-      this.recordingId = guidForRecording(recordingNameOverride);
+    if (recordingName) {
+      this.overrideRecordingName(recordingName);
     }
   }
 
@@ -169,6 +172,17 @@ export default class PollyRequest extends HTTPBase {
 
   async serializeBody() {
     return serializeRequestBody(this.body);
+  }
+
+  overrideRecordingName(recordingName) {
+    validateRecordingName(recordingName);
+    this.recordingName = recordingName;
+    this.recordingId = guidForRecording(recordingName);
+  }
+
+  configure(config) {
+    validateRequestConfig(config);
+    this.config = mergeOptions(this[POLLY].config, this.config || {}, config);
   }
 
   _intercept() {
