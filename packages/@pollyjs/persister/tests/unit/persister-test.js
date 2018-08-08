@@ -1,4 +1,5 @@
 import Persister from '../../src';
+import { timeout } from '@pollyjs/utils';
 
 describe('Unit | Persister', function() {
   it('should exist', function() {
@@ -19,22 +20,35 @@ describe('Unit | Persister', function() {
       };
 
       class CustomPersister extends Persister {
-        findRecording() {
+        async findRecording() {
           callCounts.find++;
+          await timeout(1);
 
           return recording;
         }
 
-        saveRecording() {
+        async saveRecording() {
           callCounts.save++;
+          await timeout(1);
         }
 
-        deleteRecording() {
+        async deleteRecording() {
           callCounts.delete++;
+          await timeout(1);
         }
       }
 
       this.persister = new CustomPersister({});
+    });
+
+    it('should handle concurrent find requests', async function() {
+      await Promise.all([
+        this.persister.find('test'),
+        this.persister.find('test'),
+        this.persister.find('test')
+      ]);
+
+      expect(callCounts.find).to.equal(1);
     });
 
     it('caches', async function() {
@@ -49,7 +63,11 @@ describe('Unit | Persister', function() {
       recording = null;
 
       await this.persister.find('test');
-      await this.persister.find('test');
+      await Promise.all([
+        this.persister.find('test'),
+        this.persister.find('test'),
+        this.persister.find('test')
+      ]);
       await this.persister.find('test');
 
       expect(callCounts.find).to.equal(3);
