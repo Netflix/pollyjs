@@ -44,8 +44,8 @@ export default class PuppeteerAdapter extends Adapter {
         if (requestResourceTypes.includes(request.resourceType())) {
           const headers = request.headers();
 
-          // A CORS preflight request is a CORS request that checks to see if the CORS protocol is understood.
-          // https://developer.mozilla.org/en-US/docs/Glossary/preflight_request
+          // A CORS preflight request is a CORS request that checks to see
+          // if the CORS protocol is understood.
           const isPreFlightReq =
             request.method() === 'OPTIONS' &&
             !!headers['origin'] &&

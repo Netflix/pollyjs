@@ -128,4 +128,16 @@ export default function adapterTests() {
     requests.forEach(request => expect(request.didRespond).to.be.true);
     expect(resolved).to.have.members([1, 2, 3]);
   });
+
+  it('should work with CORS requests', async function() {
+    const { server } = this.polly;
+    const apiUrl = 'https://aws.random.cat/meow';
+
+    server.get(apiUrl).passthrough();
+
+    const res = await this.fetch(apiUrl);
+
+    expect(res.ok).to.be.true;
+    expect(await res.json()).to.be.an('object');
+  });
 }
