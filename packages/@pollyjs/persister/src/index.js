@@ -8,8 +8,8 @@ const CREATOR_NAME = 'Polly.JS';
 export default class Persister {
   constructor(polly) {
     this.polly = polly;
-    this.cache = new Map();
     this.pending = new Map();
+    this._cache = new Map();
   }
 
   static get type() {
@@ -116,31 +116,40 @@ export default class Persister {
   }
 
   async find(recordingId) {
-    if (this.cache.has(recordingId)) {
-      return this.cache.get(recordingId);
+    const { _cache: cache } = this;
+
+    if (!cache.has(recordingId)) {
+      const findRecording = async () => {
+        const recording = await this.findRecording(recordingId);
+
+        if (recording) {
+          this.assert(
+            `Recording with id '${recordingId}' is invalid. Please delete the recording so a new one can be created.`,
+            recording.log && recording.log.creator.name === CREATOR_NAME
+          );
+
+          return recording;
+        } else {
+          cache.delete(recordingId);
+
+          return null;
+        }
+      };
+
+      cache.set(recordingId, findRecording());
     }
 
-    const recording = await this.findRecording(recordingId);
-
-    if (recording) {
-      this.assert(
-        `Recording with id '${recordingId}' is invalid. Please delete the recording so a new one can be created.`,
-        recording.log && recording.log.creator.name === CREATOR_NAME
-      );
-      this.cache.set(recordingId, recording);
-    }
-
-    return recording;
+    return cache.get(recordingId);
   }
 
   async save(recordingId) {
     await this.saveRecording(...arguments);
-    this.cache.delete(recordingId);
+    this._cache.delete(recordingId);
   }
 
   async delete(recordingId) {
     await this.deleteRecording(...arguments);
-    this.cache.delete(recordingId);
+    this._cache.delete(recordingId);
   }
 
   async findEntry(pollyRequest) {
