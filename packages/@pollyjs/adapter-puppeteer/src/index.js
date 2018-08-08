@@ -43,13 +43,16 @@ export default class PuppeteerAdapter extends Adapter {
       request: request => {
         if (requestResourceTypes.includes(request.resourceType())) {
           const headers = request.headers();
-          const isPreFlight =
+
+          // A CORS preflight request is a CORS request that checks to see if the CORS protocol is understood.
+          // https://developer.mozilla.org/en-US/docs/Glossary/preflight_request
+          const isPreFlightReq =
             request.method() === 'OPTIONS' &&
             !!headers['origin'] &&
             !!headers['access-control-request-method'];
 
           if (
-            isPreFlight &&
+            isPreFlightReq &&
             (headers['access-control-request-headers'] || '').includes(
               PASSTHROUGH_REQ_ID_HEADER
             )
@@ -212,7 +215,17 @@ export default class PuppeteerAdapter extends Adapter {
       try {
         responseBody = await response.text();
       } catch (error) {
-        // no-op
+        /*
+          Rethrow the resulting error is not the following:
+            Error: Protocol error (Network.getResponseBody): No data found for resource with given identifier
+        */
+        if (
+          error &&
+          error.message &&
+          !error.message.includes('Protocol error (Network.getResponseBody)')
+        ) {
+          throw error;
+        }
       }
 
       return pollyRequest.respond(
