@@ -43,9 +43,31 @@ export default class PuppeteerAdapter extends Adapter {
       request: request => {
         if (requestResourceTypes.includes(request.resourceType())) {
           const headers = request.headers();
+          const isPreFlight =
+            request.method() === 'OPTIONS' &&
+            !!headers['origin'] &&
+            !!headers['access-control-request-method'];
 
-          // If this is a polly passthrough request
-          if (headers[PASSTHROUGH_REQ_ID_HEADER]) {
+          if (
+            isPreFlight &&
+            (headers['access-control-request-headers'] || '').includes(
+              PASSTHROUGH_REQ_ID_HEADER
+            )
+          ) {
+            // If this is a preflight request and contains the polly passthrough
+            // header, then force allow the request.
+            request.respond({
+              status: 200,
+              headers: {
+                'Access-Control-Allow-Origin': headers['origin'],
+                'Access-Control-Allow-Method':
+                  headers['access-control-request-method'],
+                'Access-Control-Allow-Headers':
+                  headers['access-control-request-headers']
+              }
+            });
+          } else if (headers[PASSTHROUGH_REQ_ID_HEADER]) {
+            // If this is a polly passthrough request
             // Get the associated promise object for the request id and set it
             // on the request
             request[PASSTHROUGH_PROMISE] = this[PASSTHROUGH_PROMISES].get(
@@ -185,11 +207,18 @@ export default class PuppeteerAdapter extends Adapter {
           body
         });
       });
+      let responseBody;
+
+      try {
+        responseBody = await response.text();
+      } catch (error) {
+        // no-op
+      }
 
       return pollyRequest.respond(
         response.status(),
         response.headers(),
-        await response.text()
+        responseBody
       );
     } catch (error) {
       throw error;
