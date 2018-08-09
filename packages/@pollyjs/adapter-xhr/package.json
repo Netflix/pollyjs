@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-xhr",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "XHR adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-xhr.js",
   "module": "dist/es/pollyjs-adapter-xhr.js",
@@ -49,8 +49,8 @@
     "nise": "^1.4.1"
   },
   "devDependencies": {
-    "@pollyjs/core": "^1.1.0",
-    "@pollyjs/persister-rest": "^1.0.1",
+    "@pollyjs/core": "^1.1.1",
+    "@pollyjs/persister-rest": "^1.0.2",
     "chai": "^4.1.2",
     "eslint": "^4.18.1",
     "mocha": "^5.1.0",

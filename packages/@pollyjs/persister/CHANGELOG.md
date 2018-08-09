@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/@pollyjs/persister@1.0.0...@pollyjs/persister@1.0.1) (2018-08-09)
+
+
+### Bug Fixes
+
+* **persister:** Handle concurrent find requests ([#88](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/88)) ([0e02414](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/0e02414))
+
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/@pollyjs/persister@0.2.1...@pollyjs/persister@1.0.0) (2018-07-20)
 
