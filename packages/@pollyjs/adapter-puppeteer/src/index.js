@@ -51,24 +51,28 @@ export default class PuppeteerAdapter extends Adapter {
             !!headers['origin'] &&
             !!headers['access-control-request-method'];
 
-          if (
-            isPreFlightReq &&
-            (headers['access-control-request-headers'] || '').includes(
-              PASSTHROUGH_REQ_ID_HEADER
-            )
-          ) {
-            // If this is a preflight request and contains the polly passthrough
-            // header, then force allow the request.
-            request.respond({
-              status: 200,
-              headers: {
-                'Access-Control-Allow-Origin': headers['origin'],
-                'Access-Control-Allow-Method':
-                  headers['access-control-request-method'],
-                'Access-Control-Allow-Headers':
-                  headers['access-control-request-headers']
+          // Do not intercept preflight requests
+          if (isPreFlightReq) {
+            let corsReqHeaders =
+              headers['access-control-request-headers'] || '';
+
+            // Strip out the passthrough req id header if it exists
+            // as it never actually gets sent out.
+            if (corsReqHeaders.includes(PASSTHROUGH_REQ_ID_HEADER)) {
+              corsReqHeaders = corsReqHeaders
+                .split(/,\s*/)
+                .filter(h => h !== PASSTHROUGH_REQ_ID_HEADER)
+                .join(',')
+                .trim();
+
+              if (corsReqHeaders) {
+                headers['access-control-request-headers'] = corsReqHeaders;
+              } else {
+                delete headers['access-control-request-headers'];
               }
-            });
+            }
+
+            request.continue({ headers });
           } else if (headers[PASSTHROUGH_REQ_ID_HEADER]) {
             // If this is a polly passthrough request
             // Get the associated promise object for the request id and set it
@@ -220,9 +224,11 @@ export default class PuppeteerAdapter extends Adapter {
             Error: Protocol error (Network.getResponseBody): No data found for resource with given identifier
         */
         if (
-          error &&
-          error.message &&
-          !error.message.includes('Protocol error (Network.getResponseBody)')
+          !(
+            error &&
+            error.message &&
+            error.message.includes('Protocol error (Network.getResponseBody)')
+          )
         ) {
           throw error;
         }
