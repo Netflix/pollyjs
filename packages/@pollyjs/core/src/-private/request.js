@@ -1,5 +1,4 @@
 import md5 from 'blueimp-md5';
-import URL from 'url-parse';
 import stringify from 'fast-json-stable-stringify';
 import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
@@ -7,7 +6,7 @@ import parseUrl from '../utils/parse-url';
 import serializeRequestBody from '../utils/serialize-request-body';
 import DeferredPromise from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
-import { assert, timestamp } from '@pollyjs/utils';
+import { URL, assert, timestamp } from '@pollyjs/utils';
 import HTTPBase from './http-base';
 
 const { keys, freeze } = Object;
