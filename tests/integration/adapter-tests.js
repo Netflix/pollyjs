@@ -131,13 +131,21 @@ export default function adapterTests() {
 
   it('should work with CORS requests', async function() {
     const { server } = this.polly;
-    const apiUrl = 'https://aws.random.cat/meow';
+    const apiUrl = 'https://jsonplaceholder.typicode.com';
 
-    server.get(apiUrl).passthrough();
+    server.get(`${apiUrl}/*`).passthrough();
+    server.post(`${apiUrl}/*`).passthrough();
 
-    const res = await this.fetch(apiUrl);
+    let res = await this.fetch(`${apiUrl}/posts/1`);
 
     expect(res.ok).to.be.true;
     expect(await res.json()).to.be.an('object');
+
+    res = await this.fetch(`${apiUrl}/posts`, {
+      method: 'POST',
+      body: JSON.stringify({ foo: 'bar' })
+    });
+
+    expect(res.ok).to.be.true;
   });
 }

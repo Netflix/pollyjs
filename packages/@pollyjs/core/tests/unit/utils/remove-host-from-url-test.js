@@ -1,5 +1,5 @@
-import URL from 'url-parse';
 import removeHost from '../../../src/utils/remove-host-from-url';
+import { URL } from '@pollyjs/utils';
 
 describe('Unit | Utils | removeHostFromUrl', function() {
   it('should exist', function() {
