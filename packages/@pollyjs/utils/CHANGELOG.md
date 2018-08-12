@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/@pollyjs/utils@1.0.0...@pollyjs/utils@1.0.1) (2018-08-12)
+
+
+### Bug Fixes
+
+* **adapter-puppeteer:** Do not intercept CORS preflight requests ([#90](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/90)) ([53ad433](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/53ad433))
+
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/@pollyjs/utils@0.1.1...@pollyjs/utils@1.0.0) (2018-07-20)
 
