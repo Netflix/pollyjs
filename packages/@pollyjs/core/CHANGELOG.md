@@ -3,15 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/@pollyjs/core@1.1.2...@pollyjs/core@1.1.3) (2018-08-12)
-
-
 
 
 **Note:** Version bump only for package @pollyjs/core
 
-      <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/@pollyjs/core@1.1.1...@pollyjs/core@1.1.2) (2018-08-12)
 
 
