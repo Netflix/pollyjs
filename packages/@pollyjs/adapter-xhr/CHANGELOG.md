@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/@pollyjs/adapter-xhr@1.0.3...@pollyjs/adapter-xhr@1.0.4) (2018-08-12)
+
+
+
+
+**Note:** Version bump only for package @pollyjs/adapter-xhr
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/@pollyjs/adapter-xhr@1.0.2...@pollyjs/adapter-xhr@1.0.3) (2018-08-12)
 
