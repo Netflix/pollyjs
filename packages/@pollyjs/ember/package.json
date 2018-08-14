@@ -44,12 +44,8 @@
     "@pollyjs/node-server": "^1.0.2",
     "@pollyjs/persister-local-storage": "^1.0.4",
     "@pollyjs/persister-rest": "^1.0.4",
-    "broccoli-funnel": "^2.0.1",
-    "broccoli-merge-trees": "^3.0.0",
-    "broccoli-source": "^1.1.0",
-    "browser-resolve": "^1.11.2",
-    "debug": "^3.1.0",
-    "ember-cli-babel": "^6.6.0"
+    "ember-cli-babel": "^6.6.0",
+    "ember-auto-import": "^1.2.8"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
@@ -83,6 +79,9 @@
     "configPath": "tests/dummy/config",
     "before": [
       "proxy-server-middleware"
+    ],
+    "after": [
+      "ember-auto-import"
     ]
   }
 }
