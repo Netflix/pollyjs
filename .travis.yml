@@ -21,9 +21,6 @@ before_install:
 install:
   - yarn install --no-lockfile --non-interactive
 
-before_script:
-  - yarn
-
 script:
   - commitlint-travis
   - yarn run test:ci
