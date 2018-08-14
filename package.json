@@ -12,6 +12,7 @@
       "email": "offirgolan@gmail.com"
     }
   ],
+  "workspaces": ["packages/@pollyjs/*"],
   "scripts": {
     "commitmsg": "commitlint -E GIT_PARAMS",
     "build": "lerna run build --ignore=@pollyjs/ember --parallel",
@@ -30,9 +31,11 @@
     "test:node": "mocha --opts tests/mocha.opts",
     "test:jest": "jest",
     "test:ember": "lerna run test --stream --no-prefix --scope=@pollyjs/ember",
-    "server:build": "yarn build --scope=@pollyjs/node-server --scope=@pollyjs/utils",
+    "server:build":
+      "yarn build --scope=@pollyjs/node-server --scope=@pollyjs/utils",
     "docs:serve": "docsify serve ./docs",
-    "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
+    "docs:publish":
+      "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
     "release": "lerna publish",
     "postrelease": "yarn docs:publish"
   },
