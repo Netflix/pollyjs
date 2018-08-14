@@ -19,7 +19,6 @@
     "build:watch": "npm-run-all clean watch",
     "watch": "lerna run watch --ignore=@pollyjs/ember --parallel",
     "clean": "lerna run clean --parallel",
-    "bootstrap": "lerna bootstrap",
     "format": "lerna run format",
     "lint": "lerna exec --bail=false --stream --no-prefix -- yarn run lint",
     "pretest": "yarn server:build",

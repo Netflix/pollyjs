@@ -22,7 +22,7 @@ install:
   - yarn install --no-lockfile --non-interactive
 
 before_script:
-  - yarn run bootstrap
+  - yarn
 
 script:
   - commitlint-travis
