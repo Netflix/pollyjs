@@ -41,4 +41,18 @@ module('Unit | Polly | General', function() {
       assert.equal(typeof Timing.relative, 'function');
     });
   });
+
+  module('auto-registers', function() {
+    test('adapters', async function(assert) {
+      const polly = new Polly('adapters');
+      assert.equal(polly.adapters.size, 2);
+      await polly.stop();
+    });
+
+    test('persister', async function(assert) {
+      const polly = new Polly('persister');
+      assert.equal(typeof polly.persister, 'object');
+      await polly.stop();
+    });
+  });
 });

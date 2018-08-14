@@ -25,17 +25,15 @@ module.exports = {
   },
 
   contentFor(name) {
-    if (name !== 'body-footer' || !this._config.enabled) {
+    if (name !== 'app-prefix' || !this._config.enabled) {
       return;
     }
 
     return `
-      <script type="text/javascript">
-        (function() {
-          'use strict';
-          require('@pollyjs/ember/-private/preconfigure');
-        })();
-      </script>
+      (function() {
+        'use strict';
+        require('@pollyjs/ember/-private/preconfigure');
+      })();
     `;
   },
 
