@@ -21,7 +21,6 @@ Install the dependencies and bootstrap the monorepo:
 
 ```bash
 yarn
-yarn run bootstrap
 ```
 
 The code for individual packages of this monorepo are in `packages/@pollyjs/*`.
