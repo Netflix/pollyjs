@@ -15,7 +15,9 @@ export default class PuppeteerAdapter extends Adapter {
   get defaultOptions() {
     return {
       page: null,
-      requestResourceTypes: ['xhr', 'fetch']
+
+      /* NOTE: `"other" is needed as of puppeteer 1.7.0 to capture the passthrough request */
+      requestResourceTypes: ['xhr', 'fetch', 'other']
     };
   }
 
