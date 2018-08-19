@@ -211,9 +211,17 @@ export default class PuppeteerAdapter extends Adapter {
         // This gets evaluated within the browser's context, meaning that
         // this fetch call executes from within the browser.
         page.evaluate(
-          (url, options) => fetch(url, options),
+          new Function(
+            'url',
+            'method',
+            'headers',
+            'body',
+            'return fetch(url, { method, headers, body });'
+          ),
           parsedUrl.toString(),
-          { method, headers, body }
+          method,
+          headers,
+          body
         );
       });
 
