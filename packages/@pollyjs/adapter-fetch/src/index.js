@@ -87,9 +87,12 @@ export default class FetchAdapter extends Adapter {
     await pollyRequest.respond(status, headers, body);
 
     const { absoluteUrl, response } = pollyRequest;
+    const { statusCode } = response;
 
-    const fetchResponse = new Response(response.body, {
-      status: response.statusCode,
+    const responseBody =
+      statusCode === 204 && response.body === '' ? null : response.body;
+    const fetchResponse = new Response(responseBody, {
+      status: statusCode,
       headers: response.headers
     });
 
