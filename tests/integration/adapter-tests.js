@@ -26,6 +26,13 @@ export default function adapterTests() {
     expect(res.status).to.equal(404);
   });
 
+  it('should properly handle 204 status code response', async function() {
+    const noContentResponse = await this.relativeFetch('/echo?status=204');
+
+    expect(noContentResponse.status).to.equal(204);
+    expect((await noContentResponse.text())).to.equal('');
+  });
+
   it('should intercept', async function() {
     const { server } = this.polly;
 
