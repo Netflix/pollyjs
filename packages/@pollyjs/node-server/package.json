@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/node-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Standalone node server and express integration for @pollyjs",
   "main": "dist/cjs/pollyjs-node-server.js",
   "module": "dist/es/pollyjs-node-server.js",
@@ -45,7 +45,7 @@
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
-    "@pollyjs/utils": "^1.0.2",
+    "@pollyjs/utils": "^1.0.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.5"></a>
+## [1.0.5](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/@pollyjs/adapter-fetch@1.0.4...@pollyjs/adapter-fetch@1.0.5) (2018-08-22)
+
+
+### Bug Fixes
+
+* Allow 204 responses without a body ([#101](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter-fetch/issues/101)) ([20b4125](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/commit/20b4125))
+
+
+
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/@pollyjs/adapter-fetch@1.0.3...@pollyjs/adapter-fetch@1.0.4) (2018-08-12)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.4"></a>
+## [1.1.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-puppeteer/compare/@pollyjs/adapter-puppeteer@1.1.3...@pollyjs/adapter-puppeteer@1.1.4) (2018-08-22)
+
+
+### Bug Fixes
+
+* Puppeteer 1.7.0 support ([#100](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter-puppeteer/issues/100)) ([e208b38](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-puppeteer/commit/e208b38))
+
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-puppeteer/compare/@pollyjs/adapter-puppeteer@1.1.2...@pollyjs/adapter-puppeteer@1.1.3) (2018-08-12)
 

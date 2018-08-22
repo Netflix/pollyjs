@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Shared utilities and constants between @pollyjs packages",
   "main": "dist/cjs/pollyjs-utils.js",
   "module": "dist/es/pollyjs-utils.js",
