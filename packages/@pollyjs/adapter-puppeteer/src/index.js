@@ -1,10 +1,9 @@
 import Adapter from '@pollyjs/adapter';
+import { URL } from '@pollyjs/utils';
 
 const LISTENERS = Symbol();
-const POLLY_REQUEST = Symbol();
-const PASSTHROUGH_PROMISE = Symbol();
 const PASSTHROUGH_PROMISES = Symbol();
-const PASSTHROUGH_REQ_ID_HEADER = 'x-pollyjs-passthrough-request-id';
+const PASSTHROUGH_REQ_ID_QP = 'pollyjs_passthrough_req_id';
 
 export default class PuppeteerAdapter extends Adapter {
   static get name() {
@@ -14,7 +13,18 @@ export default class PuppeteerAdapter extends Adapter {
   get defaultOptions() {
     return {
       page: null,
-      requestResourceTypes: ['xhr', 'fetch']
+
+      /* NOTE: `"other" is needed as of puppeteer 1.7.0 to capture the passthrough request */
+      requestResourceTypes: ['xhr', 'fetch', 'other']
+    };
+  }
+
+  constructor() {
+    super(...arguments);
+
+    this._requestsMapping = {
+      passthroughs: new WeakMap(),
+      pollyRequests: new WeakMap()
     };
   }
 
@@ -27,6 +37,7 @@ export default class PuppeteerAdapter extends Adapter {
       'A puppeteer page instance is required.',
       !!(page && typeof page === 'object')
     );
+
     this.attachToPageEvents(page);
   }
 
@@ -42,26 +53,44 @@ export default class PuppeteerAdapter extends Adapter {
     this[LISTENERS].set(page, {
       request: request => {
         if (requestResourceTypes.includes(request.resourceType())) {
+          const url = request.url();
+          const method = request.method();
           const headers = request.headers();
 
-          // If this is a polly passthrough request
-          if (headers[PASSTHROUGH_REQ_ID_HEADER]) {
+          // A CORS preflight request is a CORS request that checks to see
+          // if the CORS protocol is understood.
+          const isPreFlightReq =
+            method === 'OPTIONS' &&
+            !!headers['origin'] &&
+            !!headers['access-control-request-method'];
+
+          // Do not intercept requests with the Polly passthrough QP
+          if (url.includes(PASSTHROUGH_REQ_ID_QP)) {
+            const parsedUrl = new URL(url, true);
+
+            // If this is a polly passthrough request
             // Get the associated promise object for the request id and set it
             // on the request
-            request[PASSTHROUGH_PROMISE] = this[PASSTHROUGH_PROMISES].get(
-              headers[PASSTHROUGH_REQ_ID_HEADER]
+            this._requestsMapping.passthroughs.set(
+              request,
+              this[PASSTHROUGH_PROMISES].get(
+                parsedUrl.query[PASSTHROUGH_REQ_ID_QP]
+              )
             );
 
-            // Delete the header to remove any pollyjs footprint
-            delete headers[PASSTHROUGH_REQ_ID_HEADER];
+            // Delete the query param to remove any pollyjs footprint
+            delete parsedUrl.query[PASSTHROUGH_REQ_ID_QP];
 
-            // Continue the request with the headers override
-            request.continue({ headers });
+            // Continue the request with the url override
+            request.continue({ url: parsedUrl.toString() });
+          } else if (isPreFlightReq) {
+            // Do not intercept preflight requests
+            request.continue();
           } else {
             this.handleRequest({
               headers,
-              url: request.url(),
-              method: request.method(),
+              url,
+              method,
               body: request.postData(),
               requestArguments: [request]
             });
@@ -70,33 +99,36 @@ export default class PuppeteerAdapter extends Adapter {
           request.continue();
         }
       },
-      response: response => {
-        const request = response.request();
+      requestfinished: request => {
+        const response = request.response();
+        const { passthroughs, pollyRequests } = this._requestsMapping;
 
         // Resolve the passthrough promise with the response if it exists
-        if (request[PASSTHROUGH_PROMISE]) {
-          request[PASSTHROUGH_PROMISE].resolve(response);
-          delete request[PASSTHROUGH_PROMISE];
+        if (passthroughs.has(request)) {
+          passthroughs.get(request).resolve(response);
+          passthroughs.delete(request);
         }
-      },
-      requestfinished: request => {
+
         // Resolve the deferred pollyRequest promise if it exists
-        if (request[POLLY_REQUEST]) {
-          request[POLLY_REQUEST].promise.resolve(request.response());
-          delete request[POLLY_REQUEST];
+        if (pollyRequests.has(request)) {
+          pollyRequests.get(request).promise.resolve(response);
+          pollyRequests.delete(request);
         }
       },
       requestfailed: request => {
+        const error = request.failure();
+        const { passthroughs, pollyRequests } = this._requestsMapping;
+
         // Reject the passthrough promise with the error object if it exists
-        if (request[PASSTHROUGH_PROMISE]) {
-          request[PASSTHROUGH_PROMISE].reject(request.failure());
-          delete request[PASSTHROUGH_PROMISE];
+        if (passthroughs.has(request)) {
+          passthroughs.get(request).reject(error);
+          passthroughs.delete(request);
         }
 
         // Reject the deferred pollyRequest promise with the error object if it exists
-        if (request[POLLY_REQUEST]) {
-          request[POLLY_REQUEST].promise.reject(request.failure());
-          delete request[POLLY_REQUEST];
+        if (pollyRequests.has(request)) {
+          pollyRequests.get(request).promise.reject(error);
+          pollyRequests.delete(request);
         }
       },
       close: () => this[LISTENERS].delete(page)
@@ -112,7 +144,7 @@ export default class PuppeteerAdapter extends Adapter {
       Create an access point to the `pollyRequest` so it can be accessed from
       the emitted page events
     */
-    request[POLLY_REQUEST] = pollyRequest;
+    this._requestsMapping.pollyRequests.set(request, pollyRequest);
   }
 
   /**
@@ -166,12 +198,11 @@ export default class PuppeteerAdapter extends Adapter {
 
   async passthroughRequest(pollyRequest) {
     const { page } = this.options;
-    const { id, order, url, method, body } = pollyRequest;
+    const { id, order, url, method, headers, body } = pollyRequest;
     const requestId = `${this.polly.recordingId}:${id}:${order}`;
-    const headers = {
-      ...pollyRequest.headers,
-      [PASSTHROUGH_REQ_ID_HEADER]: requestId
-    };
+    const parsedUrl = new URL(url, true);
+
+    parsedUrl.query[PASSTHROUGH_REQ_ID_QP] = requestId;
 
     try {
       const response = await new Promise((resolve, reject) => {
@@ -179,11 +210,19 @@ export default class PuppeteerAdapter extends Adapter {
 
         // This gets evaluated within the browser's context, meaning that
         // this fetch call executes from within the browser.
-        page.evaluate((url, options) => fetch(url, options), url, {
+        page.evaluate(
+          new Function(
+            'url',
+            'method',
+            'headers',
+            'body',
+            'return fetch(url, { method, headers, body });'
+          ),
+          parsedUrl.toString(),
           method,
           headers,
           body
-        });
+        );
       });
 
       return pollyRequest.respond(

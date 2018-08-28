@@ -12,6 +12,10 @@ module.exports = function attachMiddleware(app) {
 
   app.use(bodyParser.json());
 
+  app.get('/echo', (req, res) => {
+    res.sendStatus(req.query.status);
+  });
+
   app.get('/api', (req, res) => {
     res.sendStatus(200);
   });

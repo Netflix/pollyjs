@@ -18,7 +18,10 @@ export default function request(url, obj = {}) {
 
     xhr.send(obj.body);
   }).then(xhr => {
-    return new Response(xhr.responseText, {
+    const responseBody =
+      xhr.status === 204 && xhr.responseText === '' ? null : xhr.responseText;
+
+    return new Response(responseBody, {
       status: xhr.status,
       statusText: xhr.statusText,
       headers: XHRUtils.serializeResponseHeaders(xhr.getAllResponseHeaders())

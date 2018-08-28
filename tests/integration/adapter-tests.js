@@ -26,6 +26,13 @@ export default function adapterTests() {
     expect(res.status).to.equal(404);
   });
 
+  it('should properly handle 204 status code response', async function() {
+    const noContentResponse = await this.relativeFetch('/echo?status=204');
+
+    expect(noContentResponse.status).to.equal(204);
+    expect((await noContentResponse.text())).to.equal('');
+  });
+
   it('should intercept', async function() {
     const { server } = this.polly;
 
@@ -127,5 +134,25 @@ export default function adapterTests() {
     expect(requests).to.have.lengthOf(3);
     requests.forEach(request => expect(request.didRespond).to.be.true);
     expect(resolved).to.have.members([1, 2, 3]);
+  });
+
+  it('should work with CORS requests', async function() {
+    const { server } = this.polly;
+    const apiUrl = 'https://jsonplaceholder.typicode.com';
+
+    server.get(`${apiUrl}/*`).passthrough();
+    server.post(`${apiUrl}/*`).passthrough();
+
+    let res = await this.fetch(`${apiUrl}/posts/1`);
+
+    expect(res.ok).to.be.true;
+    expect(await res.json()).to.be.an('object');
+
+    res = await this.fetch(`${apiUrl}/posts`, {
+      method: 'POST',
+      body: JSON.stringify({ foo: 'bar' })
+    });
+
+    expect(res.ok).to.be.true;
   });
 }

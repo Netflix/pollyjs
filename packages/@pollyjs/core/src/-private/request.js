@@ -1,5 +1,4 @@
 import md5 from 'blueimp-md5';
-import URL from 'url-parse';
 import stringify from 'fast-json-stable-stringify';
 import mergeOptions from 'merge-options';
 import PollyResponse from './response';
@@ -10,7 +9,7 @@ import guidForRecording from '../utils/guid-for-recording';
 import DeferredPromise from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
 import HTTPBase from './http-base';
-import { assert, timestamp } from '@pollyjs/utils';
+import { URL, assert, timestamp } from '@pollyjs/utils';
 import {
   validateRecordingName,
   validateRequestConfig

@@ -3,7 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-  <a name="1.0.1"></a>
+  <a name="1.0.5"></a>
+## [1.0.5](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.4...@pollyjs/ember@1.0.5) (2018-08-22)
+
+
+### Bug Fixes
+
+* **ember:** Fix auto-register and add tests to cover ([24c15bd](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/24c15bd))
+
+
+
+
+  <a name="1.0.4"></a>
+## [1.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.3...@pollyjs/ember@1.0.4) (2018-08-12)
+
+
+
+
+**Note:** Version bump only for package @pollyjs/ember
+
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.2...@pollyjs/ember@1.0.3) (2018-08-12)
+
+
+
+
+**Note:** Version bump only for package @pollyjs/ember
+
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.1...@pollyjs/ember@1.0.2) (2018-08-09)
+
+
+
+
+**Note:** Version bump only for package @pollyjs/ember
+
+<a name="1.0.1"></a>
 ## [1.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.0...@pollyjs/ember@1.0.1) (2018-07-26)
 
 
@@ -11,7 +46,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @pollyjs/ember
 
-  <a name="1.0.0"></a>
+<a name="1.0.0"></a>
 # [1.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@0.4.2...@pollyjs/ember@1.0.0) (2018-07-20)
 
 
