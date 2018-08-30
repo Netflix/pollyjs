@@ -50,4 +50,48 @@ describe('Unit | Server | Handler', function() {
     expect(eventEmitter.hasListeners('request')).to.be.false;
     expect(eventEmitter.listeners('request')).to.have.lengthOf(0);
   });
+
+  it('should default passthrough to false', function() {
+    expect(new Handler().get('passthrough')).to.be.false;
+  });
+
+  it('registers an intercept handler', function() {
+    const handler = new Handler();
+
+    handler.intercept(() => {});
+    expect(handler.has('intercept')).to.be.true;
+  });
+
+  it('throws when passing a non-function to intercept', function() {
+    const handler = new Handler();
+
+    [null, undefined, {}, [], ''].forEach(value => {
+      expect(() => handler.intercept(value)).to.throw(
+        /Invalid intercept handler provided/
+      );
+    });
+  });
+
+  it('removes the intercept handler on passthrough', function() {
+    const handler = new Handler();
+
+    handler.intercept(() => {});
+    expect(handler.has('intercept')).to.be.true;
+
+    handler.passthrough();
+    expect(handler.get('passthrough')).to.be.true;
+    expect(handler.has('intercept')).to.be.false;
+  });
+
+  it('disables passthrough on intercept', function() {
+    const handler = new Handler();
+
+    handler.passthrough();
+    expect(handler.get('passthrough')).to.be.true;
+    expect(handler.has('intercept')).to.be.false;
+
+    handler.intercept(() => {});
+    expect(handler.has('intercept')).to.be.true;
+    expect(handler.get('passthrough')).to.be.false;
+  });
 });

@@ -56,11 +56,11 @@ export default class Route {
   }
 
   shouldPassthrough() {
-    return this._valueFor('passthrough') || false;
+    return Boolean(this._valueFor('passthrough'));
   }
 
   shouldIntercept() {
-    return this.handler.has('intercept');
+    return Boolean(this._valueFor('intercept'));
   }
 
   recordingName() {
@@ -80,7 +80,7 @@ export default class Route {
    * @return {*}
    */
   async intercept() {
-    await invoke(this.handler.get('intercept'), this, ...arguments);
+    await invoke(this._valueFor('intercept'), this, ...arguments);
   }
 
   /**

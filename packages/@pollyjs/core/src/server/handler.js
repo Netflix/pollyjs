@@ -1,4 +1,5 @@
 import EventEmitter from '../-private/event-emitter';
+import { assert } from '@pollyjs/utils';
 import {
   validateRecordingName,
   validateRequestConfig
@@ -40,6 +41,22 @@ export default class Handler extends Map {
 
   passthrough(value = true) {
     this.set('passthrough', Boolean(value));
+
+    if (this.get('passthrough')) {
+      this.delete('intercept');
+    }
+
+    return this;
+  }
+
+  intercept(fn) {
+    assert(
+      `Invalid intercept handler provided. Expected function, received: "${typeof fn}".`,
+      typeof fn === 'function'
+    );
+
+    this.set('intercept', fn);
+    this.passthrough(false);
 
     return this;
   }

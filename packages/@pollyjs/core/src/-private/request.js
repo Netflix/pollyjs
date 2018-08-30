@@ -48,13 +48,13 @@ export default class PollyRequest extends HTTPBase {
     this[ROUTE] = polly.server.lookup(this.method, this.url);
 
     // Handle config overrides defined by the route
-    this.configure(this[ROUTE].config());
+    this._configure(this[ROUTE].config());
 
     // Handle recording name override defined by the route
     const recordingName = this[ROUTE].recordingName();
 
     if (recordingName) {
-      this.overrideRecordingName(recordingName);
+      this._overrideRecordingName(recordingName);
     }
   }
 
@@ -173,13 +173,13 @@ export default class PollyRequest extends HTTPBase {
     return serializeRequestBody(this.body);
   }
 
-  overrideRecordingName(recordingName) {
+  _overrideRecordingName(recordingName) {
     validateRecordingName(recordingName);
     this.recordingName = recordingName;
     this.recordingId = guidForRecording(recordingName);
   }
 
-  configure(config) {
+  _configure(config) {
     validateRequestConfig(config);
     this.config = mergeOptions(this[POLLY].config, this.config || {}, config);
   }
