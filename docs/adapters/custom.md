@@ -44,7 +44,7 @@ class CustomAdapter extends Adapter {
 ```
 
 For better usage examples, please refer to the source code for
-the [Fetch](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/core/src/adapters/fetch/index.js) & [XHR](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/core/src/adapters/xhr/index.js) adapters.
+the [Fetch](https://github.com/Netflix/pollyjs/blob/master/packages/@pollyjs/adapter-fetch/src/index.js) & [XHR](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/adapter-xhr/src/index.js) adapters.
 
 ## Extending from an Existing Adapter
 
