@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "target": "es6"
+  },
+  "exclude": [
+    "dist"
+  ]
+}

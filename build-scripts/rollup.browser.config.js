@@ -1,3 +1,6 @@
+/* globals process */
+
+import path from 'path';
 import deepmerge from 'deepmerge';
 import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
@@ -6,9 +9,11 @@ import resolve from 'rollup-plugin-node-resolve';
 import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
 import commonjs from 'rollup-plugin-commonjs';
+import typescript2 from 'rollup-plugin-typescript2';
 import uglify from 'rollup-plugin-uglify';
 import json from 'rollup-plugin-json';
-import { input, output, pkg, production } from './rollup.utils';
+import typescript from 'typescript';
+import { input, output, pkg, production, rootPath } from './rollup.utils';
 
 export default function createBrowserConfig(options = {}, targets) {
   return deepmerge(
@@ -19,6 +24,24 @@ export default function createBrowserConfig(options = {}, targets) {
         alias(lerna()),
         json(),
         resolve({ browser: true }),
+        typescript2({
+          typescript,
+          verbosity: 2,
+          useTsconfigDeclarationDir: true,
+          cacheRoot: path.resolve(rootPath, '.rts2_cache'),
+          // // tsconfig: path.resolve(rootPath, 'tsconfig.json'),
+          // tsconfigDefaults: {
+          //   // extends: path.resolve(rootPath, 'tsconfig.json')
+          // },
+          tsconfigOverride: {
+            compilerOptions: {
+              sourceMap: production,
+              declaration: true,
+              declarationDir: path.resolve(process.cwd(), 'dist/types')
+            }
+            // include: [path.resolve(process.cwd(), '**/*')]
+          }
+        }),
         commonjs(),
         babel({
           babelrc: false,

@@ -1,20 +1,20 @@
 import { assert } from '@pollyjs/utils';
 
-function keyFor(Factory) {
+function keyFor(Factory: any): string {
   return `${Factory.type}:${Factory.name}`;
 }
 
 export default class Container {
+  private _registry: Map<String, any>;
+
   constructor() {
     this._registry = new Map();
   }
 
   /**
    * Register a factory onto the container.
-   *
-   * @param {Function} Factory
    */
-  register(Factory) {
+  public register(Factory: any): void {
     assert(
       `Attempted to register ${Factory} but invalid factory provided. Expected function, received: "${typeof Factory}"`,
       typeof Factory === 'function'
@@ -38,10 +38,8 @@ export default class Container {
   /**
    * Unregister a factory from the container via a key (e.g. `adapter:fetch`)
    * or Factory class.
-   *
-   * @param {String|Function} keyOrFactory
    */
-  unregister(keyOrFactory) {
+  public unregister(keyOrFactory: string | Function): void {
     const { _registry: registry } = this;
     const key =
       typeof keyOrFactory === 'function' ? keyFor(keyOrFactory) : keyOrFactory;
@@ -51,22 +49,16 @@ export default class Container {
 
   /**
    * Lookup a factory by the given key (e.g. `adapter:fetch`)
-   *
-   * @param {String} key
-   * @returns {Function}
    */
-  lookup(key) {
+  public lookup(key: string): Function | null {
     return this._registry.get(key) || null;
   }
 
   /**
    * Check if a factory has been registered via a key (e.g. `adapter:fetch`)
    * or Factory class.
-   *
-   * @param {String|Function} keyOrFactory
-   * @returns {Boolean}
    */
-  has(keyOrFactory) {
+  public has(keyOrFactory: string | Function): boolean {
     const { _registry: registry } = this;
     const key =
       typeof keyOrFactory === 'function' ? keyFor(keyOrFactory) : keyOrFactory;

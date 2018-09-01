@@ -4,26 +4,28 @@ import { assert, HTTP_STATUS_CODES } from '@pollyjs/utils';
 const DEFAULT_STATUS_CODE = 200;
 
 export default class PollyResponse extends HTTPBase {
-  constructor(statusCode, headers, body) {
+  public statusCode: number;
+
+  constructor(statusCode?: number, headers?: {}, body?: string) {
     super();
     this.status(statusCode || DEFAULT_STATUS_CODE);
     this.setHeaders(headers);
     this.body = body;
   }
 
-  get ok() {
+  public get ok(): boolean {
     return this.statusCode && this.statusCode >= 200 && this.statusCode < 300;
   }
 
-  get statusText() {
+  public get statusText(): string {
     return (
       HTTP_STATUS_CODES[this.statusCode] ||
       HTTP_STATUS_CODES[DEFAULT_STATUS_CODE]
     );
   }
 
-  status(statusCode) {
-    const status = parseInt(statusCode, 10);
+  public status(statusCode: number | string): this {
+    const status = parseInt(<string>statusCode, 10);
 
     assert(
       `[Response] Invalid status code: ${status}`,
@@ -35,7 +37,7 @@ export default class PollyResponse extends HTTPBase {
     return this;
   }
 
-  sendStatus(status) {
+  public sendStatus(status: number | string): this {
     this.status(status);
     this.type('text/plain');
 

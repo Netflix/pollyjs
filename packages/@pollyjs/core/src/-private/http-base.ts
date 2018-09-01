@@ -5,21 +5,24 @@ const { freeze } = Object;
 const { parse } = JSON;
 
 export default class HTTPBase {
+  public headers: {};
+  public body?: string;
+
   constructor() {
-    this.headers = new HTTPHeaders();
+    this.headers = HTTPHeaders();
   }
 
-  getHeader(name) {
+  public getHeader(name: string): string {
     return this.headers[name];
   }
 
-  setHeader(name, value) {
+  public setHeader(name: string, value: string): this {
     this.headers[name] = value;
 
     return this;
   }
 
-  setHeaders(headers = {}) {
+  public setHeaders(headers = {}) {
     for (const name in headers) {
       this.setHeader(name, headers[name]);
     }
@@ -27,15 +30,15 @@ export default class HTTPBase {
     return this;
   }
 
-  hasHeader(name) {
+  public hasHeader(name: string): boolean {
     return !!this.getHeader(name);
   }
 
-  type(type) {
+  public type(type: string): this {
     return this.setHeader('Content-Type', type);
   }
 
-  send(data) {
+  public send(data: any): this {
     let body = data;
 
     switch (typeof body) {
@@ -72,7 +75,7 @@ export default class HTTPBase {
     return this;
   }
 
-  json(obj) {
+  public json(obj?: {}): this {
     if (!this.hasHeader('Content-Type')) {
       this.type('application/json');
     }
@@ -80,11 +83,11 @@ export default class HTTPBase {
     return this.send(stringify(obj));
   }
 
-  jsonBody() {
+  public jsonBody(): {} {
     return parse(this.body);
   }
 
-  end() {
+  public end(): this {
     freeze(this);
     freeze(this.headers);
 

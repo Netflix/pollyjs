@@ -2,13 +2,16 @@ import isObjectLike from 'lodash-es/isObjectLike';
 
 const { keys } = Object;
 
+export interface HTTPHeaders {
+  [key: string]: string
+}
+
 const HANDLER = {
-  get(obj, prop) {
-    // `prop` can be a Symbol so only lower-case string based props.
+  get(obj: {}, prop: string | symbol): any {
     return obj[typeof prop === 'string' ? prop.toLowerCase() : prop];
   },
 
-  set(obj, prop, value) {
+  set(obj: {}, prop: string | symbol, value: any): boolean {
     if (typeof prop !== 'string') {
       return false;
     }
@@ -23,7 +26,7 @@ const HANDLER = {
   }
 };
 
-export default function HTTPHeaders(headers) {
+export default function HTTPHeaders(headers?: {}): {} {
   const proxy = new Proxy({}, HANDLER);
 
   if (isObjectLike(headers)) {

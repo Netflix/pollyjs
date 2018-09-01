@@ -9,3 +9,4 @@ build
 dist
 *.lerna_backup
 .npmrc
+.rts2_cache

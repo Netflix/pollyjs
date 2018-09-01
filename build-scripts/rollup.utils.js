@@ -25,4 +25,5 @@ export const output = format => {
   };
 };
 
-export const testsPath = path.resolve(process.cwd(), '../../../tests');
+export const rootPath = path.resolve(process.cwd(), '../../../');
+export const testsPath = path.resolve(rootPath, '../../../tests');
