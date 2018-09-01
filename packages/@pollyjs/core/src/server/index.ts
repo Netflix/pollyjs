@@ -31,6 +31,15 @@ function parseUrl(url) {
 }
 
 export default class Server {
+  private [HOST]: string;
+  private [NAMESPACES]: string[];
+  private [MIDDLEWARE]: Middleware[];
+  private [REGISTRY]: {
+    [host: string]: {
+      [method: string]: RouteRecognizer
+    }
+  };
+
   constructor() {
     this[HOST] = '';
     this[REGISTRY] = {};
@@ -38,7 +47,7 @@ export default class Server {
     this[MIDDLEWARE] = [];
   }
 
-  host(path, callback) {
+  public host(path: string, callback: (server: this) => void): void {
     const host = this[HOST];
 
     assert(`[Server] A host cannot be specified within another host.`, !host);
@@ -48,7 +57,7 @@ export default class Server {
     this[HOST] = host;
   }
 
-  namespace(path, callback) {
+  public namespace(path: string, callback: (server: this) => void): void {
     const namespaces = this[NAMESPACES];
 
     this[NAMESPACES] = [...namespaces, path];
@@ -56,53 +65,53 @@ export default class Server {
     this[NAMESPACES] = namespaces;
   }
 
-  timeout() {
-    return timeout(...arguments);
+  public async timeout(ms: number): Promise<void> {
+    await timeout(ms);
   }
 
-  get() {
-    return this._register('GET', ...arguments);
+  public get(routes: string | string[]): Handler {
+    return this._register('GET', routes);
   }
 
-  put() {
-    return this._register('PUT', ...arguments);
+  public put(routes: string | string[]): Handler {
+    return this._register('PUT', routes);
   }
 
-  post() {
-    return this._register('POST', ...arguments);
+  public post(routes: string | string[]): Handler {
+    return this._register('POST', routes);
   }
 
-  delete() {
-    return this._register('DELETE', ...arguments);
+  public delete(routes: string | string[]): Handler {
+    return this._register('DELETE', routes);
   }
 
-  patch() {
-    return this._register('PATCH', ...arguments);
+  public patch(routes: string | string[]): Handler {
+    return this._register('PATCH', routes);
   }
 
-  head() {
-    return this._register('HEAD', ...arguments);
+  public head(routes: string | string[]): Handler {
+    return this._register('HEAD', routes);
   }
 
-  options() {
-    return this._register('OPTIONS', ...arguments);
+  public options(routes: string | string[]): Handler {
+    return this._register('OPTIONS', routes);
   }
 
-  any() {
-    return this._registerMiddleware(...arguments);
+  public any(routes: string | string[]): Handler {
+    return this._registerMiddleware(routes);
   }
 
-  lookup(method, url) {
+  public lookup(method: string, url: string): Route {
     return new Route(this._recognize(method, url), this._lookupMiddleware(url));
   }
 
-  _lookupMiddleware(url) {
+  private _lookupMiddleware(url: string): Middleware[] {
     const { host, path } = parseUrl(url);
 
     return this[MIDDLEWARE].map(m => m.match(host, path)).filter(Boolean);
   }
 
-  _register(method, routes) {
+  private _register(method: string, routes: string | string[]): RouteHandler {
     const handler = new RouteHandler();
 
     castArray(routes).forEach(route => {
@@ -115,7 +124,7 @@ export default class Server {
     return handler;
   }
 
-  _registerMiddleware(routes) {
+  private _registerMiddleware(routes: string | string[]): Handler {
     const handler = new Handler();
     const pathsByHost = {};
 
@@ -147,28 +156,30 @@ export default class Server {
     return handler;
   }
 
-  _recognize(method, url) {
+  private _recognize(method: string, url: string): {} {
     const { host, path } = parseUrl(url);
     const registry = this._registryForHost(host);
 
     return registry[method.toUpperCase()].recognize(path);
   }
 
-  _buildUrl(path) {
+  private _buildUrl(path: string): string {
     return buildUrl(this[HOST], ...this[NAMESPACES], path);
   }
 
-  _registryForHost(host) {
+  private _registryForHost(host?: string): {} {
+    const registry = this[REGISTRY];
+
     host = host || SLASH;
 
-    if (!this[REGISTRY][host]) {
-      this[REGISTRY][host] = METHODS.reduce((acc, method) => {
+    if (!registry[host]) {
+      registry[host] = METHODS.reduce((acc, method) => {
         acc[method] = new RouteRecognizer();
 
         return acc;
       }, {});
     }
 
-    return this[REGISTRY][host];
+    return registry[host];
   }
 }

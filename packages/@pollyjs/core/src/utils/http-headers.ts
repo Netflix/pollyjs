@@ -26,8 +26,8 @@ const HANDLER = {
   }
 };
 
-export default function HTTPHeaders(headers?: {}): {} {
-  const proxy = new Proxy({}, HANDLER);
+export default function HTTPHeaders(headers?: {}): HTTPHeaders {
+  const proxy = <HTTPHeaders>new Proxy({}, HANDLER);
 
   if (isObjectLike(headers)) {
     keys(headers).forEach(h => (proxy[h] = headers[h]));

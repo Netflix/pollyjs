@@ -16,6 +16,26 @@ const ROUTE = Symbol();
 const POLLY = Symbol();
 
 export default class PollyRequest extends HTTPBase {
+  public method: string;
+  public body?: string;
+  public serializedBody: string;
+  public recordingName: string;
+  public recordingId: string;
+  public requestArguments: any[];
+  public promise: Promise<void>;
+  public action?: string;
+  public timestamp: string;
+  public response: PollyResponse;
+  public didRespond: boolean;
+  public responseTime: number;
+  public id: string;
+  public order: number;
+
+  private [POLLY]: Polly;
+  private [ROUTE]: Route;
+  private [PARSED_URL]: URL;
+  private identifiers: {};
+
   constructor(polly, request) {
     super();
 
@@ -42,67 +62,68 @@ export default class PollyRequest extends HTTPBase {
     this[ROUTE] = polly.server.lookup(this.method, this.url);
   }
 
-  get url() {
+  public get url(): string {
     // Use .toString() to force a rebuild of the url. This guarantees that
     // Any changes to the query object get propagated.
     return this[PARSED_URL].toString();
   }
 
-  set url(value) {
+  public set url(value: string) {
     this[PARSED_URL] = parseUrl(value, true);
   }
 
-  get absoluteUrl() {
+  public get absoluteUrl(): string {
     const { url } = this;
 
     return isAbsoluteUrl(url) ? url : new URL(url).href;
   }
 
-  get protocol() {
+  public get protocol(): string {
     return this[PARSED_URL].protocol;
   }
 
-  get hostname() {
+  public get hostname(): string {
     return this[PARSED_URL].hostname;
   }
 
-  get port() {
+  public get port(): string {
     return this[PARSED_URL].port;
   }
 
-  get origin() {
+  public get origin(): string {
     return this[PARSED_URL].origin;
   }
 
-  get pathname() {
+  public get pathname(): string {
     return this[PARSED_URL].pathname;
   }
 
-  get query() {
+  public get query(): {} {
     return this[PARSED_URL].query;
   }
 
-  set query(value) {
-    return this[PARSED_URL].set('query', value);
+  public set query(value: {}) {
+    this[PARSED_URL].set('query', value);
   }
 
-  get hash() {
+  public get hash(): string {
     return this[PARSED_URL].hash;
   }
 
-  set hash(value) {
-    return this[PARSED_URL].set('hash', value);
+  public set hash(value: string) {
+    this[PARSED_URL].set('hash', value);
   }
 
-  get shouldPassthrough() {
+  public get shouldPassthrough(): boolean {
     return this[ROUTE].handler.get('passthrough') === true;
   }
 
-  get shouldIntercept() {
+  public get shouldIntercept(): boolean {
     return typeof this[ROUTE].handler.get('intercept') === 'function';
   }
 
-  async setup() {
+
+  public async setup(): Promise<void> {
     // Trigger the `request` event
     await this._emit('request');
 
@@ -120,7 +141,7 @@ export default class PollyRequest extends HTTPBase {
     this.timestamp = timestamp();
   }
 
-  async respond(status, headers, body) {
+  public async respond(status?: number, headers?: {}, body?: string): Promise<void> {
     assert(
       'Cannot respond to a request that already has a response.',
       !this.didRespond
@@ -153,19 +174,19 @@ export default class PollyRequest extends HTTPBase {
     await this._emit('response', this.response);
   }
 
-  async serializeBody() {
+  public async serializeBody(): Promise<string> {
     return serializeRequestBody(this.body);
   }
 
-  _intercept() {
-    return this[ROUTE].intercept(this, this.response, ...arguments);
+  public async _intercept(): Promise<void> {
+    await this[ROUTE].intercept(this, this.response, ...arguments);
   }
 
-  _emit(eventName, ...args) {
-    return this[ROUTE].emit(eventName, this, ...args);
+  public async _emit(eventName: string, ...args: any[]): Promise<void> {
+    await this[ROUTE].emit(eventName, this, ...args);
   }
 
-  _identify() {
+  private _identify(): void {
     const polly = this[POLLY];
     const { _requests: requests, config } = polly;
     const { matchRequestsBy } = config;

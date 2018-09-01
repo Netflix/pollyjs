@@ -5,6 +5,7 @@ const DEFAULT_STATUS_CODE = 200;
 
 export default class PollyResponse extends HTTPBase {
   public statusCode: number;
+  public timestamp: string;
 
   constructor(statusCode?: number, headers?: {}, body?: string) {
     super();
