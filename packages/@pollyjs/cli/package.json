@@ -43,6 +43,7 @@
     "commander": "^2.17.1"
   },
   "devDependencies": {
+    "@types/commander": "^2.12.2",
     "eslint": "^4.18.1",
     "eslint-plugin-node": "^5.2.1",
     "npm-run-all": "^4.1.3",

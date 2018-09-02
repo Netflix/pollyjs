@@ -49,6 +49,7 @@
     "utf8-byte-length": "^1.0.4"
   },
   "devDependencies": {
+    "@types/set-cookie-parser": "^0.0.3",
     "eslint": "^4.19.1",
     "har-validator": "^5.1.0",
     "npm-run-all": "^4.1.3",
