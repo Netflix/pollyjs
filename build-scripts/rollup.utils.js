@@ -13,7 +13,7 @@ const banner = `/**
 * Released under the ${pkg.license} License.
 */`;
 
-export const input = './src/index.js';
+export const input = './src/index.@(js|ts)';
 export const output = format => {
   return {
     format,

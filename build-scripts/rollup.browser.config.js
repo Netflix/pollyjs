@@ -12,6 +12,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import typescript2 from 'rollup-plugin-typescript2';
 import uglify from 'rollup-plugin-uglify';
 import json from 'rollup-plugin-json';
+import multiEntry from 'rollup-plugin-multi-entry';
 import typescript from 'typescript';
 import { input, output, pkg, production, rootPath } from './rollup.utils';
 
@@ -29,20 +30,15 @@ export default function createBrowserConfig(options = {}, targets) {
           verbosity: 2,
           useTsconfigDeclarationDir: true,
           cacheRoot: path.resolve(rootPath, '.rts2_cache'),
-          // // tsconfig: path.resolve(rootPath, 'tsconfig.json'),
-          // tsconfigDefaults: {
-          //   // extends: path.resolve(rootPath, 'tsconfig.json')
-          // },
           tsconfigOverride: {
             compilerOptions: {
               sourceMap: production,
               declaration: true,
               declarationDir: path.resolve(process.cwd(), 'dist/types')
             }
-            // include: [path.resolve(process.cwd(), '**/*')]
           }
         }),
-        commonjs(),
+        commonjs({ extensions: ['.js', '.ts', '.json'] }),
         babel({
           babelrc: false,
           runtimeHelpers: true,
@@ -67,6 +63,7 @@ export default function createBrowserConfig(options = {}, targets) {
         }),
         globals(),
         builtins(),
+        multiEntry(),
         production && uglify()
       ],
       onwarn(message) {

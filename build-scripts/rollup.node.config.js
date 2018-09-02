@@ -1,10 +1,16 @@
+/* globals process */
+
+import path from 'path';
 import deepmerge from 'deepmerge';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify';
 import json from 'rollup-plugin-json';
-import { input, output, pkg, production } from './rollup.utils';
+import multiEntry from 'rollup-plugin-multi-entry';
+import typescript2 from 'rollup-plugin-typescript2';
+import typescript from 'typescript';
+import { input, output, pkg, production, rootPath } from './rollup.utils';
 
 const external = Object.keys(pkg.dependencies || {});
 
@@ -17,7 +23,20 @@ export default function createNodeConfig(options = {}) {
       plugins: [
         json(),
         resolve(),
-        commonjs(),
+        typescript2({
+          typescript,
+          verbosity: 2,
+          useTsconfigDeclarationDir: true,
+          cacheRoot: path.resolve(rootPath, '.rts2_cache'),
+          tsconfigOverride: {
+            compilerOptions: {
+              sourceMap: production,
+              declaration: true,
+              declarationDir: path.resolve(process.cwd(), 'dist/types')
+            }
+          }
+        }),
+        commonjs({ extensions: ['.js', '.ts', '.json'] }),
         babel({
           babelrc: false,
           runtimeHelpers: true,
@@ -40,6 +59,7 @@ export default function createNodeConfig(options = {}) {
           exclude: ['node_modules/**'],
           ignore: 'node_modules/**'
         }),
+        multiEntry(),
         production && uglify()
       ]
     },
