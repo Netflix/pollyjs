@@ -1,10 +1,11 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "./packages/@pollyjs",
+    "baseUrl": "./packages",
     "paths": {
+      "*": ["types/*"],
       "@pollyjs/*": [
-        "./*/src"
+        "./@pollyjs/*/src"
       ]
     }
   },
