@@ -1,3 +1,7 @@
+interface StatusCodeMap {
+  [key: number]: string;
+}
+
 export default {
   100: 'Continue',
   101: 'Switching Protocols',
@@ -41,4 +45,4 @@ export default {
   503: 'Service Unavailable',
   504: 'Gateway Timeout',
   505: 'HTTP Version Not Supported'
-};
+} as StatusCodeMap;
