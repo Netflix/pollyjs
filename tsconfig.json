@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
-      "*": ["types/*"],
+      "*": ["../types/*"],
       "@pollyjs/*": [
         "./@pollyjs/*/src"
       ]
