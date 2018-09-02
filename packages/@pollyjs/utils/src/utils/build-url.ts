@@ -1,6 +1,6 @@
 import URL from 'url-parse';
 
-export default function buildUrl(...paths) {
+export default function buildUrl(...paths: string[]) {
   const url = new URL(
     paths
       .map(p => p && (p + '').trim()) // Trim each string
