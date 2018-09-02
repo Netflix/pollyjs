@@ -1,11 +1,12 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "downlevelIteration": true,
-    "sourceMap": true,
-    "removeComments": false,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "target": "es6"
+    "baseUrl": "./packages/@pollyjs",
+    "paths": {
+      "@pollyjs/*": [
+        "./*/src"
+      ]
+    }
   },
   "exclude": [
     "dist"
