@@ -12,7 +12,9 @@
       "email": "offirgolan@gmail.com"
     }
   ],
-  "workspaces": ["packages/@pollyjs/*"],
+  "workspaces": [
+    "packages/@pollyjs/*"
+  ],
   "scripts": {
     "commitmsg": "commitlint -E GIT_PARAMS",
     "build": "lerna run build --ignore=@pollyjs/ember --parallel",
@@ -30,24 +32,24 @@
     "test:node": "mocha --opts tests/mocha.opts",
     "test:jest": "jest",
     "test:ember": "lerna run test --stream --no-prefix --scope=@pollyjs/ember",
-    "server:build":
-      "yarn build --scope=@pollyjs/node-server --scope=@pollyjs/utils",
+    "server:build": "yarn build --scope=@pollyjs/node-server --scope=@pollyjs/utils",
     "docs:serve": "docsify serve ./docs",
-    "docs:publish":
-      "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
+    "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
     "release": "lerna publish",
     "postrelease": "yarn docs:publish"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
     "@commitlint/config-lerna-scopes": "^7.0.0",
     "@commitlint/travis-cli": "^7.0.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
+    "babel-core": "^7.0.0-bridge.0",
     "chai": "^4.1.2",
     "deepmerge": "^2.1.1",
     "docsify-cli": "^4.2.1",
@@ -69,7 +71,7 @@
     "rimraf": "^2.6.2",
     "rollup": "^0.64.1",
     "rollup-plugin-alias": "^1.4.0",
-    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.1.5",
     "rollup-plugin-json": "^3.0.0",
     "rollup-plugin-multi-entry": "^2.0.2",

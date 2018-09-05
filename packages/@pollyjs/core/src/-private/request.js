@@ -22,6 +22,7 @@ export default class PollyRequest extends HTTPBase {
     assert('Url is required.', typeof request.url === 'string');
     assert('Method is required.', typeof request.method === 'string');
 
+    this.didRespond = false;
     this.url = request.url;
     this.method = request.method.toUpperCase();
     this.body = request.body;
