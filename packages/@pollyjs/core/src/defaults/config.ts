@@ -7,11 +7,11 @@ export interface PollyConfig {
   recordIfMissing: boolean;
   recordIfExpired: boolean;
   recordFailedRequests: boolean;
-  expiresIn?: string;
+  expiresIn?: string | null;
   timing: Function;
   adapters: (string | Function)[];
   adapterOptions: {};
-  persister?: string | Function;
+  persister?: string | Function | null;
   persisterOptions: {};
 
   matchRequestsBy: {
@@ -32,7 +32,7 @@ export interface PollyConfig {
   }
 }
 
-export default <PollyConfig> {
+export default {
   mode: MODES.REPLAY,
   logging: false,
   recordIfMissing: true,
@@ -64,4 +64,4 @@ export default <PollyConfig> {
       hash: false
     }
   }
-};
+} as PollyConfig;

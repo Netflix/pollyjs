@@ -1,7 +1,7 @@
 import Polly from '../polly';
 const { defineProperty } = Object;
 
-export async function beforeEach(context, recordingName, defaults) {
+export function beforeEach(context: {}, recordingName: string, defaults?: {}) {
   defineProperty(context, 'polly', {
     writable: true,
     enumerable: true,
@@ -10,7 +10,7 @@ export async function beforeEach(context, recordingName, defaults) {
   });
 }
 
-export async function afterEach(context, framework) {
+export async function afterEach(context: { polly: Polly }, framework: string) {
   await context.polly.stop();
 
   defineProperty(context, 'polly', {

@@ -7,6 +7,10 @@ import removeHostFromUrl from '../utils/remove-host-from-url';
 import castArray from 'lodash-es/castArray';
 import { URL, assert, timeout, buildUrl } from '@pollyjs/utils';
 
+interface HostRegistry {
+  [method: string]: RouteRecognizer
+}
+
 const HOST = Symbol();
 const NAMESPACES = Symbol();
 const REGISTRY = Symbol();
@@ -18,7 +22,7 @@ const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
 const { keys } = Object;
 
-function parseUrl(url) {
+function parseUrl(url: string) {
   const path = new URL(url);
   /*
     Use the full origin (http://hostname:port) if the host exists. If there
@@ -35,9 +39,7 @@ export default class Server {
   private [NAMESPACES]: string[];
   private [MIDDLEWARE]: Middleware[];
   private [REGISTRY]: {
-    [host: string]: {
-      [method: string]: RouteRecognizer
-    }
+    [host: string]: HostRegistry
   };
 
   constructor() {
@@ -126,7 +128,7 @@ export default class Server {
 
   private _registerMiddleware(routes: string | string[]): Handler {
     const handler = new Handler();
-    const pathsByHost = {};
+    const pathsByHost: { [host: string]: string[] } = {};
 
     castArray(routes).forEach(route => {
       /*
@@ -167,13 +169,13 @@ export default class Server {
     return buildUrl(this[HOST], ...this[NAMESPACES], path);
   }
 
-  private _registryForHost(host?: string): {} {
+  private _registryForHost(host?: string): HostRegistry {
     const registry = this[REGISTRY];
 
     host = host || SLASH;
 
     if (!registry[host]) {
-      registry[host] = METHODS.reduce((acc, method) => {
+      registry[host] = METHODS.reduce((acc: HostRegistry, method: string) => {
         acc[method] = new RouteRecognizer();
 
         return acc;
