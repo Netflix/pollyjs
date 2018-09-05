@@ -1,6 +1,10 @@
 import { assert } from '@pollyjs/utils';
 import isObjectLike from 'lodash-es/isObjectLike';
 
+interface ListenerFn {
+  (...args: any[]): any; // TODO make this more precise
+}
+
 const EVENTS = Symbol();
 const EVENT_NAMES = Symbol();
 
@@ -44,7 +48,7 @@ export default class EventEmitter {
    * registered listeners
    */
   public eventNames(): string[] {
-    const eventNames = [];
+    const eventNames = [] as string[];
 
     this[EVENTS].forEach(
       (_, eventName) =>
@@ -58,7 +62,7 @@ export default class EventEmitter {
    * Adds the `listener` function to the end of the listeners array for the
    * event named `eventName`
    */
-  public on(eventName: string, listener: Function): this {
+  public on(eventName: string, listener: ListenerFn): this {
     assertEventName(eventName, this[EVENT_NAMES]);
     assertListener(listener);
 
@@ -78,11 +82,11 @@ export default class EventEmitter {
    * The next time `eventName` is triggered, this listener is removed and
    * then invoked.
    */
-  public once(eventName: string, listener: Function): this {
+  public once(eventName: string, listener: ListenerFn): this {
     assertEventName(eventName, this[EVENT_NAMES]);
     assertListener(listener);
 
-    const once = (...args) => {
+    const once = (...args: any[]) => {
       this.off(eventName, once);
 
       return listener(...args);
@@ -98,7 +102,7 @@ export default class EventEmitter {
    * the event named `eventName`. If `listener` is not provided then it removes
    * all listeners, or those of the specified `eventName`.
    */
-  public off(eventName: string, listener: Function): this {
+  public off(eventName: string, listener: ListenerFn): this {
     assertEventName(eventName, this[EVENT_NAMES]);
 
     const events = this[EVENTS];

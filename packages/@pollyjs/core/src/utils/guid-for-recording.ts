@@ -1,12 +1,12 @@
 import fnv1a from '@sindresorhus/fnv1a';
 import slugify from 'slugify';
 
-function sanitize(str) {
+function sanitize(str: string): string {
   // Strip non-alphanumeric chars (\W is the equivalent of [^0-9a-zA-Z_])
   return str.replace(/\W/g, '-');
 }
 
-function guidFor(str) {
+function guidFor(str: string): string {
   const hash = fnv1a(str).toString();
   let slug = slugify(sanitize(str));
 
@@ -16,7 +16,7 @@ function guidFor(str) {
   return `${slug}_${hash}`;
 }
 
-export default function guidForRecording(recording) {
+export default function guidForRecording(recording: string): string {
   return (recording || '')
     .split('/')
     .map(guidFor)

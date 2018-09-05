@@ -1,4 +1,5 @@
 import { ACTIONS } from '@pollyjs/utils';
+import Polly from '../polly';
 
 const FORMATTED_ACTIONS = {
   [ACTIONS.RECORD]: 'Recorded',
@@ -8,9 +9,10 @@ const FORMATTED_ACTIONS = {
 };
 
 export default class Logger {
-  constructor(polly) {
-    this.polly = polly;
-    this.recordingName = null;
+  public recordingName: string | null = null;
+  private _middleware: any;
+
+  constructor(public polly: Polly) {
   }
 
   get enabled() {

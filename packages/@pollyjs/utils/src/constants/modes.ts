@@ -1,3 +1,4 @@
+// TODO update readme that these are now uppercase strings
 enum MODES {
   RECORD = 'RECORD',
   REPLAY = 'REPLAY',
