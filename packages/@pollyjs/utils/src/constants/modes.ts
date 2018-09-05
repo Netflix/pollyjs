@@ -1,8 +1,8 @@
 enum MODES {
-  RECORD = 'record',
-  REPLAY = 'replay',
-  PASSTHROUGH = 'passthrough',
-  STOPPED = 'stopped'
+  RECORD = 'RECORD',
+  REPLAY = 'REPLAY',
+  PASSTHROUGH = 'PASSTHROUGH',
+  STOPPED = 'STOPPED'
 }
 
 export default MODES;
