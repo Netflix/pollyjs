@@ -80,5 +80,8 @@
     "rollup-plugin-terser": "^2.0.2",
     "tap-merge": "^0.3.1",
     "testem": "^2.10.0"
+  },
+  "dependencies": {
+    "@babel/runtime-corejs2": "^7.0.0"
   }
 }
