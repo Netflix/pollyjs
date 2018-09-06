@@ -1,9 +1,11 @@
 import { assert } from '@pollyjs/utils';
 
-export interface FactoryFn {
-  type: 'adapter' | 'persister' | 'factory';
+/**
+ * Extends `function` because a transpiled Class is a function at runtime.
+ */
+export interface FactoryFn extends Function {
+  type: string;
   name: string;
-  (...args: unknown[]): unknown; // TODO make this more precise
 }
 
 function keyFor(Factory: FactoryFn): string {

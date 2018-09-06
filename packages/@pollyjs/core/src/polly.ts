@@ -1,7 +1,7 @@
 import mergeOptions from 'merge-options';
 import Logger from './-private/logger';
 import Container, { FactoryFn } from './-private/container';
-import DefaultConfig from './defaults/config';
+import DefaultConfig, { PollyConfig } from './defaults/config';
 import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
 import Server from './server';
@@ -15,11 +15,6 @@ type ValidMode = keyof typeof MODES;
 
 interface FactoryRegistrationCallback {
   (container: Container): void;
-}
-interface PollyConfig {
-  mode: ValidMode;
-  persister?: Persister;
-  adapters?: Adapter[];
 }
 
 const RECORDING_NAME = Symbol();
@@ -50,7 +45,7 @@ export default class Polly {
   public persister: Persister | null;
   private _requests: PollyRequest[];
 
-  constructor(recordingName: string, public config: PollyConfig = { mode: 'REPLAY' }) {
+  constructor(recordingName: string, public config: PollyConfig = {} as PollyConfig) {
     this.recordingName = recordingName;
     this.logger = new Logger(this);
     this.server = new Server();
@@ -146,7 +141,7 @@ export default class Polly {
         container.register(Factory)
       );
     }
-
+    // TODO
     this.on('register', FACTORY_REGISTRATION.get(Factory));
 
     return this;
