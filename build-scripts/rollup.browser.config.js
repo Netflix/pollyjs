@@ -23,8 +23,7 @@ export default function createBrowserConfig(options = {}, targets) {
         babel({
           babelrc: false,
           runtimeHelpers: true,
-          exclude: 'node_modules/**',
-          ignore: ['node_modules/**'],
+          exclude: '../../../node_modules/**',
           presets: [
             [
               '@babel/preset-env',
