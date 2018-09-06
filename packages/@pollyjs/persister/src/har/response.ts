@@ -1,10 +1,10 @@
-import toNVPairs from './utils/to-nv-pairs';
+import toNVPairs, { NVPairs } from './utils/to-nv-pairs';
 import getByteLength from 'utf8-byte-length';
 import setCookies from 'set-cookie-parser';
 
-function headersSize(response) {
-  const keys = [];
-  const values = [];
+function headersSize(response: Response) {
+  const keys: string[] = [];
+  const values: string[] = [];
 
   response.headers.forEach(({ name, value }) => {
     keys.push(name);
@@ -20,7 +20,21 @@ function headersSize(response) {
 }
 
 export default class Response {
-  constructor(response) {
+  public httpVersion: string;
+  public status: number;
+  public statusText: string;
+  public headers: NVPairs;
+  public headersSize: number;
+  public redirectURL: string;
+  public cookies: setCookies.Cookie[];
+  public bodySize: number;
+  public content?: {
+    mimeType: string
+    size: number
+    text?: string
+  }
+
+  constructor(response: PollyResponse) {
     this.httpVersion = 'HTTP/1.1';
     this.status = response.statusCode;
     this.statusText = response.statusText;
@@ -30,7 +44,8 @@ export default class Response {
     this.redirectURL = '';
 
     this.content = {
-      mimeType: response.getHeader('Content-Type') || 'text/plain'
+      mimeType: response.getHeader('Content-Type') || 'text/plain',
+      size: 0
     };
 
     if (response.body && typeof response.body === 'string') {

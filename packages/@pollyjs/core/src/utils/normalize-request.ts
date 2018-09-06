@@ -7,11 +7,11 @@ const { keys } = Object;
 const { isArray } = Array;
 const { parse } = JSON;
 
-export function method(method) {
+export function method(method: string) {
   return (method || 'GET').toUpperCase();
 }
 
-export function url(url, config = {}) {
+export function url(url: string, config = {}) {
   const parsedUrl = parseUrl(url, true);
 
   // Remove any url properties that have been disabled via the config

@@ -1,10 +1,10 @@
-import toNVPairs from './utils/to-nv-pairs';
+import toNVPairs, { NVPairs } from './utils/to-nv-pairs';
 import getByteLength from 'utf8-byte-length';
 import setCookies from 'set-cookie-parser';
 
-function headersSize(request) {
-  const keys = [];
-  const values = [];
+function headersSize(request: Request) {
+  const keys: string[] = [];
+  const values: string[] = [];
 
   request.headers.forEach(({ name, value }) => {
     keys.push(name);
@@ -22,7 +22,20 @@ function headersSize(request) {
 }
 
 export default class Request {
-  constructor(request) {
+  public httpVersion: string;
+  public url: string;
+  public method: string;
+  public headers: NVPairs;
+  public headersSize: number;
+  public queryString: NVPairs;
+  public cookies: setCookies.Cookie[];
+  public bodySize: number;
+  public postData?: {
+    mimeType: string
+    text?: string
+  }
+
+  constructor(request: PollyRequest) {
     this.httpVersion = 'HTTP/1.1';
     this.url = request.absoluteUrl;
     this.method = request.method;

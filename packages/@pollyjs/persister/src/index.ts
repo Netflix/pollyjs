@@ -6,25 +6,31 @@ import { assert } from '@pollyjs/utils';
 const CREATOR_NAME = 'Polly.JS';
 
 export default class Persister {
-  constructor(polly) {
+  public polly: Polly;
+  public pending: Map<string, { name: string, requests: PollyRequest[] }>;
+  private _cache: Map<string, Promise<HAR | null>>;
+
+  constructor(polly: Polly) {
     this.polly = polly;
     this.pending = new Map();
     this._cache = new Map();
   }
 
-  static get type() {
+  public static get type() {
     return 'persister';
   }
 
-  static get name() {
+  public static get name() {
     assert('Must override the static `name` getter.', false);
+
+    return 'persister';
   }
 
-  get defaultOptions() {
+  public get defaultOptions() {
     return {};
   }
 
-  get options() {
+  public get options() {
     const { name } = this.constructor;
 
     return {
@@ -33,7 +39,7 @@ export default class Persister {
     };
   }
 
-  get hasPending() {
+  public get hasPending() {
     /*
       Although the pending map is bucketed by recordingId, the bucket will always
       be created with a single item in it so we can assume that if a bucket
@@ -42,16 +48,17 @@ export default class Persister {
     return this.pending.size > 0;
   }
 
-  async persist() {
+  public async persist() {
     if (!this.hasPending) {
       return;
     }
 
-    const promises = [];
+    const promises: Promise<void>[] = [];
+    const { type, name } = this.constructor as typeof Persister;
     const creator = {
       name: CREATOR_NAME,
       version: this.polly.constructor.VERSION,
-      comment: `${this.constructor.type}:${this.constructor.name}`
+      comment: `${type}:${name}`
     };
 
     for (const [recordingId, { name, requests }] of this.pending) {
@@ -60,7 +67,7 @@ export default class Persister {
       let har;
 
       if (!recording) {
-        har = new HAR({ log: { creator, _recordingName: name } });
+        har = new HAR({ log: { creator, _recordingName: name } } as HAR);
       } else {
         har = new HAR(recording);
       }
@@ -96,7 +103,7 @@ export default class Persister {
     this.pending.clear();
   }
 
-  recordRequest(pollyRequest) {
+  public recordRequest(pollyRequest: PollyRequest) {
     this.assert(
       `You must pass a PollyRequest to 'recordRequest'.`,
       pollyRequest
@@ -112,10 +119,10 @@ export default class Persister {
       this.pending.set(recordingId, { name: recordingName, requests: [] });
     }
 
-    this.pending.get(recordingId).requests.push(pollyRequest);
+    this.pending.get(recordingId)!.requests.push(pollyRequest);
   }
 
-  async find(recordingId) {
+  public async find(recordingId: string) {
     const { _cache: cache } = this;
 
     if (!cache.has(recordingId)) {
@@ -125,7 +132,7 @@ export default class Persister {
         if (recording) {
           this.assert(
             `Recording with id '${recordingId}' is invalid. Please delete the recording so a new one can be created.`,
-            recording.log && recording.log.creator.name === CREATOR_NAME
+            recording.log && recording.log.creator!.name === CREATOR_NAME
           );
 
           return recording;
@@ -142,17 +149,17 @@ export default class Persister {
     return cache.get(recordingId);
   }
 
-  async save(recordingId) {
-    await this.saveRecording(...arguments);
+  public async save(recordingId: string, har: HAR) {
+    await this.saveRecording(recordingId, har);
     this._cache.delete(recordingId);
   }
 
-  async delete(recordingId) {
-    await this.deleteRecording(...arguments);
+  public async delete(recordingId: string) {
+    await this.deleteRecording(recordingId);
     this._cache.delete(recordingId);
   }
 
-  async findEntry(pollyRequest) {
+  public async findEntry(pollyRequest: PollyRequest) {
     const { id, order, recordingId } = pollyRequest;
     const recording = await this.find(recordingId);
 
@@ -165,26 +172,27 @@ export default class Persister {
     );
   }
 
-  stringify() {
-    return stringify(...arguments);
+  public stringify(data: any, options?: {}) {
+    return stringify(data, options);
   }
 
-  assert(message, ...args) {
-    assert(
-      `[${this.constructor.type}:${this.constructor.name}] ${message}`,
-      ...args
-    );
+  public assert(message: string, condition: boolean) {
+    const { type, name } = this.constructor as typeof Persister;
+
+    assert(`[${type}:${name}] ${message}`, condition);
   }
 
-  findRecording() {
+  public async findRecording(recordingId: string): Promise<HAR | null> {
     this.assert('Must implement the `findRecording` hook.', false);
+
+    return null;
   }
 
-  saveRecording() {
+  public async saveRecording(recordingId: string, har: HAR) {
     this.assert('Must implement the `saveRecording` hook.', false);
   }
 
-  deleteRecording() {
+  public async deleteRecording(recordingId: string) {
     this.assert('Must implement the `deleteRecording` hook.', false);
   }
 }
