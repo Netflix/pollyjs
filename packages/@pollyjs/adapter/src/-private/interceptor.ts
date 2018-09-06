@@ -1,12 +1,15 @@
 const ABORT = Symbol();
 const PASSTHROUGH = Symbol();
 
-function setDefaults(interceptor) {
+function setDefaults(interceptor: Interceptor) {
   interceptor[ABORT] = false;
   interceptor[PASSTHROUGH] = false;
 }
 
 export default class Interceptor {
+  [ABORT]: boolean;
+  [PASSTHROUGH]: boolean;
+
   constructor() {
     setDefaults(this);
   }

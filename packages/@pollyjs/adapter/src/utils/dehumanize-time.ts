@@ -1,3 +1,7 @@
+interface ITimes {
+  [unit: string]: number;
+}
+
 const ALPHA_NUMERIC_DOT = /([0-9.]+)([a-zA-Z]+)/g;
 const TIMES = {
   ms: 1,
@@ -31,14 +35,14 @@ const TIMES = {
   yrs: 31536000000,
   year: 31536000000,
   years: 31536000000
-};
+} as ITimes;
 
-export default function dehumanizeTime(input) {
+export default function dehumanizeTime(input: string) {
   if (typeof input !== 'string') {
     return NaN;
   }
 
-  const parts = input.replace(/ /g, '').match(ALPHA_NUMERIC_DOT);
+  const parts = input.replace(/ /g, '').match(ALPHA_NUMERIC_DOT) || [];
   const sets = parts.map(part => part.split(ALPHA_NUMERIC_DOT).filter(o => o));
 
   return sets.reduce((accum, [number, unit]) => {

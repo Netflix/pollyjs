@@ -23,7 +23,7 @@ export default class Persister {
   public static get name() {
     assert('Must override the static `name` getter.', false);
 
-    return 'persister';
+    return 'base';
   }
 
   public get defaultOptions() {
@@ -176,7 +176,7 @@ export default class Persister {
     return stringify(data, options);
   }
 
-  public assert(message: string, condition: boolean) {
+  public assert(message: string, condition?: boolean) {
     const { type, name } = this.constructor as typeof Persister;
 
     assert(`[${type}:${name}] ${message}`, condition);

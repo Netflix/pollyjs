@@ -1,6 +1,6 @@
 import dehumanizeTime from './dehumanize-time';
 
-export default function isExpired(recordedOn, expiresIn) {
+export default function isExpired(recordedOn: string, expiresIn: string) {
   if (recordedOn && expiresIn) {
     return (
       new Date() >

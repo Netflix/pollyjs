@@ -2,27 +2,39 @@ import Interceptor from './-private/interceptor';
 import isExpired from './utils/is-expired';
 import { ACTIONS, MODES, assert } from '@pollyjs/utils';
 
+interface NormalizedResponse {
+  statusCode: number,
+  statusText: string;
+  headers: {};
+  body?: string;
+}
+
 const REQUEST_HANDLER = Symbol();
 
 export default class Adapter {
-  constructor(polly) {
+  public polly: Polly;
+  public isConnected: boolean;
+
+  constructor(polly: Polly) {
     this.polly = polly;
     this.isConnected = false;
   }
 
-  static get type() {
+  public static get type() {
     return 'adapter';
   }
 
-  static get name() {
+  public static get name() {
     assert('Must override the static `name` getter.', false);
+
+    return 'base';
   }
 
-  get defaultOptions() {
+  public get defaultOptions() {
     return {};
   }
 
-  get options() {
+  public get options(): {} {
     const { name } = this.constructor;
 
     return {
@@ -31,25 +43,25 @@ export default class Adapter {
     };
   }
 
-  get persister() {
+  public get persister() {
     return this.polly.persister;
   }
 
-  connect() {
+  public connect() {
     if (!this.isConnected) {
       this.onConnect();
       this.isConnected = true;
     }
   }
 
-  disconnect() {
+  public disconnect() {
     if (this.isConnected) {
       this.onDisconnect();
       this.isConnected = false;
     }
   }
 
-  shouldReRecord(recordingEntry) {
+  shouldReRecord(recordingEntry: Entry) {
     const { config } = this.polly;
 
     if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
@@ -79,15 +91,15 @@ export default class Adapter {
     return false;
   }
 
-  timeout(pollyRequest, { time }) {
+  public async timeout(pollyRequest: PollyRequest, recordingEntry: Entry) {
     const { timing } = this.polly.config;
 
     if (typeof timing === 'function') {
-      return timing(time);
+      return timing(recordingEntry.time);
     }
   }
 
-  async handleRequest(request) {
+  public async handleRequest(request: {}) {
     const pollyRequest = this.polly.registerRequest(request);
 
     await pollyRequest.setup();
@@ -105,7 +117,7 @@ export default class Adapter {
     }
   }
 
-  async [REQUEST_HANDLER](pollyRequest) {
+  public async [REQUEST_HANDLER](pollyRequest: PollyRequest) {
     const { mode } = this.polly;
     let interceptor;
 
@@ -146,13 +158,13 @@ export default class Adapter {
     );
   }
 
-  async passthrough(pollyRequest) {
+  public async passthrough(pollyRequest: PollyRequest) {
     pollyRequest.action = ACTIONS.PASSTHROUGH;
 
     return this.onPassthrough(pollyRequest);
   }
 
-  async intercept(pollyRequest, interceptor) {
+  public async intercept(pollyRequest: PollyRequest, interceptor: Interceptor) {
     pollyRequest.action = ACTIONS.INTERCEPT;
     await pollyRequest._intercept(interceptor);
 
@@ -161,13 +173,13 @@ export default class Adapter {
     }
   }
 
-  async record(pollyRequest) {
+  public async record(pollyRequest: PollyRequest) {
     pollyRequest.action = ACTIONS.RECORD;
 
     return this.onRecord(pollyRequest);
   }
 
-  async replay(pollyRequest) {
+  public async replay(pollyRequest: PollyRequest) {
     const { config } = this.polly;
     const recordingEntry = await this.persister.findEntry(pollyRequest);
 
@@ -191,7 +203,7 @@ export default class Adapter {
           return accum;
         }, {}),
         body: content && content.text
-      };
+      } as NormalizedResponse;
 
       return this.onReplay(pollyRequest, normalizedResponse, recordingEntry);
     }
@@ -207,76 +219,45 @@ export default class Adapter {
     );
   }
 
-  assert(message, ...args) {
-    assert(
-      `[${this.constructor.type}:${this.constructor.name}] ${message}`,
-      ...args
-    );
+  public assert(message: string, condition?: boolean) {
+    const { type, name } = this.constructor as typeof Adapter;
+
+    assert(`[${type}:${name}] ${message}`, condition);
   }
 
   /* Required Hooks */
-  onConnect() {
+  public onConnect() {
     this.assert('Must implement the `onConnect` hook.', false);
   }
 
-  onDisconnect() {
+  public onDisconnect() {
     this.assert('Must implement the `onDisconnect` hook.', false);
   }
 
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @returns {*}
-   */
-  onRecord() {
+  public async onRecord(pollyRequest: PollyRequest): Promise<any> {
     this.assert('Must implement the `onRecord` hook.', false);
   }
 
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @param {Object} normalizedResponse The normalized response generated from the recording entry
-   * @param {Object} recordingEntry The entire recording entry
-   * @returns {*}
-   */
-  onReplay() {
+  public onReplay(pollyRequest: PollyRequest, normalizedResponse: NormalizedResponse, recordingEntry: Entry): Promise<any> {
     this.assert('Must implement the `onReplay` hook.', false);
   }
 
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @param {PollyResponse} response
-   * @returns {*}
-   */
-  onIntercept() {
+  public async onIntercept(pollyRequest: PollyRequest, response: PollyResponse): Promise<any> {
     this.assert('Must implement the `onIntercept` hook.', false);
   }
 
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @returns {*}
-   */
-  onPassthrough() {
+  public async onPassthrough(pollyRequest: PollyRequest): Promise<any> {
     this.assert('Must implement the `onPassthrough` hook.', false);
   }
 
   /* Other Hooks */
-  /**
-   * @param {PollyRequest} pollyRequest
-   */
-  onRequest() {}
+  public async onRequest(pollyRequest: PollyRequest) {}
 
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @param {*} result The returned result value from the request handler
-   */
-  onRequestFinished(pollyRequest, result) {
+  async onRequestFinished(pollyRequest: PollyRequest, result: any) {
     pollyRequest.promise.resolve(result);
   }
 
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @param {Error} error
-   */
-  onRequestFailed(pollyRequest, error) {
+  async onRequestFailed(pollyRequest: PollyRequest, error: any) {
     pollyRequest.promise.reject(error);
   }
 }
