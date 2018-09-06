@@ -13,7 +13,9 @@ async function serialize(body) {
 
     for (const [key, value] of body.entries()) {
       if (supportsBlob && value instanceof Blob) {
-        data.push(`${key}=${await readBlob(value)}`);
+        const blobContent = await readBlob(value);
+
+        data.push(`${key}=${blobContent}`);
       } else {
         data.push(`${key}=${value}`);
       }
@@ -36,7 +38,6 @@ function readBlob(blob) {
     reader.onend = reject;
     reader.onabort = reject;
     reader.onload = () => resolve(reader.result);
-
     reader.readAsDataURL(new Blob([blob], { type: blob.type }));
   });
 }
