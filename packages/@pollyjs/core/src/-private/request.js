@@ -4,7 +4,7 @@ import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
 import parseUrl from '../utils/parse-url';
 import serializeRequestBody from '../utils/serialize-request-body';
-import DeferredPromise from '../utils/deferred-promise';
+import defer from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
 import { URL, assert, timestamp } from '@pollyjs/utils';
 import HTTPBase from './http-base';
@@ -30,7 +30,7 @@ export default class PollyRequest extends HTTPBase {
     this.recordingName = polly.recordingName;
     this.recordingId = polly.recordingId;
     this.requestArguments = freeze(request.requestArguments || []);
-    this.promise = new DeferredPromise();
+    this.promise = defer();
     this[POLLY] = polly;
 
     /*

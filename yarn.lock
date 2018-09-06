@@ -10412,9 +10412,41 @@ test-exclude@^4.2.1:
     read-pkg-up "^1.0.1"
     require-main-filename "^1.0.1"
 
-testem@^2.0.0, testem@^2.9.2:
+testem@^2.0.0:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/testem/-/testem-2.9.2.tgz#d61c638fd7fff6d9bc2f771c673dc10cb1df3d21"
+  dependencies:
+    backbone "^1.1.2"
+    bluebird "^3.4.6"
+    charm "^1.0.0"
+    commander "^2.6.0"
+    consolidate "^0.15.1"
+    execa "^0.10.0"
+    express "^4.10.7"
+    fireworm "^0.7.0"
+    glob "^7.0.4"
+    http-proxy "^1.13.1"
+    js-yaml "^3.2.5"
+    lodash.assignin "^4.1.0"
+    lodash.castarray "^4.4.0"
+    lodash.clonedeep "^4.4.1"
+    lodash.find "^4.5.1"
+    lodash.uniqby "^4.7.0"
+    mkdirp "^0.5.1"
+    mustache "^2.2.1"
+    node-notifier "^5.0.1"
+    npmlog "^4.0.0"
+    printf "^0.3.0"
+    rimraf "^2.4.4"
+    socket.io "^2.1.0"
+    spawn-args "^0.2.0"
+    styled_string "0.0.1"
+    tap-parser "^7.0.0"
+    xmldom "^0.1.19"
+
+testem@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/testem/-/testem-2.10.0.tgz#bc0db60ebaf78a8f0c9f173434e62bfc1ede9260"
   dependencies:
     backbone "^1.1.2"
     bluebird "^3.4.6"
