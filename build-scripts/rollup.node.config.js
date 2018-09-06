@@ -1,9 +1,9 @@
 import deepmerge from 'deepmerge';
-import babel from 'rollup-plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import uglify from 'rollup-plugin-uglify';
 import json from 'rollup-plugin-json';
+import babel from 'rollup-plugin-babel';
+import { terser } from 'rollup-plugin-terser';
+import commonjs from 'rollup-plugin-commonjs';
+import resolve from 'rollup-plugin-node-resolve';
 import { input, output, pkg, production } from './rollup.utils';
 
 const external = Object.keys(pkg.dependencies || {});
@@ -21,9 +21,10 @@ export default function createNodeConfig(options = {}) {
         babel({
           babelrc: false,
           runtimeHelpers: true,
+          exclude: '../../../node_modules/**',
           presets: [
             [
-              'env',
+              '@babel/preset-env',
               {
                 modules: false,
                 targets: {
@@ -33,14 +34,12 @@ export default function createNodeConfig(options = {}) {
             ]
           ],
           plugins: [
-            'external-helpers',
-            'transform-runtime',
-            ['transform-object-rest-spread', { useBuiltIns: true }]
-          ],
-          exclude: ['node_modules/**'],
-          ignore: 'node_modules/**'
+            '@babel/plugin-external-helpers',
+            ['@babel/plugin-transform-runtime', { corejs: 2 }],
+            ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
+          ]
         }),
-        production && uglify()
+        production && terser()
       ]
     },
     options
