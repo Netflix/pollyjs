@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import { input, output, pkg, production } from './rollup.utils';
@@ -39,7 +39,7 @@ export default function createNodeConfig(options = {}) {
             ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
           ]
         }),
-        production && uglify()
+        production && terser()
       ]
     },
     options

@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge';
 import json from 'rollup-plugin-json';
 import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import commonjs from 'rollup-plugin-commonjs';
 import { rollup as lerna } from 'lerna-alias';
 import resolve from 'rollup-plugin-node-resolve';
@@ -43,7 +43,7 @@ export default function createBrowserConfig(options = {}, targets) {
         }),
         globals(),
         builtins(),
-        production && uglify()
+        production && terser()
       ],
       onwarn(message) {
         /* nise uses eval for strings within native fns setTimeout('alert("foo")', 10) */
