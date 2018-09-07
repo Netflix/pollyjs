@@ -18,12 +18,12 @@ export default function createBrowserConfig(options = {}, targets) {
       plugins: [
         alias(lerna()),
         json(),
-        resolve({ browser: true }),
+        resolve({ browser: true, preferBuiltins: true }),
         commonjs(),
         babel({
           babelrc: false,
           runtimeHelpers: true,
-          exclude: '../../../node_modules/**',
+          exclude: ['../../../node_modules/**'],
           presets: [
             [
               '@babel/preset-env',
@@ -37,7 +37,7 @@ export default function createBrowserConfig(options = {}, targets) {
           ],
           plugins: [
             '@babel/plugin-external-helpers',
-            '@babel/plugin-transform-runtime',
+            ['@babel/plugin-transform-runtime', { corejs: 2 }],
             ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
           ]
         }),

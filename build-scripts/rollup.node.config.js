@@ -16,19 +16,19 @@ export default function createNodeConfig(options = {}) {
       external,
       plugins: [
         json(),
-        resolve(),
+        resolve({ preferBuiltins: true }),
         commonjs(),
         babel({
           babelrc: false,
           runtimeHelpers: true,
-          exclude: '../../../node_modules/**',
+          exclude: ['../../../node_modules/**'],
           presets: [
             [
               '@babel/preset-env',
               {
                 modules: false,
                 targets: {
-                  node: 6
+                  node: '6.0.0'
                 }
               }
             ]
