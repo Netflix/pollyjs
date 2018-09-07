@@ -13,7 +13,6 @@ import { MODES, assert } from '@pollyjs/utils';
 const RECORDING_NAME = Symbol();
 const RECORDING_ID = Symbol();
 const PAUSED_MODE = Symbol();
-const { values } = Object;
 
 const FACTORY_REGISTRATION = new WeakMap();
 const EVENT_EMITTER = new EventEmitter({
@@ -88,7 +87,7 @@ export default class Polly {
   }
 
   set mode(mode) {
-    const possibleModes = values(MODES);
+    const possibleModes = Object.values(MODES);
 
     assert(
       `Invalid mode provided: "${mode}". Possible modes: ${possibleModes.join(

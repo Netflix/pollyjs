@@ -23,9 +23,13 @@ describe('Unit | Utils | serializeRequestBody', function() {
   });
 
   it('should handle files', async function() {
-    expect(await serializeRequestBody(new File(['file'], 'file.txt'))).to.equal(
-      `data:;base64,${btoa('file')}`
-    );
+    expect(
+      await serializeRequestBody(
+        new File(['file'], 'file.txt', {
+          type: 'text/plain'
+        })
+      )
+    ).to.equal(`data:text/plain;base64,${btoa('file')}`);
   });
 
   it('should handle form-data', async function() {
@@ -33,14 +37,17 @@ describe('Unit | Utils | serializeRequestBody', function() {
 
     formData.append('string', 'string');
     formData.append('array', [1, 2]);
-    formData.append('blob', new Blob(['blob']));
-    formData.append('file', new File(['file'], 'file.txt'));
+    formData.append('blob', new Blob(['blob'], { type: 'text/plain' }));
+    formData.append(
+      'file',
+      new File(['file'], 'file.txt', { type: 'text/plain' })
+    );
 
     const data = await serializeRequestBody(formData);
 
     expect(data).to.include('string=string');
     expect(data).to.include('array=1,2');
-    expect(data).to.include(`blob=data:;base64,${btoa('blob')}`);
-    expect(data).to.include(`file=data:;base64,${btoa('file')}`);
+    expect(data).to.include(`blob=data:text/plain;base64,${btoa('blob')}`);
+    expect(data).to.include(`file=data:text/plain;base64,${btoa('file')}`);
   });
 });

@@ -1,13 +1,13 @@
 import deepmerge from 'deepmerge';
+import json from 'rollup-plugin-json';
 import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
+import { terser } from 'rollup-plugin-terser';
+import commonjs from 'rollup-plugin-commonjs';
 import { rollup as lerna } from 'lerna-alias';
 import resolve from 'rollup-plugin-node-resolve';
 import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
-import commonjs from 'rollup-plugin-commonjs';
-import uglify from 'rollup-plugin-uglify';
-import json from 'rollup-plugin-json';
 import { input, output, pkg, production } from './rollup.utils';
 
 export default function createBrowserConfig(options = {}, targets) {
@@ -23,9 +23,10 @@ export default function createBrowserConfig(options = {}, targets) {
         babel({
           babelrc: false,
           runtimeHelpers: true,
+          exclude: '../../../node_modules/**',
           presets: [
             [
-              'env',
+              '@babel/preset-env',
               {
                 modules: false,
                 targets: targets || {
@@ -35,16 +36,14 @@ export default function createBrowserConfig(options = {}, targets) {
             ]
           ],
           plugins: [
-            'external-helpers',
-            'transform-runtime',
-            ['transform-object-rest-spread', { useBuiltIns: true }]
-          ],
-          exclude: ['node_modules/**'],
-          ignore: 'node_modules/**'
+            '@babel/plugin-external-helpers',
+            '@babel/plugin-transform-runtime',
+            ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
+          ]
         }),
         globals(),
         builtins(),
-        production && uglify()
+        production && terser()
       ],
       onwarn(message) {
         /* nise uses eval for strings within native fns setTimeout('alert("foo")', 10) */
