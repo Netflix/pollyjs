@@ -3,7 +3,7 @@ import Timing from '../../../src/utils/timing';
 function fixedTest(ms) {
   it(`should handle ${ms}ms`, async function() {
     // Fail the test if it exceeds ms + 10ms buffer
-    this.timeout(ms + 10);
+    this.timeout(ms + 50);
 
     const promise = Timing.fixed(ms)();
     let resolved = false;
@@ -24,7 +24,7 @@ function relativeTest(ratio) {
 
   it(`should handle a ratio of ${ratio}`, async function() {
     // Fail the test if it exceeds timeout + 10ms buffer
-    this.timeout(timeout + 10);
+    this.timeout(timeout + 50);
 
     const promise = Timing.relative(ratio)(100);
     let resolved = false;

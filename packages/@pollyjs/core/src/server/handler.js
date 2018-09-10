@@ -74,5 +74,7 @@ export default class Handler extends Map {
   configure(config) {
     validateRequestConfig(config);
     this.set('config', config);
+
+    return this;
   }
 }

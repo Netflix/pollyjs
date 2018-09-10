@@ -51,10 +51,6 @@ describe('Unit | Server | Handler', function() {
     expect(eventEmitter.listeners('request')).to.have.lengthOf(0);
   });
 
-  it('should default passthrough to false', function() {
-    expect(new Handler().get('passthrough')).to.be.false;
-  });
-
   it('registers an intercept handler', function() {
     const handler = new Handler();
 

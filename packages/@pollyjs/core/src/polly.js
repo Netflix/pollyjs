@@ -6,7 +6,7 @@ import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
 import EventEmitter from './-private/event-emitter';
 import Server from './server';
-import { validateRecordingName } from '../utils/validators';
+import { validateRecordingName } from './utils/validators';
 import { version } from '../package.json';
 import { MODES, assert } from '@pollyjs/utils';
 

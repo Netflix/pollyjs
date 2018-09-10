@@ -32,6 +32,30 @@ server
   .on('request', () => {/* Do something else */});
 ```
 
+### once
+
+Register a one-time [event](server/events-and-middleware) handler.
+
+?> __Tip:__ You can attach multiple handlers to a single event. Handlers will be
+called in the order they were declared.
+
+| Param | Type | Description |
+|  ---  | ---  |     ---     |
+| eventName | `String` | The event name |
+| handler | `Function` | The event handler |
+
+__Example__
+
+```js
+server
+  .get('/session')
+  .once('request', req => {
+    req.headers['X-AUTH'] = '<ACCESS_TOKEN>';
+    req.query.email = 'test@app.com';
+  })
+  .once('request', () => {/* Do something else */});
+```
+
 ### off
 
 Un-register an [event](server/events-and-middleware) handler. If no handler
@@ -61,8 +85,6 @@ Register an intercept handler. Once set, the [request](server/request) will
 never go to server but instead defer to the provided handler to handle
 the [response](server/response).
 
-!> __NOTE:__ This method is not available when using `server.any()`.
-
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
 | handler | `Function` | The intercept handler |
@@ -70,6 +92,10 @@ the [response](server/response).
 __Example__
 
 ```js
+server
+  .any('/session')
+  .intercept((req, res) => res.sendStatus(200));
+
 server
   .get('/session/:id')
   .intercept((req, res, interceptor) => {
@@ -131,14 +157,80 @@ server
 
 ### passthrough
 
-The server passthrough handler. Use this to declare a route as a passthrough
-meaning any request that matches that route will directly use the native
-implementation. Passthrough requests will not be recorded.
+Declare a route as a passthrough meaning any request that matches that route
+will directly use the native implementation. Passthrough requests will not be
+recorded.
 
-!> __NOTE:__ This method is not available when using `server.any()`.
+| Param | Type | Description |
+|  ---  | ---  |     ---     |
+| passthrough | `boolean` | Enable or disable the passthrough. Defaults to `true` |
 
 __Example__
 
 ```js
-server.get('/session').passthrough();
+server
+  .any('/session')
+  .passthrough();
+
+server
+  .get('/session/1')
+  .passthrough(false);
+```
+
+### recordingName
+
+Override the recording name for the given route. This allows for grouping common
+requests to share a single recording which can drastically help de-clutter test
+recordings.
+
+For example, if your tests always make a `/users` or `/session` call, instead of
+having each of those requests be recorded for every single test, you can use
+this to create a common recording file for them.
+
+| Param | Type | Description |
+|  ---  | ---  |     ---     |
+| recordingName | `String` | Name of the [recording](api#recordingName) to store the recordings under. |
+
+__Example__
+
+```js
+server
+  .any('/session')
+  .recordingName('User Session');
+
+server
+  .get('/users/:id')
+  .recordingName('User Data');
+
+server
+  .get('/users/1')
+  .recordingName(); /* Fallback to the polly instance's recording name */
+```
+
+### configure
+
+Override configuration options for the given route. All matching middleware and route level configs are merged together and the overrides are applied to the current
+Polly instance's config.
+
+!> The following options are not supported to be overriden via the server API:
+`mode`, `adapters`, `adapterOptions`, `persister`, `persisterOptions`
+
+| Param | Type | Description |
+|  ---  | ---  |     ---     |
+| config | `Object` | [Configuration](configuration) object |
+
+__Example__
+
+```js
+server
+  .any('/session')
+  .configure({ recordFailedRequests: true });
+
+server
+  .get('/users/:id')
+  .configure({ timing: Timing.relative(3.0) });
+
+server
+  .get('/users/1')
+  .configure({ logging: true });
 ```
