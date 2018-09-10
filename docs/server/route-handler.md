@@ -83,7 +83,8 @@ server
 
 Register an intercept handler. Once set, the [request](server/request) will
 never go to server but instead defer to the provided handler to handle
-the [response](server/response).
+the [response](server/response). If multiple intercept handlers have been
+registered, each handler will be called in the order in which it was registered.
 
 | Param | Type | Description |
 |  ---  | ---  |     ---     |
