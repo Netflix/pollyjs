@@ -78,12 +78,12 @@ export default class Route {
   /**
    * Invokes the intercept handlers defined on the routes + middleware.
    * @param {PollyRequest} req
-   * @param {...args} ...args
-   * @return {*}
+   * @param {PollyResponse} res
+   * @param {Interceptor} interceptor
    */
-  async intercept() {
+  async intercept(req, res, interceptor) {
     for (const route of this._orderedRoutes()) {
-      if (route.handler.has('intercept')) {
+      if (route.handler.has('intercept') && interceptor.shouldIntercept) {
         await invoke(route.handler.get('intercept'), this, ...arguments);
       }
     }

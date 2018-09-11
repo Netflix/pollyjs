@@ -25,6 +25,29 @@ describe('Integration | Server', function() {
     expect(json).to.deep.equal({ foo: 'bar' });
   });
 
+  it('breaks out of intercepts when using the interceptor API', async function() {
+    const { server } = this.polly;
+    let numIntercepts = 0;
+
+    server.namespace('/api/db/ping', () => {
+      server.any().intercept((_, res) => {
+        numIntercepts++;
+        res.status(200);
+      });
+      server.any().intercept((_, __, interceptor) => {
+        numIntercepts++;
+        interceptor.passthrough();
+      });
+      server.get().intercept((_, res) => {
+        numIntercepts++;
+        res.status(201);
+      });
+    });
+
+    expect((await fetch('/api/db/ping')).status).to.equal(404);
+    expect(numIntercepts).to.equal(2);
+  });
+
   it('merges all configs', async function() {
     const { server } = this.polly;
     let config;
