@@ -39,6 +39,6 @@ export default class PollyResponse extends HTTPBase {
     this.status(status);
     this.type('text/plain');
 
-    return this.send(status);
+    return this.send(this.statusText);
   }
 }

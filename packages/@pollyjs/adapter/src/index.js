@@ -49,8 +49,8 @@ export default class Adapter {
     }
   }
 
-  shouldReRecord(recordingEntry) {
-    const { config } = this.polly;
+  shouldReRecord(pollyRequest, recordingEntry) {
+    const { config } = pollyRequest;
 
     if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
       if (!config.recordIfExpired) {
@@ -80,7 +80,7 @@ export default class Adapter {
   }
 
   timeout(pollyRequest, { time }) {
-    const { timing } = this.polly.config;
+    const { timing } = pollyRequest.config;
 
     if (typeof timing === 'function') {
       return timing(time);
@@ -168,13 +168,13 @@ export default class Adapter {
   }
 
   async replay(pollyRequest) {
-    const { config } = this.polly;
+    const { config } = pollyRequest;
     const recordingEntry = await this.persister.findEntry(pollyRequest);
 
     if (recordingEntry) {
       await pollyRequest._emit('beforeReplay', recordingEntry);
 
-      if (this.shouldReRecord(recordingEntry)) {
+      if (this.shouldReRecord(pollyRequest, recordingEntry)) {
         return this.record(pollyRequest);
       }
 

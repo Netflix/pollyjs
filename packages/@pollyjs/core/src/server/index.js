@@ -1,7 +1,6 @@
 import RouteRecognizer from 'route-recognizer';
 import Route from './route';
 import Handler from './handler';
-import RouteHandler from './route-handler';
 import Middleware from './middleware';
 import removeHostFromUrl from '../utils/remove-host-from-url';
 import castArray from 'lodash-es/castArray';
@@ -103,7 +102,7 @@ export default class Server {
   }
 
   _register(method, routes) {
-    const handler = new RouteHandler();
+    const handler = new Handler();
 
     castArray(routes).forEach(route => {
       const { host, path } = parseUrl(this._buildUrl(route));

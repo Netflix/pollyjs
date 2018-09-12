@@ -35,7 +35,7 @@ describe('Unit | Response', function() {
     it('.sendStatus()', function() {
       response.sendStatus(200);
 
-      expect(response.body).to.equal('200');
+      expect(response.body).to.equal('OK');
       expect(response.getHeader('Content-Type')).to.equal(
         'text/plain; charset=utf-8'
       );

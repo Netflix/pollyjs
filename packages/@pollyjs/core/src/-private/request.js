@@ -1,13 +1,19 @@
 import md5 from 'blueimp-md5';
 import stringify from 'fast-json-stable-stringify';
+import mergeOptions from 'merge-options';
 import PollyResponse from './response';
 import NormalizeRequest from '../utils/normalize-request';
 import parseUrl from '../utils/parse-url';
 import serializeRequestBody from '../utils/serialize-request-body';
+import guidForRecording from '../utils/guid-for-recording';
 import defer from '../utils/deferred-promise';
 import isAbsoluteUrl from 'is-absolute-url';
-import { URL, assert, timestamp } from '@pollyjs/utils';
 import HTTPBase from './http-base';
+import { URL, assert, timestamp } from '@pollyjs/utils';
+import {
+  validateRecordingName,
+  validateRequestConfig
+} from '../utils/validators';
 
 const { keys, freeze } = Object;
 
@@ -41,6 +47,16 @@ export default class PollyRequest extends HTTPBase {
 
     // Lookup the associated route for this request
     this[ROUTE] = polly.server.lookup(this.method, this.url);
+
+    // Handle config overrides defined by the route
+    this._configure(this[ROUTE].config());
+
+    // Handle recording name override defined by the route
+    const recordingName = this[ROUTE].recordingName();
+
+    if (recordingName) {
+      this._overrideRecordingName(recordingName);
+    }
   }
 
   get url() {
@@ -96,11 +112,11 @@ export default class PollyRequest extends HTTPBase {
   }
 
   get shouldPassthrough() {
-    return this[ROUTE].handler.get('passthrough') === true;
+    return this[ROUTE].shouldPassthrough();
   }
 
   get shouldIntercept() {
-    return typeof this[ROUTE].handler.get('intercept') === 'function';
+    return this[ROUTE].shouldIntercept();
   }
 
   async setup() {
@@ -158,6 +174,17 @@ export default class PollyRequest extends HTTPBase {
     return serializeRequestBody(this.body);
   }
 
+  _overrideRecordingName(recordingName) {
+    validateRecordingName(recordingName);
+    this.recordingName = recordingName;
+    this.recordingId = guidForRecording(recordingName);
+  }
+
+  _configure(config) {
+    validateRequestConfig(config);
+    this.config = mergeOptions(this[POLLY].config, this.config || {}, config);
+  }
+
   _intercept() {
     return this[ROUTE].intercept(this, this.response, ...arguments);
   }
@@ -168,8 +195,8 @@ export default class PollyRequest extends HTTPBase {
 
   _identify() {
     const polly = this[POLLY];
-    const { _requests: requests, config } = polly;
-    const { matchRequestsBy } = config;
+    const { _requests: requests } = polly;
+    const { matchRequestsBy } = this.config;
     const identifiers = {};
 
     // Iterate through each normalizer

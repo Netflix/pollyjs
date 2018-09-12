@@ -4,6 +4,86 @@ import FetchAdapter from '@pollyjs/adapter-fetch';
 describe('Integration | Server', function() {
   setupPolly({ adapters: [FetchAdapter] });
 
+  it('calls all intercept handlers', async function() {
+    const { server } = this.polly;
+
+    server.any().intercept(async (_, res) => {
+      await server.timeout(5);
+      res.status(200);
+    });
+    server.any().intercept(async (_, res) => {
+      await server.timeout(5);
+      res.setHeader('x-foo', 'bar');
+    });
+    server.get('/ping').intercept((_, res) => res.json({ foo: 'bar' }));
+
+    const res = await fetch('/ping');
+    const json = await res.json();
+
+    expect(res.status).to.equal(200);
+    expect(res.headers.get('x-foo')).to.equal('bar');
+    expect(json).to.deep.equal({ foo: 'bar' });
+  });
+
+  it('breaks out of intercepts when using the interceptor API', async function() {
+    const { server } = this.polly;
+    let numIntercepts = 0;
+
+    server.namespace('/api/db/ping', () => {
+      server.any().intercept((_, res) => {
+        numIntercepts++;
+        res.status(200);
+      });
+      server.any().intercept((_, __, interceptor) => {
+        numIntercepts++;
+        interceptor.passthrough();
+      });
+      server.get().intercept((_, res) => {
+        numIntercepts++;
+        res.status(201);
+      });
+    });
+
+    expect((await fetch('/api/db/ping')).status).to.equal(404);
+    expect(numIntercepts).to.equal(2);
+  });
+
+  it('merges all configs', async function() {
+    const { server } = this.polly;
+    let config;
+
+    server.any().configure({ foo: 'foo' });
+    server.any().configure({ bar: 'bar' });
+    server
+      .get('/ping')
+      .configure({ foo: 'baz' })
+      .intercept((req, res) => {
+        config = req.config;
+        res.sendStatus(200);
+      });
+
+    expect((await fetch('/ping')).status).to.equal(200);
+    expect(config).to.include({ foo: 'baz', bar: 'bar' });
+  });
+
+  it('should throw when trying to override certain options', async function() {
+    const { server } = this.polly;
+
+    // The following options cannot be overridden on a per request basis
+    [
+      'mode',
+      'adapters',
+      'adapterOptions',
+      'persister',
+      'persisterOptions'
+    ].forEach(key =>
+      expect(() => server.any().configure({ [key]: 'foo' })).to.throw(
+        Error,
+        /Invalid configuration option/
+      )
+    );
+  });
+
   describe('Events & Middleware', function() {
     it('event: request', async function() {
       const { server } = this.polly;
