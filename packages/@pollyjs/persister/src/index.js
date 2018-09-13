@@ -1,7 +1,7 @@
 import HAR from './har';
 import Entry from './har/entry';
 import stringify from 'fast-json-stable-stringify';
-import { assert } from '@pollyjs/utils';
+import { ACTIONS, assert } from '@pollyjs/utils';
 
 const CREATOR_NAME = 'Polly.JS';
 
@@ -94,6 +94,18 @@ export default class Persister {
 
     await Promise.all(promises);
     this.pending.clear();
+  }
+
+  _removeUnusedEntries(recordingId, har) {
+    const requests = this.polly._requests.filter(
+      r =>
+        r.recordingId === recordingId &&
+        (r.action === ACTIONS.RECORD || r.action === ACTIONS.REPLAY)
+    );
+
+    har.log.entries = har.log.entries.filter(entry =>
+      requests.find(r => entry._id === r.id && entry._order === r.order)
+    );
   }
 
   recordRequest(pollyRequest) {
