@@ -180,6 +180,13 @@ export default class Persister {
     );
   }
 
+  /**
+   * Remove all entries from the given HAR that do not match any requests in
+   * the current Polly instance.
+   *
+   * @param {String} recordingId
+   * @param {HAR} har
+   */
   _removeUnusedEntries(recordingId, har) {
     const requests = this.polly._requests.filter(
       r =>
