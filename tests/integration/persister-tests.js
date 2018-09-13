@@ -1,8 +1,6 @@
 import { Polly } from '@pollyjs/core';
 import * as validate from 'har-validator/lib/async';
 
-const { keys } = Object;
-
 export default function persisterTests() {
   it('should persist valid HAR', async function() {
     const { recordingId, persister } = this.polly;
@@ -162,7 +160,43 @@ export default function persisterTests() {
 
     const har = await this.polly.persister.find(this.polly.recordingId);
 
-    expect(har).to.be.a('object');
-    expect(keys(har.log.entries)).to.have.lengthOf(1);
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(1);
+  });
+
+  it('should remove unused entries when `keepUnusedRequests` is false', async function() {
+    const { recordingName, recordingId, config } = this.polly;
+
+    const orderedRecordUrl = order => `${this.recordUrl()}?order=${order}`;
+
+    await this.fetch(orderedRecordUrl(1));
+    await this.fetch(orderedRecordUrl(2));
+    await this.polly.persister.persist();
+
+    let har = await this.polly.persister.find(recordingId);
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(2);
+
+    await this.polly.stop();
+
+    this.polly = new Polly(recordingName, config);
+    this.polly.replay();
+    this.polly.configure({
+      persisterOptions: {
+        keepUnusedRequests: false
+      }
+    });
+
+    await this.fetch(orderedRecordUrl(1)); // -> Replay
+    await this.fetch(orderedRecordUrl(3)); // -> New recording
+    await this.polly.persister.persist();
+
+    har = await this.polly.persister.find(recordingId);
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(2);
+    expect(har.log.entries[0].request.url).to.include(orderedRecordUrl(1));
+    expect(har.log.entries[1].request.url).to.include(orderedRecordUrl(3));
   });
 }

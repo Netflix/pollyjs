@@ -84,28 +84,20 @@ export default class Persister {
                 modify the payload (i.e. encrypting the request & response).
         */
         await request._emit('beforePersist', entry);
-
         entries.push(entry);
       }
 
       har.log.addEntries(entries);
+
+      if (!this.polly.config.persisterOptions.keepUnusedRequests) {
+        this._removeUnusedEntries(recordingId, har);
+      }
+
       promises.push(this.save(recordingId, har));
     }
 
     await Promise.all(promises);
     this.pending.clear();
-  }
-
-  _removeUnusedEntries(recordingId, har) {
-    const requests = this.polly._requests.filter(
-      r =>
-        r.recordingId === recordingId &&
-        (r.action === ACTIONS.RECORD || r.action === ACTIONS.REPLAY)
-    );
-
-    har.log.entries = har.log.entries.filter(entry =>
-      requests.find(r => entry._id === r.id && entry._order === r.order)
-    );
   }
 
   recordRequest(pollyRequest) {
@@ -185,6 +177,18 @@ export default class Persister {
     assert(
       `[${this.constructor.type}:${this.constructor.name}] ${message}`,
       ...args
+    );
+  }
+
+  _removeUnusedEntries(recordingId, har) {
+    const requests = this.polly._requests.filter(
+      r =>
+        r.recordingId === recordingId &&
+        (r.action === ACTIONS.RECORD || r.action === ACTIONS.REPLAY)
+    );
+
+    har.log.entries = har.log.entries.filter(entry =>
+      requests.find(r => entry._id === r.id && entry._order === r.order)
     );
   }
 
