@@ -8,7 +8,9 @@ export default {
   adapterOptions: {},
 
   persister: null,
-  persisterOptions: {},
+  persisterOptions: {
+    keepUnusedRequests: false
+  },
 
   logging: false,
 

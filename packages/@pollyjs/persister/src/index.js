@@ -1,7 +1,7 @@
 import HAR from './har';
 import Entry from './har/entry';
 import stringify from 'fast-json-stable-stringify';
-import { assert } from '@pollyjs/utils';
+import { ACTIONS, assert } from '@pollyjs/utils';
 
 const CREATOR_NAME = 'Polly.JS';
 
@@ -84,11 +84,15 @@ export default class Persister {
                 modify the payload (i.e. encrypting the request & response).
         */
         await request._emit('beforePersist', entry);
-
         entries.push(entry);
       }
 
       har.log.addEntries(entries);
+
+      if (!this.polly.config.persisterOptions.keepUnusedRequests) {
+        this._removeUnusedEntries(recordingId, har);
+      }
+
       promises.push(this.save(recordingId, har));
     }
 
@@ -173,6 +177,25 @@ export default class Persister {
     assert(
       `[${this.constructor.type}:${this.constructor.name}] ${message}`,
       ...args
+    );
+  }
+
+  /**
+   * Remove all entries from the given HAR that do not match any requests in
+   * the current Polly instance.
+   *
+   * @param {String} recordingId
+   * @param {HAR} har
+   */
+  _removeUnusedEntries(recordingId, har) {
+    const requests = this.polly._requests.filter(
+      r =>
+        r.recordingId === recordingId &&
+        (r.action === ACTIONS.RECORD || r.action === ACTIONS.REPLAY)
+    );
+
+    har.log.entries = har.log.entries.filter(entry =>
+      requests.find(r => entry._id === r.id && entry._order === r.order)
     );
   }
 
