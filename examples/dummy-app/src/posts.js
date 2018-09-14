@@ -41,6 +41,8 @@ export const PostList = props => (
     sort={{ field: 'title', order: 'ASC' }}
   >
     <Datagrid>
+      <TextField source="title" />
+      <TextField source="body" />
       <ReferenceField
         label="User"
         source="userId"
@@ -49,8 +51,6 @@ export const PostList = props => (
       >
         <TextField source="name" />
       </ReferenceField>
-      <TextField source="title" />
-      <TextField source="body" />
       <ShowButton />
       <EditButton />
     </Datagrid>
@@ -61,6 +61,8 @@ export const PostShow = props => (
   <Show title={<PostTitle />} {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
+      <TextField source="title" />
+      <TextField source="body" />
       <ReferenceField
         label="User"
         source="userId"
@@ -69,8 +71,6 @@ export const PostShow = props => (
       >
         <TextField source="name" />
       </ReferenceField>
-      <TextField source="title" />
-      <TextField source="body" />
     </SimpleShowLayout>
   </Show>
 );
@@ -79,6 +79,8 @@ export const PostEdit = props => (
   <Edit title={<PostTitle />} {...props}>
     <SimpleForm>
       <DisabledInput source="id" />
+      <TextInput source="title" />
+      <LongTextInput source="body" />
       <ReferenceInput
         label="User"
         source="userId"
@@ -87,8 +89,6 @@ export const PostEdit = props => (
       >
         <SelectInput optionText="name" />
       </ReferenceInput>
-      <TextInput source="title" />
-      <LongTextInput source="body" />
     </SimpleForm>
   </Edit>
 );
@@ -96,6 +96,8 @@ export const PostEdit = props => (
 export const PostCreate = props => (
   <Create {...props}>
     <SimpleForm>
+      <TextInput source="title" />
+      <LongTextInput source="body" />
       <ReferenceInput
         label="User"
         source="userId"
@@ -104,8 +106,6 @@ export const PostCreate = props => (
       >
         <SelectInput optionText="name" />
       </ReferenceInput>
-      <TextInput source="title" />
-      <LongTextInput source="body" />
     </SimpleForm>
   </Create>
 );
