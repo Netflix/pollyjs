@@ -222,9 +222,10 @@ _Type_: `Boolean`
 _Default_: `false`
 
 When disabled, requests that have not been captured by the running Polly
-instance will be removed. This ensures that a recording will only contain the
-requests that were made during the lifespan of the Polly instance.
-When enabled, new requests will be appended to the recording file.
+instance will be removed from any previous recording. This ensures that a
+recording will only contain the requests that were made during the lifespan
+of the Polly instance. When enabled, new requests will be appended to the
+recording file.
 
 __Example__
 
