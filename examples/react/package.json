@@ -1,0 +1,42 @@
+{
+  "name": "dummy-app",
+  "version": "0.1.0",
+  "main": "src/App.js",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "ra-data-json-server": "^2.3.1",
+    "react": "^16.5.1",
+    "react-admin": "^2.3.1",
+    "react-dom": "^16.5.1",
+    "react-scripts": "next"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "test:jest-puppeteer": "jest -c jest-puppeteer/jest.config.js",
+    "debug:test:jest-puppeteer": "node --inspect-brk node_modules/.bin/jest --runInBand -c jest-puppeteer/jest.config.js",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "@pollyjs/adapter-fetch": "^1.0.5",
+    "@pollyjs/adapter-puppeteer": "^1.1.4",
+    "@pollyjs/core": "^1.1.4",
+    "@pollyjs/persister-fs": "^1.0.5",
+    "jest-puppeteer": "^3.3.1",
+    "puppeteer": "^1.8.0"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
+  }
+}
