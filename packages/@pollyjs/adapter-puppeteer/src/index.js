@@ -70,13 +70,15 @@ export default class PuppeteerAdapter extends Adapter {
 
             // If this is a polly passthrough request
             // Get the associated promise object for the request id and set it
-            // on the request
-            this._requestsMapping.passthroughs.set(
-              request,
-              this[PASSTHROUGH_PROMISES].get(
-                parsedUrl.query[PASSTHROUGH_REQ_ID_QP]
-              )
-            );
+            // on the request.
+            if (!isPreFlightReq) {
+              this._requestsMapping.passthroughs.set(
+                request,
+                this[PASSTHROUGH_PROMISES].get(
+                  parsedUrl.query[PASSTHROUGH_REQ_ID_QP]
+                )
+              );
+            }
 
             // Delete the query param to remove any pollyjs footprint
             delete parsedUrl.query[PASSTHROUGH_REQ_ID_QP];
@@ -231,6 +233,7 @@ export default class PuppeteerAdapter extends Adapter {
         await response.text()
       );
     } catch (error) {
+      console.error(error);
       throw error;
     } finally {
       this[PASSTHROUGH_PROMISES].delete(requestId);
