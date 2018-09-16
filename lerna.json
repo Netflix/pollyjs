@@ -1,6 +1,6 @@
 {
   "lerna": "2.11.0",
-  "version": "independent",
+  "version": "1.1.4",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "packages": ["packages/@pollyjs/*"],
