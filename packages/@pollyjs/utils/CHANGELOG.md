@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.2.0"></a>
+# 1.2.0 (2018-09-16)
+
+
+### Bug Fixes
+
+* **adapter-puppeteer:** Do not intercept CORS preflight requests ([#90](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/90)) ([53ad433](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/53ad433))
+
+
+### Features
+
+* Convert recordings to be HAR compliant ([#45](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/45)) ([e622640](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/e622640))
+* Custom persister support ([8bb313c](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/8bb313c))
+* Node File System Persister ([#61](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/61)) ([0a0eeca](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/0a0eeca))
+* Puppeteer Adapter ([#64](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/64)) ([f902c6d](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/f902c6d))
+
+
+### BREAKING CHANGES
+
+* Recordings now produce HAR compliant json. Please delete existing recordings.
+
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/@pollyjs/utils@1.0.2...@pollyjs/utils@1.0.3) (2018-08-22)
 

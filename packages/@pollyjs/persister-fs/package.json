@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-fs",
-  "version": "1.0.5",
+  "version": "1.2.0",
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-fs.js",
   "module": "dist/es/pollyjs-persister-fs.js",
@@ -43,12 +43,12 @@
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
-    "@pollyjs/node-server": "^1.0.3",
-    "@pollyjs/persister": "^1.0.4"
+    "@pollyjs/node-server": "^1.2.0",
+    "@pollyjs/persister": "^1.2.0"
   },
   "devDependencies": {
-    "@pollyjs/adapter-fetch": "^1.0.5",
-    "@pollyjs/core": "^1.1.4",
+    "@pollyjs/adapter-fetch": "^1.2.0",
+    "@pollyjs/core": "^1.2.0",
     "chai": "^4.1.2",
     "eslint": "^4.18.1",
     "mocha": "^5.2.0",
