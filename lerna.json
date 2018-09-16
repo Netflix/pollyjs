@@ -10,7 +10,7 @@
     "publish": {
       "allowBranch": "master",
       "conventionalCommits": true,
-      "message": "chore: Publish",
+      "message": "chore: Publish %s",
       "ignoreChanges": [
         "**/tests/**",
         "**/*.md"
