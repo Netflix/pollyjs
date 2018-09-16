@@ -3,7 +3,7 @@ module.exports = {
     headless: false
   },
   server: {
-    command: 'BROWSER=none yarn start',
+    command: '(cd ../dummy-app && yarn start:ci)',
     port: 3000,
     launchTimeout: 60000
   }

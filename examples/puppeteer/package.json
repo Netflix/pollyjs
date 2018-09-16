@@ -1,0 +1,19 @@
+{
+  "name": "jest-puppeteer",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "postinstall": "(cd ../dummy-app && yarn install)",
+    "start": "start-server-and-test start:server http://localhost:3000 start:puppeteer",
+    "start:server": "(cd ../dummy-app && yarn start:ci)",
+    "start:puppeteer": "node index.js"
+  },
+  "devDependencies": {
+    "@pollyjs/adapter-puppeteer": "*",
+    "@pollyjs/core": "*",
+    "@pollyjs/persister-fs": "*",
+    "puppeteer": "*",
+    "start-server-and-test": "*"
+  }
+}
