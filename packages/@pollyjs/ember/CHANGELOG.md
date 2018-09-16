@@ -3,7 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-  <a name="1.0.5"></a>
+      <a name="1.2.0"></a>
+# 1.2.0 (2018-09-16)
+
+
+### Bug Fixes
+
+* Bumping core within Ember ([af4faa1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/af4faa1))
+* Ensure polly's middleware goes before ember-cli's ([#36](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/36)) ([43db361](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/43db361))
+* **core:** Set `url` on the fetch Response object ([#44](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/44)) ([f5980cf](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/f5980cf)), closes [#43](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/issues/43)
+* **ember:** Fix auto-register and add tests to cover ([24c15bd](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/24c15bd))
+
+
+### Features
+
+* Class events and EventEmitter ([#52](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/52)) ([0a3d591](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/0a3d591))
+* Custom persister support ([8bb313c](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/8bb313c))
+* Improved adapter and persister registration ([#62](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/62)) ([164dbac](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/164dbac))
+* Keyed persister & adapter options ([#60](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/60)) ([29ed8e1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/29ed8e1))
+* Make recording size limit configurable ([#40](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/40)) ([d4be431](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/d4be431))
+* Node File System Persister ([#61](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/61)) ([0a0eeca](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/0a0eeca))
+* Presets persisterOptions.host to the node server default ([0b47838](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/0b47838))
+
+
+### BREAKING CHANGES
+
+* __Adapters__
+
+```js
+import { XHRAdapter, FetchAdapter } from '@pollyjs/core';
+
+// Register the xhr adapter so its accessible by all future polly instances
+Polly.register(XHRAdapter);
+
+polly.configure({
+adapters: ['xhr', FetchAdapter]
+});
+```
+
+__Persister__
+
+```js
+import { LocalStoragePersister, RESTPersister } from '@pollyjs/core';
+
+// Register the local-storage persister so its accessible by all future polly instances
+Polly.register(LocalStoragePersister);
+
+polly.configure({
+persister: 'local-storage'
+});
+
+polly.configure({
+persister: RESTPersister
+});
+```
+
+
+
+
+      <a name="1.0.5"></a>
 ## [1.0.5](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.4...@pollyjs/ember@1.0.5) (2018-08-22)
 
 
@@ -14,7 +72,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="1.0.4"></a>
+<a name="1.0.4"></a>
 ## [1.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/@pollyjs/ember@1.0.3...@pollyjs/ember@1.0.4) (2018-08-12)
 
 

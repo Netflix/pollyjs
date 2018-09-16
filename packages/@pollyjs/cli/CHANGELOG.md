@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.2.0"></a>
+# 1.2.0 (2018-09-16)
+
+
+### Features
+
+* Make recording size limit configurable ([#40](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/cli/issues/40)) ([d4be431](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/cli/commit/d4be431))
+
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/cli/compare/@pollyjs/cli@1.0.2...@pollyjs/cli@1.0.3) (2018-08-22)
 
