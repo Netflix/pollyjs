@@ -6,7 +6,7 @@
 
 > Record, replay, and stub HTTP interactions.
 
-- 🚀 Fetch & XHR Support
+- 🚀 Node & Browser Support
 - ⚡️️ Simple, Powerful, & Intuitive API
 - 💎 First Class Mocha & QUnit Test Helpers
 - 🔥 Intercept, Pass-Through, and Attach Events
