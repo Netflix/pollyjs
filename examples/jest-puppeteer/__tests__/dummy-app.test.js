@@ -20,7 +20,7 @@ describe('jest-puppeteer', () => {
       persister: 'fs',
       persisterOptions: {
         fs: {
-          recordingsDir: path.join(__dirname, 'recordings')
+          recordingsDir: path.resolve(__dirname, '../recordings')
         }
       }
     });
@@ -43,15 +43,15 @@ describe('jest-puppeteer', () => {
   it('should be able to navigate to all routes', async () => {
     const header = await page.$('header');
 
-    await expect(page).toMatchElement('tbody > tr');
+    await expect(page).toMatchElement('tbody > tr', { timeout: 5000 });
     await expect(header).toMatch('Posts');
 
     await expect(page).toClick('a', { text: 'Todos' });
-    await expect(page).toMatchElement('tbody > tr');
+    await expect(page).toMatchElement('tbody > tr', { timeout: 5000 });
     await expect(header).toMatch('Todos');
 
     await expect(page).toClick('a', { text: 'Users' });
-    await expect(page).toMatchElement('tbody > tr');
+    await expect(page).toMatchElement('tbody > tr', { timeout: 5000 });
     await expect(header).toMatch('Users');
   });
 });

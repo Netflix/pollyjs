@@ -32,12 +32,6 @@ Polly.register(FSPersister);
   });
 
   await page.goto('http://localhost:3000', { waitUntil: 'networkidle0' });
-  await page.goto('http://localhost:3000/#/todos', {
-    waitUntil: 'networkidle0'
-  });
-  await page.goto('http://localhost:3000/#/users', {
-    waitUntil: 'networkidle0'
-  });
 
   await polly.flush();
   await polly.stop();
