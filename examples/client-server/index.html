@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Client Server Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+
+    <script src="./node_modules/mocha/mocha.js"></script>
+    <script src="./node_modules/chai/chai.js"></script>
+    <script src="./node_modules/@pollyjs/core/dist/umd/pollyjs-core.js"></script>
+    <script src="./node_modules/@pollyjs/adapter-fetch/dist/umd/pollyjs-adapter-fetch.js"></script>
+    <script src="./node_modules/@pollyjs/persister-local-storage/dist/umd/pollyjs-persister-local-storage.js"></script>
+
+    <script>
+      // Expose common globals
+      window.PollyJS = window['@pollyjs/core'];
+      window.setupPolly = PollyJS.setupMocha;
+      window.expect = window.chai.expect;
+      window.API_HOST = 'https://jsonplaceholder.typicode.com';
+
+      // Setup Mocha
+      mocha.setup({ ui: 'bdd', noHighlighting: true });
+
+      // Register the fetch adapter and local-storage persister
+      PollyJS.Polly.register(window['@pollyjs/adapter-fetch']);
+      PollyJS.Polly.register(window['@pollyjs/persister-local-storage']);
+    </script>
+
+    <script src="./tests/intercept.test.js"></script>
+    <script src="./tests/events.test.js"></script>
+
+    <script>
+      mocha.checkLeaks();
+      mocha.run();
+    </script>
+  </body>
+</html>
