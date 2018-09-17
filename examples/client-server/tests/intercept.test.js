@@ -49,6 +49,7 @@ describe('Intercept', function() {
         if (req.params.id === '42') {
           res.status(200).send('Life')
         } else {
+          // Abort out of the intercept handler and continue with the request
           interceptor.abort();
         }
       });

@@ -66,7 +66,7 @@ module.exports = {
       }
     },
     {
-      files: ['**/*/tests/jest/**/*.js', 'examples/**/*.test.js'],
+      files: ['**/*/tests/jest/**/*.js'],
       env: {
         jest: true,
         mocha: false
