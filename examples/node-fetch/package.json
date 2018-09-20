@@ -1,0 +1,17 @@
+{
+  "name": "client-server",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "mocha './tests/*.test.js'"
+  },
+  "devDependencies": {
+    "@pollyjs/adapter-fetch": "*",
+    "@pollyjs/core": "*",
+    "@pollyjs/persister-fs": "*",
+    "chai": "*",
+    "mocha": "*",
+    "node-fetch": "*"
+  }
+}
