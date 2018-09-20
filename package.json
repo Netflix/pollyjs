@@ -57,6 +57,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
     "formdata-polyfill": "^3.0.11",
     "gh-pages": "^1.2.0",
     "har-validator": "^5.1.0",

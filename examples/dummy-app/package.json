@@ -1,0 +1,21 @@
+{
+  "name": "dummy-app",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "ra-data-json-server": "^2.3.1",
+    "react": "^16.5.1",
+    "react-admin": "^2.3.1",
+    "react-dom": "^16.5.1",
+    "react-scripts": "^1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:ci": "BROWSER=none CI=true yarn start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

@@ -9,3 +9,6 @@ build
 dist
 *.lerna_backup
 .npmrc
+
+# Examples
+examples/**/*/yarn.lock

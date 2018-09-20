@@ -1,0 +1,21 @@
+{
+  "name": "rest-adapter-example",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "start-server-and-test test:polly-server http://localhost:3000 test:server",
+    "test:server": "http-server -p 4000 -o -c-1 -s",
+    "test:polly-server": "polly listen"
+  },
+  "devDependencies": {
+    "@pollyjs/adapter-fetch": "*",
+    "@pollyjs/cli": "*",
+    "@pollyjs/core": "*",
+    "@pollyjs/persister-rest": "*",
+    "chai": "*",
+    "http-server": "*",
+    "mocha": "*",
+    "start-server-and-test": "*"
+  }
+}

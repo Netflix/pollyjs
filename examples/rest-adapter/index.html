@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>REST Persister Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+
+    <script src="./node_modules/mocha/mocha.js"></script>
+    <script src="./node_modules/chai/chai.js"></script>
+    <script src="./node_modules/@pollyjs/core/dist/umd/pollyjs-core.js"></script>
+    <script src="./node_modules/@pollyjs/adapter-fetch/dist/umd/pollyjs-adapter-fetch.js"></script>
+    <script src="./node_modules/@pollyjs/persister-rest/dist/umd/pollyjs-persister-rest.js"></script>
+
+    <script src="./tests/setup.js"></script>
+    <script src="./tests/rest-persister.test.js"></script>
+
+    <script>
+      mocha.checkLeaks();
+      mocha.run();
+    </script>
+  </body>
+</html>
