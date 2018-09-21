@@ -2,7 +2,6 @@
 window.PollyJS = window['@pollyjs/core'];
 window.setupPolly = window.PollyJS.setupMocha;
 window.expect = window.chai.expect;
-window.API_HOST = 'https://jsonplaceholder.typicode.com';
 
 // Register the fetch adapter and REST persister
 window.PollyJS.Polly.register(window['@pollyjs/adapter-fetch']);

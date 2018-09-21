@@ -1,4 +1,4 @@
-/* global setupPolly, API_HOST */
+/* global setupPolly */
 
 describe('Events', function() {
   setupPolly({
@@ -10,11 +10,13 @@ describe('Events', function() {
     const { server } = this.polly;
     let numPosts = 0;
 
-    server.get(`${API_HOST}/posts`).on('response', (_, res) => {
-      numPosts = res.jsonBody().length;
-    });
+    server
+      .get('https://jsonplaceholder.typicode.com/posts')
+      .on('response', (_, res) => {
+        numPosts = res.jsonBody().length;
+      });
 
-    const res = await fetch(`${API_HOST}/posts`);
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts');
     const posts = await res.json();
 
     expect(res.status).to.equal(200);
