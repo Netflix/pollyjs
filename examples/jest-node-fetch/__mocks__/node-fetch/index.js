@@ -1,4 +1,6 @@
-const { default: fetch, Response, Request, Headers } = require.requireActual('node-fetch');
+const { default: fetch, Response, Request, Headers } = require.requireActual(
+  'node-fetch'
+);
 
 // Give polly fetch adapter access to node-fetch
 // implementation
@@ -7,7 +9,7 @@ global.Request = Request;
 global.Response = Response;
 global.Headers = Headers;
 
-// Use global fetch as a mock. It will be 
+// Use global fetch as a mock. It will be
 // the one overwritten by polly
 const mock = (url, options) => {
   return global.fetch(
@@ -17,8 +19,8 @@ const mock = (url, options) => {
     url.toString(),
     options
   );
-}
- 
+};
+
 mock.Request = Request;
 mock.Response = Response;
 mock.Headers = Headers;

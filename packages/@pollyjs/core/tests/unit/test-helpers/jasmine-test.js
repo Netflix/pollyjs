@@ -62,7 +62,7 @@ class ContextMock {
   }
 }
 
-describe.only('Unit | Test Helpers | jasmine', () => {
+describe('Unit | Test Helpers | jasmine', () => {
   it('should throw if jasmine is not found in context', () => {
     expect(() => setupPolly({}, null)).to.throw();
   });

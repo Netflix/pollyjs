@@ -1,31 +1,29 @@
 const path = require('path');
-const { Polly } = require('@pollyjs/core');
+const { Polly, setupJasmine: setupPolly } = require('@pollyjs/core');
 const PuppeteerAdapter = require('@pollyjs/adapter-puppeteer');
 const FSPersister = require('@pollyjs/persister-fs');
 
 Polly.register(PuppeteerAdapter);
 Polly.register(FSPersister);
 
-let polly;
-
 describe('jest-puppeteer', () => {
+  const context = setupPolly({
+    adapters: ['puppeteer'],
+    adapterOptions: { puppeteer: { page } },
+    persister: 'fs',
+    persisterOptions: {
+      fs: {
+        recordingsDir: path.resolve(__dirname, '../recordings')
+      }
+    }
+  });
+
   beforeEach(async () => {
     jest.setTimeout(60000);
 
     await page.setRequestInterception(true);
 
-    polly = new Polly('jest-puppeteer', {
-      adapters: ['puppeteer'],
-      adapterOptions: { puppeteer: { page } },
-      persister: 'fs',
-      persisterOptions: {
-        fs: {
-          recordingsDir: path.resolve(__dirname, '../recordings')
-        }
-      }
-    });
-
-    const { server } = polly;
+    const { server } = context.polly;
 
     server.host('http://localhost:3000', () => {
       server.get('/favicon.ico').passthrough();
@@ -33,11 +31,6 @@ describe('jest-puppeteer', () => {
     });
 
     await page.goto('http://localhost:3000', { waitUntil: 'networkidle0' });
-  });
-
-  afterEach(async () => {
-    await polly.flush();
-    await polly.stop();
   });
 
   it('should be able to navigate to all routes', async () => {
