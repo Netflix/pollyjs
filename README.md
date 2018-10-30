@@ -177,9 +177,8 @@ Join the Netflix Studio & Content Engineering teams to help us build projects li
 
 Open Roles:
 
-- [Senior UI Engineer - Content Platform Engineering](https://jobs.netflix.com/jobs/865180)
-- [Senior UI Engineer - Globalization Technologies & Infrastructure](https://jobs.netflix.com/jobs/866907)
-- [Senior UI Engineer - Partner Workforce](https://jobs.netflix.com/jobs/866939)
+- [Senior UI Engineer - Production Visibility Engineering](https://jobs.netflix.com/jobs/868295)
+- [Senior UI Engineer - Production Workflows Engineering](https://jobs.netflix.com/jobs/868224)
 
 ## License
 
