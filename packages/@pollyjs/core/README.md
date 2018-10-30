@@ -9,6 +9,8 @@
 
 Polly.JS is a standalone, framework-agnostic JavaScript library that enables recording, replaying, and stubbing of HTTP interactions. By tapping into multiple request APIs across both Node & the browser, Polly.JS is able to mock requests and responses with little to no configuration while giving you the ability to take full control of each request with a simple, powerful, and intuitive API.
 
+> Interested in contributing or just seeing Polly in action? Head over to [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to spin up the project!
+
 ## Why Polly?
 
 Keeping fixtures and factories in parity with your APIs can be a time consuming process.
@@ -175,6 +177,24 @@ file which Polly will use to replay the sign-in response when the test is rerun:
   }
 }
 ```
+
+## Credits
+
+_In alphabetical order:_
+
+- [Jason Mitchell](https://twitter.com/_jasonmit) - Creator / Maintainer
+- [Offir Golan](https://twitter.com/offirgolan) - Creator / Maintainer
+- [Sophinie Som](https://twitter.com/s0phinie) - Branding / Logo
+
+## We're hiring!
+
+Join the Netflix Studio & Content Engineering teams to help us build projects like this!
+
+Open Roles:
+
+- [Senior UI Engineer - Content Platform Engineering](https://jobs.netflix.com/jobs/865180)
+- [Senior UI Engineer - Globalization Technologies & Infrastructure](https://jobs.netflix.com/jobs/866907)
+- [Senior UI Engineer - Partner Workforce](https://jobs.netflix.com/jobs/866939)
 
 ## License
 

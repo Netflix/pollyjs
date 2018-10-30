@@ -4,7 +4,6 @@ The XHR adapter uses Sinon's [Nise](https://github.com/sinonjs/nise) library
 to fake the global `XMLHttpRequest` object while wrapping the native one to allow
 for seamless recording and replaying of requests.
 
-
 ## Installation
 
 _Note that you must have node (and npm) installed._
