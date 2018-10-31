@@ -265,7 +265,7 @@ describe('Simple Client-Side Server Example', function() {
 
     /*
       Add a rule via the client-side server to intercept the
-      `https://jsonplaceholder.typicode.com/posts/1` request and return
+      `https://jsonplaceholder.typicode.com/posts/404` request and return
       an error.
     */
     server
