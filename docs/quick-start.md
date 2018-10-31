@@ -134,7 +134,8 @@ describe('Simple Example', function() {
 });
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/ruqadih/embed?js,console&height=550px"></a>
+<p data-height="500" data-theme-id="light" data-slug-hash="EdBZry" data-default-tab="js,result" data-user="offirgolan" data-pen-title="Polly.JS Simple Example" class="codepen">See the Pen <a href="https://codepen.io/offirgolan/pen/EdBZry/">Polly.JS Simple Example</a> on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 The first time the test runs, Polly will record the response for the
 `fetch('https://jsonplaceholder.typicode.com/posts/1')` request that was made. You will
@@ -290,7 +291,8 @@ describe('Simple Client-Side Server Example', function() {
 });
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/rakeqas/embed?js,console&height=600px"></a>
+<p data-height="600" data-theme-id="light" data-slug-hash="OBebwW" data-default-tab="js,result" data-user="offirgolan" data-pen-title="Polly.JS Simple Client-Side Server Example" class="codepen">See the Pen <a href="https://codepen.io/offirgolan/pen/OBebwW/">Polly.JS Simple Client-Side Server Example</a> on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 When the test executes, Polly will detect that we've set a custom intercept rule for
 `https://jsonplaceholder.typicode.com/posts/404` and will deffer to the intercept handler
@@ -305,5 +307,3 @@ Intercepted ➞ GET https://jsonplaceholder.typicode.com/posts/404 404 • 1ms
 Using Mocha or QUnit? We've got you covered! Checkout the [Mocha](test-frameworks/mocha) or
 [QUnit](test-frameworks/qunit) documentation pages for detailed instructions
 on how to use the provided test helpers.
-
-<script src="http://static.jsbin.com/js/embed.min.js?4.1.7"></script>
