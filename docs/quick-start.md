@@ -27,8 +27,8 @@ passed-through, or intercepted.
 Before you start using Polly, you'll need to install the necessary adapters and
 persisters depending on your application/environment. Adapters provide
 functionality that allows Polly to intercept requests via different sources
-(e.g. XHR, fetch) while Persisters provide the functionality to read & write
-recorded data.
+(e.g. XHR, fetch, Puppeteer) while Persisters provide the functionality to read & write
+recorded data (e.g. fs, local-storage).
 
 Check out the appropriate documentation pages for each adapter and persister
 for more details such as installation, usage, and available options.
@@ -47,15 +47,34 @@ yarn add @pollyjs/adapter-{name} -D
 yarn add @pollyjs/persister-{name} -D
 ```
 
-## Setup _(Browsers Only)_
+Once installed, you can register the adapters and persisters with Polly so
+they can easily be referenced by name later.
+
+```js
+import { Polly } from '@pollyjs/core';
+import FetchAdapter from '@pollyjs/adapter-fetch';
+import XHRAdapter from '@pollyjs/adapter-xhr';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
+
+Polly.register(FetchAdapter);
+Polly.register(XHRAdapter);
+Polly.register(LocalStoragePersister);
+
+new Polly('<Recording Name>', {
+  adapters: ['fetch', 'xhr'],
+  persister: 'local-storage'
+});
+```
+
+## Using Polly in the Browser?
 
 In order to write to disk from the browser, Polly will make networks requests to a
 local server using the [REST Persister](persisters/rest). If you don't want to use
-the provided CLI and you have your own express server, see the
+the provided [CLI](cli/overview) and you have your own express server, see the
 [Express Integrations](node-server/express-integrations) documentation on
 integrating with your existing server.
 
-Using the installed [CLI](cli/overview), run the [listen](cli/commands#listen)
+Using the installed CLI, run the [listen](cli/commands#listen)
 command to start up the node server.
 
 ```bash
@@ -70,196 +89,221 @@ documentation for more details.
 ## Usage
 
 Now that you've installed and setup Polly, you're ready to fly. Lets take a
-look at what an example test case would look like using Polly.
+look at what a simple example test case would look like using Polly.
 
 ```js
 import { Polly } from '@pollyjs/core';
-import XHRAdapter from '@pollyjs/adapter-xhr';
 import FetchAdapter from '@pollyjs/adapter-fetch';
-import RESTPersister from '@pollyjs/persister-rest';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
 
 /*
   Register the adapters and persisters we want to use. This way all future
   polly instances can access them by name.
 */
-Polly.register(XHRAdapter);
 Polly.register(FetchAdapter);
-Polly.register(RESTPersister);
+Polly.register(LocalStoragePersister);
 
-describe('Netflix Homepage', function() {
-  it('should be able to sign in', async function() {
+describe('Simple Example', function() {
+  it('fetches a post', async function() {
     /*
       Create a new polly instance.
 
-      Connect Polly to both fetch and XHR browser APIs. By default, it will
-      record any requests that it hasn't yet seen while replaying ones it
-      has already recorded.
+      Connect Polly to fetch. By default, it will record any requests that it
+      hasn't yet seen while replaying ones it has already recorded.
     */
-    const polly = new Polly('Sign In', {
-      adapters: ['xhr', 'fetch'],
-      persister: 'rest'
+    const polly = new Polly('Simple Example', {
+      adapters: ['fetch'], // Hook into `fetch`
+      persister: 'local-storage', // Read/write to/from local-storage
+      logging: true // Log requests to console
     });
-    const { server } = polly;
 
-    /* Intercept all Google Analytic requests and respond with a 200 */
-    server
-      .get('/google-analytics/*path')
-      .intercept((req, res) => res.sendStatus(200));
+    const response = await fetch(
+      'https://jsonplaceholder.typicode.com/posts/1'
+    );
+    const post = await response.json();
 
-    /* Pass-through all GET requests to /coverage */
-    server.get('/coverage').passthrough();
-
-    /* start: pseudo test code */
-    await visit('/login');
-    await fillIn('email', 'polly@netflix.com');
-    await fillIn('password', '@pollyjs');
-    await submit();
-    /* end: pseudo test code */
-
-    expect(location.pathname).to.equal('/browse');
+    expect(response.status).to.equal(200);
+    expect(post.id).to.equal(1);
 
     /*
       Calling `stop` will persist requests as well as disconnect from any
-      connected browser APIs (e.g. fetch or XHR).
+      connected adapters.
     */
     await polly.stop();
   });
 });
 ```
 
-The above test case would generate the following [HAR](http://www.softwareishard.com/blog/har-12-spec/)
-file which Polly will use to replay the sign-in response when the test is rerun:
+<a class="jsbin-embed" href="http://jsbin.com/ruqadih/embed?js,console&height=550px"></a>
+
+The first time the test runs, Polly will record the response for the
+`fetch('https://jsonplaceholder.typicode.com/posts/1')` request that was made. You will
+see the following in the console:
+
+```text
+Recorded ➞ GET https://jsonplaceholder.typicode.com/posts/1 200 • 48ms
+```
+
+Once the Polly instance is [stopped](api#stop-1), the persister will generate the
+following [HAR](http://www.softwareishard.com/blog/har-12-spec/) file which will
+be used to replay the response to that request when the test is rerun:
 
 ```json
 {
-  "log": {
-    "_recordingName": "Sign In",
-    "browser": {
-      "name": "Chrome",
-      "version": "67.0"
-    },
-    "creator": {
-      "name": "Polly.JS",
-      "version": "0.5.0",
-      "comment": "persister:rest"
-    },
-    "entries": [
-      {
-        "_id": "06f06e6d125cbb80896c41786f9a696a",
-        "_order": 0,
-        "cache": {},
-        "request": {
-          "bodySize": 51,
-          "cookies": [],
-          "headers": [
-            {
-              "name": "content-type",
-              "value": "application/json; charset=utf-8"
-            }
-          ],
-          "headersSize": 97,
-          "httpVersion": "HTTP/1.1",
-          "method": "POST",
-          "postData": {
-            "mimeType": "application/json; charset=utf-8",
-            "text": "{\"email\":\"polly@netflix.com\",\"password\":\"@pollyjs\"}"
+  "Simple-Example_823972681": {
+    "log": {
+      "_recordingName": "Simple Example",
+      "browser": {
+        "name": "Chrome",
+        "version": "70.0"
+      },
+      "creator": {
+        "comment": "persister:local-storage",
+        "name": "Polly.JS",
+        "version": "1.2.0"
+      },
+      "entries": [
+        {
+          "_id": "ffbc4836d419fc265c3b85cbe1b7f22e",
+          "_order": 0,
+          "cache": {},
+          "request": {
+            "bodySize": 0,
+            "cookies": [],
+            "headers": [],
+            "headersSize": 63,
+            "httpVersion": "HTTP/1.1",
+            "method": "GET",
+            "queryString": [],
+            "url": "https://jsonplaceholder.typicode.com/posts/1"
           },
-          "queryString": [],
-          "url": "https://netflix.com/api/v1/login"
-        },
-        "response": {
-          "bodySize": 0,
-          "content": {
-            "mimeType": "text/plain; charset=utf-8",
-            "size": 0
+          "response": {
+            "bodySize": 292,
+            "content": {
+              "mimeType": "application/json; charset=utf-8",
+              "size": 292,
+              "text": "{\n  \"userId\": 1,\n  \"id\": 1,\n  \"title\": \"sunt aut facere repellat provident occaecati excepturi optio reprehenderit\",\n  \"body\": \"quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto\"\n}"
+            },
+            "cookies": [],
+            "headers": [
+              {
+                "name": "cache-control",
+                "value": "public, max-age=14400"
+              },
+              {
+                "name": "content-type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "expires",
+                "value": "Tue, 30 Oct 2018 22:52:42 GMT"
+              },
+              {
+                "name": "pragma",
+                "value": "no-cache"
+              }
+            ],
+            "headersSize": 145,
+            "httpVersion": "HTTP/1.1",
+            "redirectURL": "",
+            "status": 200,
+            "statusText": "OK"
           },
-          "cookies": [],
-          "headers": [],
-          "headersSize": 0,
-          "httpVersion": "HTTP/1.1",
-          "redirectURL": "",
-          "status": 200,
-          "statusText": "OK"
-        },
-        "startedDateTime": "2018-06-29T17:31:55.348Z",
-        "time": 11,
-        "timings": {
-          "blocked": -1,
-          "connect": -1,
-          "dns": -1,
-          "receive": 0,
-          "send": 0,
-          "ssl": -1,
-          "wait": 11
+          "startedDateTime": "2018-10-30T18:52:42.566Z",
+          "time": 18,
+          "timings": {
+            "blocked": -1,
+            "connect": -1,
+            "dns": -1,
+            "receive": 0,
+            "send": 0,
+            "ssl": -1,
+            "wait": 18
+          }
         }
-      }
-    ],
-    "pages": [],
-    "version": "1.2"
+      ],
+      "pages": [],
+      "version": "1.2"
+    }
   }
 }
 ```
 
+The next time the test is run, Polly will use the recorded response instead
+of going out to the server to get a new one. You will see the following in the
+console:
+
+```text
+Replayed ➞ GET https://jsonplaceholder.typicode.com/posts/1 200 • 1ms
+```
+
 ## Client-Side Server
 
-Every polly instance has a reference to a client-side server which you can leverage
-to gain full control of all HTTP interactions as well as dictate how the Polly instance
-should handle them.
-
-?> __TIP:__ Check out the [Server](server/overview) documentation for more details and examples!
+Every Polly instance has a reference to a [client-side server](server/overview)
+which you can leverage to gain full control of all HTTP interactions as well as
+dictate how the Polly instance should handle them.
 
 Lets take a look at how we can modify our previous test case to test against a
-failed sign in attempt.
+post that does not exist.
 
 ```js
-import { Polly } from '@pollyjs/core';
+describe('Simple Client-Side Server Example', function() {
+  it('fetches an unknown post', async function() {
+    /*
+      Create a new polly instance.
 
-describe('Netflix Homepage', function() {
-  it('should handle a failed sign in attempt', async function() {
-    const polly = new Polly('Failed Sign In', {
-      adapters: ['xhr', 'fetch'],
-      persister: 'rest'
+      Connect Polly to fetch. By default, it will record any requests that it
+      hasn't yet seen while replaying ones it has already recorded.
+    */
+    const polly = new Polly('Simple Client-Side Server Example', {
+      adapters: ['fetch'], // Hook into `fetch`
+      persister: 'local-storage', // Read/write to/from local-storage
+      logging: true // Log requests to console
     });
     const { server } = polly;
 
     /*
-      Using the client-side server, we can intercept when a request url matches
-      `/api/v1/login` and respond with the necessary status code and body to
-      emulate a failed sign in attempt.
+      Add a rule via the client-side server to intercept the
+      `https://jsonplaceholder.typicode.com/posts/1` request and return
+      an error.
     */
-    server.get('/api/v1/login').intercept((req, res) => {
-      // Set the response's status code to be 401 (Unauthorized)
-      res.status(401);
-
-      // Respond with a json object containing an error message that will be shown
-      res.json({
-        error: {
-          message: 'Incorrect username or password.'
-        }
+    server
+      .get('https://jsonplaceholder.typicode.com/posts/404')
+      .intercept((req, res) => {
+        res.status(404).json({ error: 'Post not found.' });
       });
-    })
 
-    /* start: pseudo test code */
-    await visit('/login');
-    await fillIn('email', 'polly@netflix.com');
-    await fillIn('password', '@pollyjs');
-    await submit();
-    /* end: pseudo test code */
+    const response = await fetch(
+      'https://jsonplaceholder.typicode.com/posts/404'
+    );
+    const post = await response.json();
 
-    expect(document.querySelector('.error-message').textContent)
-      .to.equal('Incorrect username or password.');
+    expect(response.status).to.equal(404);
+    expect(post.error).to.equal('Post not found.');
 
     /*
       Calling `stop` will persist requests as well as disconnect from any
-      connected browser APIs (e.g. fetch or XHR).
+      connected adapters.
     */
     await polly.stop();
   });
 });
 ```
 
+<a class="jsbin-embed" href="http://jsbin.com/rakeqas/embed?js,console&height=600px"></a>
+
+When the test executes, Polly will detect that we've set a custom intercept rule for
+`https://jsonplaceholder.typicode.com/posts/404` and will deffer to the intercept handler
+to handle the response for that request. You will see the following in the console:
+
+```text
+Intercepted ➞ GET https://jsonplaceholder.typicode.com/posts/404 404 • 1ms
+```
+
 ## Test Helpers
 
-Using Mocha or QUnit? We got you covered! Checkout the [Mocha](test-frameworks/mocha) or
+Using Mocha or QUnit? We've got you covered! Checkout the [Mocha](test-frameworks/mocha) or
 [QUnit](test-frameworks/qunit) documentation pages for detailed instructions
 on how to use the provided test helpers.
+
+<script src="http://static.jsbin.com/js/embed.min.js?4.1.7"></script>
