@@ -2,7 +2,6 @@ import Adapter from '@pollyjs/adapter';
 import http from 'http';
 import https from 'https';
 import nodeUrl from 'url';
-import parseRawRequest from './utils/parse-raw-request';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
@@ -60,15 +59,44 @@ export default class HttpAdapter extends Adapter {
        */
 
       const req = nativeRequest.call(transport, ...args);
+      const originalWrite = req.write;
       const reqEnd = req.end;
 
-      req.end = () => {
-        const request = parseRawRequest(req.output);
+      const chunks = [];
 
-        const { path, method, headers, body } = request;
+      req.write = (chunk, encoding, callback) => {
+        // TODO : handle encoding
+        chunks.push(chunk);
 
-        // host = 'host[:port]'
-        const host = headers.Host;
+        originalWrite.call(req, chunk, encoding, callback);
+      };
+
+      req.end = (chunk, encoding, callback) => {
+        if (typeof chunk === 'function') {
+          callback = chunk;
+          chunk = null;
+        } else if (typeof encoding === 'function') {
+          callback = encoding;
+          encoding = null;
+        }
+
+        if (chunk) {
+          req.write(chunk, encoding);
+        }
+
+        if (typeof callback === 'function') {
+          // we don't call original `end` yet but no need to carry callback around when we do
+          // this is what happens in original `end`
+          req.once('finish', callback);
+        }
+
+        const headers = req.getHeaders();
+        const path = req.path;
+        const method = req.method;
+        const host = headers.host;
+
+        // TODO : handle encoding
+        const body = chunks.join();
 
         const url = nodeUrl.format({
           protocol,
