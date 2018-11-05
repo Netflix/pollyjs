@@ -1,0 +1,62 @@
+{
+  "name": "@pollyjs/adapter-http",
+  "version": "1.2.0",
+  "description": "Node http adapter for @pollyjs",
+  "main": "dist/cjs/pollyjs-adapter-http.js",
+  "module": "dist/es/pollyjs-adapter-http.js",
+  "browser": "dist/umd/pollyjs-adapter-http.js",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-http",
+  "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Jason Mitchell",
+      "email": "jason.mitchell.w@gmail.com"
+    },
+    {
+      "name": "Offir Golan",
+      "email": "offirgolan@gmail.com"
+    }
+  ],
+  "keywords": [
+    "polly",
+    "pollyjs",
+    "record",
+    "replay",
+    "http",
+    "adapter"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "npm-run-all clean rollup",
+    "clean": "rimraf dist",
+    "rollup": "rollup -c rollup.config.js",
+    "rollup:prod": "NODE_ENV=production yarn rollup",
+    "watch": "yarn rollup -w",
+    "format": "prettier --config ../../../.prettier.js --write **/*.js",
+    "test:build": "rollup -c rollup.config.test.js",
+    "lint": "eslint ./*.js src tests",
+    "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
+  },
+  "dependencies": {
+    "@pollyjs/adapter": "^1.2.0",
+    "@pollyjs/utils": "^1.2.0"
+  },
+  "devDependencies": {
+    "@pollyjs/core": "^1.2.0",
+    "@pollyjs/persister-fs": "^1.2.0",
+    "@pollyjs/persister-rest": "^1.2.0",
+    "chai": "^4.1.2",
+    "eslint": "^4.18.1",
+    "mocha": "^5.2.0",
+    "npm-run-all": "^4.1.3",
+    "prettier": "^1.14.2",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.65.2"
+  }
+}
