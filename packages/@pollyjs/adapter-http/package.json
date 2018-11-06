@@ -4,7 +4,6 @@
   "description": "Node http adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-http.js",
   "module": "dist/es/pollyjs-adapter-http.js",
-  "browser": "dist/umd/pollyjs-adapter-http.js",
   "files": [
     "src",
     "dist"
@@ -44,8 +43,7 @@
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
-    "@pollyjs/adapter": "^1.2.0",
-    "@pollyjs/utils": "^1.2.0"
+    "@pollyjs/adapter": "^1.2.0"
   },
   "devDependencies": {
     "@pollyjs/core": "^1.2.0",

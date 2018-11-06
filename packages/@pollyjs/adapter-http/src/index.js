@@ -4,6 +4,9 @@ import https from 'https';
 import nodeUrl from 'url';
 
 const { defineProperty } = Object;
+
+const LISTENERS = Symbol();
+const END = Symbol();
 const IS_STUBBED = Symbol();
 
 const transports = {
@@ -34,12 +37,87 @@ export default class HttpAdapter extends Adapter {
     this.nativeRequest = null;
   }
 
+  async onRecord(pollyRequest) {
+    await this.passthroughRequest(pollyRequest);
+    await this.persister.recordRequest(pollyRequest);
+    this.respond(pollyRequest);
+  }
+
+  async onReplay(pollyRequest, { statusCode, headers, body }) {
+    await pollyRequest.respond(statusCode, headers, body);
+    this.respond(pollyRequest);
+  }
+
+  async onPassthrough(pollyRequest) {
+    await this.passthroughRequest(pollyRequest);
+    this.respond(pollyRequest);
+  }
+
+  async onIntercept(pollyRequest, { statusCode, headers, body }) {
+    await pollyRequest.respond(statusCode, headers, body);
+    this.respond(pollyRequest);
+  }
+
+  async passthroughRequest(pollyRequest) {
+    const [req] = pollyRequest.requestArguments;
+
+    const res = await new Promise(resolve => {
+      req.once('response', response => resolve(response));
+      req[END].call(req);
+    });
+
+    const responseData = await new Promise(resolve => {
+      const resBuffer = [];
+
+      res.on('data', chunk => {
+        resBuffer.push(chunk);
+      });
+
+      res.on('end', () => {
+        // TODO : handle encoding
+        const data = Buffer.concat(resBuffer).toString('utf8');
+
+        resolve(data);
+      });
+    });
+
+    await pollyRequest.respond(res.statusCode, res.headers, responseData);
+  }
+
+  async respond(pollyRequest) {
+    const [req] = pollyRequest.requestArguments;
+    const { response } = pollyRequest;
+
+    Object.keys(req[LISTENERS]).forEach(eventName => {
+      const listeners = req[LISTENERS][eventName];
+
+      listeners.forEach(listener => req.on(eventName, listener));
+    });
+
+    const msg = new http.IncomingMessage({ readable: false });
+
+    msg.statusCode = response.statusCode;
+    req.emit('response', msg);
+
+    for (const h in response.headers) {
+      msg.headers[h] = response.headers[h];
+    }
+
+    msg.emit('data', Buffer.from(response.body));
+    msg.emit('end');
+
+    req.emit('prefinish');
+    req.emit('finish');
+  }
+
   patchRequest(protocol) {
     const transport = transports[protocol];
 
     this.nativeRequest[protocol] = transport.request;
     transport.request = this.createRequestWrapper(protocol);
-    defineProperty(transport, IS_STUBBED, { value: true });
+    defineProperty(transport, IS_STUBBED, {
+      value: true
+    });
   }
 
   restoreRequest(protocol) {
@@ -60,7 +138,8 @@ export default class HttpAdapter extends Adapter {
 
       const req = nativeRequest.call(transport, ...args);
       const originalWrite = req.write;
-      const reqEnd = req.end;
+
+      req[END] = req.end;
 
       const chunks = [];
 
@@ -90,6 +169,18 @@ export default class HttpAdapter extends Adapter {
           req.once('finish', callback);
         }
 
+        req[LISTENERS] = ['response'].reduce((acc, eventName) => {
+          const listeners = req.listeners(eventName);
+
+          // unsubscribe those listeners, so that we break the connection between caller and `req`
+          // until we decide what to do in next steps
+          req.removeAllListeners(eventName);
+
+          acc[eventName] = listeners;
+
+          return acc;
+        }, {});
+
         const headers = req.getHeaders();
         const path = req.path;
         const method = req.method;
@@ -109,7 +200,7 @@ export default class HttpAdapter extends Adapter {
           method,
           headers,
           body,
-          requestArguments: [req, reqEnd]
+          requestArguments: [req]
         });
       };
 
