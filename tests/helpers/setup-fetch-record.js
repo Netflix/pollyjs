@@ -17,10 +17,10 @@ setupFetchRecord.beforeEach = function(options = {}) {
     const { host, fetch } = options;
 
     this.fetch = fetch;
-    
+
     this.relativeFetch = (url, options) => {
       return this.fetch(`${host}${url}`, options);
-    }
+    };
 
     this.recordUrl = () =>
       `${host}/api/db/${encodeURIComponent(this.polly.recordingId)}`;

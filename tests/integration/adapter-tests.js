@@ -30,19 +30,15 @@ export default function adapterTests() {
     const res = await this.relativeFetch('/echo?status=204');
 
     expect(res.status).to.equal(204);
-    expect((await res.text())).to.equal('');
+    expect(await res.text()).to.equal('');
   });
 
   it('should intercept', async function() {
     const { server } = this.polly;
 
-    server
-      .any(this.recordUrl())
-      .intercept((_, res) => res.status(201));
+    server.any(this.recordUrl()).intercept((_, res) => res.status(201));
 
-    server
-      .get(this.recordUrl())
-      .intercept((req, res) => res.json(req.query));
+    server.get(this.recordUrl()).intercept((req, res) => res.json(req.query));
 
     const res = await this.fetch(`${this.recordUrl()}?foo=bar`);
     const json = await res.json();
