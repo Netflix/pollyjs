@@ -8,7 +8,7 @@ const { registerExpressAPI, Defaults } = require('@pollyjs/node-server');
 const { assign } = Object;
 
 module.exports = {
-  name: '@pollyjs/ember',
+  name: require('./package').name,
 
   included() {
     this._super.included.apply(this, arguments);

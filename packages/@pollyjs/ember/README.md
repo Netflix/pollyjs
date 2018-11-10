@@ -53,8 +53,7 @@ module.exports = function(defaults) {
 Once installed and configured, you can import and use Polly as documented. Check
 out the [Quick Start](https://netflix.github.io/pollyjs/#/quick-start#usage) documentation to get started.
 
-> For an even better testing experience, check out the provided
-[QUnit Test Helper](https://netflix.github.io/pollyjs/#/test-frameworks/qunit)!
+> For an even better testing experience, check out the provided [QUnit Test Helper](https://netflix.github.io/pollyjs/#/test-frameworks/qunit)!
 
 ## License
 
