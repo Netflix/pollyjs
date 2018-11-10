@@ -30,10 +30,12 @@ describe('Unit | Container', function() {
 
     it('.register() - validation', function() {
       class NoName extends Factory {
+        /* eslint-disable-next-line getter-return */
         static get name() {}
       }
 
       class NoType extends Factory {
+        /* eslint-disable-next-line getter-return */
         static get type() {}
       }
 

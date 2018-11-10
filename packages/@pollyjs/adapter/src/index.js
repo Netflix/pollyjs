@@ -15,6 +15,7 @@ export default class Adapter {
     return 'adapter';
   }
 
+  /* eslint-disable-next-line getter-return */
   static get name() {
     assert('Must override the static `name` getter.', false);
   }

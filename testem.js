@@ -45,7 +45,7 @@ module.exports = {
       protocol: 'tap'
     },
     ESLint: {
-      command: 'yarn lint -- -- --format tap >&1 | tap-merge',
+      command: 'yarn lint --format tap',
       protocol: 'tap'
     }
   }

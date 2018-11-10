@@ -6050,12 +6050,6 @@ heimdalljs@^0.2.0, heimdalljs@^0.2.1, heimdalljs@^0.2.3, heimdalljs@^0.2.5:
   dependencies:
     rsvp "~3.2.1"
 
-highland@^2.5.1:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/highland/-/highland-2.13.0.tgz#a4394d8dcb970cd071a79a20f0762b906258dc19"
-  dependencies:
-    util-deprecate "^1.0.2"
-
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -10907,12 +10901,6 @@ table@^5.0.2:
     lodash "^4.17.10"
     slice-ansi "1.0.0"
     string-width "^2.1.1"
-
-tap-merge@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/tap-merge/-/tap-merge-0.3.1.tgz#1fbbda1b09e02dbd7ddd8cd4edf8b9bad1184a91"
-  dependencies:
-    highland "^2.5.1"
 
 tap-parser@^7.0.0:
   version "7.0.0"

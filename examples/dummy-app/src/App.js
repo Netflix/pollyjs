@@ -1,13 +1,14 @@
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import { PostList, PostShow, PostEdit, PostCreate } from './posts';
-import { TodoList, TodoShow, TodoEdit, TodoCreate } from './todos';
-import { UserList, UserShow } from './users';
 import PostIcon from '@material-ui/icons/Book';
 import TodoIcon from '@material-ui/icons/ViewList';
 import UserIcon from '@material-ui/icons/Group';
 import { createMuiTheme } from '@material-ui/core/styles';
+
+import { UserList, UserShow } from './users';
+import { TodoList, TodoShow, TodoEdit, TodoCreate } from './todos';
+import { PostList, PostShow, PostEdit, PostCreate } from './posts';
 
 const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 const theme = createMuiTheme({

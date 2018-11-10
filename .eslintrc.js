@@ -5,8 +5,8 @@ module.exports = {
     ecmaVersion: 2017,
     sourceType: 'module'
   },
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   plugins: ['babel', 'import'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   globals: {
     global: true
   },
@@ -17,6 +17,7 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'prefer-const': 'error',
+    'getter-return': 'error',
     'padding-line-between-statements': [
       'error',
       // require blank lines before all return statements,

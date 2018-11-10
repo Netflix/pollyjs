@@ -37,11 +37,9 @@
     "rollup": "rollup -c",
     "rollup:prod": "NODE_ENV=production yarn rollup",
     "watch": "yarn rollup -w",
-    "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test": "",
     "test:build": "",
     "test:clean": "",
-    "lint": "eslint ./*.js src bin",
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {

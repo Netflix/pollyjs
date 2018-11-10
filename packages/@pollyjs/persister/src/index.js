@@ -17,6 +17,7 @@ export default class Persister {
     return 'persister';
   }
 
+  /* eslint-disable-next-line getter-return */
   static get name() {
     assert('Must override the static `name` getter.', false);
   }
