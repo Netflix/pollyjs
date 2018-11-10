@@ -1,4 +1,5 @@
 import { Polly } from '@pollyjs/core';
+
 import FetchAdapter from '../../src';
 
 class MockResponse {}

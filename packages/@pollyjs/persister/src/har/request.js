@@ -1,6 +1,7 @@
-import toNVPairs from './utils/to-nv-pairs';
 import getByteLength from 'utf8-byte-length';
 import setCookies from 'set-cookie-parser';
+
+import toNVPairs from './utils/to-nv-pairs';
 
 function headersSize(request) {
   const keys = [];

@@ -1,14 +1,12 @@
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2017,
-    sourceType: 'module',
-    ecmaFeatures: {
-      experimentalObjectRestSpread: true
-    }
+    sourceType: 'module'
   },
-  plugins: ['prettier'],
-  extends: ['eslint:recommended', 'prettier'],
+  plugins: ['babel', 'import'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   globals: {
     global: true
   },
@@ -19,6 +17,7 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'prefer-const': 'error',
+    'getter-return': 'error',
     'padding-line-between-statements': [
       'error',
       // require blank lines before all return statements,
@@ -32,12 +31,6 @@ module.exports = {
         next: ['const', 'let', 'var']
       }
     ],
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true
-      }
-    ],
     'no-restricted-properties': [
       2,
       {
@@ -45,7 +38,20 @@ module.exports = {
         property: 'assign',
         message: 'Please use the spread operator instead.'
       }
-    ]
+    ],
+    // Require that imports occur at the top of the file
+    'import/first': 'error',
+
+    // Require imports to be grouped and ordered consistently
+    'import/order': [
+      'error',
+      {
+        'newlines-between': 'always'
+      }
+    ],
+
+    // Enable class properties
+    'babel/semi': 1
   },
   overrides: [
     // test files

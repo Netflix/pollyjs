@@ -2,6 +2,7 @@ import '@pollyjs-tests/helpers/global-fetch';
 
 import { Polly } from '@pollyjs/core';
 import FSPersister from '@pollyjs/persister-fs';
+
 import FetchAdapter from '../../../src';
 
 describe('Integration | Fetch Adapter | Jest', function() {

@@ -1,4 +1,5 @@
 import { MODES } from '@pollyjs/utils';
+
 import Timing from '../utils/timing';
 
 export default {

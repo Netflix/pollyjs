@@ -1,5 +1,6 @@
 import { Polly } from '@pollyjs/core';
 import RESTPersister from '@pollyjs/persister-rest';
+
 import XHRAdapter from '../../../src';
 
 function request(url) {

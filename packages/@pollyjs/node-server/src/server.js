@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
 import gracefulShutdown from 'http-graceful-shutdown';
+
 import registerAPI from './express/register-api';
 import DefaultConfig from './config';
 

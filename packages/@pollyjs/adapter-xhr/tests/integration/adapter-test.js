@@ -4,6 +4,7 @@ import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
 import RESTPersister from '@pollyjs/persister-rest';
 import xhrRequest from '@pollyjs-tests/helpers/xhr-request';
+
 import XHRAdapter from '../../src';
 
 describe('Integration | XHR Adapter', function() {

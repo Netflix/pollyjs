@@ -1,5 +1,6 @@
-import PuppeteerAdapter from '../../src';
 import { setupMocha as setupPolly } from '@pollyjs/core';
+
+import PuppeteerAdapter from '../../src';
 
 describe('Unit | Puppeteer Adapter', function() {
   setupPolly();

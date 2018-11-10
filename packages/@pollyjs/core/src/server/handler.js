@@ -1,5 +1,6 @@
-import EventEmitter from '../-private/event-emitter';
 import { assert } from '@pollyjs/utils';
+
+import EventEmitter from '../-private/event-emitter';
 import {
   validateRecordingName,
   validateRequestConfig

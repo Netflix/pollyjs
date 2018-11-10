@@ -1,5 +1,6 @@
-import EventEmitter from '../../../src/-private/event-emitter';
 import { timeout } from '@pollyjs/utils';
+
+import EventEmitter from '../../../src/-private/event-emitter';
 
 let emitter;
 

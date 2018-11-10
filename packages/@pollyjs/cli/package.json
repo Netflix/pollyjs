@@ -11,11 +11,9 @@
     "clean": "",
     "rollup": "",
     "watch": "",
-    "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test": "",
     "test:build": "",
-    "test:clean": "",
-    "lint": "eslint ./*.js src bin"
+    "test:clean": ""
   },
   "keywords": [
     "polly",

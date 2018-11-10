@@ -5,6 +5,7 @@ process.title = 'polly';
 
 var Polly = require('@pollyjs/node-server');
 var cli = require('commander');
+
 var version = require('../package.json').version;
 
 cli.name('polly').version(version, '-v, --version');

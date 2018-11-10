@@ -1,5 +1,6 @@
-import HTTPBase from './http-base';
 import { assert, HTTP_STATUS_CODES } from '@pollyjs/utils';
+
+import HTTPBase from './http-base';
 
 const DEFAULT_STATUS_CODE = 200;
 
