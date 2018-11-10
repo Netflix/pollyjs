@@ -1,10 +1,11 @@
+import Adapter from '@pollyjs/adapter';
+import Persister from '@pollyjs/persister';
+import { MODES } from '@pollyjs/utils';
+
 import defaults from '../../src/defaults/config';
 import Polly from '../../src/polly';
 import Container from '../../src/-private/container';
 import setupPolly from '../../src/test-helpers/mocha';
-import Adapter from '@pollyjs/adapter';
-import Persister from '@pollyjs/persister';
-import { MODES } from '@pollyjs/utils';
 
 describe('Unit | Polly', function() {
   it('should exist', function() {

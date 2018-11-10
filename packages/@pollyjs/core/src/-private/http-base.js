@@ -1,5 +1,6 @@
-import HTTPHeaders from '../utils/http-headers';
 import stringify from 'fast-json-stable-stringify';
+
+import HTTPHeaders from '../utils/http-headers';
 
 const { freeze } = Object;
 const { parse } = JSON;

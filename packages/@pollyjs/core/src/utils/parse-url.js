@@ -1,6 +1,7 @@
 import isAbsoluteUrl from 'is-absolute-url';
-import removeHostFromUrl from './remove-host-from-url';
 import { URL } from '@pollyjs/utils';
+
+import removeHostFromUrl from './remove-host-from-url';
 
 /**
  * Creates an exact representation of the passed url string with url-parse.

@@ -1,5 +1,6 @@
 import Persister from '@pollyjs/persister';
 import { buildUrl } from '@pollyjs/utils';
+
 import ajax from './ajax';
 
 export default class RestPersister extends Persister {

@@ -1,5 +1,6 @@
-import { setupMocha as setupPolly } from '../../../src';
 import FetchAdapter from '@pollyjs/adapter-fetch';
+
+import { setupMocha as setupPolly } from '../../../src';
 
 describe('Integration | Server', function() {
   setupPolly({ adapters: [FetchAdapter] });

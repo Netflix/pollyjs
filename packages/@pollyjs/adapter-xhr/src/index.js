@@ -1,7 +1,8 @@
 import FakeXHR from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
-import resolveXhr from './utils/resolve-xhr';
 import { XHR as XHRUtils } from '@pollyjs/utils';
+
+import resolveXhr from './utils/resolve-xhr';
 
 const SEND = Symbol();
 const IS_STUBBED = Symbol();

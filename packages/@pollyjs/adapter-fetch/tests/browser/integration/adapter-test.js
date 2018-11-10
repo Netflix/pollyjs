@@ -3,6 +3,7 @@ import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
 import RESTPersister from '@pollyjs/persister-rest';
+
 import FetchAdapter from '../../../src';
 
 describe('Integration | Fetch Adapter | Browser', function() {

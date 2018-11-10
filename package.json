@@ -27,6 +27,7 @@
     "clean": "lerna run clean --parallel",
     "format": "lerna run format",
     "lint": "lerna exec --bail=false --stream --no-prefix -- yarn run lint",
+    "lint:fix": "yarn run lint --fix",
     "pretest": "yarn server:build",
     "pretest:ci": "yarn pretest",
     "test": "testem",

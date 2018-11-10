@@ -1,5 +1,6 @@
-import Handler from './handler';
 import mergeOptions from 'merge-options';
+
+import Handler from './handler';
 
 async function invoke(fn, route, req, ...args) {
   if (typeof fn !== 'function') {

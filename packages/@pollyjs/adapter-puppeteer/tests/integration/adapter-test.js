@@ -1,10 +1,11 @@
 import FSPersister from '@pollyjs/persister-fs';
-import PuppeteerAdapter from '../../src';
 import puppeteer from 'puppeteer';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
-import fetch from '../helpers/fetch';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import { setupMocha as setupPolly } from '@pollyjs/core';
+
+import fetch from '../helpers/fetch';
+import PuppeteerAdapter from '../../src';
 
 // The host the API server is on
 const HOST = 'http://localhost:4000';

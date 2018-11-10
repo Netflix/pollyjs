@@ -1,5 +1,6 @@
-import HTTPBase from '../../../src/-private/http-base';
 import stringify from 'fast-json-stable-stringify';
+
+import HTTPBase from '../../../src/-private/http-base';
 
 let base;
 

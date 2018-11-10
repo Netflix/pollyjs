@@ -1,4 +1,8 @@
 import mergeOptions from 'merge-options';
+import { MODES, assert } from '@pollyjs/utils';
+
+import { version } from '../package.json';
+
 import Logger from './-private/logger';
 import Container from './-private/container';
 import DefaultConfig from './defaults/config';
@@ -7,8 +11,6 @@ import guidForRecording from './utils/guid-for-recording';
 import EventEmitter from './-private/event-emitter';
 import Server from './server';
 import { validateRecordingName } from './utils/validators';
-import { version } from '../package.json';
-import { MODES, assert } from '@pollyjs/utils';
 
 const RECORDING_NAME = Symbol();
 const RECORDING_ID = Symbol();

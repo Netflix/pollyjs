@@ -1,7 +1,8 @@
-import HAR from './har';
-import Entry from './har/entry';
 import stringify from 'fast-json-stable-stringify';
 import { ACTIONS, assert } from '@pollyjs/utils';
+
+import HAR from './har';
+import Entry from './har/entry';
 
 const CREATOR_NAME = 'Polly.JS';
 

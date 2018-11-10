@@ -1,7 +1,8 @@
-import parseUrl from './parse-url';
 import isObjectLike from 'lodash-es/isObjectLike';
-import HTTPHeaders from './http-headers';
 import stringify from 'fast-json-stable-stringify';
+
+import parseUrl from './parse-url';
+import HTTPHeaders from './http-headers';
 
 const { keys } = Object;
 const { isArray } = Array;

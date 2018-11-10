@@ -1,5 +1,6 @@
-import FSPersister from '../../src';
 import mock from 'mock-fs';
+
+import FSPersister from '../../src';
 
 class MockPolly {
   constructor(persisterOptions = {}) {

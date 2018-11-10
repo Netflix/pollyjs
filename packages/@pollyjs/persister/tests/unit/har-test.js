@@ -1,9 +1,10 @@
+import * as validate from 'har-validator/lib/async';
+
 import HAR from '../../src/har';
 import Log from '../../src/har/log';
 import Entry from '../../src/har/entry';
 import Request from '../../src/har/request';
 import Response from '../../src/har/response';
-import * as validate from 'har-validator/lib/async';
 
 describe('Unit | HAR', function() {
   it('should exist', function() {

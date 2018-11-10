@@ -1,6 +1,7 @@
+import { ACTIONS, MODES, assert } from '@pollyjs/utils';
+
 import Interceptor from './-private/interceptor';
 import isExpired from './utils/is-expired';
-import { ACTIONS, MODES, assert } from '@pollyjs/utils';
 
 const REQUEST_HANDLER = Symbol();
 

@@ -1,5 +1,6 @@
-import Persister from '../../src';
 import { timeout } from '@pollyjs/utils';
+
+import Persister from '../../src';
 
 describe('Unit | Persister', function() {
   it('should exist', function() {

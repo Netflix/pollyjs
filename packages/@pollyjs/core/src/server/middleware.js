@@ -1,4 +1,5 @@
 import RouteRecognizer from 'route-recognizer';
+
 import Route from './route';
 
 const GLOBAL = '__GLOBAL__';

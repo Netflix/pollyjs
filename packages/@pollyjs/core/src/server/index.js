@@ -1,10 +1,12 @@
 import RouteRecognizer from 'route-recognizer';
+import castArray from 'lodash-es/castArray';
+import { URL, assert, timeout, buildUrl } from '@pollyjs/utils';
+
+import removeHostFromUrl from '../utils/remove-host-from-url';
+
 import Route from './route';
 import Handler from './handler';
 import Middleware from './middleware';
-import removeHostFromUrl from '../utils/remove-host-from-url';
-import castArray from 'lodash-es/castArray';
-import { URL, assert, timeout, buildUrl } from '@pollyjs/utils';
 
 const HOST = Symbol();
 const NAMESPACES = Symbol();
