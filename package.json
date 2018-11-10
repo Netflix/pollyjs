@@ -32,7 +32,7 @@
     "build:watch": "npm-run-all clean watch",
     "watch": "lerna run watch --ignore=@pollyjs/ember --parallel",
     "clean": "lerna run clean --parallel",
-    "lint": "eslint './**/*.js'",
+    "lint": "eslint .",
     "lint:fix": "yarn run lint --fix",
     "pretest": "yarn server:build",
     "pretest:ci": "yarn pretest",
