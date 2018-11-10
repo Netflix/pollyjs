@@ -1,6 +1,8 @@
 /* eslint-env node */
 const path = require('path');
+
 const bodyParser = require('body-parser');
+
 const { registerExpressAPI } = require('../packages/@pollyjs/node-server');
 
 const DB = {};
