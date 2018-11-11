@@ -37,7 +37,6 @@ export default function createNodeConfig(options = {}) {
           plugins: [
             '@babel/plugin-external-helpers',
             ['@babel/plugin-transform-runtime', { corejs: 2 }],
-            ['@babel/plugin-proposal-class-properties', { loose: true }],
             ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
           ]
         }),
