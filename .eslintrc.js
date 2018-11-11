@@ -1,11 +1,10 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2018,
     sourceType: 'module'
   },
-  plugins: ['babel', 'import'],
+  plugins: ['import'],
   extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   globals: {
     global: true
@@ -48,10 +47,7 @@ module.exports = {
       {
         'newlines-between': 'always'
       }
-    ],
-
-    // Enable class properties
-    'babel/semi': 1
+    ]
   },
   overrides: [
     // test files
