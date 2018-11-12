@@ -12,3 +12,6 @@ dist
 
 # Examples
 examples/**/*/yarn.lock
+
+# IDE
+.vscode/
