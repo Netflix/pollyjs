@@ -1,7 +1,9 @@
-import Adapter from '@pollyjs/adapter';
 import http from 'http';
 import https from 'https';
-import nodeUrl from 'url';
+import zlib from 'zlib';
+
+import Adapter from '@pollyjs/adapter';
+import { URL } from '@pollyjs/utils';
 
 const { defineProperty } = Object;
 
@@ -12,6 +14,38 @@ const IS_STUBBED = Symbol();
 const transports = {
   http,
   https
+};
+
+const getHttpResponseData = res => {
+  return new Promise(resolve => {
+    let stream;
+
+    switch (res.headers['content-encoding']) {
+      case 'gzip':
+      case 'compress':
+      case 'deflate':
+        // add the unzipper to the body stream processing pipeline
+        stream = res.pipe(zlib.createUnzip());
+
+        // remove the content-encoding in order to not confuse downstream operations
+        delete res.headers['content-encoding'];
+        break;
+      default:
+        stream = res;
+    }
+
+    const resBuffer = [];
+
+    stream.on('data', chunk => {
+      resBuffer.push(chunk);
+    });
+
+    stream.on('end', () => {
+      const data = Buffer.concat(resBuffer).toString('utf8');
+
+      resolve(data);
+    });
+  });
 };
 
 export default class HttpAdapter extends Adapter {
@@ -45,6 +79,7 @@ export default class HttpAdapter extends Adapter {
 
   async onReplay(pollyRequest, { statusCode, headers, body }) {
     await pollyRequest.respond(statusCode, headers, body);
+
     this.respond(pollyRequest);
   }
 
@@ -66,20 +101,7 @@ export default class HttpAdapter extends Adapter {
       req[END].call(req);
     });
 
-    const responseData = await new Promise(resolve => {
-      const resBuffer = [];
-
-      res.on('data', chunk => {
-        resBuffer.push(chunk);
-      });
-
-      res.on('end', () => {
-        // TODO : handle encoding
-        const data = Buffer.concat(resBuffer).toString('utf8');
-
-        resolve(data);
-      });
-    });
+    const responseData = await getHttpResponseData(res);
 
     await pollyRequest.respond(res.statusCode, res.headers, responseData);
   }
@@ -103,7 +125,13 @@ export default class HttpAdapter extends Adapter {
       msg.headers[h] = response.headers[h];
     }
 
-    msg.emit('data', Buffer.from(response.body));
+    let body = response.body;
+
+    if (typeof body === 'undefined') {
+      body = [];
+    }
+
+    msg.emit('data', Buffer.from(body));
     msg.emit('end');
 
     req.emit('prefinish');
@@ -188,18 +216,24 @@ export default class HttpAdapter extends Adapter {
 
         // TODO : handle encoding
         const body = chunks.join();
+        const [hostname, port = 80] = host.split(':');
 
-        const url = nodeUrl.format({
-          protocol,
-          pathname: path,
-          hostname: host
-        });
+        const parsedUrl = new URL('');
+
+        parsedUrl.set('protocol', protocol);
+        parsedUrl.set('pathname', path);
+        parsedUrl.set('hostname', hostname);
+        if (port !== 80) {
+          parsedUrl.set('port', port);
+        }
+
+        const url = parsedUrl.href;
 
         this.handleRequest({
           url,
           method,
           headers,
-          body,
+          body: body.length > 0 ? body : undefined,
           requestArguments: [req]
         });
       };

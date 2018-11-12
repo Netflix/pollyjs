@@ -43,7 +43,8 @@
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
-    "@pollyjs/adapter": "^1.2.0"
+    "@pollyjs/adapter": "^1.2.0",
+    "@pollyjs/utils": "^1.2.0"
   },
   "devDependencies": {
     "@pollyjs/core": "^1.2.0",
