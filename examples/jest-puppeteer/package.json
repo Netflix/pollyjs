@@ -13,6 +13,7 @@
     "@pollyjs/persister-fs": "*",
     "jest": "*",
     "jest-puppeteer": "*",
-    "puppeteer": "*"
+    "puppeteer": "*",
+    "setup-polly-jest": "*"
   }
 }

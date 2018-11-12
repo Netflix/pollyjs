@@ -11,6 +11,7 @@
     "@pollyjs/core": "*",
     "@pollyjs/persister-fs": "*",
     "jest": "*",
-    "node-fetch": "*"
+    "node-fetch": "*",
+    "setup-polly-jest": "*"
   }
 }
