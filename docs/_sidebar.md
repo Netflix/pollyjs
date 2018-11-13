@@ -8,6 +8,7 @@
 
   - [Mocha](test-frameworks/mocha.md)
   - [QUnit](test-frameworks/qunit.md)
+  - [Jest & Jasmine](test-frameworks/jest-jasmine.md)
 
 - Frameworks
 
