@@ -45,18 +45,16 @@
   "dependencies": {
     "@pollyjs/utils": "^1.2.0",
     "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
     "fs-extra": "^5.0.0",
-    "http-graceful-shutdown": "^2.1.1",
-    "morgan": "^1.9.0",
+    "http-graceful-shutdown": "^2.1.3",
+    "morgan": "^1.9.1",
     "nocache": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^4.18.1",
     "npm-run-all": "^4.1.3",
-    "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
-    "rollup": "^0.65.2"
+    "rollup": "^0.67.0"
   }
 }

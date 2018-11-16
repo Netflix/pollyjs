@@ -38,15 +38,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@pollyjs/node-server": "^1.2.0",
-    "commander": "^2.17.1"
+    "commander": "^2.19.0"
   },
   "devDependencies": {
-    "eslint": "^4.18.1",
-    "eslint-plugin-node": "^5.2.1",
     "npm-run-all": "^4.1.3",
-    "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
-    "rollup": "^0.65.2"
+    "rollup": "^0.67.0"
   },
   "bin": {
     "polly": "./bin/cli.js"
