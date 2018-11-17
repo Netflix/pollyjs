@@ -4,12 +4,15 @@ import HttpWrapper from './utils/http-wrapper';
 
 export default class HttpAdapter extends Adapter {
   static get name() {
-    return 'http';
+    return 'node-http';
   }
 
   get defaultOptions() {
     return {
-      transports: ['http', 'https']
+      transports: {
+        http: true,
+        https: true
+      }
     };
   }
 

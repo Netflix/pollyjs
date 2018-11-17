@@ -1,14 +1,14 @@
 {
-  "name": "@pollyjs/adapter-http",
+  "name": "@pollyjs/adapter-node-http",
   "version": "1.2.0",
   "description": "Node http adapter for @pollyjs",
-  "main": "dist/cjs/pollyjs-adapter-http.js",
-  "module": "dist/es/pollyjs-adapter-http.js",
+  "main": "dist/cjs/pollyjs-adapter-node-http.js",
+  "module": "dist/es/pollyjs-adapter-node-http.js",
   "files": [
     "src",
     "dist"
   ],
-  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-http",
+  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http",
   "license": "Apache-2.0",
   "contributors": [
     {

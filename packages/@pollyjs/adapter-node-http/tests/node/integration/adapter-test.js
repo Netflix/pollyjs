@@ -5,12 +5,12 @@ import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import FSPersister from '@pollyjs/persister-fs';
 import { setupMocha as setupPolly } from '@pollyjs/core';
 
-import HttpAdapter from '../../../src';
+import NodeHttpAdapter from '../../../src';
 
-describe('Integration | Http Adapter | Node', function() {
+describe('Integration | Node Http Adapter | Node', function() {
   setupPolly.beforeEach({
     recordFailedRequests: true,
-    adapters: [HttpAdapter],
+    adapters: [NodeHttpAdapter],
     persister: FSPersister,
     persisterOptions: {
       fs: { recordingsDir: 'tests/recordings' }

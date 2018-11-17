@@ -7,22 +7,18 @@ export default class HttpWrapper {
   constructor({ adapter, options }) {
     this.transports = [];
 
-    const enabledTransports = options.filter(transport =>
-      ['http', 'https'].includes(transport)
-    );
-
     adapter.assert(
       'There should be at least one transport enabled',
-      enabledTransports.length > 0
+      options.transports.http || options.transports.https
     );
 
-    if (enabledTransports.includes('http')) {
+    if (options.transports.http) {
       this.transports.push(
         new TransportWrapper(http, { name: 'http', adapter })
       );
     }
 
-    if (enabledTransports.includes('https')) {
+    if (options.transports.https) {
       this.transports.push(
         new TransportWrapper(https, { name: 'https', adapter })
       );

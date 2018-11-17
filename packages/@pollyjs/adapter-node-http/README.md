@@ -4,23 +4,23 @@
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
 [![Build Status](https://travis-ci.org/Netflix/pollyjs.svg?branch=master)](https://travis-ci.org/Netflix/pollyjs)
-[![npm version](https://badge.fury.io/js/%40pollyjs%2Fadapter-http.svg)](https://badge.fury.io/js/%40pollyjs%2Fadapter-http)
+[![npm version](https://badge.fury.io/js/%40pollyjs%2Fadapter-node-http.svg)](https://badge.fury.io/js/%40pollyjs%2Fadapter-node-http)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-The `@pollyjs/adapter-http` package provides a low level nodejs http request adapter that wraps the `http` and `https` modules in nodejs for seamless recording and replaying of requests.
+The `@pollyjs/adapter-node-http` package provides a low level nodejs http request adapter that wraps the `http` and `https` modules in nodejs for seamless recording and replaying of requests.
 
 ## Installation
 
 _Note that you must have node (and npm) installed._
 
 ```bash
-npm install @pollyjs/adapter-http -D
+npm install @pollyjs/adapter-node-http -D
 ```
 
 If you want to install it with [yarn](https://yarnpkg.com):
 
 ```bash
-yarn add @pollyjs/adapter-http -D
+yarn add @pollyjs/adapter-node-http -D
 ```
 
 ## Documentation
@@ -32,7 +32,7 @@ documentation for more details.
 
 ```js
 import { Polly } from '@pollyjs/core';
-import HttpAdapter from '@pollyjs/adapter-http';
+import HttpAdapter from '@pollyjs/adapter-node-http';
 
 Polly.register(HttpAdapter);
 
