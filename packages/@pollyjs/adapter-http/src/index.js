@@ -8,11 +8,16 @@ export default class HttpAdapter extends Adapter {
   }
 
   get defaultOptions() {
-    return {};
+    return {
+      transports: ['http', 'https']
+    };
   }
 
   onConnect() {
-    this.httpWrapper = new HttpWrapper({ adapter: this });
+    this.httpWrapper = new HttpWrapper({
+      adapter: this,
+      options: this.options
+    });
     this.httpWrapper.patch();
   }
 

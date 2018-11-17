@@ -9,25 +9,35 @@ const NATIVE_END = Symbol();
 const LISTENERS = Symbol();
 
 export default class TransportWrapper {
-  constructor(transport, { adapter }) {
+  constructor(transport, { name, adapter }) {
+    this.name = name;
     this.adapter = adapter;
     this.transport = transport;
   }
 
-  patch() {
-    if (!this.transport[NATIVE_REQUEST]) {
-      this.transport[NATIVE_REQUEST] = this.transport.request;
+  isPatched() {
+    return !!this.transport[NATIVE_REQUEST];
+  }
 
-      this.transport.request = this.createRequestWrapper();
-    }
+  patch() {
+    // make sure it's not already patched
+    this.adapter.assert(
+      `Transport ${this.name} can not be patched multiple times`,
+      !this.isPatched()
+    );
+
+    this.transport[NATIVE_REQUEST] = this.transport.request;
+    this.transport.request = this.createRequestWrapper();
   }
 
   restore() {
-    if (this.transport[NATIVE_REQUEST]) {
-      this.transport.request = this.transport[NATIVE_REQUEST];
+    this.adapter.assert(
+      `Cannot restore unpatched transport ${this.name}`,
+      this.isPatched()
+    );
 
-      delete this.transport[NATIVE_REQUEST];
-    }
+    this.transport.request = this.transport[NATIVE_REQUEST];
+    delete this.transport[NATIVE_REQUEST];
   }
 
   getHttpResponseData(res) {
@@ -47,9 +57,7 @@ export default class TransportWrapper {
 
       const resBuffer = [];
 
-      stream.on('data', chunk => {
-        resBuffer.push(chunk);
-      });
+      stream.on('data', chunk => resBuffer.push(chunk));
 
       stream.on('end', () => {
         const data = Buffer.concat(resBuffer).toString('utf8');
