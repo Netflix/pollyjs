@@ -3,10 +3,10 @@ import zlib from 'zlib';
 
 import { URL } from '@pollyjs/utils';
 
-const NATIVE_REQUEST = Symbol();
 const NATIVE_END = Symbol();
-
 const LISTENERS = Symbol();
+
+const nativeRequestMapping = new WeakMap();
 
 export default class TransportWrapper {
   constructor(transport, { name, adapter }) {
@@ -16,7 +16,7 @@ export default class TransportWrapper {
   }
 
   isPatched() {
-    return !!this.transport[NATIVE_REQUEST];
+    return nativeRequestMapping.has(this.transport);
   }
 
   patch() {
@@ -28,7 +28,7 @@ export default class TransportWrapper {
       !this.isPatched()
     );
 
-    this.transport[NATIVE_REQUEST] = this.transport.request;
+    nativeRequestMapping.set(this.transport, this.transport.request);
     this.transport.request = this.createRequestWrapper();
   }
 
@@ -38,8 +38,8 @@ export default class TransportWrapper {
       this.isPatched()
     );
 
-    this.transport.request = this.transport[NATIVE_REQUEST];
-    delete this.transport[NATIVE_REQUEST];
+    this.transport.request = nativeRequestMapping.get(this.transport);
+    nativeRequestMapping.delete(this.transport);
   }
 
   getHttpResponseData(res) {
@@ -119,6 +119,7 @@ export default class TransportWrapper {
   createRequestWrapper() {
     const wrapper = this;
     const { adapter, transport } = wrapper;
+    const nativeRequest = nativeRequestMapping.get(transport);
 
     return (...args) => {
       /**
@@ -128,7 +129,7 @@ export default class TransportWrapper {
        * We don't need to store args
        */
 
-      const req = transport[NATIVE_REQUEST].call(transport, ...args);
+      const req = nativeRequest.call(transport, ...args);
 
       const chunks = [];
 
