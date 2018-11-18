@@ -22,7 +22,9 @@ export default class TransportWrapper {
   patch() {
     // make sure it's not already patched
     this.adapter.assert(
-      `Transport ${this.name} can not be patched multiple times`,
+      `The ${
+        this.name
+      } transport has already been patched, please stop any running Polly instances`,
       !this.isPatched()
     );
 
