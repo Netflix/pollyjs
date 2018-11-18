@@ -9,14 +9,18 @@ export default class HttpAdapter extends Adapter {
 
   get defaultOptions() {
     return {
-      transports: {
-        http: true,
-        https: true
-      }
+      transports: ['http', 'https']
     };
   }
 
   onConnect() {
+    const { transports } = this.options;
+
+    this.assert(
+      'Invalid transports provided. At least one supported transport must be specified',
+      transports.includes('http') || transports.includes('https')
+    );
+
     this.httpWrapper = new HttpWrapper({
       adapter: this,
       options: this.options
