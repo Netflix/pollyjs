@@ -15,10 +15,10 @@ export default function adapterBrowserTests() {
     );
 
     server.post('/submit').intercept((req, res) => {
-      const body = req.serializedBody;
+      const body = req.identifiers.body;
 
       // Make sure the form data exists in the identifiers
-      expect(req.identifiers.body).to.include(recordingName);
+      expect(body).to.include(recordingName);
 
       expect(body).to.include(`string=${recordingName}`);
       expect(body).to.include(
@@ -48,8 +48,6 @@ export default function adapterBrowserTests() {
 
       // Make sure the form data exists in the identifiers
       expect(req.identifiers.body).to.equal(dataUrl);
-
-      expect(req.serializedBody).to.equal(dataUrl);
 
       res.sendStatus(200);
     });
