@@ -1,5 +1,4 @@
 import isObjectLike from 'lodash-es/isObjectLike';
-import isFunction from 'lodash-es/isFunction';
 import stringify from 'fast-json-stable-stringify';
 
 import parseUrl from './parse-url';
@@ -9,10 +8,12 @@ const { keys } = Object;
 const { isArray } = Array;
 const { parse } = JSON;
 
+function isFunction(fn) {
+  return typeof fn === 'function';
+}
+
 export function method(method, config) {
-  return isFunction(config)
-    ? config(method || 'GET')
-    : (method || 'GET').toUpperCase();
+  return isFunction(config) ? config(method) : method.toUpperCase();
 }
 
 export function url(url, config = {}) {
@@ -36,19 +37,13 @@ export function url(url, config = {}) {
 }
 
 export function headers(headers, config) {
-  let normalizedHeaders = headers;
-
-  if (isObjectLike(normalizedHeaders)) {
-    normalizedHeaders = new HTTPHeaders(normalizedHeaders);
-  }
+  const normalizedHeaders = new HTTPHeaders(headers);
 
   if (isFunction(config)) {
-    normalizedHeaders = config(normalizedHeaders);
-  } else if (
-    isObjectLike(normalizedHeaders) &&
-    isObjectLike(config) &&
-    isArray(config.exclude)
-  ) {
+    return config(normalizedHeaders);
+  }
+
+  if (isObjectLike(config) && isArray(config.exclude)) {
     config.exclude.forEach(header => delete normalizedHeaders[header]);
   }
 

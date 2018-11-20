@@ -14,10 +14,6 @@ describe('Unit | Utils | Normalize Request', function() {
   });
 
   describe('method', function() {
-    it('should default to GET', function() {
-      expect(method()).to.equal('GET');
-    });
-
     it('should handle all verbs', function() {
       expect(method('get')).to.equal('GET');
       expect(method('put')).to.equal('PUT');
@@ -73,6 +69,20 @@ describe('Unit | Utils | Normalize Request', function() {
           }
         )
       ).to.deep.equal({ accept: 'foo', 'content-type': 'Bar' });
+    });
+
+    it('should not mutate the original headers in the custom fn', function() {
+      const reqHeaders = { foo: 'bar' };
+
+      expect(
+        headers(reqHeaders, headers => {
+          delete headers.foo;
+
+          return headers;
+        })
+      ).to.deep.equal({});
+
+      expect(reqHeaders).to.deep.equal({ foo: 'bar' });
     });
   });
 
