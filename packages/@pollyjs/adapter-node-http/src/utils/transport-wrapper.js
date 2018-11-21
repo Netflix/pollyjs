@@ -109,8 +109,8 @@ export default class TransportWrapper {
       body = [];
     }
 
-    msg.emit('data', Buffer.from(body));
-    msg.emit('end');
+    msg.push(Buffer.from(body));
+    msg.push(null);
 
     req.emit('prefinish');
     req.emit('finish');
