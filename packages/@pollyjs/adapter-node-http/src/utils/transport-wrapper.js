@@ -142,7 +142,9 @@ export default class TransportWrapper {
         originalWrite.call(req, chunk, encoding, callback);
       };
 
-      req[NATIVE_END] = req.end;
+      // This can be called multiple times with the same request instance
+      // so make sure we only save the original `end` method.
+      req[NATIVE_END] = req[NATIVE_END] || req.end;
       req.end = (chunk, encoding, callback) => {
         if (typeof chunk === 'function') {
           callback = chunk;
@@ -174,7 +176,10 @@ export default class TransportWrapper {
           return acc;
         }, {});
 
-        const headers = req.getHeaders();
+        const headers =
+          typeof req.getHeaders === 'function'
+            ? req.getHeaders()
+            : req.headers || req._headers || {};
         const path = req.path;
         const method = req.method;
         const host = headers.host;
@@ -188,9 +193,7 @@ export default class TransportWrapper {
         parsedUrl.set('protocol', req.agent.protocol);
         parsedUrl.set('pathname', path);
         parsedUrl.set('hostname', hostname);
-        if (port !== 80) {
-          parsedUrl.set('port', port);
-        }
+        parsedUrl.set('port', port !== 80 ? port : '');
 
         const url = parsedUrl.href;
 

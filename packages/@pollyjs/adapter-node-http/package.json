@@ -1,7 +1,7 @@
 {
   "name": "@pollyjs/adapter-node-http",
   "version": "1.2.0",
-  "description": "Node http adapter for @pollyjs",
+  "description": "Node HTTP adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-node-http.js",
   "module": "dist/es/pollyjs-adapter-node-http.js",
   "files": [
@@ -41,9 +41,7 @@
     "rollup": "rollup -c rollup.config.js",
     "rollup:prod": "NODE_ENV=production yarn rollup",
     "watch": "yarn rollup -w",
-    "format": "prettier --config ../../../.prettier.js --write **/*.js",
     "test:build": "rollup -c rollup.config.test.js",
-    "lint": "eslint ./*.js src tests",
     "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
   },
   "dependencies": {
@@ -53,13 +51,8 @@
   "devDependencies": {
     "@pollyjs/core": "^1.2.0",
     "@pollyjs/persister-fs": "^1.2.0",
-    "@pollyjs/persister-rest": "^1.2.0",
-    "chai": "^4.1.2",
-    "eslint": "^4.18.1",
-    "mocha": "^5.2.0",
     "npm-run-all": "^4.1.3",
-    "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
-    "rollup": "^0.65.2"
+    "rollup": "^0.67.0"
   }
 }

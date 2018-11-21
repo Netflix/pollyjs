@@ -32,12 +32,12 @@ documentation for more details.
 
 ```js
 import { Polly } from '@pollyjs/core';
-import HttpAdapter from '@pollyjs/adapter-node-http';
+import NodeHTTPAdapter from '@pollyjs/adapter-node-http';
 
-Polly.register(HttpAdapter);
+Polly.register(NodeHTTPAdapter);
 
 new Polly('<Recording Name>', {
-  adapters: ['fetch']
+  adapters: ['node-http']
 });
 ```
 
