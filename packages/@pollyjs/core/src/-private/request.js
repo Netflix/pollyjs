@@ -129,11 +129,8 @@ export default class PollyRequest extends HTTPBase {
     this.response = new PollyResponse();
     this.didRespond = false;
 
-    // Serialize the body which handles FormData + Blobs/Files
-    this.serializedBody = await this.serializeBody();
-
     // Setup this request's identifiers, id, and order
-    this._identify();
+    await this._identify();
 
     // Timestamp the request
     this.timestamp = timestamp();
@@ -172,10 +169,6 @@ export default class PollyRequest extends HTTPBase {
     await this._emit('response', this.response);
   }
 
-  async serializeBody() {
-    return serializeRequestBody(this.body);
-  }
-
   _overrideRecordingName(recordingName) {
     validateRecordingName(recordingName);
     this.recordingName = recordingName;
@@ -195,7 +188,7 @@ export default class PollyRequest extends HTTPBase {
     return this[ROUTE].emit(eventName, this, ...args);
   }
 
-  _identify() {
+  async _identify() {
     const polly = this[POLLY];
     const { _requests: requests } = polly;
     const { matchRequestsBy } = this.config;
@@ -205,11 +198,15 @@ export default class PollyRequest extends HTTPBase {
     keys(NormalizeRequest).forEach(key => {
       if (this[key] && matchRequestsBy[key]) {
         identifiers[key] = NormalizeRequest[key](
-          key === 'body' ? this.serializedBody : this[key],
+          this[key],
           matchRequestsBy[key]
         );
       }
     });
+
+    if (identifiers.body) {
+      identifiers.body = await serializeRequestBody(identifiers.body);
+    }
 
     // Store the identifiers for debugging and testing
     this.identifiers = freeze(identifiers);

@@ -30,7 +30,7 @@ _Default_: `false`
 
 Logs requests and their responses to the console grouped by the recording name.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -46,7 +46,7 @@ _Default_: `true`
 If a request's recording is not found, pass-through to the server and
 record the response.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -62,7 +62,7 @@ _Default_: `false`
 If a request's recording has expired, pass-through to the server and
 record a new response.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -79,7 +79,7 @@ If `false`, Polly will throw when attempting to persist any failed requests.
 A request is considered to be a failed request when its response's status code
 is `< 200` or `≥ 300`.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -95,7 +95,7 @@ _Default_: `null`
 After how long the recorded request will be considered expired from the time
 it was persisted.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -118,7 +118,7 @@ The Polly mode. Can be one of the following:
 - `record`: Force Polly to record all requests. This will overwrite recordings that already exist.
 - `passthrough`: Passes all requests through directly to the server without recording or replaying.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -133,7 +133,7 @@ _Default_: `[]`
 
 The adapter(s) polly will hook into.
 
-__Example__
+**Example**
 
 ```js
 import XHRAdapter from '@pollyjs/adapter-xhr';
@@ -154,10 +154,10 @@ _Default_: `{}`
 
 Options to be passed into the adapters keyed by the adapter name.
 
-?> __NOTE:__ Check out the appropriate documentation pages for each adapter
+?> **NOTE:** Check out the appropriate documentation pages for each adapter
 for more details.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -176,7 +176,7 @@ _Default_: `null`
 
 The persister to use for recording and replaying requests.
 
-__Example__
+**Example**
 
 ```js
 import RESTPersister from '@pollyjs/persister-rest';
@@ -201,10 +201,10 @@ _Default_: `{}`
 
 Options to be passed into the persister keyed by the persister name.
 
-?> __NOTE:__ Check out the appropriate documentation pages for each persister
+?> **NOTE:** Check out the appropriate documentation pages for each persister
 for more details.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -227,7 +227,7 @@ recording will only contain the requests that were made during the lifespan
 of the Polly instance. When enabled, new requests will be appended to the
 recording file.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -244,7 +244,7 @@ _Default_: `Timing.fixed(0)`
 
 The timeout delay strategy used when replaying requests.
 
-__Example__
+**Example**
 
 ```js
 import { Timing } from '@pollyjs/core';
@@ -291,12 +291,12 @@ a GUID for the request.
 
 - ### method
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   The request method (e.g. `GET`, `POST`)
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -304,16 +304,24 @@ a GUID for the request.
       method: false
     }
   });
+
+  polly.configure({
+    matchRequestsBy: {
+      method(method) {
+        return method.toLowerCase();
+      }
+    }
+  });
   ```
 
 - ### headers
 
-  _Type_: `Boolean | Object`
+  _Type_: `Boolean | Function | Object`
   _Default_: `true`
 
   The request headers.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -321,11 +329,20 @@ a GUID for the request.
       headers: false
     }
   });
+
+  polly.configure({
+    matchRequestsBy: {
+      headers(headers) {
+        delete headers['X-AUTH-TOKEN'];
+        return headers;
+      }
+    }
+  });
   ```
 
-  Specific headers can also be excluded:
+  Specific headers can also be excluded with the following:
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -339,17 +356,30 @@ a GUID for the request.
 
 - ### body
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   The request body.
 
-  __Example__
+  !> Please make sure you do not modify the passed in body. If you need to make changes, create a copy of it first. The body function receives the actual request body — any modifications to it will result with it being sent out with the request.
+
+  **Example**
 
   ```js
   polly.configure({
     matchRequestsBy: {
       body: false
+    }
+  });
+
+  polly.configure({
+    matchRequestsBy: {
+      body(body) {
+        const json = JSON.parse(body);
+
+        delete json.email;
+        return JSON.stringify(json);
+      }
     }
   });
   ```
@@ -372,7 +402,7 @@ a GUID for the request.
   await fetch('/models/1', { method: 'POST', body: JSON.stringify(model) });
 
   // Get our updated model
-  model = await fetch('/models/1').then(res => res.json())
+  model = await fetch('/models/1').then(res => res.json());
 
   // Assert that our change persisted
   expect(model.foo).to.equal('bar');
@@ -381,7 +411,7 @@ a GUID for the request.
   The order of the requests matter since the payload for the first and
   last fetch are different.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -393,12 +423,12 @@ a GUID for the request.
 
 - ### url.protocol
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   The request url protocol (e.g. `http:`).
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -408,16 +438,26 @@ a GUID for the request.
       }
     }
   });
+
+  polly.configure({
+    matchRequestsBy: {
+      url: {
+        protocol(protocol) {
+          return 'https:';
+        }
+      }
+    }
+  });
   ```
 
 - ### url.username
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   Username of basic authentication.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -427,16 +467,25 @@ a GUID for the request.
       }
     }
   });
+  polly.configure({
+    matchRequestsBy: {
+      url: {
+        username(username) {
+          return 'username';
+        }
+      }
+    }
+  });
   ```
 
 - ### url.password
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   Password of basic authentication.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -445,17 +494,24 @@ a GUID for the request.
         password: false
       }
     }
+    matchRequestsBy: {
+      url: {
+        password(password) {
+          return 'password';
+        }
+      }
+    }
   });
   ```
 
 - ### url.hostname
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
-  Host name with port number.
+  Host name without port number.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -465,16 +521,26 @@ a GUID for the request.
       }
     }
   });
+
+  polly.configure({
+    matchRequestsBy: {
+      url: {
+        hostname(hostname) {
+          return hostname.replace('.com', '.net');
+        }
+      }
+    }
+  });
   ```
 
 - ### url.port
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   Port number.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -484,22 +550,34 @@ a GUID for the request.
       }
     }
   });
+
+  polly.configure({
+    matchRequestsBy: {
+      url: {
+        port(port) {
+          return 3000;
+        }
+      }
+    }
+  });
   ```
 
 - ### url.pathname
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   URL path.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
     matchRequestsBy: {
       url: {
-        pathname: false
+        pathname(pathname) {
+          return pathname.replace('/api/v1', '/api');
+        }
       }
     }
   });
@@ -507,12 +585,12 @@ a GUID for the request.
 
 - ### url.query
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `true`
 
   Sorted query string.
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
@@ -522,22 +600,42 @@ a GUID for the request.
       }
     }
   });
+
+  polly.configure({
+    matchRequestsBy: {
+      url: {
+        query(query) {
+          return { ...query, token: '' };
+        }
+      }
+    }
+  });
   ```
 
 - ### url.hash
 
-  _Type_: `Boolean`
+  _Type_: `Boolean | Function`
   _Default_: `false`
 
   The "fragment" portion of the URL including the pound-sign (`#`).
 
-  __Example__
+  **Example**
 
   ```js
   polly.configure({
     matchRequestsBy: {
       url: {
         hash: true
+      }
+    }
+  });
+
+  polly.configure({
+    matchRequestsBy: {
+      url: {
+        hash(hash) {
+          return hash.replace(/token=[0-9]+/, '');
+        }
       }
     }
   });
