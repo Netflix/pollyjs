@@ -1,6 +1,6 @@
 import Adapter from '@pollyjs/adapter';
 
-import HttpWrapper from './utils/http-wrapper';
+import HttpWrapper from './-private/http-wrapper';
 
 export default class HttpAdapter extends Adapter {
   static get name() {
@@ -58,16 +58,15 @@ export default class HttpAdapter extends Adapter {
   }
 
   async passthroughRequest(pollyRequest) {
-    const [transportWrapper, req] = pollyRequest.requestArguments;
+    const [transportWrapper] = pollyRequest.requestArguments;
+    const res = await transportWrapper.passthrough(pollyRequest);
 
-    const res = await transportWrapper.passthrough(req);
-
-    await pollyRequest.respond(res.statusCode, res.headers, res.data);
+    await pollyRequest.respond(res.statusCode, res.headers, res.body);
   }
 
   async respond(pollyRequest) {
-    const [transportWrapper, req] = pollyRequest.requestArguments;
+    const [transportWrapper] = pollyRequest.requestArguments;
 
-    return transportWrapper.respond(req, pollyRequest.response);
+    return transportWrapper.respond(pollyRequest);
   }
 }
