@@ -361,6 +361,8 @@ a GUID for the request.
 
   The request body.
 
+  !> Please make sure you do not modify the passed in body. If you need to make changes, create a copy of it first. The body function receives the actual request body — any modifications to it will result with it being sent out with the request.
+
   **Example**
 
   ```js
