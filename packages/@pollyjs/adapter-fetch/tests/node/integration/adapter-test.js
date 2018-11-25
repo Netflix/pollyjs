@@ -7,6 +7,7 @@ import FSPersister from '@pollyjs/persister-fs';
 import { setupMocha as setupPolly } from '@pollyjs/core';
 
 import FetchAdapter from '../../../src';
+import commonTests from '../../common-tests';
 
 describe('Integration | Fetch Adapter | Node', function() {
   setupPolly.beforeEach({
@@ -23,4 +24,5 @@ describe('Integration | Fetch Adapter | Node', function() {
 
   adapterTests();
   adapterNodeTests();
+  commonTests();
 });

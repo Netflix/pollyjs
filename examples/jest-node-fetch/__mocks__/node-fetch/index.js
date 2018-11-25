@@ -11,15 +11,7 @@ global.Headers = Headers;
 
 // Use global fetch as a mock. It will be
 // the one overwritten by polly
-const mock = (url, options) => {
-  return global.fetch(
-    // Polly doesn't support URL objects with fetch
-    // adapter, we will work around it by stringifying
-    // the passed URL
-    url.toString(),
-    options
-  );
-};
+const mock = (url, options) => global.fetch(url, options);
 
 mock.Request = Request;
 mock.Response = Response;
