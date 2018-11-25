@@ -5,6 +5,7 @@ import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-test
 import RESTPersister from '@pollyjs/persister-rest';
 
 import FetchAdapter from '../../../src';
+import commonTests from '../../common-tests';
 
 describe('Integration | Fetch Adapter | Browser', function() {
   setupPolly.beforeEach({
@@ -21,4 +22,5 @@ describe('Integration | Fetch Adapter | Browser', function() {
 
   adapterTests();
   adapterBrowserTests();
+  commonTests();
 });

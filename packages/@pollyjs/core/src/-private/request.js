@@ -27,8 +27,11 @@ export default class PollyRequest extends HTTPBase {
   constructor(polly, request) {
     super();
 
-    assert('Url is required.', typeof request.url === 'string');
-    assert('Method is required.', typeof request.method === 'string');
+    assert('Url is required.', request.url);
+    assert(
+      'Method is required.',
+      request.method && typeof request.method === 'string'
+    );
 
     this.didRespond = false;
     this.url = request.url;
@@ -68,7 +71,9 @@ export default class PollyRequest extends HTTPBase {
   }
 
   set url(value) {
-    this[PARSED_URL] = parseUrl(value, true);
+    // Make sure to coerce the value into a string as the passed value could be
+    // a WHATWG's URL object.
+    this[PARSED_URL] = parseUrl(`${value}`, true);
   }
 
   get absoluteUrl() {
