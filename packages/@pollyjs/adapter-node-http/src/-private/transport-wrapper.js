@@ -1,5 +1,5 @@
 import http from 'http';
-import NodeURL from 'url';
+import NodeUrl from 'url';
 
 import isObjectLike from 'lodash-es/isObjectLike';
 import { URL } from '@pollyjs/utils';
@@ -114,7 +114,7 @@ export default class TransportWrapper {
      * on nodejs version. If the `url` arguments is not a string or URL
      * instance, then use (options, callback).
      */
-    if (typeof url !== 'string' || !(isObjectLike(url) && url.href)) {
+    if (isObjectLike(url) && !url.searchParams) {
       options = url;
       url = undefined;
     }
@@ -123,7 +123,7 @@ export default class TransportWrapper {
       ...options,
       method,
       headers: { ...headers },
-      ...NodeURL.parse(pollyRequest.url)
+      ...NodeUrl.parse(pollyRequest.url)
     });
 
     // Write the request body
