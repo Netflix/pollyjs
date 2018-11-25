@@ -1,8 +1,9 @@
 import FakeXHR from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
-import { XHR as XHRUtils, RequestBodySerializers } from '@pollyjs/utils';
+import { BrowserSerializers } from '@pollyjs/utils';
 
 import resolveXhr from './utils/resolve-xhr';
+import serializeResponseHeaders from './utils/serialize-response-headers';
 
 const SEND = Symbol();
 const IS_STUBBED = Symbol();
@@ -66,7 +67,7 @@ export default class XHRAdapter extends Adapter {
   async onIdentifyRequest(pollyRequest) {
     const { identifiers } = pollyRequest;
 
-    identifiers.body = await RequestBodySerializers.Browser.serialize(
+    identifiers.body = await BrowserSerializers.serializeRequestBody(
       identifiers.body
     );
   }
@@ -106,7 +107,7 @@ export default class XHRAdapter extends Adapter {
     await resolveXhr(xhr, pollyRequest.body);
     await pollyRequest.respond(
       xhr.status,
-      XHRUtils.serializeResponseHeaders(xhr.getAllResponseHeaders()),
+      serializeResponseHeaders(xhr.getAllResponseHeaders()),
       xhr.responseText
     );
   }

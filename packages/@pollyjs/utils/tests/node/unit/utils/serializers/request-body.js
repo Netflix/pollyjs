@@ -1,8 +1,8 @@
 /* eslint-env node */
 
-import serialize from '../../../../src/utils/request-body-serializers/node';
+import serialize from '../../../../../src/utils/serializers/node/request-body';
 
-describe('Unit | Utils | RequestBodySerializers | node', function() {
+describe('Unit | Utils | NodeSerializers | request-body', function() {
   it('should exist', function() {
     expect(serialize).to.be.a('function');
   });

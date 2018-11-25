@@ -7,11 +7,7 @@ export { default as timeout } from './utils/timeout';
 export { default as timestamp } from './utils/timestamp';
 export { default as buildUrl } from './utils/build-url';
 
-export { default as XHR } from './utils/xhr';
-export { default as Fetch } from './utils/fetch';
-
-export {
-  default as RequestBodySerializers
-} from './utils/request-body-serializers';
+export { default as NodeSerializers } from './utils/serializers/node';
+export { default as BrowserSerializers } from './utils/serializers/browser';
 
 export { default as URL } from 'url-parse';

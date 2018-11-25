@@ -1,8 +1,8 @@
 import File from '@pollyjs-tests/helpers/file';
 
-import serialize from '../../../../src/utils/request-body-serializers/browser';
+import serialize from '../../../../../src/utils/serializers/browser/request-body';
 
-describe('Unit | Utils | RequestBodySerializers | browser', function() {
+describe('Unit | Utils | BrowserSerializers | request-body', function() {
   it('should exist', function() {
     expect(serialize).to.be.a('function');
   });
