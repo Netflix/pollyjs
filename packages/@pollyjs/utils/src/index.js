@@ -10,4 +10,8 @@ export { default as buildUrl } from './utils/build-url';
 export { default as XHR } from './utils/xhr';
 export { default as Fetch } from './utils/fetch';
 
+export {
+  default as RequestBodySerializers
+} from './utils/request-body-serializers';
+
 export { default as URL } from 'url-parse';

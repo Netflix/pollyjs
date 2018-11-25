@@ -92,6 +92,8 @@ export default class Adapter {
   async handleRequest(request) {
     const pollyRequest = this.polly.registerRequest(request);
 
+    pollyRequest.on('identify', (...args) => this.onIdentifyRequest(...args));
+
     await pollyRequest.setup();
     await this.onRequest(pollyRequest);
 
@@ -261,6 +263,11 @@ export default class Adapter {
   }
 
   /* Other Hooks */
+  /**
+   * @param {PollyRequest} pollyRequest
+   */
+  onIdentifyRequest() {}
+
   /**
    * @param {PollyRequest} pollyRequest
    */

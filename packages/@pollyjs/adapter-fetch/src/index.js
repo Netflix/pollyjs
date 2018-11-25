@@ -1,5 +1,5 @@
 import Adapter from '@pollyjs/adapter';
-import { Fetch as FetchUtils } from '@pollyjs/utils';
+import { Fetch as FetchUtils, RequestBodySerializers } from '@pollyjs/utils';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
@@ -79,6 +79,16 @@ export default class FetchAdapter extends Adapter {
 
   onIntercept(pollyRequest, { statusCode, headers, body }) {
     return this.respond(pollyRequest, statusCode, headers, body);
+  }
+
+  async onIdentifyRequest(pollyRequest) {
+    const { identifiers } = pollyRequest;
+    let body = identifiers.body;
+
+    body = await RequestBodySerializers.Browser.serialize(body);
+    body = RequestBodySerializers.Node.serialize(body);
+
+    identifiers.body = body;
   }
 
   async respond(pollyRequest, status, headers, body) {

@@ -6,7 +6,6 @@ import { URL, assert, timestamp } from '@pollyjs/utils';
 
 import NormalizeRequest from '../utils/normalize-request';
 import parseUrl from '../utils/parse-url';
-import serializeRequestBody from '../utils/serialize-request-body';
 import guidForRecording from '../utils/guid-for-recording';
 import defer from '../utils/deferred-promise';
 import {
@@ -16,12 +15,16 @@ import {
 
 import HTTPBase from './http-base';
 import PollyResponse from './response';
+import EventEmitter from './event-emitter';
 
 const { keys, freeze } = Object;
 
-const PARSED_URL = Symbol();
 const ROUTE = Symbol();
 const POLLY = Symbol();
+const PARSED_URL = Symbol();
+const EVENT_EMITTER = Symbol();
+
+const SUPPORTED_EVENTS = ['identify'];
 
 export default class PollyRequest extends HTTPBase {
   constructor(polly, request) {
@@ -40,6 +43,7 @@ export default class PollyRequest extends HTTPBase {
     this.requestArguments = freeze(request.requestArguments || []);
     this.promise = defer();
     this[POLLY] = polly;
+    this[EVENT_EMITTER] = new EventEmitter({ eventNames: SUPPORTED_EVENTS });
 
     /*
       The action taken with this request (e.g. record, replay, intercept, or passthrough)
@@ -121,6 +125,24 @@ export default class PollyRequest extends HTTPBase {
     return this[ROUTE].shouldIntercept();
   }
 
+  on(eventName, listener) {
+    this[EVENT_EMITTER].on(eventName, listener);
+
+    return this;
+  }
+
+  once(eventName, listener) {
+    this[EVENT_EMITTER].once(eventName, listener);
+
+    return this;
+  }
+
+  off(eventName, listener) {
+    this[EVENT_EMITTER].off(eventName, listener);
+
+    return this;
+  }
+
   async setup() {
     // Trigger the `request` event
     await this._emit('request');
@@ -192,27 +214,27 @@ export default class PollyRequest extends HTTPBase {
     const polly = this[POLLY];
     const { _requests: requests } = polly;
     const { matchRequestsBy } = this.config;
-    const identifiers = {};
+
+    this.identifiers = {};
 
     // Iterate through each normalizer
     keys(NormalizeRequest).forEach(key => {
       if (this[key] && matchRequestsBy[key]) {
-        identifiers[key] = NormalizeRequest[key](
+        this.identifiers[key] = NormalizeRequest[key](
           this[key],
           matchRequestsBy[key]
         );
       }
     });
 
-    if (identifiers.body) {
-      identifiers.body = await serializeRequestBody(identifiers.body);
-    }
+    // Emit the `identify` event which adapters can use to serialize the request body
+    await this[EVENT_EMITTER].emit('identify', this);
 
-    // Store the identifiers for debugging and testing
-    this.identifiers = freeze(identifiers);
+    // Freeze the identifiers so they can no longer be modified
+    freeze(this.identifiers);
 
     // Guid is a string representation of the identifiers
-    this.id = md5(stringify(identifiers));
+    this.id = md5(stringify(this.identifiers));
 
     // Order is calculated on other requests with the same id
     // Only requests before this current one are taken into account.

@@ -1,31 +1,49 @@
 import File from '@pollyjs-tests/helpers/file';
 
-import serializeRequestBody from '../../../../src/utils/serialize-request-body';
+import serialize from '../../../../src/utils/request-body-serializers/browser';
 
-describe('Unit | Utils | serializeRequestBody', function() {
+describe('Unit | Utils | RequestBodySerializers | browser', function() {
   it('should exist', function() {
-    expect(serializeRequestBody).to.be.a('function');
+    expect(serialize).to.be.a('function');
   });
 
   it('should handle empty argument', async function() {
-    expect(await serializeRequestBody()).to.be.undefined;
-    expect(await serializeRequestBody(null)).to.be.null;
+    expect(await serialize()).to.be.undefined;
+    expect(await serialize(null)).to.be.null;
   });
 
   it('should handle strings', async function() {
-    expect(await serializeRequestBody('')).to.be.equal('');
-    expect(await serializeRequestBody('foo')).to.be.equal('foo');
+    expect(await serialize('')).to.be.equal('');
+    expect(await serialize('foo')).to.be.equal('foo');
+  });
+
+  it('should noop if Blob is not found', function() {
+    const Blob = Blob;
+    const blob = new Blob(['blob'], { type: 'text/plain' });
+
+    global.Blob = undefined;
+    expect(serialize(blob)).to.be.equal(blob);
+    global.Blob = Blob;
+  });
+
+  it('should noop if FormData is not found', function() {
+    const FormData = FormData;
+    const formData = new FormData();
+
+    global.FormData = undefined;
+    expect(serialize(formData)).to.be.equal(formData);
+    global.FormData = FormData;
   });
 
   it('should handle blobs', async function() {
     expect(
-      await serializeRequestBody(new Blob(['blob'], { type: 'text/plain' }))
+      await serialize(new Blob(['blob'], { type: 'text/plain' }))
     ).to.equal(`data:text/plain;base64,${btoa('blob')}`);
   });
 
   it('should handle files', async function() {
     expect(
-      await serializeRequestBody(
+      await serialize(
         new File(['file'], 'file.txt', {
           type: 'text/plain'
         })
@@ -44,7 +62,7 @@ describe('Unit | Utils | serializeRequestBody', function() {
       new File(['file'], 'file.txt', { type: 'text/plain' })
     );
 
-    const data = await serializeRequestBody(formData);
+    const data = await serialize(formData);
 
     expect(data).to.include('string=string');
     expect(data).to.include('array=1,2');
