@@ -5,7 +5,7 @@ const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 let server;
 
 function request(method, path) {
-  return server.lookup(method, path).handler.get('intercept')();
+  return server.lookup(method, path).handlers[0].get('intercept')();
 }
 
 describe('Unit | Server', function() {
