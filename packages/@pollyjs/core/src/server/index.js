@@ -2,8 +2,6 @@ import RouteRecognizer from 'route-recognizer';
 import castArray from 'lodash-es/castArray';
 import { URL, assert, timeout, buildUrl } from '@pollyjs/utils';
 
-import removeHostFromUrl from '../utils/remove-host-from-url';
-
 import Route from './route';
 import Handler from './handler';
 import Middleware from './middleware';
@@ -25,15 +23,15 @@ const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 const { keys } = Object;
 
 function parseUrl(url) {
-  const path = new URL(url);
+  const parsedUrl = new URL(url);
   /*
     Use the full origin (http://hostname:port) if the host exists. If there
     is no host, URL.origin returns "null" (null as a string) so set host to '/'
   */
-  const host = path.host ? path.origin : CHARS.SLASH;
-  const href = removeHostFromUrl(path).href;
+  const host = parsedUrl.host ? parsedUrl.origin : CHARS.SLASH;
+  const path = parsedUrl.pathname || CHARS.SLASH;
 
-  return { host, path: href };
+  return { host, path };
 }
 
 export default class Server {
@@ -178,7 +176,7 @@ export default class Server {
    * @returns {String}
    */
   _nameForPath(path = '') {
-    return path
+    const name = path
       .split(CHARS.SLASH)
       .map(segment => {
         switch (segment.charAt(0)) {
@@ -195,11 +193,12 @@ export default class Server {
         }
       })
       .join(CHARS.SLASH);
+
+    // Remove trailing slash, if we result with an empty string, return a slash
+    return name.replace(/\/$/, '') || CHARS.SLASH;
   }
 
   _registryForHost(host) {
-    host = host || CHARS.SLASH;
-
     if (!this[REGISTRY][host]) {
       this[REGISTRY][host] = METHODS.reduce((acc, method) => {
         acc[method] = new RouteRecognizer();
