@@ -51,7 +51,7 @@ export default class Route {
     this.middleware = middleware || [];
 
     if (result) {
-      this.handlers = [...result.handler];
+      this.handlers = result.handler;
       this.params = { ...result.params };
       this.queryParams = recognizeResults.queryParams;
     }
