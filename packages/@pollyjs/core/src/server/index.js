@@ -2,8 +2,6 @@ import RouteRecognizer from 'route-recognizer';
 import castArray from 'lodash-es/castArray';
 import { URL, assert, timeout, buildUrl } from '@pollyjs/utils';
 
-import removeHostFromUrl from '../utils/remove-host-from-url';
-
 import Route from './route';
 import Handler from './handler';
 import Middleware from './middleware';
@@ -12,23 +10,28 @@ const HOST = Symbol();
 const NAMESPACES = Symbol();
 const REGISTRY = Symbol();
 const MIDDLEWARE = Symbol();
-const SLASH = '/';
-const STAR = '*';
+const HANDLERS = Symbol();
+
+const CHARS = {
+  SLASH: '/',
+  STAR: '*',
+  COLON: ':'
+};
 
 const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
 const { keys } = Object;
 
 function parseUrl(url) {
-  const path = new URL(url);
+  const parsedUrl = new URL(url);
   /*
     Use the full origin (http://hostname:port) if the host exists. If there
     is no host, URL.origin returns "null" (null as a string) so set host to '/'
   */
-  const host = path.host ? path.origin : SLASH;
-  const href = removeHostFromUrl(path).href;
+  const host = parsedUrl.host ? parsedUrl.origin : CHARS.SLASH;
+  const path = parsedUrl.pathname || CHARS.SLASH;
 
-  return { host, path: href };
+  return { host, path };
 }
 
 export default class Server {
@@ -109,8 +112,15 @@ export default class Server {
     castArray(routes).forEach(route => {
       const { host, path } = parseUrl(this._buildUrl(route));
       const registry = this._registryForHost(host);
+      const name = this._nameForPath(path);
+      const router = registry[method.toUpperCase()];
 
-      registry[method.toUpperCase()].add([{ path, handler }]);
+      if (router[HANDLERS].has(name)) {
+        router[HANDLERS].get(name).push(handler);
+      } else {
+        router[HANDLERS].set(name, [handler]);
+        router.add([{ path, handler: router[HANDLERS].get(name) }]);
+      }
     });
 
     return handler;
@@ -126,7 +136,7 @@ export default class Server {
         specified, treat the middleware as global so it will match all routes.
       */
       if (
-        (!route || route === STAR) &&
+        (!route || route === CHARS.STAR) &&
         !this[HOST] &&
         this[NAMESPACES].length === 0
       ) {
@@ -159,12 +169,40 @@ export default class Server {
     return buildUrl(this[HOST], ...this[NAMESPACES], path);
   }
 
-  _registryForHost(host) {
-    host = host || SLASH;
+  /**
+   * Converts a url path into a name used to combine route handlers by
+   * normalizing dynamic and star segments
+   * @param {String} path
+   * @returns {String}
+   */
+  _nameForPath(path = '') {
+    const name = path
+      .split(CHARS.SLASH)
+      .map(segment => {
+        switch (segment.charAt(0)) {
+          // If this is a dynamic segment (e.g. :id), then just return `:`
+          // since /path/:id is the same as /path/:uuid
+          case CHARS.COLON:
+            return CHARS.COLON;
+          // If this is a star segment (e.g. *path), then just return `*`
+          // since /path/*path is the same as /path/*all
+          case CHARS.STAR:
+            return CHARS.STAR;
+          default:
+            return segment;
+        }
+      })
+      .join(CHARS.SLASH);
 
+    // Remove trailing slash, if we result with an empty string, return a slash
+    return name.replace(/\/$/, '') || CHARS.SLASH;
+  }
+
+  _registryForHost(host) {
     if (!this[REGISTRY][host]) {
       this[REGISTRY][host] = METHODS.reduce((acc, method) => {
         acc[method] = new RouteRecognizer();
+        acc[method][HANDLERS] = new Map();
 
         return acc;
       }, {});
