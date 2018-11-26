@@ -135,6 +135,28 @@ describe('Unit | Server', function() {
       });
     });
 
+    it('should concat handlers for same paths with a trailing slash', async function() {
+      addHandlers('/ping');
+      expect(server.lookup('GET', '/ping').handlers).to.have.lengthOf(3);
+
+      addHandlers('/ping/');
+      expect(server.lookup('GET', '/ping').handlers).to.have.lengthOf(6);
+      expect(server.lookup('GET', '/ping/').handlers).to.have.lengthOf(6);
+
+      addHandlers('http://ping.com');
+      expect(server.lookup('GET', 'http://ping.com').handlers).to.have.lengthOf(
+        3
+      );
+
+      addHandlers('http://ping.com/');
+      expect(server.lookup('GET', 'http://ping.com').handlers).to.have.lengthOf(
+        6
+      );
+      expect(
+        server.lookup('GET', 'http://ping.com/').handlers
+      ).to.have.lengthOf(6);
+    });
+
     it('should concat handlers for same paths with different dynamic segment names', async function() {
       addHandlers('/ping/:id');
       expect(server.lookup('GET', '/ping/:id').handlers).to.have.lengthOf(3);
