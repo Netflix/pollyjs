@@ -1,7 +1,5 @@
 import mergeOptions from 'merge-options';
 
-import Handler from './handler';
-
 async function invoke(fn, route, req, ...args) {
   if (typeof fn !== 'function') {
     return;
@@ -29,10 +27,12 @@ async function invoke(fn, route, req, ...args) {
 }
 
 async function emit(route, eventName, ...args) {
-  const listeners = route.handler._eventEmitter.listeners(eventName);
+  for (const handler of route.handlers) {
+    const listeners = handler._eventEmitter.listeners(eventName);
 
-  for (const listener of listeners) {
-    await invoke(listener, route, ...args);
+    for (const listener of listeners) {
+      await invoke(listener, route, ...args);
+    }
   }
 }
 
@@ -47,15 +47,14 @@ export default class Route {
 
     this.params = {};
     this.queryParams = {};
+    this.handlers = [];
     this.middleware = middleware || [];
 
     if (result) {
-      this.handler = result.handler;
+      this.handlers = [...result.handler];
       this.params = { ...result.params };
       this.queryParams = recognizeResults.queryParams;
     }
-
-    this.handler = this.handler || new Handler();
   }
 
   shouldPassthrough() {
@@ -72,7 +71,7 @@ export default class Route {
 
   config() {
     return mergeOptions(
-      ...this._orderedRoutes().map(r => r.handler.get('config'))
+      ...this._orderedHandlers().map(handler => handler.get('config'))
     );
   }
 
@@ -83,9 +82,9 @@ export default class Route {
    * @param {Interceptor} interceptor
    */
   async intercept(req, res, interceptor) {
-    for (const route of this._orderedRoutes()) {
-      if (route.handler.has('intercept') && interceptor.shouldIntercept) {
-        await invoke(route.handler.get('intercept'), this, ...arguments);
+    for (const handler of this._orderedHandlers()) {
+      if (handler.has('intercept') && interceptor.shouldIntercept) {
+        await invoke(handler.get('intercept'), this, ...arguments);
       }
     }
   }
@@ -104,16 +103,20 @@ export default class Route {
     await emit(this, ...arguments);
   }
 
-  _orderedRoutes() {
-    return [...this.middleware, this];
+  _orderedHandlers() {
+    return [...this.middleware, this].reduce((handlers, route) => {
+      handlers.push(...route.handlers);
+
+      return handlers;
+    }, []);
   }
 
   _valueFor(key) {
     let value;
 
-    for (const route of this._orderedRoutes()) {
-      if (route.handler.has(key)) {
-        value = route.handler.get(key);
+    for (const handler of this._orderedHandlers()) {
+      if (handler.has(key)) {
+        value = handler.get(key);
       }
     }
 
