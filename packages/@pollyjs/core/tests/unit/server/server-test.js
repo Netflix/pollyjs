@@ -5,7 +5,7 @@ const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 let server;
 
 function request(method, path) {
-  return server.lookup(method, path).handler.get('intercept')();
+  return server.lookup(method, path).handlers[0].get('intercept')();
 }
 
 describe('Unit | Server', function() {
@@ -107,6 +107,65 @@ describe('Unit | Server', function() {
 
       expect(request('GET', '/api/foo')).to.equal('foo');
       expect(request('GET', '/api/v2/bar')).to.equal('bar');
+    });
+  });
+
+  describe('Route Matching', function() {
+    beforeEach(function() {
+      server = new Server();
+    });
+
+    function addHandlers(url) {
+      server.get(url).on('request', () => {});
+      server.get(url).on('response', () => {});
+      server.get(url).intercept(() => {});
+    }
+
+    it('should concat handlers for same paths', async function() {
+      [
+        '/ping',
+        '/ping/:id',
+        '/ping/*path',
+        'http://ping.com',
+        'http://ping.com/pong/:id',
+        'http://ping.com/pong/*path'
+      ].forEach(url => {
+        addHandlers(url);
+        expect(server.lookup('GET', url).handlers).to.have.lengthOf(3);
+      });
+    });
+
+    it('should concat handlers for same paths with different dynamic segment names', async function() {
+      addHandlers('/ping/:id');
+      expect(server.lookup('GET', '/ping/:id').handlers).to.have.lengthOf(3);
+
+      addHandlers('/ping/:uuid');
+      expect(server.lookup('GET', '/ping/:id').handlers).to.have.lengthOf(6);
+      expect(server.lookup('GET', '/ping/:uuid').handlers).to.have.lengthOf(6);
+    });
+
+    it('should concat handlers for same paths with different star segment names', async function() {
+      addHandlers('/ping/*path');
+      expect(server.lookup('GET', '/ping/*path').handlers).to.have.lengthOf(3);
+
+      addHandlers('/ping/*rest');
+      expect(server.lookup('GET', '/ping/*path').handlers).to.have.lengthOf(6);
+      expect(server.lookup('GET', '/ping/*rest').handlers).to.have.lengthOf(6);
+    });
+
+    it('should concat handlers for same paths with different dynamic and star segment names', async function() {
+      addHandlers('/ping/:id/pong/*path');
+      expect(
+        server.lookup('GET', '/ping/:id/pong/*path').handlers
+      ).to.have.lengthOf(3);
+
+      addHandlers('/ping/:uuid/pong/*rest');
+      expect(
+        server.lookup('GET', '/ping/:id/pong/*path').handlers
+      ).to.have.lengthOf(6);
+      expect(
+        server.lookup('GET', '/ping/:uuid/pong/*rest').handlers
+      ).to.have.lengthOf(6);
     });
   });
 });
