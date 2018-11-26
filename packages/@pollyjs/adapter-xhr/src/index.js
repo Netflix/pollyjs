@@ -1,6 +1,5 @@
 import FakeXHR from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
-import { BrowserSerializers } from '@pollyjs/utils';
 
 import resolveXhr from './utils/resolve-xhr';
 import serializeResponseHeaders from './utils/serialize-response-headers';
@@ -62,14 +61,6 @@ export default class XHRAdapter extends Adapter {
   async onIntercept(pollyRequest, { statusCode, headers, body }) {
     await pollyRequest.respond(statusCode, headers, body);
     this.respondToXhr(pollyRequest);
-  }
-
-  async onIdentifyRequest(pollyRequest) {
-    const { identifiers } = pollyRequest;
-
-    identifiers.body = await BrowserSerializers.serializeRequestBody(
-      identifiers.body
-    );
   }
 
   respondToXhr(pollyRequest) {

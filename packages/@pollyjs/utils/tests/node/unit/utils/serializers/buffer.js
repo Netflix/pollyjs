@@ -1,21 +1,10 @@
 /* eslint-env node */
 
-import serialize from '../../../../../src/utils/serializers/node/request-body';
+import { serialize } from '../../../../../src/utils/serializers/buffer';
+import serializerTests from '../../../../serializer-tests';
 
-describe('Unit | Utils | NodeSerializers | request-body', function() {
-  it('should exist', function() {
-    expect(serialize).to.be.a('function');
-  });
-
-  it('should handle empty argument', function() {
-    expect(serialize()).to.be.undefined;
-    expect(serialize(null)).to.be.null;
-  });
-
-  it('should handle strings', function() {
-    expect(serialize('')).to.be.equal('');
-    expect(serialize('foo')).to.be.equal('foo');
-  });
+describe('Unit | Utils | Serializers | buffer', function() {
+  serializerTests(serialize);
 
   it('should noop if Buffer is not found', function() {
     const Buffer = Buffer;

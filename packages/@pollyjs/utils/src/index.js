@@ -7,7 +7,6 @@ export { default as timeout } from './utils/timeout';
 export { default as timestamp } from './utils/timestamp';
 export { default as buildUrl } from './utils/build-url';
 
-export { default as NodeSerializers } from './utils/serializers/node';
-export { default as BrowserSerializers } from './utils/serializers/browser';
+export { default as Serializers } from './utils/serializers';
 
 export { default as URL } from 'url-parse';

@@ -1,4 +1,4 @@
-import { ACTIONS, MODES, assert } from '@pollyjs/utils';
+import { ACTIONS, MODES, Serializers, assert } from '@pollyjs/utils';
 
 import Interceptor from './-private/interceptor';
 import isExpired from './utils/is-expired';
@@ -266,7 +266,14 @@ export default class Adapter {
   /**
    * @param {PollyRequest} pollyRequest
    */
-  onIdentifyRequest() {}
+  async onIdentifyRequest(pollyRequest) {
+    const { identifiers } = pollyRequest;
+
+    // Serialize the request body so it can be properly hashed
+    for (const type of ['blob', 'formData', 'buffer']) {
+      identifiers.body = await Serializers[type](identifiers.body);
+    }
+  }
 
   /**
    * @param {PollyRequest} pollyRequest

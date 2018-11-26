@@ -1,9 +1,9 @@
 /* eslint-env node */
 
-const supportsBuffer = typeof Buffer !== 'undefined';
-const supportsArrayBuffer = typeof ArrayBuffer !== 'undefined';
+export const supportsBuffer = typeof Buffer !== 'undefined';
+export const supportsArrayBuffer = typeof ArrayBuffer !== 'undefined';
 
-export default function serializeRequestBody(body) {
+export function serialize(body) {
   if (supportsBuffer && body) {
     let buffer;
 

@@ -1,5 +1,4 @@
 import Adapter from '@pollyjs/adapter';
-import { BrowserSerializers, NodeSerializers } from '@pollyjs/utils';
 
 import serializeHeaders from './utils/serializer-headers';
 
@@ -81,16 +80,6 @@ export default class FetchAdapter extends Adapter {
 
   onIntercept(pollyRequest, { statusCode, headers, body }) {
     return this.respond(pollyRequest, statusCode, headers, body);
-  }
-
-  async onIdentifyRequest(pollyRequest) {
-    const { identifiers } = pollyRequest;
-    let body = identifiers.body;
-
-    body = await BrowserSerializers.serializeRequestBody(body);
-    body = NodeSerializers.serializeRequestBody(body);
-
-    identifiers.body = body;
   }
 
   async respond(pollyRequest, status, headers, body) {
