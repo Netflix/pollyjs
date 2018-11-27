@@ -1,4 +1,4 @@
-import { XHR as XHRUtils } from '@pollyjs/utils';
+import serializeResponseHeaders from '../../src/utils/serialize-response-headers';
 
 export default function request(url, obj = {}) {
   return new Promise(resolve => {
@@ -24,7 +24,7 @@ export default function request(url, obj = {}) {
     return new Response(responseBody, {
       status: xhr.status,
       statusText: xhr.statusText,
-      headers: XHRUtils.serializeResponseHeaders(xhr.getAllResponseHeaders())
+      headers: serializeResponseHeaders(xhr.getAllResponseHeaders())
     });
   });
 }

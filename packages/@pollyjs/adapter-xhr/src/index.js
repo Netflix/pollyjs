@@ -1,8 +1,8 @@
 import FakeXHR from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
-import { XHR as XHRUtils } from '@pollyjs/utils';
 
 import resolveXhr from './utils/resolve-xhr';
+import serializeResponseHeaders from './utils/serialize-response-headers';
 
 const SEND = Symbol();
 const IS_STUBBED = Symbol();
@@ -98,7 +98,7 @@ export default class XHRAdapter extends Adapter {
     await resolveXhr(xhr, pollyRequest.body);
     await pollyRequest.respond(
       xhr.status,
-      XHRUtils.serializeResponseHeaders(xhr.getAllResponseHeaders()),
+      serializeResponseHeaders(xhr.getAllResponseHeaders()),
       xhr.responseText
     );
   }

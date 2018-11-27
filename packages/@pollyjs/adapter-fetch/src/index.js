@@ -1,5 +1,6 @@
 import Adapter from '@pollyjs/adapter';
-import { Fetch as FetchUtils } from '@pollyjs/utils';
+
+import serializeHeaders from './utils/serializer-headers';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
@@ -31,7 +32,7 @@ export default class FetchAdapter extends Adapter {
       this.handleRequest({
         url,
         method: options.method || 'GET',
-        headers: FetchUtils.serializeHeaders(options.headers),
+        headers: serializeHeaders(options.headers),
         body: options.body,
         requestArguments: [url, options]
       });
@@ -72,7 +73,7 @@ export default class FetchAdapter extends Adapter {
     return this.respond(
       pollyRequest,
       response.status,
-      FetchUtils.serializeHeaders(response.headers),
+      serializeHeaders(response.headers),
       await response.text()
     );
   }
