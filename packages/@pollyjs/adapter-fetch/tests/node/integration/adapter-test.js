@@ -2,6 +2,7 @@ import '@pollyjs-tests/helpers/global-fetch';
 
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
+import adapterNodeTests from '@pollyjs-tests/integration/adapter-node-tests';
 import FSPersister from '@pollyjs/persister-fs';
 import { setupMocha as setupPolly } from '@pollyjs/core';
 
@@ -22,5 +23,6 @@ describe('Integration | Fetch Adapter | Node', function() {
   setupPolly.afterEach();
 
   adapterTests();
+  adapterNodeTests();
   commonTests();
 });

@@ -3,8 +3,8 @@ import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
 import RESTPersister from '@pollyjs/persister-rest';
-import xhrRequest from '@pollyjs-tests/helpers/xhr-request';
 
+import xhrRequest from '../utils/xhr-request';
 import XHRAdapter from '../../src';
 
 describe('Integration | XHR Adapter', function() {
