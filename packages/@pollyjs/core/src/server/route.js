@@ -1,4 +1,4 @@
-import mergeOptions from 'merge-options';
+import mergeConfigs from '../utils/merge-configs';
 
 async function invoke(fn, route, req, ...args) {
   if (typeof fn !== 'function') {
@@ -70,7 +70,7 @@ export default class Route {
   }
 
   config() {
-    return mergeOptions(
+    return mergeConfigs(
       ...this._orderedHandlers().map(handler => handler.get('config'))
     );
   }
