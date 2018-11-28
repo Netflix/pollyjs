@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v1.2.0...v1.3.0) (2018-11-28)
+
+
+### Features
+
+* **core:** Support custom functions in matchRequestsBy config options ([#138](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/138)) ([626a84c](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/626a84c))
+* Add an onIdentifyRequest hook to allow adapter level serialization ([#140](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/140)) ([548002c](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/548002c))
+
+
+
+
+
 <a name="1.2.0"></a>
 # 1.2.0 (2018-09-16)
 
