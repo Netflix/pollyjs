@@ -33,14 +33,14 @@
   },
   "scripts": {
     "build": "npm-run-all clean rollup",
+    "build:prod": "npm-run-all clean --parallel rollup rollup:prod",
     "clean": "rimraf dist",
     "rollup": "rollup -c",
     "rollup:prod": "NODE_ENV=production yarn rollup",
     "watch": "yarn rollup -w",
     "test": "",
     "test:build": "",
-    "test:clean": "",
-    "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
+    "test:clean": ""
   },
   "dependencies": {
     "@pollyjs/utils": "^1.2.0",

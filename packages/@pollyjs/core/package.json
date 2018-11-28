@@ -12,12 +12,12 @@
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core",
   "scripts": {
     "build": "npm-run-all clean rollup",
+    "build:prod": "npm-run-all clean --parallel rollup rollup:prod",
     "test:build": "rollup -c rollup.config.test.js",
     "clean": "rimraf dist",
     "rollup": "rollup -c ../../../rollup.config.js",
     "rollup:prod": "NODE_ENV=production yarn rollup",
-    "watch": "yarn rollup -w",
-    "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
+    "watch": "yarn rollup -w"
   },
   "keywords": [
     "polly",
