@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/utils",
-  "version": "1.2.0",
+  "version": "1.3.1",
   "description": "Shared utilities and constants between @pollyjs packages",
   "main": "dist/cjs/pollyjs-utils.js",
   "module": "dist/es/pollyjs-utils.js",
@@ -12,12 +12,12 @@
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils",
   "scripts": {
     "build": "npm-run-all clean rollup",
+    "build:prod": "npm-run-all clean --parallel rollup rollup:prod",
     "test:build": "rollup -c rollup.config.test.js",
     "clean": "rimraf dist",
     "rollup": "rollup -c ../../../rollup.config.js",
     "rollup:prod": "NODE_ENV=production yarn rollup",
-    "watch": "yarn rollup -w",
-    "prepublishOnly": "npm-run-all clean --parallel rollup rollup:prod"
+    "watch": "yarn rollup -w"
   },
   "keywords": [
     "polly",

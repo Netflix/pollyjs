@@ -8,10 +8,11 @@ describe('Integration | Fetch Adapter', function() {
   describe('Context', function() {
     it(`should assign context's fetch as the native fetch`, async function() {
       const polly = new Polly('context', { adapters: [] });
+      const fetch = () => {};
       const adapterOptions = {
         fetch: {
           context: {
-            fetch() {},
+            fetch,
             Response: MockResponse
           }
         }
@@ -22,16 +23,15 @@ describe('Integration | Fetch Adapter', function() {
         adapterOptions
       });
 
-      expect(polly.adapters.get('fetch').native).to.equal(
+      expect(polly.adapters.get('fetch').native).to.equal(fetch);
+      expect(polly.adapters.get('fetch').native).to.not.equal(
         adapterOptions.fetch.context.fetch
       );
 
       expect(function() {
         polly.configure({
           adapterOptions: {
-            fetch: {
-              context: undefined
-            }
+            fetch: { context: {} }
           }
         });
       }).to.throw(/Fetch global not found/);
