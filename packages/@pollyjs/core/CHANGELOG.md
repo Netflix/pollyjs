@@ -3,26 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.3.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/v1.2.0...v1.3.1) (2018-11-28)
-
-
-### Bug Fixes
-
-* Support URL objects ([#139](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/139)) ([cf0d755](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/cf0d755))
-* **core:** Handle trailing slashes when generating route names ([#142](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/142)) ([19147f7](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/19147f7))
-* **core:** Ignore `context` options from being deep merged ([#144](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/144)) ([2123d83](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/2123d83))
-* **core:** Support multiple handlers for same paths ([#141](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/141)) ([79e04b8](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/79e04b8))
-
-
-### Features
-
-* **core:** Support custom functions in matchRequestsBy config options ([#138](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/138)) ([626a84c](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/626a84c))
-* Add an onIdentifyRequest hook to allow adapter level serialization ([#140](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/140)) ([548002c](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/548002c))
-
-
-
-
-
       <a name="1.2.0"></a>
 # 1.2.0 (2018-09-16)
 
