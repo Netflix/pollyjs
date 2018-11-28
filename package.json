@@ -92,7 +92,7 @@
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-terser": "^3.0.0",
+    "rollup-plugin-terser": "2.0.2",
     "testem": "^2.14.0"
   }
 }
