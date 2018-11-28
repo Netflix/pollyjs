@@ -1,4 +1,3 @@
-import mergeOptions from 'merge-options';
 import { MODES, assert } from '@pollyjs/utils';
 
 import { version } from '../package.json';
@@ -8,6 +7,7 @@ import Container from './-private/container';
 import DefaultConfig from './defaults/config';
 import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
+import mergeConfigs from './utils/merge-configs';
 import EventEmitter from './-private/event-emitter';
 import Server from './server';
 import { validateRecordingName } from './utils/validators';
@@ -159,7 +159,7 @@ export default class Polly {
     // Disconnect from all current adapters before updating the config
     this.disconnect();
 
-    this.config = mergeOptions(DefaultConfig, this.config, config);
+    this.config = mergeConfigs(DefaultConfig, this.config, config);
 
     // Register and connect to all specified adapters
     this.config.adapters.forEach(adapter => this.connectTo(adapter));

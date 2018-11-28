@@ -50,7 +50,6 @@
     "fast-json-stable-stringify": "^2.0.0",
     "is-absolute-url": "^2.1.0",
     "lodash-es": "^4.17.11",
-    "merge-options": "^1.0.1",
     "route-recognizer": "^0.3.4",
     "slugify": "^1.3.3"
   },
