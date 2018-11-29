@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-local-storage",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Local storage persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-local-storage.js",
   "module": "dist/es/pollyjs-persister-local-storage.js",
@@ -42,11 +42,11 @@
     "test:build": "rollup -c rollup.config.test.js"
   },
   "dependencies": {
-    "@pollyjs/persister": "^1.3.1"
+    "@pollyjs/persister": "^1.3.2"
   },
   "devDependencies": {
-    "@pollyjs/adapter-fetch": "^1.3.1",
-    "@pollyjs/core": "^1.3.1",
+    "@pollyjs/adapter-fetch": "^1.3.2",
+    "@pollyjs/core": "^1.3.2",
     "npm-run-all": "^4.1.3",
     "rimraf": "^2.6.2",
     "rollup": "^0.67.0"
