@@ -1,8 +1,11 @@
 import getResponseFromRequest from './get-response-from-request';
 import calculateHashFromStream from './calculate-hash-from-stream';
 
-export default function binaryDownloadTest(testTitle, transport, url) {
-  it(testTitle, async function() {
+export default function testBinaryDownload(transport) {
+  const { protocol } = transport.globalAgent;
+  const url = `${protocol}//via.placeholder.com/150/92c952`;
+
+  it('should be able to download binary content', async function() {
     const { server } = this.polly;
 
     server.get(url).passthrough(true);
