@@ -33,8 +33,13 @@ export default class TransportWrapper {
       !this.isPatched()
     );
 
-    nativeRequestMapping.set(this.transport, this.transport.request);
+    nativeRequestMapping.set(this.transport, {
+      request: this.transport.request,
+      get: this.transport.get
+    });
+
     this.transport.request = this.createRequestWrapper();
+    this.transport.get = this.createGetWrapper();
   }
 
   restore() {
@@ -43,7 +48,11 @@ export default class TransportWrapper {
       this.isPatched()
     );
 
-    this.transport.request = nativeRequestMapping.get(this.transport);
+    const { request, get } = nativeRequestMapping.get(this.transport);
+
+    this.transport.request = request;
+    this.transport.get = get;
+
     nativeRequestMapping.delete(this.transport);
   }
 
@@ -106,7 +115,7 @@ export default class TransportWrapper {
     const { transport } = this;
     const [, , args] = pollyRequest.requestArguments;
     const { method, headers, body: chunks } = pollyRequest;
-    const nativeRequest = nativeRequestMapping.get(transport);
+    const { request: nativeRequest } = nativeRequestMapping.get(transport);
     let [url, options] = args;
 
     /**
@@ -194,9 +203,9 @@ export default class TransportWrapper {
   createRequestWrapper() {
     const wrapper = this;
     const { adapter, transport } = wrapper;
-    const nativeRequest = nativeRequestMapping.get(transport);
+    const { request: nativeRequest } = nativeRequestMapping.get(transport);
 
-    return (...args) => {
+    return function request(...args) {
       const req = nativeRequest.call(transport, ...args);
       const nativeWrite = req.write;
       const chunks = [];
@@ -276,6 +285,20 @@ export default class TransportWrapper {
           requestArguments: [wrapper, req, args]
         });
       };
+
+      return req;
+    };
+  }
+
+  // In Node 10+ http.get no longer references http.request by the export
+  // https://github.com/nodejs/node/blob/v10.0.0/lib/https.js#L275
+  createGetWrapper() {
+    const { transport } = this;
+
+    return function get(...args) {
+      const req = transport.request(...args);
+
+      req.end();
 
       return req;
     };
