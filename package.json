@@ -47,9 +47,11 @@
     "server:build": "yarn build --scope=@pollyjs/node-server --scope=@pollyjs/utils",
     "docs:serve": "docsify serve ./docs",
     "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
-    "prerelease": "yarn build:prod",
-    "release": "lerna publish",
-    "postrelease": "yarn docs:publish"
+    "release": "npm-run-all \"release:version {@}\" release:publish --",
+    "release:version": "lerna version",
+    "prerelease:publish": "yarn build:prod",
+    "release:publish": "lerna publish from-git",
+    "postrelease:publish": "yarn docs:publish"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
