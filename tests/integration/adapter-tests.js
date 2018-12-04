@@ -126,6 +126,17 @@ export default function adapterTests() {
     ]);
   });
 
+  it('should handle a compressed response', async function() {
+    const res = await this.relativeFetch('/compress', {
+      method: 'POST',
+      body: JSON.stringify({ foo: 'bar' }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    expect(res.status).to.equal(200);
+    expect(await res.json()).to.deep.equal({ foo: 'bar' });
+  });
+
   it('should have resolved requests after flushing', async function() {
     // The puppeteer adapter has its own implementation of this test
     if (this.polly.adapters.has('puppeteer')) {
@@ -168,7 +179,8 @@ export default function adapterTests() {
 
     res = await this.fetch(`${apiUrl}/posts`, {
       method: 'POST',
-      body: JSON.stringify({ foo: 'bar' })
+      body: JSON.stringify({ foo: 'bar' }),
+      headers: { 'Content-Type': 'application/json' }
     });
 
     expect(res.ok).to.be.true;

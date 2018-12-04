@@ -64,6 +64,7 @@
     "@commitlint/config-lerna-scopes": "^7.2.1",
     "@commitlint/travis-cli": "^7.2.1",
     "chai": "^4.2.0",
+    "compression": "^1.7.3",
     "deepmerge": "^2.2.1",
     "docsify-cli": "^4.3.0",
     "eslint": "^5.9.0",
