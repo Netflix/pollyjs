@@ -7,7 +7,7 @@
 [![npm version](https://badge.fury.io/js/%40pollyjs%2Fadapter-node-http.svg)](https://badge.fury.io/js/%40pollyjs%2Fadapter-node-http)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-The `@pollyjs/adapter-node-http` package provides a low level nodejs http request adapter that wraps the `http` and `https` modules in nodejs for seamless recording and replaying of requests.
+The `@pollyjs/adapter-node-http` package provides a low level nodejs http request adapter that patches the [http](https://nodejs.org/api/http.html) and [https](https://nodejs.org/api/https.html) modules in nodejs for seamless recording and replaying of requests.
 
 ## Installation
 
@@ -25,7 +25,7 @@ yarn add @pollyjs/adapter-node-http -D
 
 ## Documentation
 
-Check out the [Http Adapter](https://netflix.github.io/pollyjs/#/adapters/http)
+Check out the [Node HTTP Adapter](https://netflix.github.io/pollyjs/#/adapters/node-http)
 documentation for more details.
 
 ## Usage
