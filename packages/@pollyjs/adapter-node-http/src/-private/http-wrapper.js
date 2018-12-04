@@ -18,6 +18,7 @@ export default class HttpWrapper {
     if (
       options.transports.includes('https') &&
       // Node 8 and below use http.request under the hood for https.request
+      // so we should skip wrapping it even if enabled.
       // https://github.com/nodejs/node/blob/v8.14.0/lib/https.js#L245
       semver.gte(process.version, '9.0.0')
     ) {

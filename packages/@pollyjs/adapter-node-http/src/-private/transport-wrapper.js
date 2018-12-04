@@ -8,7 +8,6 @@ import isBinaryBuffer from '../utils/is-binary-buffer';
 import isContentEncoded from '../utils/is-content-encoded';
 import mergeChunks from '../utils/merge-chunks';
 
-const LISTENERS = Symbol();
 const nativeRequestMapping = new WeakMap();
 
 const { keys } = Object;
@@ -39,6 +38,10 @@ export default class TransportWrapper {
     });
 
     this.transport.request = this.createRequestWrapper();
+
+    // In Node 10+, http.get no longer references http.request by the export
+    // so we need to make sure we wrap it as well.
+    // https://github.com/nodejs/node/blob/v10.0.0/lib/https.js#L275
     this.transport.get = this.createGetWrapper();
   }
 
@@ -162,13 +165,6 @@ export default class TransportWrapper {
   async respond(pollyRequest) {
     const { response } = pollyRequest;
     const [, req] = pollyRequest.requestArguments;
-
-    keys(req[LISTENERS]).forEach(eventName => {
-      const listeners = req[LISTENERS][eventName];
-
-      listeners.forEach(listener => req.on(eventName, listener));
-    });
-
     const fakeSocket = { readable: false };
     const res = new http.IncomingMessage(fakeSocket);
 
@@ -211,19 +207,22 @@ export default class TransportWrapper {
       const chunks = [];
       let ended = false;
 
+      // Override req.write so we can save all the request body chunks
       req.write = (chunk, encoding, callback) => {
         if (!req.aborted) {
           if (chunk) {
-            if (!Buffer.isBuffer(chunk)) {
-              chunk = Buffer.from(chunk, encoding);
-            }
-            chunks.push(chunk);
+            chunks.push(
+              Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding)
+            );
           }
         }
 
         return nativeWrite.call(req, chunk, encoding, callback);
       };
 
+      // Override req.end since this actual request is just a shell that never gets sent out.
+      // When we need to get actual data, a new request is made and a response
+      // is faked to this req.
       req.end = (chunk, encoding, callback) => {
         if (req.aborted || ended) {
           return;
@@ -243,23 +242,10 @@ export default class TransportWrapper {
           req.write(chunk, encoding);
         }
 
+        // No need to carry callback around. This is what happens in original `end`.
         if (typeof callback === 'function') {
-          // we don't call original `end` yet but no need to carry callback around when we do
-          // this is what happens in original `end`
           req.once('finish', callback);
         }
-
-        req[LISTENERS] = ['response'].reduce((acc, eventName) => {
-          const listeners = req.listeners(eventName);
-
-          // unsubscribe these listeners, so that we break the connection between caller and `req`
-          // until we decide what to do in next steps
-          req.removeAllListeners(eventName);
-
-          acc[eventName] = listeners;
-
-          return acc;
-        }, {});
 
         const headers =
           typeof req.getHeaders === 'function'
@@ -290,8 +276,6 @@ export default class TransportWrapper {
     };
   }
 
-  // In Node 10+ http.get no longer references http.request by the export
-  // https://github.com/nodejs/node/blob/v10.0.0/lib/https.js#L275
   createGetWrapper() {
     const { transport } = this;
 
