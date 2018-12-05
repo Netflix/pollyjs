@@ -254,17 +254,16 @@ export default class TransportWrapper {
           typeof req.getHeaders === 'function'
             ? req.getHeaders()
             : req.headers || req._headers || {};
-        const path = req.path;
-        const method = req.method;
         const host = headers.host;
-        const [hostname, port = 80] = host.split(':');
+        const [hostname, port = '80'] = host.split(':');
+        const { method, path } = req;
 
         const parsedUrl = new URL('');
 
         parsedUrl.set('protocol', req.agent.protocol);
         parsedUrl.set('pathname', path);
         parsedUrl.set('hostname', hostname);
-        parsedUrl.set('port', port !== 80 ? port : '');
+        parsedUrl.set('port', port !== '80' ? port : '');
 
         adapter.handleRequest({
           method,
