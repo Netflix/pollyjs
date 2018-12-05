@@ -24,7 +24,6 @@ export default class TransportWrapper {
   }
 
   patch() {
-    // make sure it's not already patched
     this.adapter.assert(
       `The ${
         this.name
@@ -32,17 +31,17 @@ export default class TransportWrapper {
       !this.isPatched()
     );
 
-    nativeRequestMapping.set(this.transport, {
-      request: this.transport.request,
-      get: this.transport.get
-    });
+    const { transport } = this;
+    const { request, get } = transport;
 
-    this.transport.request = this.createRequestWrapper();
+    // Save the native methods so we can restore them later on
+    nativeRequestMapping.set(transport, { request, get });
 
+    transport.request = this.createRequestWrapper();
     // In Node 10+, http.get no longer references http.request by the export
     // so we need to make sure we wrap it as well.
     // https://github.com/nodejs/node/blob/v10.0.0/lib/https.js#L275
-    this.transport.get = this.createGetWrapper();
+    transport.get = this.createGetWrapper();
   }
 
   restore() {
@@ -51,21 +50,22 @@ export default class TransportWrapper {
       this.isPatched()
     );
 
-    const { request, get } = nativeRequestMapping.get(this.transport);
+    const { transport } = this;
+    const { request, get } = nativeRequestMapping.get(transport);
 
-    this.transport.request = request;
-    this.transport.get = get;
+    transport.request = request;
+    transport.get = get;
 
-    nativeRequestMapping.delete(this.transport);
+    nativeRequestMapping.delete(transport);
   }
 
   getBodyFromChunks(chunks, headers) {
     const { adapter } = this;
 
-    //  If we have headers and there is content-encoding it means that
-    //  the body shouldn't be merged but instead persisted as an array
-    //  of hex strings so that the responses can be mocked one by one.
-    if (headers && isContentEncoded(headers)) {
+    // If content-encoding is set in the header then the body/content
+    // should not be concatenated. Instead, the chunks should
+    // be preserved as-is so that each chunk can be mocked individually
+    if (isContentEncoded(headers)) {
       const hexChunks = chunks.map(chunk => {
         if (!Buffer.isBuffer(chunk)) {
           adapter.assert(
@@ -84,8 +84,8 @@ export default class TransportWrapper {
     const buffer = mergeChunks(chunks);
 
     // The merged buffer can be one of two things:
-    //   1.  A binary buffer which then has to be recorded as a hex string.
-    //   2.  A string buffer.
+    //  1. A binary buffer which then has to be recorded as a hex string.
+    //  2. A string buffer.
     return buffer.toString(isBinaryBuffer(buffer) ? 'hex' : 'utf8');
   }
 
@@ -98,9 +98,9 @@ export default class TransportWrapper {
       return [body];
     }
 
-    //  If we have headers and there is content-encoding it means that
-    //  the body is as an array of hex strings
-    if (headers && isContentEncoded(headers)) {
+    // If content-encoding is set in the header then the body/content
+    // is as an array of hex strings
+    if (isContentEncoded(headers)) {
       const hexChunks = JSON.parse(body);
 
       return hexChunks.map(chunk => Buffer.from(chunk, 'hex'));
@@ -109,8 +109,8 @@ export default class TransportWrapper {
     const buffer = Buffer.from(body);
 
     // The body can be one of two things:
-    //   1.  A hex string which then means its binary data.
-    //   2.  A utf8 string which means a regular string.
+    //  1. A hex string which then means its binary data.
+    //  2. A utf8 string which means a regular string.
     return [Buffer.from(buffer, isBinaryBuffer(buffer) ? 'hex' : 'utf8')];
   }
 
@@ -163,31 +163,34 @@ export default class TransportWrapper {
   }
 
   async respond(pollyRequest) {
-    const { response } = pollyRequest;
+    const { response: pollyResponse } = pollyRequest;
     const [, req] = pollyRequest.requestArguments;
     const fakeSocket = { readable: false };
-    const res = new http.IncomingMessage(fakeSocket);
+    const response = new http.IncomingMessage(fakeSocket);
 
-    res.statusCode = response.statusCode;
-    res.headers = { ...response.headers };
-    res.rawHeaders = keys(res.headers).forEach(key =>
-      res.rawHeaders.push(key, res.headers[key])
+    response.statusCode = pollyResponse.statusCode;
+    response.headers = { ...pollyResponse.headers };
+    response.rawHeaders = keys(response.headers).forEach(key =>
+      response.rawHeaders.push(key, response.headers[key])
     );
 
     await new Promise(resolve => process.nextTick(resolve));
 
-    req.emit('response', res);
+    req.emit('response', response);
 
-    const chunks = this.getChunksFromBody(response.body, response.headers);
+    const chunks = this.getChunksFromBody(
+      pollyResponse.body,
+      pollyResponse.headers
+    );
 
     setImmediate(function emitChunk() {
       const chunk = chunks.shift();
 
       if (chunk) {
-        res.push(chunk);
+        response.push(chunk);
         setImmediate(emitChunk);
       } else {
-        res.push(null);
+        response.push(null);
       }
     });
 

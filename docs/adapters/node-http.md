@@ -24,9 +24,9 @@ adapter.
 
 ```js
 import { Polly } from '@pollyjs/core';
-import NodeHttpAdapter from '@pollyjs/adapter-fetch';
+import NodeHttpAdapter from '@pollyjs/adapter-node-http';
 
-// Register the fetch adapter so its accessible by all future polly instances
+// Register the node http adapter so its accessible by all future polly instances
 Polly.register(NodeHttpAdapter);
 
 const polly = new Polly('<Recording Name>', {
