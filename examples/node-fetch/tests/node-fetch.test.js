@@ -1,27 +1,17 @@
-/* Start - Setup Global Fetch*/
-(function() {
-  const { default: fetch, Response, Request, Headers } = require('node-fetch');
-
-  global.fetch = fetch;
-  global.Request = Request;
-  global.Response = Response;
-  global.Headers = Headers;
-})();
-/* End - Setup Global Fetch*/
-
 const path = require('path');
 
-const FetchAdapter = require('@pollyjs/adapter-fetch');
+const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
+const fetch = require('node-fetch');
 const { Polly, setupMocha: setupPolly } = require('@pollyjs/core');
 const { expect } = require('chai');
 
-Polly.register(FetchAdapter);
+Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
 
 describe('node-fetch', function() {
   setupPolly({
-    adapters: ['fetch'],
+    adapters: ['node-http'],
     persister: 'fs',
     persisterOptions: {
       fs: {
