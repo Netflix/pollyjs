@@ -138,6 +138,10 @@ export default class TransportWrapper {
       ...NodeUrl.parse(pollyRequest.url)
     });
 
+    request.on('error', error => {
+      throw error;
+    });
+
     // Write the request body
     chunks.forEach(chunk => request.write(chunk));
 
@@ -146,13 +150,14 @@ export default class TransportWrapper {
       request.end();
     });
 
-    const responseBody = await new Promise(resolve => {
+    const responseBody = await new Promise((resolve, reject) => {
       const chunks = [];
 
       response.on('data', chunk => chunks.push(chunk));
       response.on('end', () =>
         resolve(this.getBodyFromChunks(chunks, response.headers))
       );
+      response.on('error', reject);
     });
 
     return {
