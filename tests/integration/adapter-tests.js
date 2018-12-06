@@ -107,6 +107,36 @@ export default function adapterTests() {
     expect(responseCalled).to.be.true;
   });
 
+  it('should call all the life-cycle events', async function() {
+    const { server } = this.polly;
+    const events = [];
+
+    server
+      .get(this.recordUrl())
+      .on('request', () => events.push('request'))
+      .on('beforeResponse', () => events.push('beforeResponse'))
+      .on('response', () => events.push('response'));
+
+    await this.fetchRecord();
+
+    expect(events).to.have.ordered.members([
+      'request',
+      'beforeResponse',
+      'response'
+    ]);
+  });
+
+  it('should handle a compressed response', async function() {
+    const res = await this.relativeFetch('/compress', {
+      method: 'POST',
+      body: JSON.stringify({ foo: 'bar' }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    expect(res.status).to.equal(200);
+    expect(await res.json()).to.deep.equal({ foo: 'bar' });
+  });
+
   it('should have resolved requests after flushing', async function() {
     // The puppeteer adapter has its own implementation of this test
     if (this.polly.adapters.has('puppeteer')) {
@@ -138,7 +168,7 @@ export default function adapterTests() {
 
   it('should work with CORS requests', async function() {
     const { server } = this.polly;
-    const apiUrl = 'https://jsonplaceholder.typicode.com';
+    const apiUrl = 'http://jsonplaceholder.typicode.com';
 
     server.any(`${apiUrl}/*`).passthrough();
 
@@ -149,7 +179,8 @@ export default function adapterTests() {
 
     res = await this.fetch(`${apiUrl}/posts`, {
       method: 'POST',
-      body: JSON.stringify({ foo: 'bar' })
+      body: JSON.stringify({ foo: 'bar' }),
+      headers: { 'Content-Type': 'application/json' }
     });
 
     expect(res.ok).to.be.true;
