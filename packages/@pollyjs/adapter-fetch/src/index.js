@@ -1,4 +1,5 @@
 import Adapter from '@pollyjs/adapter';
+import isNode from 'detect-node';
 
 import serializeHeaders from './utils/serializer-headers';
 
@@ -18,6 +19,12 @@ export default class FetchAdapter extends Adapter {
 
   onConnect() {
     const { context } = this.options;
+
+    if (isNode) {
+      console.warn(
+        '[Polly] [adapter:fetch] Using the fetch adapter in Node has been deprecated. Please use the node-http adapter instead.'
+      );
+    }
 
     this.assert('Fetch global not found.', !!(context && context.fetch));
     this.assert('Response global not found.', !!(context && context.Response));

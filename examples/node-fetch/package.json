@@ -7,7 +7,7 @@
     "test": "mocha './tests/*.test.js'"
   },
   "devDependencies": {
-    "@pollyjs/adapter-fetch": "*",
+    "@pollyjs/adapter-node-http": "*",
     "@pollyjs/core": "*",
     "@pollyjs/persister-fs": "*",
     "chai": "*",
