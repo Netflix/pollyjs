@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/netflix/pollyjs/compare/v1.3.2...v1.4.0) (2018-12-07)
+
+
+### Bug Fixes
+
+* **adapter-fetch:** Deprecate usage in Node in favor of node-http ([#146](https://github.com/netflix/pollyjs/issues/146)) ([001ccdd](https://github.com/netflix/pollyjs/commit/001ccdd))
+
+
+### Features
+
+* Node HTTP Adapter ([#128](https://github.com/netflix/pollyjs/issues/128)) ([fa059a4](https://github.com/netflix/pollyjs/commit/fa059a4))
+
+
+
+
+
 ## [1.3.2](https://github.com/netflix/pollyjs/compare/v1.3.1...v1.3.2) (2018-11-29)
 
 **Note:** Version bump only for package pollyjs
