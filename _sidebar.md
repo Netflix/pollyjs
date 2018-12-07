@@ -17,6 +17,7 @@
 - Adapters
 
   - [Fetch](adapters/fetch.md)
+  - [Node HTTP](adapters/node-http.md)
   - [Puppeteer](adapters/puppeteer.md)
   - [XHR](adapters/xhr.md)
   - [Custom](adapters/custom.md)

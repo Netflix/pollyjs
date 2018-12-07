@@ -60,12 +60,12 @@ polly.disconnectFrom('puppeteer');
 _Type_: [Page](https://pptr.dev/#?product=Puppeteer&show=api-class-page)
 _Default_: `null`
 
-!> __NOTE:__ This is a _required_ option.
+!> **NOTE:** This is a _required_ option.
 
 The Puppeteer page instance Polly should attach events to in order to intercept
 requests.
 
-__Example__
+**Example**
 
 ```js
 const browser = await puppeteer.launch();
@@ -91,12 +91,14 @@ _Default_: `['xhr', 'fetch']`
 The request [resource types](https://pptr.dev/#?product=Puppeteer&show=api-requestresourcetype)
 to intercept.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
   adapterOptions: {
-    requestResourceTypes: ['xhr']
+    puppeteer {
+      requestResourceTypes: ['xhr']
+    }
   }
 });
 ```
