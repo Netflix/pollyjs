@@ -18,6 +18,7 @@ describe('Unit | Utils | URL', function() {
 
   it('should correctly parse query params', function() {
     [
+      ['', {}],
       ['foo=bar', { foo: 'bar' }],
       ['a[]=1&a[]=2', { a: ['1', '2'] }],
       ['a[1]=1&a[0]=2', { a: ['2', '1'] }],
@@ -30,6 +31,8 @@ describe('Unit | Utils | URL', function() {
 
   it('should correctly stringify query params', function() {
     [
+      // Query string will be undefined but we decode it in the assertion
+      [{}, decode(undefined)],
       [{ foo: 'bar' }, 'foo=bar'],
       [{ a: ['1', '2'] }, 'a[0]=1&a[1]=2'],
       [{ foo: { bar: { baz: '1' } } }, 'foo[bar][baz]=1']

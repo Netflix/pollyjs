@@ -60,8 +60,9 @@ export default class URL extends URLParse {
 
     if (parse) {
       // If we want the querystring to be parsed, use this.set('query', query)
-      // as it will always parse the string.
-      this.set('query', this.query);
+      // as it will always parse the string. If there is no initial querystring
+      // pass an object which will act as the parsed query.
+      this.set('query', this.query || {});
     }
   }
 
