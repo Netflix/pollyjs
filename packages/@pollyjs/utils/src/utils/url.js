@@ -86,7 +86,7 @@ export default class URL extends URLParse {
   }
 
   /**
-   * Override toString for so we can pass it our custom query stringify method.
+   * Override toString so we can pass it our custom query stringify method.
    * https://github.com/unshiftio/url-parse/blob/1.4.4/index.js#L414
    *
    * @override
