@@ -1,5 +1,8 @@
 import URL from '../../../src/utils/url';
 
+const encode = encodeURIComponent;
+const decode = decodeURIComponent;
+
 describe('Unit | Utils | URL', function() {
   it('should exist', function() {
     expect(URL).to.be.a('function');
@@ -34,8 +37,34 @@ describe('Unit | Utils | URL', function() {
       const url = new URL('http://foo.bar', true);
 
       url.set('query', obj);
-      expect(decodeURIComponent(url.href.split('?')[1])).to.equal(query);
-      expect(decodeURIComponent(url.toString().split('?')[1])).to.equal(query);
+      expect(decode(url.href.split('?')[1])).to.equal(query);
+      expect(decode(url.toString().split('?')[1])).to.equal(query);
+    });
+  });
+
+  it('should correctly detect original array formats', function() {
+    [
+      'a[0]=1&a[1]=2',
+      `${encode('a[0]')}=1&${encode('a[1]')}=2`,
+      'a[]=1&a[]=2',
+      `${encode('a[]')}=1&${encode('a[]')}=2`,
+      'a=1&a=2'
+    ].forEach(query => {
+      const url = new URL(`http://foo.bar?${query}`, true);
+
+      expect(decode(url.href.split('?')[1])).to.equal(decode(query));
+      expect(decode(url.toString().split('?')[1])).to.equal(decode(query));
+    });
+  });
+
+  it('should correctly handle changes in array formats', function() {
+    const url = new URL(`http://foo.bar`, true);
+
+    ['a[0]=1&a[1]=2', 'a[]=1&a[]=2', 'a=1&a=2'].forEach(query => {
+      url.set('query', query);
+
+      expect(decode(url.href.split('?')[1])).to.equal(query);
+      expect(decode(url.toString().split('?')[1])).to.equal(query);
     });
   });
 });
