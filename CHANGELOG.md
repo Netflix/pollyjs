@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/netflix/pollyjs/compare/v1.4.0...v1.4.1) (2018-12-13)
+
+
+### Bug Fixes
+
+* **utils:** Support arrays & nested objects in query params ([#148](https://github.com/netflix/pollyjs/issues/148)) ([7e846b0](https://github.com/netflix/pollyjs/commit/7e846b0))
+
+
+
+
+
 # [1.4.0](https://github.com/netflix/pollyjs/compare/v1.3.2...v1.4.0) (2018-12-07)
 
 
