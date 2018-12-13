@@ -39,7 +39,8 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "url-parse": "^1.4.4"
+    "url-parse": "^1.4.4",
+    "qs": "^6.6.0"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.3",

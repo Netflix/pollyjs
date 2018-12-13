@@ -9,4 +9,4 @@ export { default as buildUrl } from './utils/build-url';
 
 export { default as Serializers } from './utils/serializers';
 
-export { default as URL } from 'url-parse';
+export { default as URL } from './utils/url';
