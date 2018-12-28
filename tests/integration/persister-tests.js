@@ -16,6 +16,7 @@ export default function persisterTests() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foo: 'bar', bar: 'baz' })
     });
+
     await persister.persist();
 
     expect(await validate.har(await persister.find(recordingId))).to.be.true;

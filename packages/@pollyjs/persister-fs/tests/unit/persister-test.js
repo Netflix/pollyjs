@@ -1,4 +1,5 @@
 import mock from 'mock-fs';
+import semver from 'semver';
 
 import FSPersister from '../../src';
 
@@ -58,11 +59,6 @@ describe('Unit | FS Persister', function() {
 
     afterEach(() => mock.restore());
 
-    it('findRecording', function() {
-      expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
-      expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
-    });
-
     it('saveRecording', function() {
       expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
 
@@ -72,11 +68,23 @@ describe('Unit | FS Persister', function() {
       });
     });
 
-    it('deleteRecording', function() {
-      expect(this.persister.findRecording('FS-Persister')).to.not.be.null;
+    if (semver.lt(process.version, '10.0.0')) {
+      /**
+       * mock-fs does not support >= 10 LTS
+       * see: https://github.com/tschaub/mock-fs/issues/256#issuecomment-439607774
+       */
 
-      this.persister.deleteRecording('FS-Persister');
-      expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
-    });
+      it('findRecording', function() {
+        expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
+        expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
+      });
+
+      it('deleteRecording', function() {
+        expect(this.persister.findRecording('FS-Persister')).to.not.be.null;
+
+        this.persister.deleteRecording('FS-Persister');
+        expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
+      });
+    }
   });
 });
