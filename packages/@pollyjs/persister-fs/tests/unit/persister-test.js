@@ -1,5 +1,5 @@
-import mock from 'mock-fs';
-import semver from 'semver';
+import rimraf from 'rimraf';
+import fixturify from 'fixturify';
 
 import FSPersister from '../../src';
 
@@ -12,6 +12,10 @@ class MockPolly {
 }
 
 describe('Unit | FS Persister', function() {
+  afterEach(function() {
+    rimraf.sync('recordings');
+  });
+
   it('should exist', function() {
     expect(FSPersister).to.be.a('function');
   });
@@ -30,21 +34,21 @@ describe('Unit | FS Persister', function() {
 
       persister = new FSPersister(
         new MockPolly({
-          recordingsDir: '__recordings__'
+          recordingsDir: 'recordings/tmp'
         })
       );
 
       expect(persister.options.recordingsDir)
-        .to.equal('__recordings__')
+        .to.equal('recordings/tmp')
         .and.to.not.equal(persister.defaultOptions.recordingsDir);
 
-      mock({
-        '__recordings__/FS-Persister/recording.har': '{}'
+      fixturify.writeSync('recordings/tmp', {
+        'FS-Persister': {
+          'recording.har': '{}'
+        }
       });
 
       expect(persister.findRecording('FS-Persister')).to.deep.equal({});
-
-      mock.restore();
     });
   });
 
@@ -52,12 +56,12 @@ describe('Unit | FS Persister', function() {
     beforeEach(function() {
       this.persister = new FSPersister(new MockPolly());
 
-      mock({
-        'recordings/FS-Persister/recording.har': '{}'
+      fixturify.writeSync('recordings', {
+        'FS-Persister': {
+          'recording.har': '{}'
+        }
       });
     });
-
-    afterEach(() => mock.restore());
 
     it('saveRecording', function() {
       expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
@@ -68,23 +72,16 @@ describe('Unit | FS Persister', function() {
       });
     });
 
-    if (semver.lt(process.version, '10.0.0')) {
-      /**
-       * mock-fs does not support >= 10 LTS
-       * see: https://github.com/tschaub/mock-fs/issues/256#issuecomment-439607774
-       */
+    it('findRecording', function() {
+      expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
+      expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
+    });
 
-      it('findRecording', function() {
-        expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
-        expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
-      });
+    it('deleteRecording', function() {
+      expect(this.persister.findRecording('FS-Persister')).to.not.be.null;
 
-      it('deleteRecording', function() {
-        expect(this.persister.findRecording('FS-Persister')).to.not.be.null;
-
-        this.persister.deleteRecording('FS-Persister');
-        expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
-      });
-    }
+      this.persister.deleteRecording('FS-Persister');
+      expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
+    });
   });
 });
