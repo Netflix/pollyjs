@@ -40,7 +40,7 @@ _Default_: `global|self|window`
 The context object which contains the localStorage API.
 Typically this is `window` or `self` in the browser and `global` in node.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -59,7 +59,7 @@ _Default_: `'pollyjs'`
 
 The localStorage key to store the recordings data under.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({

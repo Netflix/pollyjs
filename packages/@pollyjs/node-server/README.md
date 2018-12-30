@@ -48,14 +48,14 @@ const server = new Server({
 });
 
 // Add custom business logic to the express server
-server
-  .app
-  .get('/custom', () => { /* Add custom express logic */ });
+server.app.get('/custom', () => {
+  /* Add custom express logic */
+});
 
 // Start listening and attach extra logic to the http server
-server
-  .listen()
-  .on('error', () => { /* Add http server error logic */ });
+server.listen().on('error', () => {
+  /* Add http server error logic */
+});
 ```
 
 ## Express Integrations

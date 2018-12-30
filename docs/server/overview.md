@@ -11,11 +11,9 @@ const polly = new Polly('<Recording Name>');
 const { server } = polly;
 
 // Events & Middleware
-server
-  .any()
-  .on('request', (req, res) => {
-    req.headers['X-Auth-Token'] = 'abc123';
-  });
+server.any().on('request', (req, res) => {
+  req.headers['X-Auth-Token'] = 'abc123';
+});
 
 // Intercept requests
 server.get('/session').intercept((req, res) => {
@@ -32,7 +30,7 @@ The server uses [Route Recognizer](https://github.com/tildeio/route-recognizer)
 under the hood. This allows you to define static routes, as well as dynamic,
 and starred segments.
 
-__Example__
+**Example**
 
 ```js
 // Static Routes
@@ -58,7 +56,7 @@ server.get('/secrets/*path').intercept((req, res) => {
 HTTPS methods as well as `.any()` accept a single string
 as well as an array of strings.
 
-__Example__
+**Example**
 
 ```js
 // Match against '/api/v2/users' as well as any child route

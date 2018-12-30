@@ -45,7 +45,7 @@ _Default_: `'http://localhost:3000'`
 
 The host that the API exists on.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({
@@ -71,7 +71,7 @@ if there is a conflict with the default apiNamespace.
 via the [Node Server apiNamespace](node-server/overview#apinamespace) configuration
 option.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({

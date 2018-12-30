@@ -51,9 +51,9 @@ polly.disconnectFrom('fetch');
 _Type_: `Object`
 _Default_: `global|self|window`
 
-The context object which contains the fetch API.  Typically this is `window` or `self` in the browser and `global` in node.
+The context object which contains the fetch API. Typically this is `window` or `self` in the browser and `global` in node.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({

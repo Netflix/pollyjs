@@ -11,7 +11,6 @@ The `@pollyjs/persister-local-storage` package provides a Local Storage
 persister that allows to read and write recordings to and from the browser's
 Local Storage.
 
-
 ## Installation
 
 _Note that you must have node (and npm) installed._
