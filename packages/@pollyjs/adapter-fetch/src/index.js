@@ -35,14 +35,17 @@ export default class FetchAdapter extends Adapter {
 
     this.native = context.fetch;
 
-    context.fetch = (url, options = {}) =>
-      this.handleRequest({
+    context.fetch = async (url, options = {}) => {
+      const pollyRequest = await this.handleRequest({
         url,
         method: options.method || 'GET',
         headers: serializeHeaders(options.headers),
         body: options.body,
-        requestArguments: [url, options]
+        requestArguments: { options }
       });
+
+      return makeResponse(context.Response, pollyRequest);
+    };
 
     defineProperty(context.fetch, IS_STUBBED, { value: true });
   }
@@ -52,20 +55,8 @@ export default class FetchAdapter extends Adapter {
     this.native = null;
   }
 
-  async onRecord(pollyRequest) {
-    const response = await this.onPassthrough(pollyRequest);
-
-    await this.persister.recordRequest(pollyRequest);
-
-    return response;
-  }
-
-  onReplay(pollyRequest, { statusCode, headers, body }) {
-    return this.respond(pollyRequest, statusCode, headers, body);
-  }
-
-  async onPassthrough(pollyRequest) {
-    const [, options] = pollyRequest.requestArguments;
+  async passthroughRequest(pollyRequest) {
+    const { options } = pollyRequest.requestArguments;
 
     const response = await this.native.apply(global, [
       pollyRequest.url,
@@ -77,39 +68,30 @@ export default class FetchAdapter extends Adapter {
       }
     ]);
 
-    return this.respond(
-      pollyRequest,
-      response.status,
-      serializeHeaders(response.headers),
-      await response.text()
-    );
+    return {
+      statusCode: response.status,
+      headers: serializeHeaders(response.headers),
+      body: await response.text()
+    };
   }
+}
 
-  onIntercept(pollyRequest, { statusCode, headers, body }) {
-    return this.respond(pollyRequest, statusCode, headers, body);
-  }
+function makeResponse(Response, pollyRequest) {
+  const { absoluteUrl, response } = pollyRequest;
+  const { statusCode } = response;
 
-  async respond(pollyRequest, status, headers, body) {
-    const { Response } = this.options.context;
+  const responseBody =
+    statusCode === 204 && response.body === '' ? null : response.body;
+  const fetchResponse = new Response(responseBody, {
+    status: statusCode,
+    headers: response.headers
+  });
 
-    await pollyRequest.respond(status, headers, body);
+  /*
+    Response does not allow `url` to be set manually (either via the
+    constructor or assignment) so force the url property via `defineProperty`.
+  */
+  defineProperty(fetchResponse, 'url', { value: absoluteUrl });
 
-    const { absoluteUrl, response } = pollyRequest;
-    const { statusCode } = response;
-
-    const responseBody =
-      statusCode === 204 && response.body === '' ? null : response.body;
-    const fetchResponse = new Response(responseBody, {
-      status: statusCode,
-      headers: response.headers
-    });
-
-    /*
-      Response does not allow `url` to be set manually (either via the
-      constructor or assignment) so force the url property via `defineProperty`.
-    */
-    defineProperty(fetchResponse, 'url', { value: absoluteUrl });
-
-    return fetchResponse;
-  }
+  return fetchResponse;
 }
