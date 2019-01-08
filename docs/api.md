@@ -4,16 +4,18 @@
 
 Create a new Polly instance.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
+| Param         | Type     | Description                                                               |
+| ------------- | -------- | ------------------------------------------------------------------------- |
 | recordingName | `String` | Name of the [recording](api#recordingName) to store the recordings under. |
-| config | `Object` | [Configuration](configuration) object |
-| __Returns__ | `Polly` | &nbsp; |
+| config        | `Object` | [Configuration](configuration) object                                     |
+| **Returns**   | `Polly`  | &nbsp;                                                                    |
 
-__Example__
+**Example**
 
 ```js
-new Polly('<Recording Name>', { /* ... */ });
+new Polly('<Recording Name>', {
+  /* ... */
+});
 ```
 
 ## Events
@@ -24,28 +26,36 @@ Emitted when a Polly instance gets created.
 
 !> This is a synchronous event.
 
-__Example__
+**Example**
 
 ```js
-const listener = polly => { /* Do Something */ };
+const listener = polly => {
+  /* Do Something */
+};
 
 Polly.on('create', listener);
 Polly.off('create', listener);
-Polly.once('create', polly => { /* Do Something Once */ });
+Polly.once('create', polly => {
+  /* Do Something Once */
+});
 ```
 
 ### stop
 
 Emitted when a Polly instance has successfully stopped.
 
-__Example__
+**Example**
 
 ```js
-const listener = polly => { /* Do Something */ };
+const listener = polly => {
+  /* Do Something */
+};
 
 Polly.on('stop', listener);
 Polly.off('stop', listener);
-Polly.once('stop', polly => { /* Do Something Once */ });
+Polly.once('stop', polly => {
+  /* Do Something Once */
+});
 ```
 
 ## Properties
@@ -58,10 +68,12 @@ _Default_: `null`
 The recording name the recordings will be stored under. The provided name is
 sanitized as well as postfixed with a GUID.
 
-__Example__
+**Example**
 
 ```js
-new Polly('Wants a Cracker', { /* ... */ });
+new Polly('Wants a Cracker', {
+  /* ... */
+});
 ```
 
 Will save recordings to the following file:
@@ -72,7 +84,7 @@ recordings
       └── recording.json
 ```
 
-__Example__
+**Example**
 
 ?> A recording can also have slashes to better organize recordings.
 
@@ -96,14 +108,14 @@ _Default_: `'replay'`
 
 The current [mode](configuration#mode) polly is in.
 
-__Example__
+**Example**
 
 ```js
 const polly = new Polly();
 
-polly.mode // → 'replay'
+polly.mode; // → 'replay'
 polly.record();
-polly.mode // → 'record'
+polly.mode; // → 'record'
 ```
 
 ### persister
@@ -135,11 +147,11 @@ server.get('/series').intercept((req, res) => res.sendStatus(200));
 
 Configure polly with the given configuration object.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
+| Param  | Type     | Description                           |
+| ------ | -------- | ------------------------------------- |
 | config | `Object` | [Configuration](configuration) object |
 
-__Example__
+**Example**
 
 ```js
 polly.configure({ recordIfMissing: false });
@@ -150,7 +162,7 @@ polly.configure({ recordIfMissing: false });
 Puts polly in recording mode. All requests going forward will
 be sent to the server and their responses will be recorded.
 
-__Example__
+**Example**
 
 ```js
 polly.record();
@@ -161,7 +173,7 @@ polly.record();
 Puts polly in replay mode. All requests going forward will be
 played back from a saved recording.
 
-__Example__
+**Example**
 
 ```js
 polly.replay();
@@ -173,7 +185,7 @@ Puts polly in a paused mode. All requests going forward will pass through
 and will not be recorded or replayed. The previous mode will be saved and can
 be restored by calling [play](api#play)
 
-__Example__
+**Example**
 
 ```js
 // polly.mode === 'replay'
@@ -185,7 +197,7 @@ polly.pause();
 
 Restores the mode to the one before [pause](api#pause) was called.
 
-__Example__
+**Example**
 
 ```js
 // polly.mode === 'replay'
@@ -202,11 +214,11 @@ Persist all recordings and disconnect from all adapters.
 !> This method is `async` and will resolve once all recordings have
 persisted and the instance has successfully torn down.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| Returns | `Promise` | &nbsp; |
+| Param   | Type      | Description |
+| ------- | --------- | ----------- |
+| Returns | `Promise` | &nbsp;      |
 
-__Example__
+**Example**
 
 ```js
 await polly.stop();
@@ -216,11 +228,11 @@ await polly.stop();
 
 Connect to an adapter.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| name | `String|Function` | The adapter name of class to connect to |
+| Param | Type              | Description                             |
+| ----- | ----------------- | --------------------------------------- |
+| name  | `String|Function` | The adapter name of class to connect to |
 
-__Example__
+**Example**
 
 ```js
 polly.connectTo('xhr');
@@ -231,11 +243,11 @@ polly.connectTo(XHRAdapter);
 
 Disconnect from an adapter.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| name | `String|Function` | The adapter name of class to disconnect from |
+| Param | Type              | Description                                  |
+| ----- | ----------------- | -------------------------------------------- |
+| name  | `String|Function` | The adapter name of class to disconnect from |
 
-__Example__
+**Example**
 
 ```js
 polly.disconnectFrom('xhr');
@@ -246,7 +258,7 @@ polly.disconnectFrom(XHRAdapter);
 
 Disconnect from all connected adapters.
 
-__Example__
+**Example**
 
 ```js
 polly.disconnect();
@@ -256,11 +268,11 @@ polly.disconnect();
 
 Returns a Promise that resolves once all requests handled by Polly have resolved.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| Returns | `Promise` | &nbsp; |
+| Param   | Type      | Description |
+| ------- | --------- | ----------- |
+| Returns | `Promise` | &nbsp;      |
 
-__Example__
+**Example**
 
 ```js
 await polly.flush();

@@ -22,10 +22,19 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+    "linters": {
+      "*.js": [
+        "eslint --fix",
+        "git add"
+      ],
+      "*.{json,md,html,yml,css}": [
+        "prettier --ignore-path .eslintignore --write",
+        "git add"
+      ]
+    },
+    "globOptions": {
+      "dot": true
+    }
   },
   "scripts": {
     "build": "lerna run build --ignore=@pollyjs/ember --parallel",
@@ -35,6 +44,7 @@
     "clean": "lerna run clean --parallel",
     "lint": "eslint .",
     "lint:fix": "yarn run lint --fix",
+    "postlint:fix": "prettier --ignore-path .eslintignore --write \"**/*.{json,md,html,yml,css}\"",
     "pretest": "yarn server:build",
     "pretest:ci": "yarn pretest",
     "test": "testem",

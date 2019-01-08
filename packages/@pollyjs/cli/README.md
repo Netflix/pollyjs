@@ -44,7 +44,6 @@ documentation for more details.
     listen|l [options]  start the server and listen for requests
 ```
 
-
 ## License
 
 Copyright (c) 2018 Netflix, Inc.

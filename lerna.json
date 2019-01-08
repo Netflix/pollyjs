@@ -2,20 +2,13 @@
   "version": "1.4.1",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": [
-    "packages/@pollyjs/*"
-  ],
+  "packages": ["packages/@pollyjs/*"],
   "command": {
     "publish": {
       "allowBranch": "master",
       "conventionalCommits": true,
       "message": "chore: Publish %s",
-      "ignoreChanges": [
-        "docs/**",
-        "examples/**",
-        "**/tests/**",
-        "**/*.md"
-      ]
+      "ignoreChanges": ["docs/**", "examples/**", "**/tests/**", "**/*.md"]
     }
   },
   "changelog": {

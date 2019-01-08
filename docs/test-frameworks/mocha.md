@@ -5,8 +5,8 @@ a new polly instance for each test as well as stop it once the test has ended.
 The Polly instance's recording name is derived from the current test name as well as its
 parent module(s).
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
+| Param  | Type     | Description                           |
+| ------ | -------- | ------------------------------------- |
 | config | `Object` | [Configuration](configuration) object |
 
 ## Usage
@@ -17,7 +17,9 @@ parent module(s).
 import { setupMocha as setupPolly } from '@pollyjs/core';
 
 describe('Netflix Homepage', function() {
-  setupPolly({/* default configuration options */});
+  setupPolly({
+    /* default configuration options */
+  });
 
   it('should be able to sign in', async function() {
     /*
@@ -25,7 +27,7 @@ describe('Netflix Homepage', function() {
       access via `this.polly`. The recording name is generated based on the module
       and test names.
     */
-   this.polly.configure({ recordIfMissing: false });
+    this.polly.configure({ recordIfMissing: false });
 
     /* start: pseudo test code */
     await visit('/login');
@@ -79,7 +81,9 @@ Instead of calling `setupMocha()`, register these two hooks separately in the or
 import { setupMocha as setupPolly } from '@pollyjs/core';
 
 describe('Netflix Homepage', function() {
-  setupPolly.beforeEach({/* default configuration options */});
+  setupPolly.beforeEach({
+    /* default configuration options */
+  });
 
   afterEach(function() {
     /* do something before the polly instance is destroyed... */
