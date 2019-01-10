@@ -2,17 +2,17 @@ const path = require('path');
 
 const { Polly } = require('@pollyjs/core');
 const { setupPolly } = require('setup-polly-jest');
-const FetchAdapter = require('@pollyjs/adapter-fetch');
+const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 
-Polly.register(FetchAdapter);
+Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
 
 const { posts, users } = require('../src');
 
 describe('jest-node-fetch', () => {
   setupPolly({
-    adapters: ['fetch'],
+    adapters: ['node-http'],
     persister: 'fs',
     persisterOptions: {
       fs: {

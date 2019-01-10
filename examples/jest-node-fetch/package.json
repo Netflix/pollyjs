@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@pollyjs/adapter-fetch": "*",
+    "@pollyjs/adapter-node-http": "*",
     "@pollyjs/core": "*",
     "@pollyjs/persister-fs": "*",
     "jest": "*",
