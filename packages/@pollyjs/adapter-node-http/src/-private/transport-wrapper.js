@@ -138,17 +138,16 @@ export default class TransportWrapper {
       ...NodeUrl.parse(pollyRequest.url)
     });
 
-    request.on('error', error => {
-      throw error;
+    const requestPromise = new Promise((resolve, reject) => {
+      request.once('response', response => resolve(response));
+      request.once('error', reject);
     });
 
     // Write the request body
     chunks.forEach(chunk => request.write(chunk));
 
-    const response = await new Promise(resolve => {
-      request.once('response', response => resolve(response));
-      request.end();
-    });
+    request.end();
+    const response = await requestPromise;
 
     const responseBody = await new Promise((resolve, reject) => {
       const chunks = [];
@@ -270,13 +269,18 @@ export default class TransportWrapper {
         parsedUrl.set('hostname', hostname);
         parsedUrl.set('port', port !== '80' ? port : '');
 
-        adapter.handleRequest({
-          method,
-          headers,
-          url: parsedUrl.href,
-          body: chunks,
-          requestArguments: [wrapper, req, args]
-        });
+        adapter
+          .handleRequest({
+            method,
+            headers,
+            url: parsedUrl.href,
+            body: chunks,
+            requestArguments: [wrapper, req, args]
+          })
+          .catch(e => {
+            // This allows the consumer to handle the error gracefully
+            req.emit('error', e);
+          });
       };
 
       return req;
