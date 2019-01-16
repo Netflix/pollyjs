@@ -153,10 +153,10 @@ export default class TransportWrapper {
       const chunks = [];
 
       response.on('data', chunk => chunks.push(chunk));
-      response.on('end', () =>
+      response.once('end', () =>
         resolve(this.getBodyFromChunks(chunks, response.headers))
       );
-      response.on('error', reject);
+      response.once('error', reject);
     });
 
     return {
@@ -213,6 +213,9 @@ export default class TransportWrapper {
       const nativeWrite = req.write;
       const chunks = [];
       let ended = false;
+
+      // Pause the opened socket so it doesn't read any of the incoming data
+      req.once('socket', socket => socket.pause());
 
       // Override req.write so we can save all the request body chunks
       req.write = (chunk, encoding, callback) => {
