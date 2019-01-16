@@ -40,7 +40,7 @@ _Default_: `'recordings'`
 The root directory to store all recordings. Supports both relative and
 absolute paths.
 
-__Example__
+**Example**
 
 ```js
 polly.configure({

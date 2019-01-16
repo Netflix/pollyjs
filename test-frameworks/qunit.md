@@ -5,9 +5,9 @@ a new polly instance for each test as well as stop it once the test has ended.
 The Polly instance's recording name is derived from the current test name as well as its
 parent module(s).
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| hooks | `Object` | QUnit hooks object |
+| Param  | Type     | Description                           |
+| ------ | -------- | ------------------------------------- |
+| hooks  | `Object` | QUnit hooks object                    |
 | config | `Object` | [Configuration](configuration) object |
 
 ## Usage
@@ -18,7 +18,9 @@ parent module(s).
 import { setupQunit as setupPolly } from '@pollyjs/core';
 
 module('Netflix Homepage', function(hooks) {
-  setupPolly(hooks, {/* default configuration options */});
+  setupPolly(hooks, {
+    /* default configuration options */
+  });
 
   test('should be able to sign in', async function(assert) {
     /*
@@ -26,7 +28,7 @@ module('Netflix Homepage', function(hooks) {
       access via `this.polly`. The recording name is generated based on the module
       and test names.
     */
-   this.polly.configure({ recordIfMissing: false });
+    this.polly.configure({ recordIfMissing: false });
 
     /* start: pseudo test code */
     await visit('/login');
@@ -80,7 +82,9 @@ Instead of calling `setupQunit()`, register these two hooks separately in the or
 import { setupQunit as setupPolly } from '@pollyjs/core';
 
 module('Netflix Homepage', function(hooks) {
-  setupPolly.beforeEach(hooks, {/* default configuration options */});
+  setupPolly.beforeEach(hooks, {
+    /* default configuration options */
+  });
 
   hooks.afterEach(function() {
     /* do something before the polly instance is destroyed... */
@@ -92,5 +96,4 @@ module('Netflix Homepage', function(hooks) {
     /* ... */
   });
 });
-
 ```

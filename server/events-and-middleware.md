@@ -5,7 +5,7 @@
 Events can be attached to a server route using `.on()` and detached via
 the `.off()` methods.
 
-?> __NOTE:__ Event handlers can be asynchronous. An `async` function can be used
+?> **NOTE:** Event handlers can be asynchronous. An `async` function can be used
 or a `Promise` can be returned.
 
 ```js
@@ -39,38 +39,34 @@ server
 
 Fires right before the request goes out.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| req | [Request](server/request) | The request instance |
+| Param | Type                      | Description          |
+| ----- | ------------------------- | -------------------- |
+| req   | [Request](server/request) | The request instance |
 
-__Example__
+**Example**
 
 ```js
-server
-  .get('/session')
-  .on('request', req => {
-    req.headers['X-AUTH'] = '<ACCESS_TOKEN>';
-    req.query.email = 'test@app.com';
-  });
+server.get('/session').on('request', req => {
+  req.headers['X-AUTH'] = '<ACCESS_TOKEN>';
+  req.query.email = 'test@app.com';
+});
 ```
 
 ### beforeResponse
 
 Fires right before the response materializes and the promise resolves.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| req | [Request](server/request) | The request instance |
-| res | [Response](server/response) | The response instance |
+| Param | Type                        | Description           |
+| ----- | --------------------------- | --------------------- |
+| req   | [Request](server/request)   | The request instance  |
+| res   | [Response](server/response) | The response instance |
 
-__Example__
+**Example**
 
 ```js
-server
-  .get('/session')
-  .on('beforeResponse', (req, res) => {
-    res.setHeader('X-AUTH', '<ACCESS_TOKEN>');
-  });
+server.get('/session').on('beforeResponse', (req, res) => {
+  res.setHeader('X-AUTH', '<ACCESS_TOKEN>');
+});
 ```
 
 ### response
@@ -78,39 +74,37 @@ server
 Fires right after the response has been finalized for the request but before
 the response materializes and the promise resolves.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| req | [Request](server/request) | The request instance |
-| res | [Response](server/response) | The response instance |
+| Param | Type                        | Description           |
+| ----- | --------------------------- | --------------------- |
+| req   | [Request](server/request)   | The request instance  |
+| res   | [Response](server/response) | The response instance |
 
-__Example__
+**Example**
 
 ```js
-server
-  .get('/session')
-  .on('response', (req, res) => {
-    console.log(`${req.url} took ${req.responseTime}ms with a status of ${res.statusCode}.`);
-  });
+server.get('/session').on('response', (req, res) => {
+  console.log(
+    `${req.url} took ${req.responseTime}ms with a status of ${res.statusCode}.`
+  );
+});
 ```
 
 ### beforePersist
 
 Fires before the request/response gets persisted.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| req | [Request](server/request) | The request instance |
-| recording | `Object` | The recording that will be persisted |
+| Param     | Type                      | Description                          |
+| --------- | ------------------------- | ------------------------------------ |
+| req       | [Request](server/request) | The request instance                 |
+| recording | `Object`                  | The recording that will be persisted |
 
-__Example__
+**Example**
 
 ```js
-server
-  .any()
-  .on('beforePersist', (req, recording) => {
-    recording.request = encrypt(recording.request);
-    recording.response = encrypt(recording.response);
-  });
+server.any().on('beforePersist', (req, recording) => {
+  recording.request = encrypt(recording.request);
+  recording.response = encrypt(recording.response);
+});
 ```
 
 ### beforeReplay
@@ -118,27 +112,25 @@ server
 Fires after retrieving the recorded request/response from the persister
 and before the recording materializes into a response.
 
-| Param | Type | Description |
-|  ---  | ---  |     ---     |
-| req | [Request](server/request) | The request instance |
-| recording | `Object` | The retrieved recording |
+| Param     | Type                      | Description             |
+| --------- | ------------------------- | ----------------------- |
+| req       | [Request](server/request) | The request instance    |
+| recording | `Object`                  | The retrieved recording |
 
-__Example__
+**Example**
 
 ```js
-server
-  .any()
-  .on('beforeReplay', (req, recording) => {
-    recording.request = decrypt(recording.request);
-    recording.response = decrypt(recording.response);
-  });
+server.any().on('beforeReplay', (req, recording) => {
+  recording.request = decrypt(recording.request);
+  recording.response = decrypt(recording.response);
+});
 ```
 
 ## Middleware
 
 Middleware can be added via the `.any()` method.
 
-?> __NOTE:__ Middleware events will be executed by the order in which they were
+?> **NOTE:** Middleware events will be executed by the order in which they were
 declared.
 
 ### Global Middleware
@@ -147,11 +139,9 @@ The following is an example of a global middleware that will be attached to all
 routes. This middleware in specific overrides the `X-Auth-Token` with a test token.
 
 ```js
-server
-  .any()
-  .on('request', (req, res) => {
-    req.headers['X-Auth-Token'] = 'abc123';
-  });
+server.any().on('request', (req, res) => {
+  req.headers['X-Auth-Token'] = 'abc123';
+});
 ```
 
 ### Route Level Middleware
@@ -161,9 +151,7 @@ any route that matches `/session/:id`. This middleware in specific overrides
 the email query param with that of a test email.
 
 ```js
-server
-  .any('/session/:id')
-  .on('request', (req, res) => {
-    req.query.email = 'test@netflix.com';
-  });
+server.any('/session/:id').on('request', (req, res) => {
+  req.query.email = 'test@netflix.com';
+});
 ```

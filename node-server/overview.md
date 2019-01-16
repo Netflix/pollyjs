@@ -36,14 +36,14 @@ const server = new Server({
 });
 
 // Add custom business logic to the express server
-server
-  .app
-  .get('/custom', () => { /* Add custom express logic */ });
+server.app.get('/custom', () => {
+  /* Add custom express logic */
+});
 
 // Start listening and attach extra logic to the http server
-server
-  .listen()
-  .on('error', () => { /* Add http server error logic */ });
+server.listen().on('error', () => {
+  /* Add http server error logic */
+});
 ```
 
 ## Server Configuration
@@ -128,7 +128,7 @@ registerExpressAPI(app, {
 _Type_: `String`
 _Default_: `'50mb'`
 
-A recording size can not exceed 50mb by default.  If your application exceeds this limit, bump this value to a reasonable limit.
+A recording size can not exceed 50mb by default. If your application exceeds this limit, bump this value to a reasonable limit.
 
 ```js
 new Server({

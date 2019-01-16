@@ -4,7 +4,7 @@ Installing the `@pollyjs/ember` addon will import and vendor the necessary
 Polly.JS packages as well as register the [Express API](node-server/express-integrations)
 required by the [REST Persister](persisters/rest).
 
-?> __NOTE:__ By default, this addon installs and registers the
+?> **NOTE:** By default, this addon installs and registers the
 [XHR](adapters/xhr) & [Fetch](adapters/fetch) adapters as well as the
 [REST](persisters/rest) & [Local Storage](persisters/local-storage) persisters.
 
