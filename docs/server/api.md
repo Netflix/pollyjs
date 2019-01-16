@@ -15,7 +15,7 @@ server.head('/ping');
 server.options('/ping');
 ```
 
-Each of these methods returns a [Route Handler](server/route-handler.md) which
+Each of these methods returns a [Route Handler](route-handler.md) which
 you can use to pass-through, intercept, and attach events to.
 
 ```js
@@ -29,7 +29,7 @@ server.patch('/ping').off('request');
 
 ## any
 
-Declare [Events & Middleware](server/events-and-middleware#middleware) globally
+Declare [Events & Middleware](events-and-middleware.md#middleware) globally
 or for a specific route.
 
 **Example**
