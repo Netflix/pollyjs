@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/netflix/pollyjs/compare/v1.4.1...v1.4.2) (2019-01-16)
+
+
+### Bug Fixes
+
+* **adapter-node-http:** Fix unhandled rejection if connection fails ([#160](https://github.com/netflix/pollyjs/issues/160)) ([12fcfa7](https://github.com/netflix/pollyjs/commit/12fcfa7))
+* **adapter-node-http:** Pause socket on original request ([#162](https://github.com/netflix/pollyjs/issues/162)) ([8f0c56c](https://github.com/netflix/pollyjs/commit/8f0c56c))
+
+
+### Features
+
+* Lint other filetypes with prettier ([#152](https://github.com/netflix/pollyjs/issues/152)) ([78d1af8](https://github.com/netflix/pollyjs/commit/78d1af8))
+
+
+
+
+
 ## [1.4.1](https://github.com/netflix/pollyjs/compare/v1.4.0...v1.4.1) (2018-12-13)
 
 
