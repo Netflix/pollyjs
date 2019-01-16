@@ -10,6 +10,9 @@ export default function defer() {
     _reject = reject;
   });
 
+  // Prevent unhandled rejection warnings
+  promise.catch(() => {});
+
   promise.resolve = _resolve;
   promise.reject = _reject;
 
