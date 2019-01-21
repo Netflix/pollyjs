@@ -314,7 +314,7 @@ export default class Adapter {
    * Make sure the response from a Polly request is delivered to the
    * user through the adapter interface.
    *
-   * Calling `pollyjs.flush()` waill await this method.
+   * Calling `pollyjs.flush()` will await this method.
    */
   async respondToRequest(/* pollyRequest */) {}
 }
