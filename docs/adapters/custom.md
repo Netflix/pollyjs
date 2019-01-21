@@ -40,11 +40,87 @@ class CustomAdapter extends Adapter {
   onDisconnect() {
     /* Do something when the adapter is disconnected from */
   }
+
+  async passthroughRequest(pollyRequest) {
+    /* Do something when the adapter is connect to */
+  }
+
+  /* optional */
+  async respondToRequest(pollyRequest) {
+    const { statusCode, body, headers } = pollyRequest.response
+    /* Deliver the response to the user */
+  }
 }
 ```
 
-For better usage examples, please refer to the source code for
-the [Fetch](https://github.com/Netflix/pollyjs/blob/master/packages/@pollyjs/adapter-fetch/src/index.js) & [XHR](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/adapter-xhr/src/index.js) adapters.
+The `Adapter` class provides the `handleRequest()` method which can be
+called from `onConnect`. It accepts request parameters and returns a
+PollyRequest object with a `response` property.
+
+The `passthroughRequest` method takes a PollyRequest object, makes a real HTTP
+request and returns the response as a `{ statusCode, headers, body }` object,
+where `body` is a string.
+
+The `respondToRequest()` method makes sure that the response has been delivered
+to the user. `pollyjs.flush()` will wait for all `respondToRequests()` calls to
+finish. You can omit the implementation of this method if no asynchronous
+delivery is required.
+
+### Simple Fetch adapter example
+
+The following is a simple example of implementing an adapter for `fetch`. For
+full examples, please refer to the source code for the
+[Fetch](https://github.com/Netflix/pollyjs/blob/master/packages/@pollyjs/adapter-fetch/src/index.js)
+& [XHR](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/adapter-xhr/src/index.js)
+adapters.
+
+
+```js
+class FetchAdapter extends Adapter {
+  static get name() {
+    return 'fetch';
+  }
+
+  onConnect() {
+    this.originalFetch = window.fetch;
+
+    window.fetch = async (url, options = {}) => {
+      const { repsonse } = await this.handleRequest({
+        url,
+        method: options.method,
+        headers: options.headers,
+        body: options.body,
+      });
+
+      return new Response(response.body, {
+        status: response.statusCode,
+        headers: response.headers
+      });
+    };
+  }
+
+  onDisconnect() {
+    window.fetch = this.originalFetch
+  }
+
+  async passthroughRequest(pollyRequest) {
+    const response = await this.originalFetch([
+      pollyRequest.url,
+      {
+        method: pollyRequest.method,
+        headers: pollyRequest.headers,
+        body: pollyRequest.body
+      }
+    ]);
+
+    return {
+      statusCode: response.status,
+      headers: serializeHeaders(response.headers),
+      body: await response.text()
+    };
+  }
+}
+```
 
 ## Extending from an Existing Adapter
 

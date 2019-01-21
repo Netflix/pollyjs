@@ -35,36 +35,13 @@ export default class HttpAdapter extends Adapter {
     }
   }
 
-  async onRecord(pollyRequest) {
-    await this.passthroughRequest(pollyRequest);
-    await this.persister.recordRequest(pollyRequest);
-    await this.respond(pollyRequest);
-  }
-
-  async onReplay(pollyRequest, { statusCode, headers, body }) {
-    await pollyRequest.respond(statusCode, headers, body);
-
-    await this.respond(pollyRequest);
-  }
-
-  async onPassthrough(pollyRequest) {
-    await this.passthroughRequest(pollyRequest);
-    await this.respond(pollyRequest);
-  }
-
-  async onIntercept(pollyRequest, { statusCode, headers, body }) {
-    await pollyRequest.respond(statusCode, headers, body);
-    await this.respond(pollyRequest);
-  }
-
   async passthroughRequest(pollyRequest) {
     const [transportWrapper] = pollyRequest.requestArguments;
-    const res = await transportWrapper.passthrough(pollyRequest);
 
-    await pollyRequest.respond(res.statusCode, res.headers, res.body);
+    return transportWrapper.passthrough(pollyRequest);
   }
 
-  async respond(pollyRequest) {
+  async respondToRequest(pollyRequest) {
     const [transportWrapper] = pollyRequest.requestArguments;
 
     return transportWrapper.respond(pollyRequest);

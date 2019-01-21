@@ -98,11 +98,10 @@ export default class Adapter {
     await this.onRequest(pollyRequest);
 
     try {
-      const result = await this[REQUEST_HANDLER](pollyRequest);
+      await this[REQUEST_HANDLER](pollyRequest);
+      await this.onRequestFinished(pollyRequest);
 
-      await this.onRequestFinished(pollyRequest, result);
-
-      return result;
+      return pollyRequest;
     } catch (error) {
       await this.onRequestFailed(pollyRequest, error);
       throw error;
@@ -229,10 +228,20 @@ export default class Adapter {
 
   /**
    * @param {PollyRequest} pollyRequest
+   * @returns {response}
+   */
+  async passthroughRequest(/* pollyRequest */) {
+    this.assert('Must implement `passthroughRequest`.', false);
+  }
+
+  /* Other Hooks */
+  /**
+   * @param {PollyRequest} pollyRequest
    * @returns {*}
    */
-  onRecord() {
-    this.assert('Must implement the `onRecord` hook.', false);
+  async onRecord(pollyRequest) {
+    await this.onPassthrough(pollyRequest);
+    await this.persister.recordRequest(pollyRequest);
   }
 
   /**
@@ -241,8 +250,8 @@ export default class Adapter {
    * @param {Object} recordingEntry The entire recording entry
    * @returns {*}
    */
-  onReplay() {
-    this.assert('Must implement the `onReplay` hook.', false);
+  async onReplay(pollyRequest, { statusCode, headers, body }) {
+    await pollyRequest.respond(statusCode, headers, body);
   }
 
   /**
@@ -250,19 +259,22 @@ export default class Adapter {
    * @param {PollyResponse} response
    * @returns {*}
    */
-  onIntercept() {
-    this.assert('Must implement the `onIntercept` hook.', false);
+  async onIntercept(pollyRequest, { statusCode, headers, body }) {
+    await pollyRequest.respond(statusCode, headers, body);
   }
 
   /**
    * @param {PollyRequest} pollyRequest
    * @returns {*}
    */
-  onPassthrough() {
-    this.assert('Must implement the `onPassthrough` hook.', false);
+  async onPassthrough(pollyRequest) {
+    const { statusCode, headers, body } = await this.passthroughRequest(
+      pollyRequest
+    );
+
+    await pollyRequest.respond(statusCode, headers, body);
   }
 
-  /* Other Hooks */
   /**
    * @param {PollyRequest} pollyRequest
    */
@@ -284,8 +296,10 @@ export default class Adapter {
    * @param {PollyRequest} pollyRequest
    * @param {*} result The returned result value from the request handler
    */
-  onRequestFinished(pollyRequest, result) {
-    pollyRequest.promise.resolve(result);
+  async onRequestFinished(pollyRequest) {
+    await this.respondToRequest(pollyRequest);
+
+    pollyRequest.promise.resolve();
   }
 
   /**
@@ -295,4 +309,12 @@ export default class Adapter {
   onRequestFailed(pollyRequest, error) {
     pollyRequest.promise.reject(error);
   }
+
+  /**
+   * Make sure the response from a Polly request is delivered to the
+   * user through the adapter interface.
+   *
+   * Calling `pollyjs.flush()` will await this method.
+   */
+  async respondToRequest(/* pollyRequest */) {}
 }
