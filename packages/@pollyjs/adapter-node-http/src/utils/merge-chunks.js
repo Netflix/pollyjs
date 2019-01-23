@@ -1,3 +1,11 @@
+/**
+ * Merge an array of strings into a single string or concat an array
+ * of buffers into a single buffer.
+ *
+ * @export
+ * @param {string[] | Buffer[]} [chunks]
+ * @returns {string | Buffer}
+ */
 export default function mergeChunks(chunks) {
   if (!chunks || chunks.length === 0) {
     return Buffer.alloc(0);
