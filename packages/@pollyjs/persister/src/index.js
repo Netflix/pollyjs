@@ -19,7 +19,7 @@ export default class Persister {
 
   /* eslint-disable-next-line getter-return */
   static get name() {
-    assert('Must override the static `name` getter.', false);
+    assert('Must override the static `name` getter.');
   }
 
   get defaultOptions() {
@@ -202,14 +202,14 @@ export default class Persister {
   }
 
   findRecording() {
-    this.assert('Must implement the `findRecording` hook.', false);
+    this.assert('Must implement the `findRecording` hook.');
   }
 
   saveRecording() {
-    this.assert('Must implement the `saveRecording` hook.', false);
+    this.assert('Must implement the `saveRecording` hook.');
   }
 
   deleteRecording() {
-    this.assert('Must implement the `deleteRecording` hook.', false);
+    this.assert('Must implement the `deleteRecording` hook.');
   }
 }

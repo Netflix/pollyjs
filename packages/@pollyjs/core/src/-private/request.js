@@ -43,7 +43,7 @@ export default class PollyRequest extends HTTPBase {
     this.setHeaders(request.headers);
     this.recordingName = polly.recordingName;
     this.recordingId = polly.recordingId;
-    this.requestArguments = freeze(request.requestArguments || []);
+    this.requestArguments = freeze(request.requestArguments);
     this.promise = defer();
     this[POLLY] = polly;
     this[EVENT_EMITTER] = new EventEmitter({ eventNames: SUPPORTED_EVENTS });
@@ -163,7 +163,9 @@ export default class PollyRequest extends HTTPBase {
     this.timestamp = timestamp();
   }
 
-  async respond(status, headers, body) {
+  async respond(response) {
+    const { statusCode, headers, body } = response || {};
+
     assert(
       'Cannot respond to a request that already has a response.',
       !this.didRespond
@@ -172,8 +174,11 @@ export default class PollyRequest extends HTTPBase {
     // Timestamp the response
     this.response.timestamp = timestamp();
 
-    // Set the status code and headers
-    this.response.status(status).setHeaders(headers);
+    // Set the status code
+    this.response.status(statusCode);
+
+    // Se the headers
+    this.response.setHeaders(headers);
 
     // Set the body without modifying any headers (instead of using .send())
     this.response.body = body;
