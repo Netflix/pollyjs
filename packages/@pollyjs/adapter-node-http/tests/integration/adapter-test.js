@@ -1,7 +1,6 @@
 import http from 'http';
 import https from 'https';
 
-import semver from 'semver';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import { setupMocha as setupPolly } from '@pollyjs/core';
@@ -11,52 +10,26 @@ import setupPollyConfig from '../utils/setup-polly-config';
 import getResponseFromRequest from '../utils/get-response-from-request';
 import calculateHashFromStream from '../utils/calculate-hash-from-stream';
 
-const NativeMethods = new Map([
-  [http, { get: http.get, request: http.request }],
-  [https, { get: https.get, request: https.request }]
-]);
+describe('Integration | Node Http Adapter', function() {
+  describe('http', function() {
+    setupPolly.beforeEach(setupPollyConfig);
 
-function testTransportPatching(transport) {
-  it('should patch and unpatch', function() {
-    const { get, request } = NativeMethods.get(transport);
+    setupFetchRecord({
+      host: 'http://localhost:4000',
+      fetch: nativeRequest.bind(undefined, http)
+    });
 
-    expect(transport.get).to.not.equal(get);
-    expect(transport.request).to.not.equal(request);
+    setupPolly.afterEach();
 
-    this.polly.disconnectFrom('node-http');
-
-    expect(transport.get).to.equal(get);
-    expect(transport.request).to.equal(request);
+    adapterTests();
+    commonTests(http);
   });
-}
 
-function testBinaryDownload(transport) {
-  const { protocol } = transport.globalAgent;
-  const url = `${protocol}//via.placeholder.com/150/92c952`;
-
-  it('should be able to download binary content', async function() {
-    const { server } = this.polly;
-
-    server.get(url).passthrough(true);
-
-    const nativeResponseStream = await getResponseFromRequest(
-      transport.request(url)
-    );
-
-    server.get(url).passthrough(false);
-
-    const recordedResponseStream = await getResponseFromRequest(
-      transport.request(url)
-    );
-
-    const [nativeHash, recordedHash] = await Promise.all([
-      calculateHashFromStream(nativeResponseStream),
-      calculateHashFromStream(recordedResponseStream)
-    ]);
-
-    expect(nativeHash).to.equal(recordedHash);
+  describe('https', function() {
+    setupPolly(setupPollyConfig);
+    commonTests(https);
   });
-}
+});
 
 function commonTests(transport) {
   const { protocol } = transport.globalAgent;
@@ -79,33 +52,28 @@ function commonTests(transport) {
     expect(requests[0].id).to.equal(requests[1].id);
     expect(requests[0].identifiers.body).to.equal(body.toString('hex'));
   });
+
+  it('should be able to download binary content', async function() {
+    const url = `${protocol}//via.placeholder.com/150/92c952`;
+    const { server } = this.polly;
+
+    server.get(url).passthrough(true);
+
+    const nativeResponseStream = await getResponseFromRequest(
+      transport.request(url)
+    );
+
+    server.get(url).passthrough(false);
+
+    const recordedResponseStream = await getResponseFromRequest(
+      transport.request(url)
+    );
+
+    const [nativeHash, recordedHash] = await Promise.all([
+      calculateHashFromStream(nativeResponseStream),
+      calculateHashFromStream(recordedResponseStream)
+    ]);
+
+    expect(nativeHash).to.equal(recordedHash);
+  });
 }
-
-describe('Integration | Node Http Adapter', function() {
-  describe('http', function() {
-    setupPolly.beforeEach(setupPollyConfig);
-
-    setupFetchRecord({
-      host: 'http://localhost:4000',
-      fetch: nativeRequest.bind(undefined, http)
-    });
-
-    setupPolly.afterEach();
-
-    adapterTests();
-    testTransportPatching(http);
-    testBinaryDownload(http);
-    commonTests(http);
-  });
-
-  describe('https', function() {
-    setupPolly(setupPollyConfig);
-
-    if (semver.gte(process.version, '9.0.0')) {
-      testTransportPatching(http);
-    }
-
-    testBinaryDownload(https);
-    commonTests(https);
-  });
-});

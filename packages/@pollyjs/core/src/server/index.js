@@ -1,6 +1,6 @@
 import RouteRecognizer from 'route-recognizer';
 import castArray from 'lodash-es/castArray';
-import { URL, assert, timeout, buildUrl } from '@pollyjs/utils';
+import { HTTP_METHODS, URL, assert, timeout, buildUrl } from '@pollyjs/utils';
 
 import Route from './route';
 import Handler from './handler';
@@ -17,8 +17,6 @@ const CHARS = {
   STAR: '*',
   COLON: ':'
 };
-
-const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
 const { keys } = Object;
 
@@ -82,6 +80,10 @@ export default class Server {
 
   patch() {
     return this._register('PATCH', ...arguments);
+  }
+
+  merge() {
+    return this._register('MERGE', ...arguments);
   }
 
   head() {
@@ -200,7 +202,7 @@ export default class Server {
 
   _registryForHost(host) {
     if (!this[REGISTRY][host]) {
-      this[REGISTRY][host] = METHODS.reduce((acc, method) => {
+      this[REGISTRY][host] = HTTP_METHODS.reduce((acc, method) => {
         acc[method] = new RouteRecognizer();
         acc[method][HANDLERS] = new Map();
 

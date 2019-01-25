@@ -1,6 +1,6 @@
-import URL from 'url';
+import NodeUrl from 'url';
 
-import isObjectLike from 'lodash-es/isObjectLike';
+const { URL, parse } = NodeUrl;
 
 /**
  * Parse possible arguments passed into `new http.ClientRequest`.
@@ -13,10 +13,9 @@ import isObjectLike from 'lodash-es/isObjectLike';
  */
 export default function parseRequestArguments(url, options, callback) {
   if (typeof url === 'string') {
-    url = URL.parse(url);
-  } else if (isObjectLike(url) && url.searchParams && url.href) {
-    // url.URL instance
-    url = URL.parse(url.href);
+    url = parse(url);
+  } else if (URL && url instanceof URL) {
+    url = parse(`${url}`);
   } else {
     callback = options;
     options = url;

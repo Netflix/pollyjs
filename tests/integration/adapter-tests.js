@@ -167,6 +167,8 @@ export default function adapterTests() {
   });
 
   it('should work with CORS requests', async function() {
+    this.timeout(10000);
+
     const { server } = this.polly;
     const apiUrl = 'http://jsonplaceholder.typicode.com';
 

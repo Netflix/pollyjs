@@ -1,9 +1,12 @@
 import http from 'http';
+import https from 'https';
 import URL from 'url';
 import { Readable } from 'stream';
 
-import Adapter from '@pollyjs/adapter';
 import nock from 'nock';
+import semver from 'semver';
+import Adapter from '@pollyjs/adapter';
+import { HTTP_METHODS } from '@pollyjs/utils';
 
 import parseRequestArguments from './utils/parse-request-arguments';
 import getUrlFromOptions from './utils/get-url-from-options';
@@ -11,7 +14,6 @@ import isBinaryBuffer from './utils/is-binary-buffer';
 import isContentEncoded from './utils/is-content-encoded';
 import mergeChunks from './utils/merge-chunks';
 
-const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 const IS_STUBBED = Symbol();
 const ARGUMENTS = Symbol();
 
@@ -36,6 +38,16 @@ export default class HttpAdapter extends Adapter {
 
     this.NativeClientRequest = http.ClientRequest;
     this.setupNock();
+
+    // Activate nock so it can start to intercept all outgoing requests
+    nock.activate();
+
+    // Patch methods overridden by nock to add some missing functionality
+    this.patchOverriddenMethods();
+
+    // Add an IS_STUBBED boolean so we can check on onConnect if we've already
+    // patched the necessary methods.
+    http.ClientRequest[IS_STUBBED] = true;
   }
 
   onDisconnect() {
@@ -55,13 +67,20 @@ export default class HttpAdapter extends Adapter {
       filteringScope: () => true
     }).persist();
 
-    METHODS.forEach(m => {
+    HTTP_METHODS.forEach(m => {
       // Add an intercept for each supported HTTP method that will match all paths
       interceptor.intercept(/.*/, m).reply(function(_, body, respond) {
         const { req, method } = this;
         const { headers } = req;
         const parsedArguments = parseRequestArguments(...req[ARGUMENTS]);
         const url = getUrlFromOptions(parsedArguments.options);
+
+        // body will always be a string unless the content-type is application/json
+        // in which nock will then parse into an object. We have our own way of
+        // dealing with json content to convert it back to a string.
+        if (body && typeof body !== 'string') {
+          body = JSON.stringify(body);
+        }
 
         adapter.handleRequest({
           url,
@@ -72,24 +91,64 @@ export default class HttpAdapter extends Adapter {
         });
       });
     });
+  }
 
-    // Activate nock so it can start to intercept all outgoing requests
-    nock.activate();
+  patchOverriddenMethods() {
+    const modules = { http, https };
+    const { ClientRequest } = http;
 
-    // Override the already overridden ClientRequest class so we can get
+    // Patch the already overridden ClientRequest class so we can get
     // access to the original arguments and use them when creating the
     // passthrough request.
-    const OverriddenClientRequest = http.ClientRequest;
-
-    http.ClientRequest = function ClientRequest() {
-      const req = new OverriddenClientRequest(...arguments);
+    http.ClientRequest = function _ClientRequest() {
+      const req = new ClientRequest(...arguments);
 
       req[ARGUMENTS] = [...arguments];
 
       return req;
     };
 
-    http.ClientRequest[IS_STUBBED] = true;
+    // Patch http.request, http.get, https.request, and https.get
+    // to support new Node.js 10.9 signature `http.request(url[, options][, callback])`
+    // (https://github.com/nock/nock/issues/1227).
+    //
+    // This patch is also needed to set some default values which nock doesn't
+    // properly set.
+    Object.keys(modules).forEach(moduleName => {
+      const module = modules[moduleName];
+      const { request, get, globalAgent } = module;
+      const parseArgs = function() {
+        const args = parseRequestArguments(...arguments);
+
+        if (moduleName === 'https') {
+          args.options = {
+            ...{ port: 443, protocol: 'https:', _defaultAgent: globalAgent },
+            ...args.options
+          };
+        } else {
+          args.options = {
+            ...{ port: 80, protocol: 'http:' },
+            ...args.options
+          };
+        }
+
+        return args;
+      };
+
+      module.request = function _request() {
+        const { options, callback } = parseArgs(...arguments);
+
+        return request(options, callback);
+      };
+
+      if (semver.satisfies(process.version, '>=8')) {
+        module.get = function _get() {
+          const { options, callback } = parseArgs(...arguments);
+
+          return get(options, callback);
+        };
+      }
+    });
   }
 
   async passthroughRequest(pollyRequest) {
@@ -133,19 +192,30 @@ export default class HttpAdapter extends Adapter {
     };
   }
 
-  respondToRequest(pollyRequest) {
+  async respondToRequest(pollyRequest) {
     const { statusCode, body, headers } = pollyRequest.response;
-    const { respond } = pollyRequest.requestArguments;
+    const { req, respond } = pollyRequest.requestArguments;
     const chunks = this.getChunksFromBody(body, headers);
     const stream = new Readable();
 
-    // Expose the respond data as a stream of chunks since
-    // it could contain chunks of encoded data which is needed
+    // Expose the response data as a stream of chunks since
+    // it could contain encoded data which is needed
     // to be pushed to the response chunk by chunk.
     chunks.forEach(chunk => stream.push(chunk));
     stream.push(null);
 
+    // Create a promise that will resolve once the response
+    // has been received. This is needed so that the deferred promise
+    // used by `polly.flush()` doesn't resolve before the response was
+    // actually received.
+    const responseReceivedPromise = new Promise((resolve, reject) => {
+      req.once('response', resolve);
+      req.once('error', reject);
+    });
+
     respond(null, [statusCode, stream, headers]);
+
+    await responseReceivedPromise;
   }
 
   getBodyFromChunks(chunks, headers) {
