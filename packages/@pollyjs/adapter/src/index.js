@@ -65,7 +65,7 @@ export default class Adapter {
         return false;
       }
 
-      if (navigator && !navigator.onLine) {
+      if ('navigator' in global && !navigator.onLine) {
         console.warn(
           '[Polly] Recording for the following request has expired but the browser is offline.\n' +
             `${recordingEntry.request.method} ${recordingEntry.request.url}\n`,
