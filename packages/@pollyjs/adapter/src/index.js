@@ -17,7 +17,7 @@ export default class Adapter {
 
   /* eslint-disable-next-line getter-return */
   static get name() {
-    assert('Must override the static `name` getter.', false);
+    assert('Must override the static `name` getter.');
   }
 
   get defaultOptions() {
@@ -217,27 +217,34 @@ export default class Adapter {
     );
   }
 
-  /* Required Hooks */
   onConnect() {
-    this.assert('Must implement the `onConnect` hook.', false);
+    this.assert('Must implement the `onConnect` hook.');
   }
 
   onDisconnect() {
-    this.assert('Must implement the `onDisconnect` hook.', false);
+    this.assert('Must implement the `onDisconnect` hook.');
   }
 
   /**
    * @param {PollyRequest} pollyRequest
-   * @returns {response}
+   * @returns {{ statusCode: number, headers: Object, body: string }}
    */
   async passthroughRequest(/* pollyRequest */) {
-    this.assert('Must implement `passthroughRequest`.', false);
+    this.assert('Must implement the `passthroughRequest`.');
   }
 
-  /* Other Hooks */
+  /**
+   * Make sure the response from a Polly request is delivered to the
+   * user through the adapter interface.
+   *
+   * Calling `pollyjs.flush()` will await this method.
+   *
+   * @param {PollyRequest} pollyRequest
+   */
+  async respondToRequest(/* pollyRequest */) {}
+
   /**
    * @param {PollyRequest} pollyRequest
-   * @returns {*}
    */
   async onRecord(pollyRequest) {
     await this.onPassthrough(pollyRequest);
@@ -248,31 +255,26 @@ export default class Adapter {
    * @param {PollyRequest} pollyRequest
    * @param {Object} normalizedResponse The normalized response generated from the recording entry
    * @param {Object} recordingEntry The entire recording entry
-   * @returns {*}
    */
-  async onReplay(pollyRequest, { statusCode, headers, body }) {
-    await pollyRequest.respond(statusCode, headers, body);
+  async onReplay(pollyRequest, normalizedResponse) {
+    await pollyRequest.respond(normalizedResponse);
   }
 
   /**
    * @param {PollyRequest} pollyRequest
-   * @param {PollyResponse} response
-   * @returns {*}
+   * @param {PollyResponse} pollyResponse
    */
-  async onIntercept(pollyRequest, { statusCode, headers, body }) {
-    await pollyRequest.respond(statusCode, headers, body);
+  async onIntercept(pollyRequest, pollyResponse) {
+    await pollyRequest.respond(pollyResponse);
   }
 
   /**
    * @param {PollyRequest} pollyRequest
-   * @returns {*}
    */
   async onPassthrough(pollyRequest) {
-    const { statusCode, headers, body } = await this.passthroughRequest(
-      pollyRequest
-    );
+    const response = await this.passthroughRequest(pollyRequest);
 
-    await pollyRequest.respond(statusCode, headers, body);
+    await pollyRequest.respond(response);
   }
 
   /**
@@ -294,7 +296,6 @@ export default class Adapter {
 
   /**
    * @param {PollyRequest} pollyRequest
-   * @param {*} result The returned result value from the request handler
    */
   async onRequestFinished(pollyRequest) {
     await this.respondToRequest(pollyRequest);
@@ -309,12 +310,4 @@ export default class Adapter {
   onRequestFailed(pollyRequest, error) {
     pollyRequest.promise.reject(error);
   }
-
-  /**
-   * Make sure the response from a Polly request is delivered to the
-   * user through the adapter interface.
-   *
-   * Calling `pollyjs.flush()` will await this method.
-   */
-  async respondToRequest(/* pollyRequest */) {}
 }
