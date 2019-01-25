@@ -12,13 +12,14 @@ export default function getUrlFromOptions(options = {}) {
     return options.href;
   }
 
-  const { path, host, port } = options;
-  const protocol = options.protocol || `${options.proto}:` || 'https:';
+  const protocol = options.protocol || `${options.proto}:` || 'http:';
+  const host = options.hostname || options.host || 'localhost';
+  const { path, port } = options;
   const url = new URL();
 
   url.set('protocol', protocol);
+  url.set('host', host);
   url.set('pathname', path);
-  url.set('hostname', host);
 
   if (
     port &&
