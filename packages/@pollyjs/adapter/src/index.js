@@ -230,7 +230,7 @@ export default class Adapter {
    * @returns {{ statusCode: number, headers: Object, body: string }}
    */
   async passthroughRequest(/* pollyRequest */) {
-    this.assert('Must implement the `passthroughRequest`.');
+    this.assert('Must implement the `passthroughRequest` hook.');
   }
 
   /**
