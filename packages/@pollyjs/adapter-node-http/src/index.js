@@ -216,9 +216,13 @@ export default class HttpAdapter extends Adapter {
     // that the deferred promise used by `polly.flush()` doesn't resolve before
     // the response was actually received.
     const requestFinishedPromise = new Promise(resolve => {
-      req.once('response', resolve);
-      req.once('abort', resolve);
-      req.once('error', resolve);
+      if (req.aborted) {
+        resolve();
+      } else {
+        req.once('response', resolve);
+        req.once('abort', resolve);
+        req.once('error', resolve);
+      }
     });
 
     respond(null, [statusCode, stream, headers]);
