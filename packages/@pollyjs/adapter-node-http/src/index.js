@@ -15,7 +15,7 @@ import isContentEncoded from './utils/is-content-encoded';
 import mergeChunks from './utils/merge-chunks';
 
 const IS_STUBBED = Symbol();
-const ARGUMENTS = Symbol();
+const REQUEST_ARGUMENTS = new WeakMap();
 
 // nock begins to intercept network requests on import which is not the
 // behavior we want, so restore the original behavior right away.
@@ -44,10 +44,6 @@ export default class HttpAdapter extends Adapter {
 
     // Patch methods overridden by nock to add some missing functionality
     this.patchOverriddenMethods();
-
-    // Add an IS_STUBBED boolean so we can check on onConnect if we've already
-    // patched the necessary methods.
-    http.ClientRequest[IS_STUBBED] = true;
   }
 
   onDisconnect() {
@@ -72,7 +68,9 @@ export default class HttpAdapter extends Adapter {
       interceptor.intercept(/.*/, m).reply(function(_, body, respond) {
         const { req, method } = this;
         const { headers } = req;
-        const parsedArguments = parseRequestArguments(...req[ARGUMENTS]);
+        const parsedArguments = parseRequestArguments(
+          ...REQUEST_ARGUMENTS.get(req)
+        );
         const url = getUrlFromOptions(parsedArguments.options);
 
         // body will always be a string unless the content-type is application/json
@@ -103,10 +101,14 @@ export default class HttpAdapter extends Adapter {
     http.ClientRequest = function _ClientRequest() {
       const req = new ClientRequest(...arguments);
 
-      req[ARGUMENTS] = [...arguments];
+      REQUEST_ARGUMENTS.set(req, [...arguments]);
 
       return req;
     };
+
+    // Add an IS_STUBBED boolean so we can check on onConnect if we've already
+    // patched the necessary methods.
+    http.ClientRequest[IS_STUBBED] = true;
 
     // Patch http.request, http.get, https.request, and https.get
     // to support new Node.js 10.9 signature `http.request(url[, options][, callback])`
