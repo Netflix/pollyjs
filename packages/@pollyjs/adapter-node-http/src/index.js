@@ -59,9 +59,7 @@ export default class HttpAdapter extends Adapter {
     nock.cleanAll();
 
     // Create our interceptor that will match all hosts
-    const interceptor = nock(/.*/, {
-      filteringScope: () => true
-    }).persist();
+    const interceptor = nock(/.*/).persist();
 
     HTTP_METHODS.forEach(m => {
       // Add an intercept for each supported HTTP method that will match all paths
