@@ -175,7 +175,6 @@ export default class HttpAdapter extends Adapter {
     const responsePromise = new Promise((resolve, reject) => {
       request.once('response', resolve);
       request.once('error', reject);
-      request.once('abort', reject);
       request.once('timeout', reject);
     });
 
