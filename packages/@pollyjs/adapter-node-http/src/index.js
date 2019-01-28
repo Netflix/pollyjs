@@ -39,9 +39,6 @@ export default class HttpAdapter extends Adapter {
     this.NativeClientRequest = http.ClientRequest;
     this.setupNock();
 
-    // Activate nock so it can start to intercept all outgoing requests
-    nock.activate();
-
     // Patch methods overridden by nock to add some missing functionality
     this.patchOverriddenMethods();
   }
@@ -92,6 +89,9 @@ export default class HttpAdapter extends Adapter {
           });
       });
     });
+
+    // Activate nock so it can start to intercept all outgoing requests
+    nock.activate();
   }
 
   patchOverriddenMethods() {
