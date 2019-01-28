@@ -173,8 +173,10 @@ export default class HttpAdapter extends Adapter {
     const chunks = this.getChunksFromBody(body, headers);
 
     const responsePromise = new Promise((resolve, reject) => {
-      request.once('response', response => resolve(response));
+      request.once('response', resolve);
       request.once('error', reject);
+      request.once('abort', reject);
+      request.once('timeout', reject);
     });
 
     // Write the request body
