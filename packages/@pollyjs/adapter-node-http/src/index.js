@@ -80,13 +80,18 @@ export default class HttpAdapter extends Adapter {
           body = JSON.stringify(body);
         }
 
-        adapter.handleRequest({
-          url,
-          method,
-          headers,
-          body,
-          requestArguments: { req, body, respond, parsedArguments }
-        });
+        adapter
+          .handleRequest({
+            url,
+            method,
+            headers,
+            body,
+            requestArguments: { req, body, respond, parsedArguments }
+          })
+          .catch(e => {
+            // This allows the consumer to handle the error gracefully
+            req.emit('error', e);
+          });
       });
     });
   }
@@ -206,18 +211,19 @@ export default class HttpAdapter extends Adapter {
     chunks.forEach(chunk => stream.push(chunk));
     stream.push(null);
 
-    // Create a promise that will resolve once the response
-    // has been received. This is needed so that the deferred promise
-    // used by `polly.flush()` doesn't resolve before the response was
-    // actually received.
-    const responseReceivedPromise = new Promise((resolve, reject) => {
+    // Create a promise that will resolve once the request
+    // has been completed (including errored or aborted). This is needed so
+    // that the deferred promise used by `polly.flush()` doesn't resolve before
+    // the response was actually received.
+    const requestFinishedPromise = new Promise(resolve => {
       req.once('response', resolve);
-      req.once('error', reject);
+      req.once('abort', resolve);
+      req.once('error', resolve);
     });
 
     respond(null, [statusCode, stream, headers]);
 
-    await responseReceivedPromise;
+    await requestFinishedPromise;
   }
 
   getBodyFromChunks(chunks, headers) {
