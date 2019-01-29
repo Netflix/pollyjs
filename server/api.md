@@ -2,7 +2,7 @@
 
 ## HTTP Methods
 
-The `get`, `put`, `post`, `patch`, `delete`, `head`, and `options` HTTP methods
+The `GET`, `PUT`, `POST`, `PATCH`, `DELETE`, `MERGE`, `HEAD`, and `OPTIONS` HTTP methods
 have a corresponding method on the server instance.
 
 ```js
@@ -11,6 +11,7 @@ server.put('/ping');
 server.post('/ping');
 server.patch('/ping');
 server.delete('/ping');
+server.merge('/ping');
 server.head('/ping');
 server.options('/ping');
 ```
