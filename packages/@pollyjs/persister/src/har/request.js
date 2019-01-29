@@ -32,12 +32,13 @@ export default class Request {
     this.queryString = toNVPairs(request.query);
     this.cookies = setCookies.parse(request.getHeader('Set-Cookie'));
 
-    if (request.body || request.hasHeader('Content-Type')) {
+    if (request.body) {
       this.postData = {
-        mimeType: request.getHeader('Content-Type') || 'text/plain'
+        mimeType: request.getHeader('Content-Type') || 'text/plain',
+        params: []
       };
 
-      if (request.body && typeof request.body === 'string') {
+      if (typeof request.body === 'string') {
         this.postData.text = request.body;
       }
     }
