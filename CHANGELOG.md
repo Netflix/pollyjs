@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/netflix/pollyjs/compare/v1.4.2...v2.0.0) (2019-01-29)
+
+
+*  feat(adapter-node-http): Use `nock` under the hood instead of custom implementation (#166) ([62374f4](https://github.com/netflix/pollyjs/commit/62374f4)), closes [#166](https://github.com/netflix/pollyjs/issues/166)
+
+
+### Bug Fixes
+
+* **adapter:** Test for navigator before accessing ([#165](https://github.com/netflix/pollyjs/issues/165)) ([7200255](https://github.com/netflix/pollyjs/commit/7200255))
+* **ember:** Remove Node 6 from supported versions ([#169](https://github.com/netflix/pollyjs/issues/169)) ([07b2b4e](https://github.com/netflix/pollyjs/commit/07b2b4e))
+* **persister:** Only persist post data if a request has a body ([#171](https://github.com/netflix/pollyjs/issues/171)) ([f62d318](https://github.com/netflix/pollyjs/commit/f62d318))
+
+
+### chore
+
+* Remove support for Node 6 ([#167](https://github.com/netflix/pollyjs/issues/167)) ([a08a8cf](https://github.com/netflix/pollyjs/commit/a08a8cf))
+
+
+### Features
+
+* Make PollyRequest.respond accept a response object ([#168](https://github.com/netflix/pollyjs/issues/168)) ([5b07b26](https://github.com/netflix/pollyjs/commit/5b07b26))
+* Simplify adapter implementation ([#154](https://github.com/netflix/pollyjs/issues/154)) ([12c8601](https://github.com/netflix/pollyjs/commit/12c8601))
+
+
+### BREAKING CHANGES
+
+* The node-http adapter no longer accepts the `transports` option
+* Any adapters calling `pollyRequest.respond` should pass it a response object instead of the previous 3 arguments (statusCode, headers, body).
+* Polly will no longer actively support Node 6
+* Changes to the base adapter implementation and external facing API
+
+
+
+
+
 ## [1.4.2](https://github.com/netflix/pollyjs/compare/v1.4.1...v1.4.2) (2019-01-16)
 
 

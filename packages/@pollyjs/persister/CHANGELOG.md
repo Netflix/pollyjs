@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v1.4.2...v2.0.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **persister:** Only persist post data if a request has a body ([#171](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/171)) ([f62d318](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/f62d318))
+
+
+### Features
+
+* Make PollyRequest.respond accept a response object ([#168](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/168)) ([5b07b26](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/5b07b26))
+
+
+### BREAKING CHANGES
+
+* Any adapters calling `pollyRequest.respond` should pass it a response object instead of the previous 3 arguments (statusCode, headers, body).
+
+
+
+
+
 ## [1.4.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v1.4.0...v1.4.1) (2018-12-13)
 
 **Note:** Version bump only for package @pollyjs/persister

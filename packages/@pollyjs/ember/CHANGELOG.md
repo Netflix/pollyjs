@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v1.4.2...v2.0.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **ember:** Remove Node 6 from supported versions ([#169](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/ember/issues/169)) ([07b2b4e](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/07b2b4e))
+
+
+
+
+
 ## [1.4.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v1.4.1...v1.4.2) (2019-01-16)
 
 **Note:** Version bump only for package @pollyjs/ember

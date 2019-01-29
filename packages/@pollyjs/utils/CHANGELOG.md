@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v1.4.2...v2.0.0) (2019-01-29)
+
+
+### Features
+
+* Make PollyRequest.respond accept a response object ([#168](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/utils/issues/168)) ([5b07b26](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/5b07b26))
+
+
+*  feat(adapter-node-http): Use `nock` under the hood instead of custom implementation (#166) ([62374f4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/62374f4)), closes [#166](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/issues/166)
+
+
+### BREAKING CHANGES
+
+* The node-http adapter no longer accepts the `transports` option
+* Any adapters calling `pollyRequest.respond` should pass it a response object instead of the previous 3 arguments (statusCode, headers, body).
+
+
+
+
+
 ## [1.4.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v1.4.0...v1.4.1) (2018-12-13)
 
 

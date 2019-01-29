@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v1.4.2...v2.0.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **adapter:** Test for navigator before accessing ([#165](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter/issues/165)) ([7200255](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/7200255))
+
+
+### Features
+
+* Make PollyRequest.respond accept a response object ([#168](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter/issues/168)) ([5b07b26](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/5b07b26))
+* Simplify adapter implementation ([#154](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter/issues/154)) ([12c8601](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/12c8601))
+
+
+### BREAKING CHANGES
+
+* Any adapters calling `pollyRequest.respond` should pass it a response object instead of the previous 3 arguments (statusCode, headers, body).
+* Changes to the base adapter implementation and external facing API
+
+
+
+
+
 ## [1.4.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v1.4.0...v1.4.1) (2018-12-13)
 
 **Note:** Version bump only for package @pollyjs/adapter

@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/node-server",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "description": "Standalone node server and express integration for @pollyjs",
   "main": "dist/cjs/pollyjs-node-server.js",
   "module": "dist/es/pollyjs-node-server.js",
@@ -43,7 +43,7 @@
     "test:clean": ""
   },
   "dependencies": {
-    "@pollyjs/utils": "^1.4.1",
+    "@pollyjs/utils": "^2.0.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",

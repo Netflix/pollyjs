@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v1.4.2...v2.0.0) (2019-01-29)
+
+
+### Features
+
+* Simplify adapter implementation ([#154](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter-xhr/issues/154)) ([12c8601](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/commit/12c8601))
+
+
+### BREAKING CHANGES
+
+* Changes to the base adapter implementation and external facing API
+
+
+
+
+
 ## [1.4.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v1.4.1...v1.4.2) (2019-01-16)
 
 **Note:** Version bump only for package @pollyjs/adapter-xhr
