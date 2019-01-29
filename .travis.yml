@@ -22,3 +22,4 @@ install:
 script:
   - commitlint-travis
   - yarn run test:ci
+  - ./scripts/require-clean-work-tree.sh
