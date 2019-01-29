@@ -1,6 +1,6 @@
-import Server from '../../../src/server';
+import { HTTP_METHODS } from '@pollyjs/utils';
 
-const METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
+import Server from '../../../src/server';
 
 let server;
 
@@ -20,14 +20,14 @@ describe('Unit | Server', function() {
     });
 
     it('should handle all HTTP methods', function() {
-      METHODS.forEach(method => {
+      HTTP_METHODS.forEach(method => {
         server[method.toLowerCase()]('/foo').intercept(() => 200);
         expect(request(method, '/foo')).to.equal(200);
       });
     });
 
     it('should handle multiple routes on all HTTP methods', function() {
-      METHODS.forEach(method => {
+      HTTP_METHODS.forEach(method => {
         server[method.toLowerCase()]([
           `/${method}`,
           `/${method}/*path`

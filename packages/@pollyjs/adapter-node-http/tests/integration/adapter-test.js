@@ -1,62 +1,68 @@
 import http from 'http';
 import https from 'https';
 
-import semver from 'semver';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
-import { setupMocha as setupPolly } from '@pollyjs/core';
+import { Polly, setupMocha as setupPolly } from '@pollyjs/core';
 
+import NodeHTTPAdapter from '../../src';
 import nativeRequest from '../utils/native-request';
 import setupPollyConfig from '../utils/setup-polly-config';
 import getResponseFromRequest from '../utils/get-response-from-request';
 import calculateHashFromStream from '../utils/calculate-hash-from-stream';
 
-const NativeMethods = new Map([
-  [http, { get: http.get, request: http.request }],
-  [https, { get: https.get, request: https.request }]
-]);
+describe('Integration | Node Http Adapter', function() {
+  describe('Concurrency', function() {
+    it('should prevent concurrent Node HTTP adapter instances', async function() {
+      const one = new Polly('one');
+      const two = new Polly('two');
 
-function testTransportPatching(transport) {
-  it('should patch and unpatch', function() {
-    const { get, request } = NativeMethods.get(transport);
+      one.connectTo(NodeHTTPAdapter);
 
-    expect(transport.get).to.not.equal(get);
-    expect(transport.request).to.not.equal(request);
+      expect(function() {
+        two.connectTo(NodeHTTPAdapter);
+      }).to.throw(/Running concurrent node-http adapters is unsupported/);
 
-    this.polly.disconnectFrom('node-http');
+      await one.stop();
+      await two.stop();
+    });
 
-    expect(transport.get).to.equal(get);
-    expect(transport.request).to.equal(request);
+    it('should prevent running nock concurrently with the node-http adapter', async function() {
+      const polly = new Polly('nock');
+      const nock = require('nock');
+
+      nock.activate();
+
+      expect(function() {
+        polly.connectTo(NodeHTTPAdapter);
+      }).to.throw(
+        /Running nock concurrently with the node-http adapter is unsupported/
+      );
+
+      nock.restore();
+      await polly.stop();
+    });
   });
-}
 
-function testBinaryDownload(transport) {
-  const { protocol } = transport.globalAgent;
-  const url = `${protocol}//via.placeholder.com/150/92c952`;
+  describe('http', function() {
+    setupPolly.beforeEach(setupPollyConfig);
 
-  it('should be able to download binary content', async function() {
-    const { server } = this.polly;
+    setupFetchRecord({
+      host: 'http://localhost:4000',
+      fetch: nativeRequest.bind(undefined, http)
+    });
 
-    server.get(url).passthrough(true);
+    setupPolly.afterEach();
 
-    const nativeResponseStream = await getResponseFromRequest(
-      transport.request(url)
-    );
-
-    server.get(url).passthrough(false);
-
-    const recordedResponseStream = await getResponseFromRequest(
-      transport.request(url)
-    );
-
-    const [nativeHash, recordedHash] = await Promise.all([
-      calculateHashFromStream(nativeResponseStream),
-      calculateHashFromStream(recordedResponseStream)
-    ]);
-
-    expect(nativeHash).to.equal(recordedHash);
+    adapterTests();
+    commonTests(http);
   });
-}
+
+  describe('https', function() {
+    setupPolly(setupPollyConfig);
+    commonTests(https);
+  });
+});
 
 function commonTests(transport) {
   const { protocol } = transport.globalAgent;
@@ -79,33 +85,28 @@ function commonTests(transport) {
     expect(requests[0].id).to.equal(requests[1].id);
     expect(requests[0].identifiers.body).to.equal(body.toString('hex'));
   });
+
+  it('should be able to download binary content', async function() {
+    const url = `${protocol}//via.placeholder.com/150/92c952`;
+    const { server } = this.polly;
+
+    server.get(url).passthrough(true);
+
+    const nativeResponseStream = await getResponseFromRequest(
+      transport.request(url)
+    );
+
+    server.get(url).passthrough(false);
+
+    const recordedResponseStream = await getResponseFromRequest(
+      transport.request(url)
+    );
+
+    const [nativeHash, recordedHash] = await Promise.all([
+      calculateHashFromStream(nativeResponseStream),
+      calculateHashFromStream(recordedResponseStream)
+    ]);
+
+    expect(nativeHash).to.equal(recordedHash);
+  });
 }
-
-describe('Integration | Node Http Adapter', function() {
-  describe('http', function() {
-    setupPolly.beforeEach(setupPollyConfig);
-
-    setupFetchRecord({
-      host: 'http://localhost:4000',
-      fetch: nativeRequest.bind(undefined, http)
-    });
-
-    setupPolly.afterEach();
-
-    adapterTests();
-    testTransportPatching(http);
-    testBinaryDownload(http);
-    commonTests(http);
-  });
-
-  describe('https', function() {
-    setupPolly(setupPollyConfig);
-
-    if (semver.gte(process.version, '9.0.0')) {
-      testTransportPatching(http);
-    }
-
-    testBinaryDownload(https);
-    commonTests(https);
-  });
-});

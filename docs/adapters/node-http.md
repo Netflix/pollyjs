@@ -1,6 +1,6 @@
 # Node HTTP Adapter
 
-The node-http adapter provides a low level nodejs http request adapter that patches the [http](https://nodejs.org/api/http.html) and [https](https://nodejs.org/api/https.html) modules in nodejs for seamless recording and replaying of requests.
+The node-http adapter provides a low level nodejs http request adapter that uses [nock](https://github.com/nock/nock) to patch the [http](https://nodejs.org/api/http.html) and [https](https://nodejs.org/api/https.html) modules in nodejs for seamless recording and replaying of requests.
 
 ## Installation
 
@@ -41,26 +41,4 @@ polly.connectTo('node-http');
 
 // Disconnect using the `disconnectFrom` API
 polly.disconnectFrom('node-http');
-```
-
-## Options
-
-### transports
-
-_Type_: `Array`
-_Default_: `['http', 'https']`
-
-The node transport modules to patch. By default, both the [http](https://nodejs.org/api/http.html) and [https](https://nodejs.org/api/https.html) modules are patched. In Node 8 and
-below, the https module patching is skipped as it uses the http methods under the hood.
-
-**Example**
-
-```js
-polly.configure({
-  adapterOptions: {
-    'node-http': {
-      transports: ['http']
-    }
-  }
-});
 ```
