@@ -24,7 +24,7 @@ export default class XHRAdapter extends Adapter {
 
     this.xhr.onCreate = xhr => {
       xhr[SEND] = xhr.send;
-      xhr.send = async body => {
+      xhr.send = body => {
         xhr[SEND](body);
         this.handleRequest({
           url: xhr.url,
