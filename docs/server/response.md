@@ -69,7 +69,7 @@ removed.
 **Example**
 
 ```js
-req.setHeader('Content-Length', 42);
+res.setHeader('Content-Length', 42);
 ```
 
 ### setHeaders
@@ -85,7 +85,7 @@ removed.
 **Example**
 
 ```js
-req.setHeaders({
+res.setHeaders({
   'Content-Type': 'application/json',
   'Content-Length': 42
 });
@@ -103,7 +103,7 @@ Remove a header with the given name.
 **Example**
 
 ```js
-req.removeHeader('Content-Length');
+res.removeHeader('Content-Length');
 ```
 
 ### removeHeaders
@@ -118,7 +118,7 @@ Remove multiple headers at once.
 **Example**
 
 ```js
-req.removeHeaders(['Content-Type' 'Content-Length']);
+res.removeHeaders(['Content-Type' 'Content-Length']);
 ```
 
 ### hasHeader
