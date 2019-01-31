@@ -25,7 +25,7 @@ describe('Unit | HTTPBase', function() {
       expect(base.getHeader('one')).to.equal('1');
       expect(base.getHeader('Two')).to.be.undefined;
 
-      base.setHeader('One', '');
+      base.removeHeader('One');
       expect(base.getHeader('One')).to.be.undefined;
       expect(base.getHeader('one')).to.be.undefined;
     });
@@ -40,7 +40,7 @@ describe('Unit | HTTPBase', function() {
       expect(base.hasHeader('one')).to.be.true;
       expect(base.hasHeader('Two')).to.be.false;
 
-      base.setHeader('One', '');
+      base.removeHeader('One');
       expect(base.hasHeader('One')).to.be.false;
       expect(base.hasHeader('one')).to.be.false;
     });
@@ -54,7 +54,7 @@ describe('Unit | HTTPBase', function() {
       base.setHeader('two', '2');
       expect(headers).to.deep.equal({ one: '1', two: '2' });
 
-      base.setHeader('Two', '');
+      base.setHeader('Two', null);
       expect(headers).to.deep.equal({ one: '1' });
     });
 
@@ -67,8 +67,29 @@ describe('Unit | HTTPBase', function() {
       base.setHeaders({ Three: '3' });
       expect(headers).to.deep.equal({ one: '1', two: '2', three: '3' });
 
-      base.setHeaders({ Three: '' });
+      base.setHeaders({ Three: null });
       expect(headers).to.deep.equal({ one: '1', two: '2' });
+    });
+
+    it('.removeHeader()', function() {
+      const { headers } = base;
+
+      base.setHeaders({ One: '1', Two: '2' });
+
+      base.removeHeader('One');
+      expect(headers).to.deep.equal({ two: '2' });
+
+      base.removeHeader('two');
+      expect(headers).to.deep.equal({});
+    });
+
+    it('.removeHeaders()', function() {
+      const { headers } = base;
+
+      base.setHeaders({ One: '1', Two: '2' });
+
+      base.removeHeaders(['One', 'two']);
+      expect(headers).to.deep.equal({});
     });
 
     it('.type()', function() {

@@ -28,13 +28,43 @@ describe('Unit | Utils | HTTPHeaders', function() {
     expect(headers['CONTENT-TYPE']).to.equal('application/json');
   });
 
-  it('should delete header when set with a falsy value', function() {
+  it('should allow an empty header value', function() {
+    const headers = new HTTPHeaders();
+
+    headers['Content-Type'] = '';
+
+    expect(headers['Content-Type']).to.equal('');
+  });
+
+  it('should delete header regardless of case', function() {
+    const headers = new HTTPHeaders();
+
+    headers['Content-Type'] = 'application/json';
+    expect(keys(headers)).to.deep.equal(['content-type']);
+
+    delete headers['Content-Type'];
+    expect(keys(headers)).to.deep.equal([]);
+
+    headers['Content-Type'] = 'application/json';
+    expect(keys(headers)).to.deep.equal(['content-type']);
+
+    delete headers['CONTENT-TYPE'];
+    expect(keys(headers)).to.deep.equal([]);
+  });
+
+  it('should delete header when set with a null/undefined value', function() {
     const headers = new HTTPHeaders();
 
     headers['Content-Type'] = 'application/json';
     expect(keys(headers)).to.deep.equal(['content-type']);
 
     headers['Content-Type'] = null;
+    expect(keys(headers)).to.deep.equal([]);
+
+    headers['Content-Type'] = 'application/json';
+    expect(keys(headers)).to.deep.equal(['content-type']);
+
+    headers['Content-Type'] = undefined;
     expect(keys(headers)).to.deep.equal([]);
   });
 
@@ -48,5 +78,11 @@ describe('Unit | Utils | HTTPHeaders', function() {
     const headers = new HTTPHeaders();
 
     expect(() => (headers[Symbol()] = 'Foo')).to.throw(TypeError);
+  });
+
+  it('should not allow deleting a non string header key', function() {
+    const headers = new HTTPHeaders();
+
+    expect(() => delete headers[Symbol()]).to.throw(TypeError);
   });
 });
