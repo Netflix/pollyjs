@@ -2,6 +2,7 @@ import { ACTIONS, MODES, Serializers, assert } from '@pollyjs/utils';
 
 import Interceptor from './-private/interceptor';
 import isExpired from './utils/is-expired';
+import stringifyRequest from './utils/stringify-request';
 
 const REQUEST_HANDLER = Symbol();
 
@@ -111,27 +112,20 @@ export default class Adapter {
   async [REQUEST_HANDLER](pollyRequest) {
     const { mode } = this.polly;
     let interceptor;
-    const {
-      shouldIntercept,
-      shouldPassthrough,
-      identifiers,
-      id,
-      order,
-      url
-    } = pollyRequest;
 
-    if (shouldIntercept) {
+    if (pollyRequest.shouldIntercept) {
       interceptor = new Interceptor();
-      const response = await this.intercept(pollyRequest, interceptor);
+
+      await this.intercept(pollyRequest, interceptor);
 
       if (interceptor.shouldIntercept) {
-        return response;
+        return;
       }
     }
 
     if (
       mode === MODES.PASSTHROUGH ||
-      shouldPassthrough ||
+      pollyRequest.shouldPassthrough ||
       (interceptor && interceptor.shouldPassthrough)
     ) {
       return this.passthrough(pollyRequest);
@@ -152,9 +146,7 @@ export default class Adapter {
 
     // This should never be reached. If it did, then something screwy happened.
     this.assert(
-      'Unhandled request: \n' +
-        JSON.stringify({ identifiers, id, order, url }, null, 2),
-      false
+      'Unhandled request: \n' + stringifyRequest(pollyRequest, null, 2)
     );
   }
 
@@ -180,7 +172,7 @@ export default class Adapter {
   }
 
   async replay(pollyRequest) {
-    const { config, identifiers, id, order, url } = pollyRequest;
+    const { config } = pollyRequest;
     const recordingEntry = await this.persister.findEntry(pollyRequest);
 
     if (recordingEntry) {
@@ -214,9 +206,7 @@ export default class Adapter {
 
     this.assert(
       'Recording for the following request is not found and `recordIfMissing` is `false`.\n' +
-        JSON.stringify({ identifiers, id, order, url }, null, 2) +
-        '\n',
-      false
+        stringifyRequest(pollyRequest, null, 2)
     );
   }
 
