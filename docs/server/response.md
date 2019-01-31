@@ -77,10 +77,10 @@ res.setHeader('Content-Length', 42);
 Add multiple headers at once. If a value is `null` or `undefined`, the header will be
 removed.
 
-| Param       | Type                        | Description                       |
-| ----------- | --------------------------- | --------------------------------- |
-| headers     | `Object`                    | The headers to add to the request |
-| **Returns** | [Response](server/response) | The current response              |
+| Param       | Type                        | Description                        |
+| ----------- | --------------------------- | ---------------------------------- |
+| headers     | `Object`                    | The headers to add to the response |
+| **Returns** | [Response](server/response) | The current response               |
 
 **Example**
 
@@ -110,10 +110,10 @@ res.removeHeader('Content-Length');
 
 Remove multiple headers at once.
 
-| Param       | Type                        | Description                            |
-| ----------- | --------------------------- | -------------------------------------- |
-| headers     | `Array`                     | The headers to remove from the request |
-| **Returns** | [Response](server/response) | The current response                   |
+| Param       | Type                        | Description                             |
+| ----------- | --------------------------- | --------------------------------------- |
+| headers     | `Array`                     | The headers to remove from the response |
+| **Returns** | [Response](server/response) | The current response                    |
 
 **Example**
 
