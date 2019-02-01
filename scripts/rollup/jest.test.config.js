@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 
-import createNodeTestConfig from './rollup.node.test.config';
-import { pkg } from './rollup.utils';
+import createNodeTestConfig from './node.test.config';
+import { pkg } from './utils';
 
 export default function createJestTestConfig(options = {}) {
   return deepmerge(

@@ -5,7 +5,7 @@ import { terser } from 'rollup-plugin-terser';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 
-import { input, output, pkg, production } from './rollup.utils';
+import { input, output, pkg, minify } from './utils';
 
 const external = Object.keys(pkg.dependencies || {});
 
@@ -40,7 +40,7 @@ export default function createNodeConfig(options = {}) {
             ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
           ]
         }),
-        production && terser()
+        minify && terser()
       ]
     },
     options

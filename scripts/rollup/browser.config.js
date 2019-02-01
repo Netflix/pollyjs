@@ -9,7 +9,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
 
-import { input, output, pkg, production } from './rollup.utils';
+import { input, output, pkg, minify } from './utils';
 
 export default function createBrowserConfig(options = {}, targets) {
   return deepmerge(
@@ -44,7 +44,7 @@ export default function createBrowserConfig(options = {}, targets) {
         }),
         globals(),
         builtins(),
-        production && terser()
+        minify && terser()
       ],
       onwarn(message) {
         /* nise uses eval for strings within native fns setTimeout('alert("foo")', 10) */

@@ -4,6 +4,7 @@ import path from 'path';
 
 export const pkg = require(path.resolve(process.cwd(), './package.json'));
 export const production = process.env.NODE_ENV === 'production';
+export const minify = process.env.MINIFY === 'true';
 
 const banner = `/**
 * ${pkg.name} v${pkg.version}
@@ -18,7 +19,7 @@ export const output = format => {
   return {
     format,
     file: `./dist/${format}/${pkg.name.replace('@pollyjs/', 'pollyjs-')}.${
-      production ? 'min.js' : 'js'
+      minify ? 'min.js' : 'js'
     }`,
     sourcemap: production,
     banner

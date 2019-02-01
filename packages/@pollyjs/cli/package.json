@@ -6,15 +6,6 @@
     "bin"
   ],
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/cli",
-  "scripts": {
-    "build": "",
-    "clean": "",
-    "rollup": "",
-    "watch": "",
-    "test": "",
-    "test:build": "",
-    "test:clean": ""
-  },
   "keywords": [
     "polly",
     "pollyjs",

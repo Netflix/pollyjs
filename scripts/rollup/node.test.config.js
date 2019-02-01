@@ -2,8 +2,8 @@ import deepmerge from 'deepmerge';
 import multiEntry from 'rollup-plugin-multi-entry';
 import alias from 'rollup-plugin-alias';
 
-import createNodeConfig from './rollup.node.config';
-import { pkg, testsPath } from './rollup.utils';
+import createNodeConfig from './node.config';
+import { pkg, testsPath } from './utils';
 
 const pollyDependencies = Object.keys(pkg.devDependencies || {}).filter(d =>
   d.startsWith('@pollyjs')

@@ -11,7 +11,7 @@ module.exports = {
   launch_in_ci: ['Chrome', 'Node', 'Jest', 'Ember', 'ESLint'],
   launch_in_dev: ['Chrome', 'Node', 'Jest', 'Ember', 'ESLint'],
   watch_files: [
-    './build-scripts/**/*',
+    './scripts/rollup/**/*',
     './tests/*',
     './tests/!(recordings)/**/*',
     './packages/@pollyjs/*/src/**/*',
