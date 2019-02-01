@@ -57,7 +57,7 @@ res.getHeader('Content-Type'); // → application/json
 
 ### setHeader
 
-Set a header with a given name. If the value is falsy, the header will be
+Set a header with a given name. If the value is `null` or `undefined`, the header will be
 removed.
 
 | Param       | Type                        | Description              |
@@ -74,8 +74,8 @@ res.setHeader('Content-Length', 42);
 
 ### setHeaders
 
-Add multiple headers at once. A falsy header value will remove that header
-altogether.
+Add multiple headers at once. If a value is `null` or `undefined`, the header will be
+removed.
 
 | Param       | Type                        | Description                        |
 | ----------- | --------------------------- | ---------------------------------- |
@@ -89,6 +89,36 @@ res.setHeaders({
   'Content-Type': 'application/json',
   'Content-Length': 42
 });
+```
+
+### removeHeader
+
+Remove a header with the given name.
+
+| Param       | Type                        | Description            |
+| ----------- | --------------------------- | ---------------------- |
+| name        | `String`                    | The name of the header |
+| **Returns** | [Response](server/response) | The current response   |
+
+**Example**
+
+```js
+res.removeHeader('Content-Length');
+```
+
+### removeHeaders
+
+Remove multiple headers at once.
+
+| Param       | Type                        | Description                             |
+| ----------- | --------------------------- | --------------------------------------- |
+| headers     | `Array`                     | The headers to remove from the response |
+| **Returns** | [Response](server/response) | The current response                    |
+
+**Example**
+
+```js
+res.removeHeaders(['Content-Type' 'Content-Length']);
 ```
 
 ### hasHeader

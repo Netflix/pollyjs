@@ -13,11 +13,21 @@ const HANDLER = {
       return false;
     }
 
-    if (!value) {
+    if (value === null || typeof value === 'undefined') {
       delete obj[prop.toLowerCase()];
     } else {
       obj[prop.toLowerCase()] = value;
     }
+
+    return true;
+  },
+
+  deleteProperty(obj, prop) {
+    if (typeof prop !== 'string') {
+      return false;
+    }
+
+    delete obj[prop.toLowerCase()];
 
     return true;
   }

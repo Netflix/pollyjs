@@ -28,6 +28,20 @@ export default class HTTPBase {
     return this;
   }
 
+  removeHeader(name) {
+    this.setHeader(name, null);
+
+    return this;
+  }
+
+  removeHeaders(headers = []) {
+    for (const name of headers) {
+      this.removeHeader(name);
+    }
+
+    return this;
+  }
+
   hasHeader(name) {
     return !!this.getHeader(name);
   }
