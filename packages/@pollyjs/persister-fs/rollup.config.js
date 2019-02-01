@@ -1,3 +1,3 @@
-import createNodeConfig from '../../../build-scripts/rollup.node.config';
+import createNodeConfig from '../../../scripts/rollup/node.config';
 
 export default createNodeConfig();

@@ -38,10 +38,10 @@
   },
   "scripts": {
     "build": "lerna run build --ignore=@pollyjs/ember --parallel",
-    "build:prod": "lerna run build:prod --ignore=@pollyjs/ember --parallel",
+    "build:prod": "NODE_ENV=production yarn build && NODE_ENV=production MINIFY=true yarn build",
     "build:watch": "npm-run-all clean watch",
     "watch": "lerna run watch --ignore=@pollyjs/ember --parallel",
-    "clean": "lerna run clean --parallel",
+    "clean": "rimraf packages/@pollyjs/*/dist",
     "lint": "eslint .",
     "lint:fix": "yarn run lint --fix",
     "postlint:fix": "prettier --ignore-path .eslintignore --write \"**/*.{json,md,html,yml,css}\"",
@@ -59,7 +59,7 @@
     "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
     "release": "npm-run-all \"release:version {@}\" release:publish --",
     "release:version": "lerna version",
-    "prerelease:publish": "yarn build:prod",
+    "prerelease:publish": "npm-run-all clean build:prod",
     "release:publish": "lerna publish from-git",
     "postrelease:publish": "yarn docs:publish"
   },

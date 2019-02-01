@@ -7,7 +7,7 @@ import { Polly, setupMocha as setupPolly } from '@pollyjs/core';
 
 import NodeHTTPAdapter from '../../src';
 import nativeRequest from '../utils/native-request';
-import setupPollyConfig from '../utils/setup-polly-config';
+import pollyConfig from '../utils/polly-config';
 import getResponseFromRequest from '../utils/get-response-from-request';
 import calculateHashFromStream from '../utils/calculate-hash-from-stream';
 
@@ -45,7 +45,7 @@ describe('Integration | Node Http Adapter', function() {
   });
 
   describe('http', function() {
-    setupPolly.beforeEach(setupPollyConfig);
+    setupPolly.beforeEach(pollyConfig);
 
     setupFetchRecord({
       host: 'http://localhost:4000',
@@ -59,7 +59,7 @@ describe('Integration | Node Http Adapter', function() {
   });
 
   describe('https', function() {
-    setupPolly(setupPollyConfig);
+    setupPolly(pollyConfig);
     commonTests(https);
   });
 });
