@@ -51,7 +51,6 @@
   },
   "devDependencies": {
     "@pollyjs/adapter": "^2.0.0",
-    "@pollyjs/adapter-fetch": "^2.0.0",
     "@pollyjs/persister": "^2.0.0",
     "rollup": "^0.67.0"
   }

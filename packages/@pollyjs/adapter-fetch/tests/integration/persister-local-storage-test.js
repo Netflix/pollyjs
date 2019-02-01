@@ -1,19 +1,15 @@
 import { setupMocha as setupPolly } from '@pollyjs/core';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import setupPersister from '@pollyjs-tests/helpers/setup-persister';
 import persisterTests from '@pollyjs-tests/integration/persister-tests';
-import FetchAdapter from '@pollyjs/adapter-fetch';
 
-import RESTPersister from '../../src';
+import pollyConfig from '../utils/polly-config';
 
-describe('Integration | REST Persister', function() {
+describe('Integration | Local Storage Persister', function() {
   setupPolly.beforeEach({
-    recordFailedRequests: true,
-    adapters: [FetchAdapter],
-    persister: RESTPersister,
-    persisterOptions: {
-      rest: { host: '' }
-    }
+    ...pollyConfig,
+    persister: LocalStoragePersister
   });
 
   setupFetchRecord();

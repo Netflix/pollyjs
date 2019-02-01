@@ -1,21 +1,41 @@
-import { Polly } from '@pollyjs/core';
+import { Polly, setupMocha as setupPolly } from '@pollyjs/core';
+import { URL } from '@pollyjs/utils';
+import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
+import adapterTests from '@pollyjs-tests/integration/adapter-tests';
+import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
 
 import FetchAdapter from '../../src';
+import pollyConfig from '../utils/polly-config';
 
 class MockResponse {}
 
 describe('Integration | Fetch Adapter', function() {
+  setupPolly.beforeEach(pollyConfig);
+
+  setupFetchRecord();
+  setupPolly.afterEach();
+
+  adapterTests();
+  adapterBrowserTests();
+
+  it('should support URL instances', async function() {
+    const { server } = this.polly;
+
+    server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
+
+    const res = await this.fetch(new URL(this.recordUrl()));
+
+    expect(res.status).to.equal(200);
+  });
+});
+
+describe('Integration | Fetch Adapter | Init', function() {
   describe('Context', function() {
     it(`should assign context's fetch as the native fetch`, async function() {
       const polly = new Polly('context', { adapters: [] });
       const fetch = () => {};
       const adapterOptions = {
-        fetch: {
-          context: {
-            fetch,
-            Response: MockResponse
-          }
-        }
+        fetch: { context: { fetch, Response: MockResponse } }
       };
 
       polly.configure({
@@ -30,9 +50,7 @@ describe('Integration | Fetch Adapter', function() {
 
       expect(function() {
         polly.configure({
-          adapterOptions: {
-            fetch: { context: {} }
-          }
+          adapterOptions: { fetch: { context: {} } }
         });
       }).to.throw(/Fetch global not found/);
 
@@ -48,10 +66,14 @@ describe('Integration | Fetch Adapter', function() {
 
       expect(function() {
         polly.configure({
+          adapterOptions: { fetch: { context: undefined } }
+        });
+      }).to.throw(/Fetch global not found/);
+
+      expect(function() {
+        polly.configure({
           adapterOptions: {
-            fetch: {
-              context: undefined
-            }
+            fetch: { context: { fetch: undefined } }
           }
         });
       }).to.throw(/Fetch global not found/);
@@ -59,24 +81,7 @@ describe('Integration | Fetch Adapter', function() {
       expect(function() {
         polly.configure({
           adapterOptions: {
-            fetch: {
-              context: {
-                fetch: undefined
-              }
-            }
-          }
-        });
-      }).to.throw(/Fetch global not found/);
-
-      expect(function() {
-        polly.configure({
-          adapterOptions: {
-            fetch: {
-              context: {
-                fetch() {},
-                Response: undefined
-              }
-            }
+            fetch: { context: { fetch() {}, Response: undefined } }
           }
         });
       }).to.throw(/Response global not found/);

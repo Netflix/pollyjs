@@ -1,9 +1,9 @@
-import FetchAdapter from '@pollyjs/adapter-fetch';
+import { setupMocha as setupPolly } from '@pollyjs/core';
 
-import { setupMocha as setupPolly } from '../../../src';
+import pollyConfig from '../utils/polly-config';
 
 describe('Integration | Server', function() {
-  setupPolly({ adapters: [FetchAdapter] });
+  setupPolly(pollyConfig);
 
   it('calls all intercept handlers', async function() {
     const { server } = this.polly;

@@ -44,9 +44,8 @@
   },
   "devDependencies": {
     "@pollyjs/core": "^2.0.0",
-    "@pollyjs/persister-fs": "^2.0.0",
+    "@pollyjs/persister-local-storage": "^2.0.0",
     "@pollyjs/persister-rest": "^2.0.0",
-    "node-fetch": "^2.3.0",
     "rollup": "^0.67.0"
   }
 }

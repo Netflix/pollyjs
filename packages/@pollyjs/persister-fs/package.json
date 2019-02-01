@@ -41,10 +41,8 @@
     "@pollyjs/persister": "^2.0.0"
   },
   "devDependencies": {
-    "@pollyjs/adapter-fetch": "^2.0.0",
-    "@pollyjs/core": "^2.0.0",
     "fixturify": "^0.3.4",
-    "node-fetch": "^2.3.0",
+    "rimraf": "^2.6.2",
     "rollup": "^0.67.0"
   }
 }

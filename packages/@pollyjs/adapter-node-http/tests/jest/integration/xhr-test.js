@@ -1,7 +1,6 @@
 import { Polly } from '@pollyjs/core';
-import RESTPersister from '@pollyjs/persister-rest';
 
-import XHRAdapter from '../../../src';
+import pollyConfig from '../../utils/polly-config';
 
 function request(url) {
   return new Promise((resolve, reject) => {
@@ -17,18 +16,11 @@ function request(url) {
   });
 }
 
-describe('Integration | XHR Adapter | Jest', function() {
+describe('Integration | Jest | XHR', function() {
   let polly;
 
   beforeEach(() => {
-    polly = new Polly('Integration | XHR Adapter | Jest', {
-      recordFailedRequests: true,
-      adapters: [XHRAdapter],
-      persister: RESTPersister,
-      persisterOptions: {
-        rest: { host: '' }
-      }
-    });
+    polly = new Polly('Integration | Jest | XHR', pollyConfig);
   });
 
   afterEach(async () => await polly.stop());

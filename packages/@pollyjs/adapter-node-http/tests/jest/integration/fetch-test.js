@@ -1,22 +1,14 @@
 import '@pollyjs-tests/helpers/global-fetch';
 
 import { Polly } from '@pollyjs/core';
-import FSPersister from '@pollyjs/persister-fs';
 
-import FetchAdapter from '../../../src';
+import pollyConfig from '../../utils/polly-config';
 
-describe('Integration | Fetch Adapter | Jest', function() {
+describe('Integration | Jest | Fetch', function() {
   let polly;
 
   beforeEach(() => {
-    polly = new Polly('Integration | Fetch Adapter | Jest', {
-      recordFailedRequests: true,
-      adapters: [FetchAdapter],
-      persister: FSPersister,
-      persisterOptions: {
-        fs: { recordingsDir: 'tests/recordings' }
-      }
-    });
+    polly = new Polly('Integration | Jest | Fetch', pollyConfig);
   });
 
   afterEach(async () => await polly.stop());

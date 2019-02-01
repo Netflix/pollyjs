@@ -42,8 +42,6 @@
     "@pollyjs/utils": "^2.0.0"
   },
   "devDependencies": {
-    "@pollyjs/adapter-fetch": "^2.0.0",
-    "@pollyjs/core": "^2.0.0",
     "rollup": "^0.67.0"
   }
 }
