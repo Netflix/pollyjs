@@ -2,6 +2,7 @@ import getByteLength from 'utf8-byte-length';
 import setCookies from 'set-cookie-parser';
 
 import toNVPairs from './utils/to-nv-pairs';
+import getLastHeader from './utils/get-last-header';
 
 function headersSize(request) {
   const keys = [];
@@ -34,7 +35,7 @@ export default class Request {
 
     if (request.body) {
       this.postData = {
-        mimeType: request.getHeader('Content-Type') || 'text/plain',
+        mimeType: getLastHeader(this, 'Content-Type') || 'text/plain',
         params: []
       };
 
@@ -43,8 +44,10 @@ export default class Request {
       }
     }
 
-    if (request.hasHeader('Content-Length')) {
-      this.bodySize = parseInt(request.getHeader('Content-Length'), 10);
+    const contentLength = getLastHeader(this, 'Content-Length');
+
+    if (contentLength) {
+      this.bodySize = parseInt(contentLength, 10);
     } else {
       this.bodySize =
         this.postData && this.postData.text

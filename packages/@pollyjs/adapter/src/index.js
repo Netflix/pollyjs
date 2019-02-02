@@ -3,6 +3,7 @@ import { ACTIONS, MODES, Serializers, assert } from '@pollyjs/utils';
 import Interceptor from './-private/interceptor';
 import isExpired from './utils/is-expired';
 import stringifyRequest from './utils/stringify-request';
+import normalizeRecordedResponse from './utils/normalize-recorded-response';
 
 const REQUEST_HANDLER = Symbol();
 
@@ -185,19 +186,11 @@ export default class Adapter {
       await this.timeout(pollyRequest, recordingEntry);
       pollyRequest.action = ACTIONS.REPLAY;
 
-      const { status, statusText, headers, content } = recordingEntry.response;
-      const normalizedResponse = {
-        statusText,
-        statusCode: status,
-        headers: (headers || []).reduce((accum, { name, value }) => {
-          accum[name] = value;
-
-          return accum;
-        }, {}),
-        body: content && content.text
-      };
-
-      return this.onReplay(pollyRequest, normalizedResponse, recordingEntry);
+      return this.onReplay(
+        pollyRequest,
+        normalizeRecordedResponse(recordingEntry.response),
+        recordingEntry
+      );
     }
 
     if (config.recordIfMissing) {

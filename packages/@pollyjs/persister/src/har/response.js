@@ -2,6 +2,7 @@ import getByteLength from 'utf8-byte-length';
 import setCookies from 'set-cookie-parser';
 
 import toNVPairs from './utils/to-nv-pairs';
+import getLastHeader from './utils/get-last-header';
 
 function headersSize(response) {
   const keys = [];
@@ -28,24 +29,26 @@ export default class Response {
     this.headers = toNVPairs(response.headers);
     this.headersSize = headersSize(this);
     this.cookies = setCookies.parse(response.getHeader('Set-Cookie'));
-    this.redirectURL = '';
+    this.redirectURL = getLastHeader(this, 'Location') || '';
 
     this.content = {
-      mimeType: response.getHeader('Content-Type') || 'text/plain'
+      mimeType: getLastHeader(this, 'Content-Type') || 'text/plain'
     };
 
     if (response.body && typeof response.body === 'string') {
       this.content.text = response.body;
     }
 
-    if (response.hasHeader('Content-Length')) {
-      this.content.size = parseInt(response.getHeader('Content-Length'), 10);
+    const contentLength = getLastHeader(this, 'Content-Length');
+
+    if (contentLength) {
+      this.content.size = parseInt(contentLength, 10);
     } else {
       this.content.size = this.content.text
         ? getByteLength(this.content.text)
         : 0;
     }
 
-    this.bodySize = this.content ? this.content.size : 0;
+    this.bodySize = this.content.size;
   }
 }
