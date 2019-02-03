@@ -129,6 +129,70 @@ export default function persisterTests() {
     this.polly.recordingName = recordingName;
   });
 
+  it('should correctly handle array header values', async function() {
+    const { recordingId, server, persister } = this.polly;
+    let responseCalled = false;
+
+    this.polly.record();
+
+    server
+      .get(this.recordUrl())
+      .configure({ matchRequestsBy: { order: false } })
+      .once('beforeResponse', (req, res) => {
+        res.setHeaders({
+          string: 'foo',
+          one: ['foo'],
+          two: ['foo', 'bar']
+        });
+      });
+
+    await this.fetchRecord();
+    await persister.persist();
+
+    const har = await persister.find(recordingId);
+    const { headers } = har.log.entries[0].response;
+
+    expect(await validate.har(har)).to.be.true;
+    expect(
+      headers.filter(({ _fromType }) => _fromType === 'array')
+    ).to.have.lengthOf(3);
+
+    this.polly.replay();
+
+    server.get(this.recordUrl()).once('response', (req, res) => {
+      expect(res.getHeader('string')).to.equal('foo');
+      expect(res.getHeader('one')).to.deep.equal(['foo']);
+      expect(res.getHeader('two')).to.deep.equal(['foo', 'bar']);
+      responseCalled = true;
+    });
+
+    await this.fetchRecord();
+    expect(responseCalled).to.be.true;
+  });
+
+  it('should correctly handle array header values where a single header is expected', async function() {
+    const { recordingId, server, persister } = this.polly;
+
+    this.polly.record();
+
+    server.get(this.recordUrl()).once('beforeResponse', (req, res) => {
+      res.setHeaders({
+        Location: ['./index.html'],
+        'Content-Type': ['application/json']
+      });
+    });
+
+    await this.fetchRecord();
+    await persister.persist();
+
+    const har = await persister.find(recordingId);
+    const { content, redirectURL } = har.log.entries[0].response;
+
+    expect(await validate.har(har)).to.be.true;
+    expect(content.mimeType).to.equal('application/json');
+    expect(redirectURL).to.equal('./index.html');
+  });
+
   it('should error when persisting a failed request', async function() {
     let error;
 

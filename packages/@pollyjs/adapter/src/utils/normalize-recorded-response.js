@@ -12,7 +12,7 @@ export default function normalizeRecordedResponse(response) {
 }
 
 function normalizeHeaders(headers) {
-  return (headers || []).reduce((accum, { name, value }) => {
+  return (headers || []).reduce((accum, { name, value, _fromType }) => {
     const existingValue = accum[name];
 
     if (existingValue) {
@@ -22,7 +22,7 @@ function normalizeHeaders(headers) {
 
       accum[name].push(value);
     } else {
-      accum[name] = value;
+      accum[name] = _fromType === 'array' ? [value] : value;
     }
 
     return accum;

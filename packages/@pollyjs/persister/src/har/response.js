@@ -2,7 +2,7 @@ import getByteLength from 'utf8-byte-length';
 import setCookies from 'set-cookie-parser';
 
 import toNVPairs from './utils/to-nv-pairs';
-import getLastHeader from './utils/get-last-header';
+import getFirstHeader from './utils/get-first-header';
 
 function headersSize(response) {
   const keys = [];
@@ -29,17 +29,17 @@ export default class Response {
     this.headers = toNVPairs(response.headers);
     this.headersSize = headersSize(this);
     this.cookies = setCookies.parse(response.getHeader('Set-Cookie'));
-    this.redirectURL = getLastHeader(this, 'Location') || '';
+    this.redirectURL = getFirstHeader(response, 'Location') || '';
 
     this.content = {
-      mimeType: getLastHeader(this, 'Content-Type') || 'text/plain'
+      mimeType: getFirstHeader(response, 'Content-Type') || 'text/plain'
     };
 
     if (response.body && typeof response.body === 'string') {
       this.content.text = response.body;
     }
 
-    const contentLength = getLastHeader(this, 'Content-Length');
+    const contentLength = getFirstHeader(response, 'Content-Length');
 
     if (contentLength) {
       this.content.size = parseInt(contentLength, 10);
