@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v2.0.0...v2.1.0) (2019-02-04)
+
+
+### Bug Fixes
+
+* **adapter:** Log information if request couldn't be found in recording ([#172](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter/issues/172)) ([8dcdf7b](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/8dcdf7b))
+* Correctly handle array header values ([#179](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter/issues/179)) ([fb7dbb4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/fb7dbb4))
+
+
+
+
+
 # [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v1.4.2...v2.0.0) (2019-01-29)
 
 

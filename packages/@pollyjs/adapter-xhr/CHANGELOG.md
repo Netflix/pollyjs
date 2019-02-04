@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v2.0.0...v2.1.0) (2019-02-04)
+
+
+### Bug Fixes
+
+* **adapter-xhr:** Xhr.send should not be an async method ([#173](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter-xhr/issues/173)) ([eb3a6eb](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/commit/eb3a6eb))
+
+
+
+
+
 # [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v1.4.2...v2.0.0) (2019-01-29)
 
 

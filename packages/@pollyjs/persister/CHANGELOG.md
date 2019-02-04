@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v2.0.0...v2.1.0) (2019-02-04)
+
+
+### Bug Fixes
+
+* Correctly handle array header values ([#179](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/persister/issues/179)) ([fb7dbb4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/fb7dbb4))
+
+
+
+
+
 # [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v1.4.2...v2.0.0) (2019-01-29)
 
 

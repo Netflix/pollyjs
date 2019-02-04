@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/v2.0.0...v2.1.0) (2019-02-04)
+
+
+### Features
+
+* **core:** Add removeHeader, removeHeaders, and allow empty headers ([#176](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/core/issues/176)) ([1dfae5a](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/1dfae5a))
+
+
+
+
+
 # [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/v1.4.2...v2.0.0) (2019-01-29)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-fs/compare/v2.0.0...v2.1.0) (2019-02-04)
+
+**Note:** Version bump only for package @pollyjs/persister-fs
+
+
+
+
+
 # [2.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-fs/compare/v1.4.2...v2.0.0) (2019-01-29)
 
 **Note:** Version bump only for package @pollyjs/persister-fs

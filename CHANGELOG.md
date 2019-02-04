@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/netflix/pollyjs/compare/v2.0.0...v2.1.0) (2019-02-04)
+
+
+### Bug Fixes
+
+* **adapter:** Log information if request couldn't be found in recording ([#172](https://github.com/netflix/pollyjs/issues/172)) ([8dcdf7b](https://github.com/netflix/pollyjs/commit/8dcdf7b))
+* **adapter-xhr:** Xhr.send should not be an async method ([#173](https://github.com/netflix/pollyjs/issues/173)) ([eb3a6eb](https://github.com/netflix/pollyjs/commit/eb3a6eb))
+* Correctly handle array header values ([#179](https://github.com/netflix/pollyjs/issues/179)) ([fb7dbb4](https://github.com/netflix/pollyjs/commit/fb7dbb4))
+
+
+### Features
+
+* **core:** Add removeHeader, removeHeaders, and allow empty headers ([#176](https://github.com/netflix/pollyjs/issues/176)) ([1dfae5a](https://github.com/netflix/pollyjs/commit/1dfae5a))
+
+
+
+
+
 # [2.0.0](https://github.com/netflix/pollyjs/compare/v1.4.2...v2.0.0) (2019-01-29)
 
 
