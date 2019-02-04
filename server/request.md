@@ -6,10 +6,10 @@
 
 Get a header with a given name.
 
-| Param       | Type     | Description            |
-| ----------- | -------- | ---------------------- |
-| name        | `String` | The name of the header |
-| **Returns** | `String` | The header value       |
+| Param       | Type             | Description            |
+| ----------- | ---------------- | ---------------------- |
+| name        | `String`         | The name of the header |
+| **Returns** | `String | Array` | The header value       |
 
 **Example**
 
@@ -19,13 +19,13 @@ req.getHeader('Content-Type'); // → application/json
 
 ### setHeader
 
-Set a header with a given name. If the value is falsy, the header will be
+Set a header with a given name. If the value is `null` or `undefined`, the header will be
 removed.
 
 | Param       | Type                      | Description              |
 | ----------- | ------------------------- | ------------------------ |
 | name        | `String`                  | The name of the header   |
-| value       | `String`                  | The value for the header |
+| value       | `String | Array`          | The value for the header |
 | **Returns** | [Request](server/request) | The current request      |
 
 **Example**
@@ -36,8 +36,8 @@ req.setHeader('Content-Length', 42);
 
 ### setHeaders
 
-Add multiple headers at once. A falsy header value will remove that header
-altogether.
+Add multiple headers at once. If a value is `null` or `undefined`, the header will be
+removed.
 
 | Param       | Type                      | Description                       |
 | ----------- | ------------------------- | --------------------------------- |
@@ -48,9 +48,40 @@ altogether.
 
 ```js
 req.setHeaders({
+  Accept: ['text/html', 'image/*'],
   'Content-Type': 'application/json',
   'Content-Length': 42
 });
+```
+
+### removeHeader
+
+Remove a header with the given name.
+
+| Param       | Type                      | Description            |
+| ----------- | ------------------------- | ---------------------- |
+| name        | `String`                  | The name of the header |
+| **Returns** | [Request](server/request) | The current request    |
+
+**Example**
+
+```js
+req.removeHeader('Content-Length');
+```
+
+### removeHeaders
+
+Remove multiple headers at once.
+
+| Param       | Type                      | Description                            |
+| ----------- | ------------------------- | -------------------------------------- |
+| headers     | `Array`                   | The headers to remove from the request |
+| **Returns** | [Request](server/request) | The current request                    |
+
+**Example**
+
+```js
+req.removeHeaders(['Content-Type' 'Content-Length']);
 ```
 
 ### hasHeader
