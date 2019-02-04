@@ -44,10 +44,10 @@ res.status(200);
 
 Get a header with a given name.
 
-| Param       | Type     | Description            |
-| ----------- | -------- | ---------------------- |
-| name        | `String` | The name of the header |
-| **Returns** | `String` | The header value       |
+| Param       | Type             | Description            |
+| ----------- | ---------------- | ---------------------- |
+| name        | `String`         | The name of the header |
+| **Returns** | `String | Array` | The header value       |
 
 **Example**
 
@@ -63,7 +63,7 @@ removed.
 | Param       | Type                        | Description              |
 | ----------- | --------------------------- | ------------------------ |
 | name        | `String`                    | The name of the header   |
-| value       | `String`                    | The value for the header |
+| value       | `String | Array`            | The value for the header |
 | **Returns** | [Response](server/response) | The current response     |
 
 **Example**
@@ -86,6 +86,7 @@ removed.
 
 ```js
 res.setHeaders({
+  Accept: ['text/html', 'image/*'],
   'Content-Type': 'application/json',
   'Content-Length': 42
 });
