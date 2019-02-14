@@ -89,20 +89,12 @@ export default class PuppeteerAdapter extends Adapter {
             // Do not intercept preflight requests
             request.continue();
           } else {
-            const pollyRequest = await this.handleRequest({
+            this.handleRequest({
               headers,
               url,
               method,
               body: request.postData(),
-              requestArguments: [request]
-            });
-
-            const { response } = pollyRequest;
-
-            request.respond({
-              status: response.statusCode,
-              headers: response.headers,
-              body: response.body
+              requestArguments: { request }
             });
           }
         } else {
@@ -121,7 +113,7 @@ export default class PuppeteerAdapter extends Adapter {
 
         // Resolve the deferred pollyRequest promise if it exists
         if (pollyRequests.has(request)) {
-          pollyRequests.get(request).promise.resolve(response);
+          pollyRequests.get(request).promise._resolve(response);
           pollyRequests.delete(request);
         }
       },
@@ -137,7 +129,7 @@ export default class PuppeteerAdapter extends Adapter {
 
         // Reject the deferred pollyRequest promise with the error object if it exists
         if (pollyRequests.has(request)) {
-          pollyRequests.get(request).promise.reject(error);
+          pollyRequests.get(request).promise._reject(error);
           pollyRequests.delete(request);
         }
       },
@@ -148,7 +140,14 @@ export default class PuppeteerAdapter extends Adapter {
   }
 
   onRequest(pollyRequest) {
-    const [request] = pollyRequest.requestArguments;
+    const { request } = pollyRequest.requestArguments;
+    const { promise } = pollyRequest;
+
+    // Override the deferred promise's resolve and reject to no-op since
+    // we handle it manually in the `requestfinished` and `requestfailed` events.
+    promise._resolve = promise.resolve;
+    promise._reject = promise.reject;
+    promise.resolve = promise.reject = () => {};
 
     /*
       Create an access point to the `pollyRequest` so it can be accessed from
@@ -158,24 +157,15 @@ export default class PuppeteerAdapter extends Adapter {
   }
 
   /**
-   * Override the onRequestFinished logic as it doesn't apply to this adapter.
-   * Instead, that logic is re-implemented via the `requestfinished` page
-   * event.
-   *
-   * @override
-   */
-  onRequestFinished() {}
-
-  /**
-   * Abort the request on failure. The parent `onRequestFailed` has been
-   * re-implemented via the `requestfailed` page event.
+   * Abort the request on failure.
    *
    * @override
    */
   async onRequestFailed(pollyRequest) {
-    const [request] = pollyRequest.requestArguments;
+    const { request } = pollyRequest.requestArguments;
 
     await request.abort();
+    await super.onRequestFailed(...arguments);
   }
 
   async passthroughRequest(pollyRequest) {
@@ -218,6 +208,17 @@ export default class PuppeteerAdapter extends Adapter {
     } finally {
       this[PASSTHROUGH_PROMISES].delete(requestId);
     }
+  }
+
+  respondToRequest(pollyRequest) {
+    const { request } = pollyRequest.requestArguments;
+    const { response } = pollyRequest;
+
+    request.respond({
+      status: response.statusCode,
+      headers: response.headers,
+      body: response.body
+    });
   }
 
   _callListenersWith(methodName, target) {
