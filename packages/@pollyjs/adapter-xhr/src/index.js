@@ -44,11 +44,16 @@ export default class XHRAdapter extends Adapter {
     this.xhr.restore();
   }
 
-  respondToRequest(pollyRequest) {
+  respondToRequest(pollyRequest, error) {
     const { xhr } = pollyRequest.requestArguments;
-    const { response } = pollyRequest;
 
-    xhr.respond(response.statusCode, response.headers, response.body);
+    if (error) {
+      xhr.error();
+    } else {
+      const { response } = pollyRequest;
+
+      xhr.respond(response.statusCode, response.headers, response.body);
+    }
   }
 
   async passthroughRequest(pollyRequest) {

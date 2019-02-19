@@ -13,10 +13,6 @@ export default class Logger {
     this.groupName = null;
   }
 
-  get enabled() {
-    return this.polly.config.logging;
-  }
-
   connect() {
     this._middleware = this.polly.server
       .any()
@@ -26,13 +22,6 @@ export default class Logger {
   disconnect() {
     this.groupEnd();
     this._middleware.off('response');
-  }
-
-  console(method, ...args) {
-    if (this.enabled) {
-      this.groupStart(this.polly.recordingName);
-      console[method].apply(console, args);
-    }
   }
 
   groupStart(groupName) {
@@ -67,17 +56,5 @@ export default class Logger {
         request
       );
     }
-  }
-
-  log() {
-    this.console('log', ...arguments);
-  }
-
-  warn() {
-    this.console('warn', ...arguments);
-  }
-
-  error() {
-    this.console('error', ...arguments);
   }
 }

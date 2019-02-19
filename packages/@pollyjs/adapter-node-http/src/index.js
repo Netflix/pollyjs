@@ -198,9 +198,16 @@ export default class HttpAdapter extends Adapter {
     };
   }
 
-  async respondToRequest(pollyRequest) {
-    const { statusCode, body, headers } = pollyRequest.response;
+  async respondToRequest(pollyRequest, error) {
     const { req, respond } = pollyRequest.requestArguments;
+
+    if (error) {
+      respond(error);
+
+      return;
+    }
+
+    const { statusCode, body, headers } = pollyRequest.response;
     const chunks = this.getChunksFromBody(body, headers);
     const stream = new Readable();
 

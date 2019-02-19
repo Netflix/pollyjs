@@ -156,18 +156,6 @@ export default class PuppeteerAdapter extends Adapter {
     this._requestsMapping.pollyRequests.set(request, pollyRequest);
   }
 
-  /**
-   * Abort the request on failure.
-   *
-   * @override
-   */
-  async onRequestFailed(pollyRequest) {
-    const { request } = pollyRequest.requestArguments;
-
-    await request.abort();
-    await super.onRequestFailed(...arguments);
-  }
-
   async passthroughRequest(pollyRequest) {
     const { page } = this.options;
     const { id, order, url, method, headers, body } = pollyRequest;
@@ -203,22 +191,25 @@ export default class PuppeteerAdapter extends Adapter {
         body: await response.text()
       };
     } catch (error) {
-      console.error(error);
       throw error;
     } finally {
       this[PASSTHROUGH_PROMISES].delete(requestId);
     }
   }
 
-  respondToRequest(pollyRequest) {
+  async respondToRequest(pollyRequest, error) {
     const { request } = pollyRequest.requestArguments;
     const { response } = pollyRequest;
 
-    request.respond({
-      status: response.statusCode,
-      headers: response.headers,
-      body: response.body
-    });
+    if (error) {
+      await request.abort();
+    } else {
+      await request.respond({
+        status: response.statusCode,
+        headers: response.headers,
+        body: response.body
+      });
+    }
   }
 
   _callListenersWith(methodName, target) {

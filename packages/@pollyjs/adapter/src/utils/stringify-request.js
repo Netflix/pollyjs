@@ -1,4 +1,12 @@
 export default function stringifyRequest(req, ...args) {
+  const config = { ...req.config };
+
+  // Remove all adapter & persister config options as they can cause a circular
+  // structure to the final JSON
+  ['adapter', 'adapterOptions', 'persister', 'persisterOptions'].forEach(
+    k => delete config[k]
+  );
+
   return JSON.stringify(
     {
       url: req.url,
@@ -9,7 +17,7 @@ export default function stringifyRequest(req, ...args) {
       id: req.id,
       order: req.order,
       identifiers: req.identifiers,
-      config: req.config
+      config
     },
     ...args
   );
