@@ -201,7 +201,7 @@ server
 Override configuration options for the given route. All matching middleware and route level configs are merged together and the overrides are applied to the current
 Polly instance's config.
 
-!> The following options are not supported to be overriden via the server API:
+!> The following options are not supported to be overridden via the server API:
 `mode`, `adapters`, `adapterOptions`, `persister`, `persisterOptions`
 
 | Param  | Type     | Description                           |
