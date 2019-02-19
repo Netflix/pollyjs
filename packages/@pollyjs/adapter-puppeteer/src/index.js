@@ -202,6 +202,9 @@ export default class PuppeteerAdapter extends Adapter {
     const { response } = pollyRequest;
 
     if (error) {
+      // If an error was returned then we force puppeteer to abort the current
+      // request. This will emit the `requestfailed` page event and allow the end
+      // user to handle the error.
       await request.abort();
     } else {
       await request.respond({

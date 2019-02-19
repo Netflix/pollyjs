@@ -202,6 +202,9 @@ export default class HttpAdapter extends Adapter {
     const { req, respond } = pollyRequest.requestArguments;
 
     if (error) {
+      // If an error was received then forward it over to nock so it can
+      // correctly handle it.
+      // https://github.com/nock/nock/blob/v10.0.6/lib/request_overrider.js#L394-L397
       respond(error);
 
       return;

@@ -48,6 +48,10 @@ export default class XHRAdapter extends Adapter {
     const { xhr } = pollyRequest.requestArguments;
 
     if (error) {
+      // If an error was received then call the `error` method on the fake XHR
+      // request provided by nise which will simulate a network error on the request.
+      // The onerror handler will be called and the status will be 0.
+      // https://github.com/sinonjs/nise/blob/v1.4.10/lib/fake-xhr/index.js#L614-L621
       xhr.error();
     } else {
       const { response } = pollyRequest;
