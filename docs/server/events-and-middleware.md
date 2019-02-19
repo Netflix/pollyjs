@@ -126,6 +126,24 @@ server.any().on('beforeReplay', (req, recording) => {
 });
 ```
 
+### error
+
+Fires when any error gets emitted during the request life-cycle.
+
+| Param | Type                      | Description          |
+| ----- | ------------------------- | -------------------- |
+| req   | [Request](server/request) | The request instance |
+| error | Error                     | The error            |
+
+**Example**
+
+```js
+server.any().on('error', (req, error) => {
+  console.error(error);
+  process.exit(1);
+});
+```
+
 ## Middleware
 
 Middleware can be added via the `.any()` method.
