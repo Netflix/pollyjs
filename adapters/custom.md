@@ -85,7 +85,7 @@ class FetchAdapter extends Adapter {
     this.originalFetch = window.fetch;
 
     window.fetch = async (url, options = {}) => {
-      const { repsonse } = await this.handleRequest({
+      const { response } = await this.handleRequest({
         url,
         method: options.method,
         headers: options.headers,
