@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v2.1.0...v2.2.0) (2019-02-20)
+
+
+### Features
+
+* Add `error` event and improve error handling ([#185](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter-xhr/issues/185)) ([3694ebc](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/commit/3694ebc))
+
+
+
+
+
 # [2.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v2.0.0...v2.1.0) (2019-02-04)
 
 

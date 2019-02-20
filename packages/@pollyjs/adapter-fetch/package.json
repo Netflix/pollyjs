@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-fetch",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Fetch adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-fetch.js",
   "module": "dist/es/pollyjs-adapter-fetch.js",
@@ -38,12 +38,12 @@
     "watch": "yarn build -w"
   },
   "dependencies": {
-    "@pollyjs/adapter": "^2.1.0",
+    "@pollyjs/adapter": "^2.2.0",
     "@pollyjs/utils": "^2.1.0",
     "detect-node": "^2.0.4"
   },
   "devDependencies": {
-    "@pollyjs/core": "^2.1.0",
+    "@pollyjs/core": "^2.2.0",
     "@pollyjs/persister-local-storage": "^2.1.0",
     "@pollyjs/persister-rest": "^2.1.0",
     "rollup": "^0.67.0"
