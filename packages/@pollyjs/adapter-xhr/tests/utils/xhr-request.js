@@ -22,7 +22,7 @@ export default function request(url, obj = {}) {
       xhr.status === 204 && xhr.responseText === '' ? null : xhr.responseText;
 
     return new Response(responseBody, {
-      status: xhr.status,
+      status: xhr.status || 500,
       statusText: xhr.statusText,
       headers: serializeResponseHeaders(xhr.getAllResponseHeaders())
     });

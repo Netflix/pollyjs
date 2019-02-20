@@ -44,11 +44,20 @@ export default class XHRAdapter extends Adapter {
     this.xhr.restore();
   }
 
-  respondToRequest(pollyRequest) {
+  respondToRequest(pollyRequest, error) {
     const { xhr } = pollyRequest.requestArguments;
-    const { response } = pollyRequest;
 
-    xhr.respond(response.statusCode, response.headers, response.body);
+    if (error) {
+      // If an error was received then call the `error` method on the fake XHR
+      // request provided by nise which will simulate a network error on the request.
+      // The onerror handler will be called and the status will be 0.
+      // https://github.com/sinonjs/nise/blob/v1.4.10/lib/fake-xhr/index.js#L614-L621
+      xhr.error();
+    } else {
+      const { response } = pollyRequest;
+
+      xhr.respond(response.statusCode, response.headers, response.body);
+    }
   }
 
   async passthroughRequest(pollyRequest) {

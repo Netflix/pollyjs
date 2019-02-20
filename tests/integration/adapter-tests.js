@@ -126,6 +126,26 @@ export default function adapterTests() {
     ]);
   });
 
+  it('should emit an error event', async function() {
+    const { server } = this.polly;
+    let error;
+
+    this.polly.configure({ recordIfMissing: false });
+
+    server.get(this.recordUrl()).on('error', (req, err) => (error = err));
+
+    try {
+      await this.fetchRecord();
+    } catch (e) {
+      /* noop */
+    }
+
+    expect(error).to.exist;
+    expect(error.message).to.match(
+      /Recording for the following request is not found/
+    );
+  });
+
   it('should handle a compressed response', async function() {
     const res = await this.relativeFetch('/compress', {
       method: 'POST',

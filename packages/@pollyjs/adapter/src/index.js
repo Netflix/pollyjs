@@ -300,7 +300,12 @@ export default class Adapter {
    * @param {PollyRequest} pollyRequest
    * @param {Error} error
    */
-  onRequestFailed(pollyRequest, error) {
+  async onRequestFailed(pollyRequest, error) {
+    error =
+      error || new Error('[Polly] Request failed due to an unknown error.');
+
+    await pollyRequest._emit('error', error);
+    await this.respondToRequest(pollyRequest, error);
     pollyRequest.promise.reject(error);
   }
 }
