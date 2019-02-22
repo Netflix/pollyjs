@@ -50,6 +50,13 @@ changes.
 yarn docs:serve
 ```
 
+## Conventional Commits
+
+Lerna depends on the use of the [Conventional Commits Specification](https://conventionalcommits.org/)
+to determine the version bump and generate CHANGELOG.md files. Make sure your
+commits and the title of your PRs follow the spec. A pre-commit hook and CI test
+have been added to further enforce this requirement.
+
 ## Tips for Getting Your Pull Request Accepted
 
 1. Make sure all new features are tested and the tests pass.
