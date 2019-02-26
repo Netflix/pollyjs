@@ -18,9 +18,7 @@ setupFetchRecord.beforeEach = function(options = {}) {
 
     this.fetch = fetch;
 
-    this.relativeFetch = (url, options) => {
-      return this.fetch(`${host}${url}`, options);
-    };
+    this.relativeFetch = (url, options) => this.fetch(`${host}${url}`, options);
 
     this.recordUrl = () =>
       `${host}/api/db/${encodeURIComponent(this.polly.recordingId)}`;

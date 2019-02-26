@@ -57,6 +57,9 @@ export default class PollyRequest extends HTTPBase {
     // Lookup the associated route for this request
     this[ROUTE] = polly.server.lookup(this.method, this.url);
 
+    // Filter all matched route handlers by this request
+    this[ROUTE].applyFiltersWithArgs(this);
+
     // Handle config overrides defined by the route
     this._configure(this[ROUTE].config());
 

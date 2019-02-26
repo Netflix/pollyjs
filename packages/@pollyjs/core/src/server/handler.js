@@ -11,6 +11,7 @@ export default class Handler extends Map {
     super();
 
     this.set('config', {});
+    this.set('filters', new Set());
     this._eventEmitter = new EventEmitter({
       eventNames: [
         'error',
@@ -76,6 +77,17 @@ export default class Handler extends Map {
   configure(config) {
     validateRequestConfig(config);
     this.set('config', config);
+
+    return this;
+  }
+
+  filter(fn) {
+    assert(
+      `Invalid filter callback provided. Expected function, received: "${typeof fn}".`,
+      typeof fn === 'function'
+    );
+
+    this.get('filters').add(fn);
 
     return this;
   }
