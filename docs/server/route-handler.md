@@ -170,6 +170,61 @@ server.any('/session').passthrough();
 server.get('/session/1').passthrough(false);
 ```
 
+### filter
+
+Filter requests matched by the route handler with a predicate callback function.
+This can be useful when trying to match a request by a part of the url, a header,
+and/or parts of the request body.
+
+The callback will receive the [Request](server/request)
+as an argument. Return `true` to match the request, `false` otherwise.
+
+?> Multiple filters can be chained together. They must all return `true` for the route handler to match the given request.
+
+| Param    | Type       | Description                   |
+| -------- | ---------- | ----------------------------- |
+| callback | `Function` | The filter predicate function |
+
+**Example**
+
+```js
+server
+  .any()
+  .filter(req => req.hasHeader('Authentication'));
+  .on('request', req => {
+    res.setHeader('Authentication', 'test123')
+  });
+
+server
+  .get('/users/:id')
+  .filter(req => req.params.id === '1');
+  .intercept((req, res) => {
+    res.status(200).json({ email: 'user1@test.com' });
+  });
+```
+
+### configure
+
+Override configuration options for the given route. All matching middleware and route level configs are merged together and the overrides are applied to the current
+Polly instance's config.
+
+!> The following options are not supported to be overridden via the server API:
+`mode`, `adapters`, `adapterOptions`, `persister`, `persisterOptions`
+
+| Param  | Type     | Description                           |
+| ------ | -------- | ------------------------------------- |
+| config | `Object` | [Configuration](configuration) object |
+
+**Example**
+
+```js
+server.any('/session').configure({ recordFailedRequests: true });
+
+server.get('/users/:id').configure({ timing: Timing.relative(3.0) });
+
+server.get('/users/1').configure({ logging: true });
+```
+
 ### recordingName
 
 Override the recording name for the given route. This allows for grouping common
@@ -194,26 +249,4 @@ server.get('/users/:id').recordingName('User Data');
 server
   .get('/users/1')
   .recordingName(); /* Fallback to the polly instance's recording name */
-```
-
-### configure
-
-Override configuration options for the given route. All matching middleware and route level configs are merged together and the overrides are applied to the current
-Polly instance's config.
-
-!> The following options are not supported to be overridden via the server API:
-`mode`, `adapters`, `adapterOptions`, `persister`, `persisterOptions`
-
-| Param  | Type     | Description                           |
-| ------ | -------- | ------------------------------------- |
-| config | `Object` | [Configuration](configuration) object |
-
-**Example**
-
-```js
-server.any('/session').configure({ recordFailedRequests: true });
-
-server.get('/users/:id').configure({ timing: Timing.relative(3.0) });
-
-server.get('/users/1').configure({ logging: true });
 ```

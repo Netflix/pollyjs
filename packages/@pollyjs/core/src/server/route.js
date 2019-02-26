@@ -1,11 +1,9 @@
 import mergeConfigs from '../utils/merge-configs';
 
-async function invoke(fn, route, req, ...args) {
-  if (typeof fn !== 'function') {
-    return;
-  }
+const HANDLERS = Symbol();
 
-  const proxyReq = new Proxy(req, {
+function requestWithParams(req, { params }) {
+  return new Proxy(req, {
     set(source, prop, value) {
       /* NOTE: IE's `Reflect.set` swallows the read-only assignment error */
       /* see: https://codepen.io/jasonmit/pen/LrmLaz */
@@ -16,24 +14,12 @@ async function invoke(fn, route, req, ...args) {
     get(source, prop) {
       if (prop === 'params') {
         // Set the request's params to given route's matched params
-        return route.params;
+        return { ...params };
       }
 
       return Reflect.get(source, prop);
     }
   });
-
-  return await fn(proxyReq, ...args);
-}
-
-async function emit(route, eventName, ...args) {
-  for (const handler of route.handlers) {
-    const listeners = handler._eventEmitter.listeners(eventName);
-
-    for (const listener of listeners) {
-      await invoke(listener, route, ...args);
-    }
-  }
 }
 
 export default class Route {
@@ -55,6 +41,8 @@ export default class Route {
       this.params = { ...result.params };
       this.queryParams = recognizeResults.queryParams;
     }
+
+    this[HANDLERS] = this._orderedHandlers();
   }
 
   shouldPassthrough() {
@@ -71,7 +59,15 @@ export default class Route {
 
   config() {
     return mergeConfigs(
-      ...this._orderedHandlers().map(handler => handler.get('config'))
+      ...this[HANDLERS].map(({ handler }) => handler.get('config'))
+    );
+  }
+
+  applyFiltersWithArgs(req, ...args) {
+    this[HANDLERS] = this[HANDLERS].filter(({ route, handler }) =>
+      [...handler.get('filters')].every(fn =>
+        fn(requestWithParams(req, route), ...args)
+      )
     );
   }
 
@@ -82,9 +78,13 @@ export default class Route {
    * @param {Interceptor} interceptor
    */
   async intercept(req, res, interceptor) {
-    for (const handler of this._orderedHandlers()) {
+    for (const { route, handler } of this[HANDLERS]) {
       if (handler.has('intercept') && interceptor.shouldIntercept) {
-        await invoke(handler.get('intercept'), this, ...arguments);
+        await handler.get('intercept')(
+          requestWithParams(req, route),
+          res,
+          interceptor
+        );
       }
     }
   }
@@ -95,17 +95,19 @@ export default class Route {
    * @param {PollyRequest} req
    * @param {...args} ...args
    */
-  async emit() {
-    for (const m of this.middleware) {
-      await emit(m, ...arguments);
-    }
+  async emit(eventName, req, ...args) {
+    for (const { route, handler } of this[HANDLERS]) {
+      const listeners = handler._eventEmitter.listeners(eventName);
 
-    await emit(this, ...arguments);
+      for (const listener of listeners) {
+        await listener(requestWithParams(req, route), ...args);
+      }
+    }
   }
 
   _orderedHandlers() {
     return [...this.middleware, this].reduce((handlers, route) => {
-      handlers.push(...route.handlers);
+      handlers.push(...route.handlers.map(handler => ({ route, handler })));
 
       return handlers;
     }, []);
@@ -114,7 +116,7 @@ export default class Route {
   _valueFor(key) {
     let value;
 
-    for (const handler of this._orderedHandlers()) {
+    for (const { handler } of this[HANDLERS]) {
       if (handler.has(key)) {
         value = handler.get(key);
       }

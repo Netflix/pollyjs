@@ -49,40 +49,158 @@ describe('Integration | Server', function() {
     expect(numIntercepts).to.equal(2);
   });
 
-  it('merges all configs', async function() {
-    const { server } = this.polly;
-    let config;
+  describe('API', function() {
+    it('.configure() - merges all configs', async function() {
+      const { server } = this.polly;
+      let config;
 
-    server.any().configure({ foo: 'foo' });
-    server.any().configure({ bar: 'bar' });
-    server
-      .get('/ping')
-      .configure({ foo: 'baz' })
-      .intercept((req, res) => {
-        config = req.config;
-        res.sendStatus(200);
-      });
+      server.any().configure({ foo: 'foo' });
+      server.any().configure({ bar: 'bar' });
+      server
+        .get('/ping')
+        .configure({ foo: 'baz' })
+        .intercept((req, res) => {
+          config = req.config;
+          res.sendStatus(200);
+        });
 
-    expect((await fetch('/ping')).status).to.equal(200);
-    expect(config).to.include({ foo: 'baz', bar: 'bar' });
-  });
+      expect((await fetch('/ping')).status).to.equal(200);
+      expect(config).to.include({ foo: 'baz', bar: 'bar' });
+    });
 
-  it('should throw when trying to override certain options', async function() {
-    const { server } = this.polly;
+    it('.configure() - should throw when trying to override certain options', async function() {
+      const { server } = this.polly;
 
-    // The following options cannot be overridden on a per request basis
-    [
-      'mode',
-      'adapters',
-      'adapterOptions',
-      'persister',
-      'persisterOptions'
-    ].forEach(key =>
-      expect(() => server.any().configure({ [key]: 'foo' })).to.throw(
+      // The following options cannot be overridden on a per request basis
+      [
+        'mode',
+        'adapters',
+        'adapterOptions',
+        'persister',
+        'persisterOptions'
+      ].forEach(key =>
+        expect(() => server.any().configure({ [key]: 'foo' })).to.throw(
+          Error,
+          /Invalid configuration option/
+        )
+      );
+    });
+
+    it('.recordingName()', async function() {
+      const { server } = this.polly;
+      let recordingName;
+
+      server
+        .get('/ping')
+        .recordingName('Override')
+        .intercept((req, res) => {
+          recordingName = req.recordingName;
+          res.sendStatus(200);
+        });
+
+      expect((await fetch('/ping')).status).to.equal(200);
+      expect(recordingName).to.equal('Override');
+    });
+
+    it('.recordingName() - should reset when called with no arguments', async function() {
+      const { server } = this.polly;
+      let recordingName;
+
+      server.any().recordingName('Override');
+
+      server
+        .get('/ping')
+        .recordingName()
+        .intercept((req, res) => {
+          recordingName = req.recordingName;
+          res.sendStatus(200);
+        });
+
+      expect((await fetch('/ping')).status).to.equal(200);
+      expect(recordingName).to.not.equal('Override');
+    });
+
+    it('.filter()', async function() {
+      const { server } = this.polly;
+
+      server
+        .get('/ping')
+        .filter(req => req.query.num === '1')
+        .intercept((req, res) => res.sendStatus(201));
+
+      server
+        .get('/ping')
+        .filter(req => req.query.num === '2')
+        .intercept((req, res) => res.sendStatus(202));
+
+      expect((await fetch('/ping?num=1')).status).to.equal(201);
+      expect((await fetch('/ping?num=2')).status).to.equal(202);
+    });
+
+    it('.filter() + events', async function() {
+      const { server } = this.polly;
+      let num;
+
+      server
+        .get('/ping')
+        .filter(req => req.query.num === '1')
+        .on('request', req => (num = req.query.num))
+        .intercept((req, res) => res.sendStatus(201));
+
+      server
+        .get('/ping')
+        .filter(req => req.query.num === '2')
+        .on('request', req => (num = req.query.num))
+        .intercept((req, res) => res.sendStatus(202));
+
+      expect((await fetch('/ping?num=1')).status).to.equal(201);
+      expect(num).to.equal('1');
+    });
+
+    it('.filter() - multiple', async function() {
+      const { server } = this.polly;
+
+      server
+        .get('/ping')
+        .filter(req => req.query.foo === 'foo')
+        .filter(req => req.query.bar === 'bar')
+        .intercept((req, res) => res.sendStatus(201));
+
+      server
+        .get('/ping')
+        .filter(req => req.query.foo === 'foo')
+        .filter(req => req.query.baz === 'baz')
+        .intercept((req, res) => res.sendStatus(202));
+
+      expect((await fetch('/ping?foo=foo&bar=bar')).status).to.equal(201);
+      expect((await fetch('/ping?foo=foo&baz=baz')).status).to.equal(202);
+    });
+
+    it('.filter() - can access params', async function() {
+      const { server } = this.polly;
+      let id;
+
+      server
+        .get('/ping/:id')
+        .filter(req => {
+          id = req.params.id;
+
+          return true;
+        })
+        .intercept((req, res) => res.sendStatus(201));
+
+      expect((await fetch('/ping/1')).status).to.equal(201);
+      expect(id).to.equal('1');
+    });
+
+    it('.filter() - should throw when not passed a function', async function() {
+      const { server } = this.polly;
+
+      expect(() => server.any().filter()).to.throw(
         Error,
-        /Invalid configuration option/
-      )
-    );
+        /Invalid filter callback provided/
+      );
+    });
   });
 
   describe('Events & Middleware', function() {
