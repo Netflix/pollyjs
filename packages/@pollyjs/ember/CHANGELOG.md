@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v2.2.0...v2.3.0) (2019-02-27)
+
+**Note:** Version bump only for package @pollyjs/ember
+
+
+
+
+
 # [2.2.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v2.1.0...v2.2.0) (2019-02-20)
 
 **Note:** Version bump only for package @pollyjs/ember
