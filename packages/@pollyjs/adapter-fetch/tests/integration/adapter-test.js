@@ -8,6 +8,7 @@ import FetchAdapter from '../../src';
 import pollyConfig from '../utils/polly-config';
 
 class MockResponse {}
+class MockHeaders {}
 
 describe('Integration | Fetch Adapter', function() {
   setupPolly.beforeEach(pollyConfig);
@@ -27,6 +28,25 @@ describe('Integration | Fetch Adapter', function() {
 
     expect(res.status).to.equal(200);
   });
+
+  it('should support array of key/value pair headers', async function() {
+    const { server } = this.polly;
+    let headers;
+
+    server
+      .any(this.recordUrl())
+      .on('request', req => {
+        headers = req.headers;
+      })
+      .intercept((_, res) => res.sendStatus(200));
+
+    const res = await this.fetchRecord({
+      headers: [['Content-Type', 'application/json']]
+    });
+
+    expect(res.status).to.equal(200);
+    expect(headers).to.deep.equal({ 'content-type': 'application/json' });
+  });
 });
 
 describe('Integration | Fetch Adapter | Init', function() {
@@ -35,7 +55,9 @@ describe('Integration | Fetch Adapter | Init', function() {
       const polly = new Polly('context', { adapters: [] });
       const fetch = () => {};
       const adapterOptions = {
-        fetch: { context: { fetch, Response: MockResponse } }
+        fetch: {
+          context: { fetch, Response: MockResponse, Headers: MockHeaders }
+        }
       };
 
       polly.configure({
@@ -52,12 +74,12 @@ describe('Integration | Fetch Adapter | Init', function() {
         polly.configure({
           adapterOptions: { fetch: { context: {} } }
         });
-      }).to.throw(/Fetch global not found/);
+      }).to.throw(/fetch global not found/);
 
       await polly.stop();
     });
 
-    it('should throw when context, fetch, and Response are undefined', async function() {
+    it('should throw when context, fetch, Response, and Headers are undefined', async function() {
       const polly = new Polly('context', { adapters: [] });
 
       polly.configure({
@@ -68,23 +90,45 @@ describe('Integration | Fetch Adapter | Init', function() {
         polly.configure({
           adapterOptions: { fetch: { context: undefined } }
         });
-      }).to.throw(/Fetch global not found/);
+      }).to.throw(/fetch global not found/);
 
       expect(function() {
         polly.configure({
           adapterOptions: {
-            fetch: { context: { fetch: undefined } }
+            fetch: {
+              context: {
+                fetch: undefined,
+                Response: MockResponse,
+                Headers: MockHeaders
+              }
+            }
           }
         });
-      }).to.throw(/Fetch global not found/);
+      }).to.throw(/fetch global not found/);
 
       expect(function() {
         polly.configure({
           adapterOptions: {
-            fetch: { context: { fetch() {}, Response: undefined } }
+            fetch: {
+              context: { fetch() {}, Response: undefined, Headers: MockHeaders }
+            }
           }
         });
       }).to.throw(/Response global not found/);
+
+      expect(function() {
+        polly.configure({
+          adapterOptions: {
+            fetch: {
+              context: {
+                fetch() {},
+                Response: MockResponse,
+                Headers: undefined
+              }
+            }
+          }
+        });
+      }).to.throw(/Headers global not found/);
 
       await polly.stop();
     });
