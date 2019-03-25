@@ -18,7 +18,7 @@ server
 // Passthrough w/ Events
 server
   .get('/')
-  .passthrough();
+  .passthrough()
   .on('beforeResponse', (req, res) => {})
   .off('beforeResponse');
 
