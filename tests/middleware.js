@@ -10,7 +10,7 @@ const DB = {};
 
 module.exports = function attachMiddleware(app) {
   registerExpressAPI(app, {
-    recordingsDir: path.join(__dirname, '/recordings')
+    recordingsDir: path.join(__dirname, 'recordings')
   });
 
   app.use(bodyParser.json());
