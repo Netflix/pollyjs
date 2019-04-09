@@ -12,6 +12,8 @@ to be used with `@pollyjs/core`.
 
 ## Installation
 
+_If you're using puppeteer 1.7 or 1.8, you'll experience issues with passthrough requests. Please upgrade to the latest version of puppeteer or use a version prior to 1.7_
+
 _Note that you must have node (and npm) installed._
 
 ```bash

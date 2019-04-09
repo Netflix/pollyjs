@@ -40,6 +40,16 @@ This will bootstrap & build the packages, stand up the node test server, and
 instantiate testem. Once running, the test suite will be rerun when any changes
 are made to the src or test files.
 
+## Running Node Tests with Chrome Inspector
+
+To run the node test suite with node inspector support, run from the root directory:
+
+```bash
+yarn test:ci -l Node:debug
+```
+
+Next, attach Chrome to the running process by visiting [chrome://inspect/#devices](chrome://inspect/#devices)
+
 ## Running Docs
 
 All the documentation can be found in the root level `docs` directory. Running
