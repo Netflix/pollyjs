@@ -1,6 +1,9 @@
 import { assert } from '@pollyjs/utils';
 import isObjectLike from 'lodash-es/isObjectLike';
 
+import cancelFnAfterNTimes from '../utils/cancel-fn-after-n-times';
+import { validateTimesOption } from '../utils/validators';
+
 const EVENTS = Symbol();
 const EVENT_NAMES = Symbol();
 
@@ -64,16 +67,33 @@ export default class EventEmitter {
    *
    * @param {String} eventName - The name of the event
    * @param {Function} listener - The callback function
+   * @param {Object} [options={}]
+   * @param {Number} options.times - listener will be cancelled after this many times
    * @returns {EventEmitter}
    */
-  on(eventName, listener) {
+  on(eventName, listener, options = {}) {
     assertEventName(eventName, this[EVENT_NAMES]);
     assertListener(listener);
 
     const events = this[EVENTS];
+    const { times } = options;
 
     if (!events.has(eventName)) {
       events.set(eventName, new Set());
+    }
+
+    if (times) {
+      validateTimesOption(times);
+
+      const tempListener = cancelFnAfterNTimes(listener, times, () =>
+        this.off(eventName, tempListener)
+      );
+
+      // Save the original listener on the temp one so we can easily match it
+      // given the original.
+      tempListener.listener = listener;
+
+      listener = tempListener;
     }
 
     events.get(eventName).add(listener);
@@ -88,19 +108,11 @@ export default class EventEmitter {
    *
    * @param {String} eventName - The name of the event
    * @param {Function} listener - The callback function
+   * @param {Object} [options={}]
    * @returns {EventEmitter}
    */
-  once(eventName, listener) {
-    assertEventName(eventName, this[EVENT_NAMES]);
-    assertListener(listener);
-
-    const once = (...args) => {
-      this.off(eventName, once);
-
-      return listener(...args);
-    };
-
-    this.on(eventName, once);
+  once(eventName, listener, options = {}) {
+    this.on(eventName, listener, { ...options, times: 1 });
 
     return this;
   }
@@ -122,6 +134,13 @@ export default class EventEmitter {
     if (this.hasListeners(eventName)) {
       if (typeof listener === 'function') {
         events.get(eventName).delete(listener);
+
+        // Remove any wrapped listeners that use the provided listener
+        this.listeners(eventName).forEach(l => {
+          if (l.listener === listener) {
+            events.get(eventName).delete(l);
+          }
+        });
       } else {
         events.get(eventName).clear(eventName);
       }

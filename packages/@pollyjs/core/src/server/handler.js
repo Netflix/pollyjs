@@ -1,7 +1,9 @@
 import { assert } from '@pollyjs/utils';
 
 import EventEmitter from '../-private/event-emitter';
+import cancelFnAfterNTimes from '../utils/cancel-fn-after-n-times';
 import {
+  validateTimesOption,
   validateRecordingName,
   validateRequestConfig
 } from '../utils/validators';
@@ -11,7 +13,9 @@ export default class Handler extends Map {
     super();
 
     this.set('config', {});
+    this.set('defaultOptions', {});
     this.set('filters', new Set());
+
     this._eventEmitter = new EventEmitter({
       eventNames: [
         'error',
@@ -24,8 +28,11 @@ export default class Handler extends Map {
     });
   }
 
-  on(eventName, listener) {
-    this._eventEmitter.on(eventName, listener);
+  on(eventName, listener, options = {}) {
+    this._eventEmitter.on(eventName, listener, {
+      ...this.get('defaultOptions'),
+      ...options
+    });
 
     return this;
   }
@@ -52,11 +59,18 @@ export default class Handler extends Map {
     return this;
   }
 
-  intercept(fn) {
+  intercept(fn, options = {}) {
     assert(
       `Invalid intercept handler provided. Expected function, received: "${typeof fn}".`,
       typeof fn === 'function'
     );
+
+    const { times } = { ...this.get('defaultOptions'), ...options };
+
+    if (times) {
+      validateTimesOption(times);
+      fn = cancelFnAfterNTimes(fn, times, () => this.delete('intercept'));
+    }
 
     this.set('intercept', fn);
     this.passthrough(false);
@@ -88,6 +102,17 @@ export default class Handler extends Map {
     );
 
     this.get('filters').add(fn);
+
+    return this;
+  }
+
+  times(n) {
+    if (!n && typeof n !== 'number') {
+      delete this.get('defaultOptions').times;
+    } else {
+      validateTimesOption(n);
+      this.get('defaultOptions').times = n;
+    }
 
     return this;
   }

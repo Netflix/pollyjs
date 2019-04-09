@@ -97,11 +97,11 @@ export default class Route {
    */
   async emit(eventName, req, ...args) {
     for (const { route, handler } of this[HANDLERS]) {
-      const listeners = handler._eventEmitter.listeners(eventName);
-
-      for (const listener of listeners) {
-        await listener(requestWithParams(req, route), ...args);
-      }
+      await handler._eventEmitter.emit(
+        eventName,
+        requestWithParams(req, route),
+        ...args
+      );
     }
   }
 

@@ -33,3 +33,15 @@ export function validateRequestConfig(config) {
     )
   );
 }
+
+export function validateTimesOption(times) {
+  assert(
+    `Invalid number provided. Expected number, received: "${typeof times}".`,
+    typeof times === 'number'
+  );
+
+  assert(
+    `Invalid number provided. The number must be greater than 0, received "${typeof times}".`,
+    times > 0
+  );
+}
