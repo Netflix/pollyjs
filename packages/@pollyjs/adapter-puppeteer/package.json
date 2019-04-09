@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-puppeteer",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-puppeteer.js",
   "module": "dist/es/pollyjs-adapter-puppeteer.js",

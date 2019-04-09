@@ -35,6 +35,9 @@ module.exports = {
   },
   middleware: [attachMiddleware],
   launchers: {
+    'Node:debug': {
+      command: 'yarn test:node --inspect-brk'
+    },
     Node: {
       command: 'yarn test:node --reporter tap',
       protocol: 'tap'

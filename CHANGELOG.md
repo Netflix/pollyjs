@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/netflix/pollyjs/compare/v2.3.1...v2.3.2) (2019-04-09)
+
+
+### Bug Fixes
+
+* **adapter-puppeteer:** Remove other resource type matching ([#197](https://github.com/netflix/pollyjs/issues/197)) ([ea6bfcc](https://github.com/netflix/pollyjs/commit/ea6bfcc))
+
+
+
+
+
 ## [2.3.1](https://github.com/netflix/pollyjs/compare/v2.3.0...v2.3.1) (2019-03-06)
 
 

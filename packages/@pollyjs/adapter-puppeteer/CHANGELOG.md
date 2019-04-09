@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-puppeteer/compare/v2.3.1...v2.3.2) (2019-04-09)
+
+
+### Bug Fixes
+
+* **adapter-puppeteer:** Remove other resource type matching ([#197](https://github.com/netflix/pollyjs/tree/master/packages/[@pollyjs](https://github.com/pollyjs)/adapter-puppeteer/issues/197)) ([ea6bfcc](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-puppeteer/commit/ea6bfcc))
+
+
+
+
+
 # [2.3.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-puppeteer/compare/v2.2.0...v2.3.0) (2019-02-27)
 
 **Note:** Version bump only for package @pollyjs/adapter-puppeteer

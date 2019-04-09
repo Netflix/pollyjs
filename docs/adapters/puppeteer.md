@@ -6,6 +6,8 @@ you to get the full power of Polly and Puppeteer.
 
 ## Installation
 
+?> **NOTE** If you're using Puppeteer 1.7 or 1.8, you'll experience issues using passthrough requests. Please upgrade to the latest version of Puppeteer or use a version prior to 1.7.
+
 _Note that you must have node (and npm) installed._
 
 ```bash
