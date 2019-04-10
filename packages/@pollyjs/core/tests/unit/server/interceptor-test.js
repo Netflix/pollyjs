@@ -1,6 +1,6 @@
-import Interceptor from '../../../src/-private/interceptor';
+import Interceptor from '../../../src/server/interceptor';
 
-describe('Unit | Private | Interceptor', function() {
+describe('Unit | Server | Interceptor', function() {
   it('should exist', function() {
     expect(Interceptor).to.be.a('function');
   });

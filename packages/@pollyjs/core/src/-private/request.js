@@ -12,6 +12,7 @@ import {
   validateRecordingName,
   validateRequestConfig
 } from '../utils/validators';
+import Interceptor from '../server/interceptor';
 
 import HTTPBase from './http-base';
 import PollyResponse from './response';
@@ -53,6 +54,9 @@ export default class PollyRequest extends HTTPBase {
       This will be set by the adapter.
     */
     this.action = null;
+
+    // Interceptor instance to be passed to each of the intercept handlers
+    this._interceptor = new Interceptor();
 
     // Lookup the associated route for this request
     this[ROUTE] = polly.server.lookup(this.method, this.url);

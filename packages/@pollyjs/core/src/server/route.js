@@ -79,7 +79,11 @@ export default class Route {
    */
   async intercept(req, res, interceptor) {
     for (const { route, handler } of this[HANDLERS]) {
-      if (handler.has('intercept') && interceptor.shouldIntercept) {
+      if (!interceptor.shouldIntercept || interceptor.shouldStopPropagating) {
+        return;
+      }
+
+      if (handler.has('intercept')) {
         await handler.get('intercept')(
           requestWithParams(req, route),
           res,
@@ -97,11 +101,15 @@ export default class Route {
    */
   async emit(eventName, req, ...args) {
     for (const { route, handler } of this[HANDLERS]) {
-      await handler._eventEmitter.emit(
+      const shouldContinue = await handler._eventEmitter.emit(
         eventName,
         requestWithParams(req, route),
         ...args
       );
+
+      if (!shouldContinue) {
+        return;
+      }
     }
   }
 
