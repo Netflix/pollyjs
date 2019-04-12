@@ -12,11 +12,11 @@ import {
   validateRecordingName,
   validateRequestConfig
 } from '../utils/validators';
-import Interceptor from '../server/interceptor';
 
 import HTTPBase from './http-base';
 import PollyResponse from './response';
 import EventEmitter from './event-emitter';
+import Interceptor from './interceptor';
 
 const { keys, freeze } = Object;
 

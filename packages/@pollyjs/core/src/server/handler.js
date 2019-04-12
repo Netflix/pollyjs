@@ -65,11 +65,13 @@ export default class Handler extends Map {
       typeof fn === 'function'
     );
 
-    const { times } = { ...this.get('defaultOptions'), ...options };
+    options = { ...this.get('defaultOptions'), ...options };
 
-    if (times) {
-      validateTimesOption(times);
-      fn = cancelFnAfterNTimes(fn, times, () => this.delete('intercept'));
+    if ('times' in options) {
+      validateTimesOption(options.times);
+      fn = cancelFnAfterNTimes(fn, options.times, () =>
+        this.delete('intercept')
+      );
     }
 
     this.set('intercept', fn);

@@ -201,6 +201,42 @@ describe('Integration | Server', function() {
         /Invalid filter callback provided/
       );
     });
+
+    it('.times()', async function() {
+      const { server } = this.polly;
+      let callCount = 0;
+
+      server
+        .get('/ping')
+        .times(1)
+        .on('request', () => callCount++)
+        .times()
+        .intercept((req, res) => res.sendStatus(200));
+
+      expect((await fetch('/ping')).status).to.equal(200);
+      expect(callCount).to.equal(1);
+
+      expect((await fetch('/ping')).status).to.equal(200);
+      expect(callCount).to.equal(1);
+    });
+
+    it('.intercept(_, { times }) & .on(_, { times })', async function() {
+      const { server } = this.polly;
+      let callCount = 0;
+
+      const handler = server
+        .get('/ping')
+        .on('request', () => callCount++, { times: 1 })
+        .intercept((req, res) => res.sendStatus(200), { times: 2 });
+
+      expect((await fetch('/ping')).status).to.equal(200);
+      expect(callCount).to.equal(1);
+
+      expect((await fetch('/ping')).status).to.equal(200);
+      expect(callCount).to.equal(1);
+
+      expect(handler.has('intercept')).to.be.false;
+    });
   });
 
   describe('Events & Middleware', function() {
@@ -410,6 +446,49 @@ describe('Integration | Server', function() {
       expect((await fetch('/ping/1')).status).to.equal(200);
       expect(requestOrder).to.deep.equal([1, 2, 3, 4, 5]);
       expect(beforeResponseOrder).to.deep.equal([1, 2, 3, 4, 5]);
+    });
+  });
+
+  describe('Control Flow', function() {
+    it('can control flow with .times() & .stopPropagation()', async function() {
+      const { server } = this.polly;
+      let calledBeforeDelete = false;
+      let calledAfterDelete = false;
+
+      // First call should return the user and not enter the 2nd handler
+      server
+        .get('/user/1')
+        .times(1)
+        .on('request', (req, e) => {
+          e.stopPropagation();
+          calledBeforeDelete = true;
+        })
+        .intercept((req, res, interceptor) => {
+          interceptor.stopPropagation();
+          res.sendStatus(200);
+        });
+
+      server.delete('/user/1').intercept((req, res) => res.sendStatus(201));
+
+      // Second call should 404 since the user no longer exists
+      server
+        .get('/user/1')
+        .times(1)
+        .on('request', () => (calledAfterDelete = true))
+        .intercept((req, res) => res.sendStatus(404));
+
+      expect((await fetch('/user/1')).status).to.equal(200);
+      expect(calledBeforeDelete).to.be.true;
+      expect(calledAfterDelete).to.be.false;
+
+      calledBeforeDelete = false;
+      expect((await fetch('/user/1', { method: 'DELETE' })).status).to.equal(
+        201
+      );
+
+      expect((await fetch('/user/1')).status).to.equal(404);
+      expect(calledBeforeDelete).to.be.false;
+      expect(calledAfterDelete).to.be.true;
     });
   });
 });

@@ -1,4 +1,4 @@
-import Event from '../-private/event';
+import Event from './event';
 
 const ABORT = Symbol();
 const PASSTHROUGH = Symbol();

@@ -74,6 +74,35 @@ describe('Unit | EventEmitter', function() {
       expect(listenerCalled).to.equal(1);
     });
 
+    it('.on(listener, { times })', async function() {
+      assertEventName('on');
+      assertListener('on');
+
+      let listenerCalled = 0;
+      const listener = () => listenerCalled++;
+
+      expect(() => emitter.on('a', listener, { times: '1' })).to.throw(
+        Error,
+        /Invalid number provided/
+      );
+
+      expect(() => emitter.on('a', listener, { times: -1 })).to.throw(
+        Error,
+        /The number must be greater than 0/
+      );
+
+      emitter.on('a', listener, { times: 1 });
+      emitter.on('a', listener, { times: 2 });
+      expect(emitter.listeners('a')).to.have.lengthOf(1);
+
+      await emitter.emit('a');
+      await emitter.emit('a');
+      await emitter.emit('a');
+
+      expect(listenerCalled).to.equal(2);
+      expect(emitter.listeners('a')).to.have.lengthOf(0);
+    });
+
     it('.once()', async function() {
       assertEventName('once');
       assertListener('once');
@@ -90,6 +119,12 @@ describe('Unit | EventEmitter', function() {
 
       await emitter.emit('a');
       expect(listenerCalled).to.equal(1);
+
+      emitter.once('a', listener);
+      expect(emitter.listeners('a')).to.have.lengthOf(1);
+
+      emitter.off('a', listener);
+      expect(emitter.listeners('a')).to.have.lengthOf(0);
     });
 
     it('.off()', async function() {
@@ -106,6 +141,12 @@ describe('Unit | EventEmitter', function() {
       expect(emitter.listeners('a')).to.have.lengthOf(2);
 
       emitter.off('a');
+      expect(emitter.listeners('a')).to.have.lengthOf(0);
+
+      emitter.on('a', listener, { times: 3 });
+      expect(emitter.listeners('a')).to.have.lengthOf(1);
+
+      emitter.off('a', listener);
       expect(emitter.listeners('a')).to.have.lengthOf(0);
     });
 
@@ -141,8 +182,6 @@ describe('Unit | EventEmitter', function() {
 
     it('.emit()', async function() {
       expect(emitter.emit('a')).to.be.a('promise');
-      // No listeners should resolve to `false`
-      expect(await emitter.emit('a')).to.be.false;
 
       const array = [];
 
@@ -157,10 +196,21 @@ describe('Unit | EventEmitter', function() {
       expect(array).to.have.ordered.members([1, 2, 3]);
     });
 
+    it('.emit() - stopPropagation', async function() {
+      const array = [];
+
+      emitter.on('a', async e => {
+        e.stopPropagation();
+        array.push(1);
+      });
+      emitter.on('a', () => array.push(2));
+
+      expect(await emitter.emit('a')).to.be.false;
+      expect(array).to.have.ordered.members([1]);
+    });
+
     it('.emitParallel()', async function() {
       expect(emitter.emitParallel('a')).to.be.a('promise');
-      // No listeners should resolve to `false`
-      expect(await emitter.emitParallel('a')).to.be.false;
 
       const array = [];
 
@@ -178,10 +228,20 @@ describe('Unit | EventEmitter', function() {
       expect(array).to.have.ordered.members([1, 3, 2]);
     });
 
-    it('.emitSync()', async function() {
-      // No listeners should resolve to `false`
-      expect(emitter.emitSync('a')).to.be.false;
+    it('.emitParallel() - stopPropagation', async function() {
+      const array = [];
 
+      emitter.on('a', async e => {
+        e.stopPropagation();
+        array.push(1);
+      });
+      emitter.on('a', () => array.push(2));
+
+      expect(await emitter.emitParallel('a')).to.be.false;
+      expect(array).to.have.ordered.members([1, 2]);
+    });
+
+    it('.emitSync()', async function() {
       emitter.once('a', () => Promise.resolve());
       expect(() => emitter.emitSync('a')).to.throw(
         Error,
@@ -196,6 +256,19 @@ describe('Unit | EventEmitter', function() {
 
       expect(emitter.emitSync('a')).to.be.true;
       expect(array).to.have.ordered.members([1, 2, 3]);
+    });
+
+    it('.emitSync() - stopPropagation', async function() {
+      const array = [];
+
+      emitter.on('a', e => {
+        e.stopPropagation();
+        array.push(1);
+      });
+      emitter.on('a', () => array.push(2));
+
+      expect(emitter.emitSync('a')).to.be.false;
+      expect(array).to.have.ordered.members([1]);
     });
   });
 });

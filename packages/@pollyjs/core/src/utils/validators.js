@@ -16,7 +16,7 @@ export function validateRecordingName(name) {
 export function validateRequestConfig(config) {
   assert(
     `Invalid config provided. Expected object, received: "${typeof config}".`,
-    isObjectLike(config)
+    isObjectLike(config) && !Array.isArray(config)
   );
 
   // The following options cannot be overridden on a per request basis

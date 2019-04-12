@@ -91,10 +91,21 @@ export default class EventEmitter {
         this.off(eventName, tempListener)
       );
 
+      /*
+        Remove any existing listener or tempListener that match this one.
+
+        For example, if the following would get called:
+          this.on('request', listener);
+          this.on('request', listener, { times: 1 });
+
+        We want to make sure that there is only one instance of the given
+        listener for the given event.
+      */
+      this.off(eventName, listener);
+
       // Save the original listener on the temp one so we can easily match it
       // given the original.
       tempListener.listener = listener;
-
       listener = tempListener;
     }
 
