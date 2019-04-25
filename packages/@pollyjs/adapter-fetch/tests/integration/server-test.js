@@ -468,7 +468,7 @@ describe('Integration | Server', function() {
           res.sendStatus(200);
         });
 
-      server.delete('/users/1').intercept((req, res) => res.sendStatus(204));
+      server.delete('/users/1').intercept((req, res) => res.status(204));
 
       // Second call should 404 since the user no longer exists
       server
