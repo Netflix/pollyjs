@@ -43,8 +43,8 @@
     "nise": "^1.4.6"
   },
   "devDependencies": {
-    "@pollyjs/core": "^2.3.0",
-    "@pollyjs/persister-rest": "^2.1.0",
+    "@pollyjs/core": "*",
+    "@pollyjs/persister-rest": "*",
     "rollup": "^0.67.0"
   }
 }

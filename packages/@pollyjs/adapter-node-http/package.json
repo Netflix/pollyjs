@@ -48,8 +48,8 @@
     "semver": "^5.6.0"
   },
   "devDependencies": {
-    "@pollyjs/core": "^2.3.0",
-    "@pollyjs/persister-fs": "^2.1.0",
+    "@pollyjs/core": "*",
+    "@pollyjs/persister-fs": "*",
     "node-fetch": "^2.3.0",
     "rollup": "^0.67.0"
   }
