@@ -59,6 +59,17 @@ describe('Unit | Server | Handler', function() {
       expect(eventEmitter.hasListeners('request')).to.be.false;
     });
 
+    it('registers a known event via .on() with .times() and override with { times }', function() {
+      const handler = new Handler();
+      const { _eventEmitter: eventEmitter } = handler;
+
+      handler.times(2).on('request', () => {}, { times: 1 });
+      expect(eventEmitter.hasListeners('request')).to.be.true;
+
+      eventEmitter.emitSync('request');
+      expect(eventEmitter.hasListeners('request')).to.be.false;
+    });
+
     it('registers a known event via .once()', function() {
       const handler = new Handler();
       const { _eventEmitter: eventEmitter } = handler;
@@ -145,6 +156,16 @@ describe('Unit | Server | Handler', function() {
       expect(handler.has('intercept')).to.be.true;
 
       handler.get('intercept')();
+      expect(handler.has('intercept')).to.be.true;
+
+      handler.get('intercept')();
+      expect(handler.has('intercept')).to.be.false;
+    });
+
+    it('registers an intercept handler with .times() and override with { times }', function() {
+      const handler = new Handler();
+
+      handler.times(2).intercept(() => {}, { times: 1 });
       expect(handler.has('intercept')).to.be.true;
 
       handler.get('intercept')();

@@ -457,7 +457,7 @@ describe('Integration | Server', function() {
 
       // First call should return the user and not enter the 2nd handler
       server
-        .get('/user/1')
+        .get('/users/1')
         .times(1)
         .on('request', (req, e) => {
           e.stopPropagation();
@@ -468,25 +468,25 @@ describe('Integration | Server', function() {
           res.sendStatus(200);
         });
 
-      server.delete('/user/1').intercept((req, res) => res.sendStatus(201));
+      server.delete('/users/1').intercept((req, res) => res.sendStatus(204));
 
       // Second call should 404 since the user no longer exists
       server
-        .get('/user/1')
+        .get('/users/1')
         .times(1)
         .on('request', () => (calledAfterDelete = true))
         .intercept((req, res) => res.sendStatus(404));
 
-      expect((await fetch('/user/1')).status).to.equal(200);
+      expect((await fetch('/users/1')).status).to.equal(200);
       expect(calledBeforeDelete).to.be.true;
       expect(calledAfterDelete).to.be.false;
 
       calledBeforeDelete = false;
-      expect((await fetch('/user/1', { method: 'DELETE' })).status).to.equal(
-        201
+      expect((await fetch('/users/1', { method: 'DELETE' })).status).to.equal(
+        204
       );
 
-      expect((await fetch('/user/1')).status).to.equal(404);
+      expect((await fetch('/users/1')).status).to.equal(404);
       expect(calledBeforeDelete).to.be.false;
       expect(calledAfterDelete).to.be.true;
     });
