@@ -37,6 +37,7 @@
   - [Route Handler](server/route-handler.md)
   - [Request](server/request.md)
   - [Response](server/response.md)
+  - [Event](server/event.md)
 
 - Node Server
 

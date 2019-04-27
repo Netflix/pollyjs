@@ -15,10 +15,12 @@ Register an [event](server/events-and-middleware) handler.
 ?> **Tip:** You can attach multiple handlers to a single event. Handlers will be
 called in the order they were declared.
 
-| Param     | Type       | Description       |
-| --------- | ---------- | ----------------- |
-| eventName | `String`   | The event name    |
-| handler   | `Function` | The event handler |
+| Param         | Type       | Description                                                      |
+| ------------- | ---------- | ---------------------------------------------------------------- |
+| eventName     | `String`   | The event name                                                   |
+| handler       | `Function` | The event handler                                                |
+| options       | `Object`   | The event handler options                                        |
+| options.times | `number`   | Remove listener after being called the specified amount of times |
 
 **Example**
 
@@ -31,7 +33,14 @@ server
   })
   .on('request', () => {
     /* Do something else */
-  });
+  })
+  .on(
+    'request',
+    () => {
+      /* Do something else twice */
+    },
+    { times: 2 }
+  );
 ```
 
 ### once
@@ -90,14 +99,18 @@ never go to server but instead defer to the provided handler to handle
 the [response](server/response). If multiple intercept handlers have been
 registered, each handler will be called in the order in which it was registered.
 
-| Param   | Type       | Description           |
-| ------- | ---------- | --------------------- |
-| handler | `Function` | The intercept handler |
+| Param         | Type       | Description                                                     |
+| ------------- | ---------- | --------------------------------------------------------------- |
+| handler       | `Function` | The intercept handler                                           |
+| options       | `Object`   | The event handler options                                       |
+| options.times | `number`   | Remove handler after being called the specified amount of times |
 
 **Example**
 
 ```js
 server.any('/session').intercept((req, res) => res.sendStatus(200));
+
+server.any('/twice').intercept((req, res) => res.sendStatus(200), { times: 2 });
 
 server.get('/session/:id').intercept((req, res, interceptor) => {
   if (req.params.id === '1') {
@@ -111,6 +124,8 @@ server.get('/session/:id').intercept((req, res, interceptor) => {
 ```
 
 #### Interceptor
+
+_Extends [Event](server/event)_
 
 The `intercept` handler receives a third `interceptor` argument that provides
 some utilities.
@@ -150,6 +165,33 @@ server.get('/session/:id').intercept((req, res, interceptor) => {
     interceptor.passthrough();
   }
 });
+```
+
+##### stopPropagation
+
+If several intercept handlers are attached to the same route, they are called in the order in which they were added. If `stopPropagation` is invoked during one such call, no remaining handlers will be called.
+
+**Example**
+
+```js
+// First call should return the user and not enter the 2nd handler
+server
+  .get('/session/:id')
+  .times(1) // Remove this interceptor after it gets called once
+  .intercept((req, res, interceptor) => {
+    // Do not continue to the next intercept handler which handles the 404 case
+    interceptor.stopPropagation();
+    res.sendStatus(200);
+  });
+
+server.delete('/session/:id').intercept((req, res) => res.sendStatus(204));
+
+// Second call should 404 since the user no longer exists
+server.get('/session/:id').intercept((req, res) => res.sendStatus(404));
+
+await fetch('/users/1'); // --> 200
+await fetch('/users/1', { method: 'DELETE' }); // --> 204
+await fetch('/users/1'); // --> 404
 ```
 
 ### passthrough
@@ -201,6 +243,34 @@ server
   .intercept((req, res) => {
     res.status(200).json({ email: 'user1@test.com' });
   });
+```
+
+### times
+
+Proceeding intercept and event handlers defined will be removed after being called the specified amount of times. The number specified is used as a default value and can be overridden by passing a custom `times` option to the handler.
+
+| Param | Type     | Description                                                                                        |
+| ----- | -------- | -------------------------------------------------------------------------------------------------- |
+| times | `number` | Default times value for proceeding handlers. If no value is provided, the default value is removed |
+
+**Example**
+
+```js
+server
+  .any()
+  .times(2);
+  .on('request', req => {});
+  .intercept((req, res) => {});
+  .times()
+  .on('response', (req, res) => {});
+
+// Is the same as:
+
+server
+  .any()
+  .on('request', req => {}, { times: 2 });
+  .intercept((req, res) => {}, { times: 2 });
+  .on('response', (req, res) => {});
 ```
 
 ### configure

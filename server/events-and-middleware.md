@@ -42,6 +42,7 @@ Fires right before the request goes out.
 | Param | Type                      | Description          |
 | ----- | ------------------------- | -------------------- |
 | req   | [Request](server/request) | The request instance |
+| event | [Event](server/event)     | The event instance   |
 
 **Example**
 
@@ -60,6 +61,7 @@ Fires right before the response materializes and the promise resolves.
 | ----- | --------------------------- | --------------------- |
 | req   | [Request](server/request)   | The request instance  |
 | res   | [Response](server/response) | The response instance |
+| event | [Event](server/event)       | The event instance    |
 
 **Example**
 
@@ -78,6 +80,7 @@ the response materializes and the promise resolves.
 | ----- | --------------------------- | --------------------- |
 | req   | [Request](server/request)   | The request instance  |
 | res   | [Response](server/response) | The response instance |
+| event | [Event](server/event)       | The event instance    |
 
 **Example**
 
@@ -97,6 +100,7 @@ Fires before the request/response gets persisted.
 | --------- | ------------------------- | ------------------------------------ |
 | req       | [Request](server/request) | The request instance                 |
 | recording | `Object`                  | The recording that will be persisted |
+| event     | [Event](server/event)     | The event instance                   |
 
 **Example**
 
@@ -116,6 +120,7 @@ and before the recording materializes into a response.
 | --------- | ------------------------- | ----------------------- |
 | req       | [Request](server/request) | The request instance    |
 | recording | `Object`                  | The retrieved recording |
+| event     | [Event](server/event)     | The event instance      |
 
 **Example**
 
@@ -134,6 +139,7 @@ Fires when any error gets emitted during the request life-cycle.
 | ----- | ------------------------- | -------------------- |
 | req   | [Request](server/request) | The request instance |
 | error | Error                     | The error            |
+| event | [Event](server/event)     | The event instance   |
 
 **Example**
 
