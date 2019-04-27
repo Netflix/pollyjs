@@ -50,8 +50,8 @@
     "slugify": "^1.3.3"
   },
   "devDependencies": {
-    "@pollyjs/adapter": "^2.2.0",
-    "@pollyjs/persister": "^2.1.0",
+    "@pollyjs/adapter": "*",
+    "@pollyjs/persister": "*",
     "rollup": "^0.67.0"
   }
 }
