@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter",
-  "version": "2.2.0",
+  "version": "2.4.0",
   "description": "Extendable base adapter class used by @pollyjs",
   "main": "dist/cjs/pollyjs-adapter.js",
   "module": "dist/es/pollyjs-adapter.js",
