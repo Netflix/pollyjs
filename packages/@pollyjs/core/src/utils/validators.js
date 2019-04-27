@@ -16,7 +16,7 @@ export function validateRecordingName(name) {
 export function validateRequestConfig(config) {
   assert(
     `Invalid config provided. Expected object, received: "${typeof config}".`,
-    isObjectLike(config)
+    isObjectLike(config) && !Array.isArray(config)
   );
 
   // The following options cannot be overridden on a per request basis
@@ -31,5 +31,17 @@ export function validateRequestConfig(config) {
       `Invalid configuration option provided. The "${key}" option cannot be overridden using the server configuration API.`,
       !(key in config)
     )
+  );
+}
+
+export function validateTimesOption(times) {
+  assert(
+    `Invalid number provided. Expected number, received: "${typeof times}".`,
+    typeof times === 'number'
+  );
+
+  assert(
+    `Invalid number provided. The number must be greater than 0, received "${typeof times}".`,
+    times > 0
   );
 }

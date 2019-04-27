@@ -354,3 +354,8 @@ body .sidebar-toggle span:nth-child(3) {
 .lang-json .token.property {
   color: #e96900;
 }
+
+/****** COPY TO CLIPBOARD ******/
+.docsify-copy-code-button {
+  font-size: 0.7em !important;
+}

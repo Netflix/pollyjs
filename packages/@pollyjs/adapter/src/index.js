@@ -1,6 +1,5 @@
 import { ACTIONS, MODES, Serializers, assert } from '@pollyjs/utils';
 
-import Interceptor from './-private/interceptor';
 import isExpired from './utils/is-expired';
 import stringifyRequest from './utils/stringify-request';
 import normalizeRecordedResponse from './utils/normalize-recorded-response';
@@ -112,11 +111,9 @@ export default class Adapter {
 
   async [REQUEST_HANDLER](pollyRequest) {
     const { mode } = this.polly;
-    let interceptor;
+    const { _interceptor: interceptor } = pollyRequest;
 
     if (pollyRequest.shouldIntercept) {
-      interceptor = new Interceptor();
-
       await this.intercept(pollyRequest, interceptor);
 
       if (interceptor.shouldIntercept) {
@@ -127,7 +124,7 @@ export default class Adapter {
     if (
       mode === MODES.PASSTHROUGH ||
       pollyRequest.shouldPassthrough ||
-      (interceptor && interceptor.shouldPassthrough)
+      interceptor.shouldPassthrough
     ) {
       return this.passthrough(pollyRequest);
     }

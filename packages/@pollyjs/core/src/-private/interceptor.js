@@ -1,3 +1,5 @@
+import Event from './event';
+
 const ABORT = Symbol();
 const PASSTHROUGH = Symbol();
 
@@ -6,8 +8,9 @@ function setDefaults(interceptor) {
   interceptor[PASSTHROUGH] = false;
 }
 
-export default class Interceptor {
+export default class Interceptor extends Event {
   constructor() {
+    super('intercept');
     setDefaults(this);
   }
 
