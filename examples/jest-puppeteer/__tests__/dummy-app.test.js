@@ -17,6 +17,11 @@ describe('jest-puppeteer', () => {
       fs: {
         recordingsDir: path.resolve(__dirname, '../__recordings__')
       }
+    },
+    matchRequestsBy: {
+      headers: {
+        exclude: ['user-agent']
+      }
     }
   });
 
@@ -28,7 +33,6 @@ describe('jest-puppeteer', () => {
     const { server } = context.polly;
 
     server.host('http://localhost:3000', () => {
-      server.get('/favicon.ico').passthrough();
       server.get('/sockjs-node/*').intercept((_, res) => res.sendStatus(200));
     });
 
@@ -48,5 +52,9 @@ describe('jest-puppeteer', () => {
     await expect(page).toClick('a', { text: 'Users' });
     await expect(page).toMatchElement('tbody > tr', { timeout: 5000 });
     await expect(header).toMatch('Users');
+
+    // Wait for all requests to resolve, this can also be replaced with
+    // `await context.polly.flush()`
+    await page.waitForResponse(() => true);
   });
 });
