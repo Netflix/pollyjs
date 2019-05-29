@@ -99,10 +99,10 @@ describe('Netflix Homepage', function() {
 
 ## Configuring ember-mocha
 
-If you project uses [`ember-mocha`](https://github.com/emberjs/ember-mocha) then be be sure to use their built-in
-[hooks API](https://github.com/emberjs/ember-mocha#setup-tests) for the best Polly experience.
+If you're using [`ember-mocha`](https://github.com/emberjs/ember-mocha) be sure to use their built-in
+[hooks API](https://github.com/emberjs/ember-mocha#setup-tests).  Otherwise, Polly's mocha test helper will be unable to teardown Polly between tests.
 
-An example of how to setup Polly within an acceptance test:
+An example of how to correctly setup Polly with `ember-mocha`:
 
 ```js
 import { expect } from 'chai';
