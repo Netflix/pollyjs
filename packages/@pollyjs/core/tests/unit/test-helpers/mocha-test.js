@@ -4,7 +4,7 @@ class Sandbox {
   constructor(context) {
     this.beforeEachCalled = new Set();
     this.afterEachCalled = new Set();
-    this.context = context || { currentTest: {} };
+    this.context = context || { currentTest: { title: 'mockname' } };
   }
 
   beforeEach(fn) {
@@ -34,21 +34,15 @@ describe('Unit | Test Helpers | mocha', function() {
   });
 
   it('should create a polly property and set recordingName', function() {
-    const ctx = {
-      currentTest: {
-        title: 'foo'
-      }
-    };
-
-    const stub = new Sandbox(ctx);
+    const stub = new Sandbox();
 
     setupPolly({}, stub);
-    expect(ctx.polly).to.be.a('object');
-    expect(ctx.polly.recordingName).to.equal('foo');
+    expect(stub.context.polly).to.be.a('object');
+    expect(stub.context.polly.recordingName).to.equal('mockname');
   });
 
   it('should concat title if test is deeply nested', function() {
-    const ctx = {
+    const stub = new Sandbox({
       currentTest: {
         title: 'foo',
         parent: {
@@ -58,11 +52,9 @@ describe('Unit | Test Helpers | mocha', function() {
           }
         }
       }
-    };
-
-    const stub = new Sandbox(ctx);
+    });
 
     setupPolly({}, stub);
-    expect(ctx.polly.recordingName).to.equal('baz/bar/foo');
+    expect(stub.context.polly.recordingName).to.equal('baz/bar/foo');
   });
 });
