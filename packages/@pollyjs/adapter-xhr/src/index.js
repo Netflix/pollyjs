@@ -1,4 +1,4 @@
-import FakeXHR from 'nise/lib/fake-xhr';
+import fakeXhr from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
 
 import resolveXhr from './utils/resolve-xhr';
@@ -12,15 +12,24 @@ export default class XHRAdapter extends Adapter {
     return 'xhr';
   }
 
+  get defaultOptions() {
+    return {
+      context: global
+    };
+  }
+
   onConnect() {
-    this.assert('XHR global not found.', FakeXHR.xhr.supportsXHR);
+    const { context } = this.options;
+    const fakeXhrForContext = fakeXhr.fakeXMLHttpRequestFor(context);
+
+    this.assert('XHR global not found.', fakeXhrForContext.xhr.supportsXHR);
     this.assert(
       'Running concurrent XHR adapters is unsupported, stop any running Polly instances.',
-      !global.XMLHttpRequest[IS_STUBBED]
+      !context.XMLHttpRequest[IS_STUBBED]
     );
 
-    this.native = global.XMLHttpRequest;
-    this.xhr = FakeXHR.useFakeXMLHttpRequest();
+    this.NativeXMLHttpRequest = context.XMLHttpRequest;
+    this.xhr = fakeXhrForContext.useFakeXMLHttpRequest();
 
     this.xhr.onCreate = xhr => {
       xhr[SEND] = xhr.send;
@@ -36,11 +45,13 @@ export default class XHRAdapter extends Adapter {
       };
     };
 
-    global.XMLHttpRequest[IS_STUBBED] = true;
+    context.XMLHttpRequest[IS_STUBBED] = true;
   }
 
   onDisconnect() {
-    delete global.XMLHttpRequest[IS_STUBBED];
+    const { context } = this.options;
+
+    delete context.XMLHttpRequest[IS_STUBBED];
     this.xhr.restore();
   }
 
@@ -62,8 +73,7 @@ export default class XHRAdapter extends Adapter {
 
   async passthroughRequest(pollyRequest) {
     const fakeXhr = pollyRequest.requestArguments.xhr;
-
-    const xhr = new this.native();
+    const xhr = new this.NativeXMLHttpRequest();
 
     xhr.open(
       pollyRequest.method,
