@@ -44,3 +44,25 @@ polly.connectTo('xhr');
 // Disconnect using the `disconnectFrom` API
 polly.disconnectFrom('xhr');
 ```
+
+## Options
+
+### context
+
+_Type_: `Object`
+_Default_: `global|self|window`
+
+The context object which contains the XMLHttpRequest object. Typically this is `window` or `self` in the browser and `global` in node.
+
+**Example**
+
+```js
+polly.configure({
+  adapters: ['xhr'],
+  adapterOptions: {
+    xhr: {
+      context: window
+    }
+  }
+});
+```
