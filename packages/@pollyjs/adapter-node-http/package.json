@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-node-http",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Node HTTP adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-node-http.js",
   "module": "dist/es/pollyjs-adapter-node-http.js",
@@ -48,7 +48,7 @@
     "semver": "^5.6.0"
   },
   "devDependencies": {
-    "@pollyjs/core": "^2.4.0",
+    "@pollyjs/core": "^2.5.0",
     "@pollyjs/persister-fs": "*",
     "node-fetch": "^2.3.0",
     "rollup": "^0.67.0"

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v2.4.0...v2.5.0) (2019-06-06)
+
+
+### Features
+
+* **adapter-xhr:** Support `context` option ([65b3c38](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/commit/65b3c38))
+
+
+
+
+
 # [2.4.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v2.3.2...v2.4.0) (2019-04-27)
 
 **Note:** Version bump only for package @pollyjs/adapter-xhr
