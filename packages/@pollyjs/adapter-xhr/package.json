@@ -40,7 +40,7 @@
   "dependencies": {
     "@pollyjs/adapter": "^2.4.0",
     "@pollyjs/utils": "^2.1.0",
-    "nise": "^1.4.6"
+    "nise": "^1.5.0"
   },
   "devDependencies": {
     "@pollyjs/core": "^2.4.0",

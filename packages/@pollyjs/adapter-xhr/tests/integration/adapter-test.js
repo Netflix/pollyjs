@@ -7,6 +7,8 @@ import RESTPersister from '@pollyjs/persister-rest';
 import xhrRequest from '../utils/xhr-request';
 import XHRAdapter from '../../src';
 
+class MockXMLHttpRequest {}
+
 describe('Integration | XHR Adapter', function() {
   setupPolly.beforeEach({
     recordFailedRequests: true,
@@ -28,33 +30,76 @@ describe('Integration | XHR Adapter', function() {
   adapterBrowserTests();
 });
 
-describe('Integration | XHR Adapter | Concurrency', function() {
-  it('should prevent concurrent XHR adapter instances', async function() {
-    const one = new Polly('one');
-    const two = new Polly('two');
+describe('Integration | XHR Adapter | Init', function() {
+  describe('Context', function() {
+    it(`should assign context's XMLHttpRequest as the native XMLHttpRequest`, async function() {
+      const polly = new Polly('context', { adapters: [] });
+      const adapterOptions = {
+        xhr: {
+          context: { XMLHttpRequest: MockXMLHttpRequest }
+        }
+      };
 
-    one.connectTo(XHRAdapter);
+      polly.configure({
+        adapters: [XHRAdapter],
+        adapterOptions
+      });
 
-    expect(function() {
-      two.connectTo(XHRAdapter);
-    }).to.throw(/Running concurrent XHR adapters is unsupported/);
+      expect(polly.adapters.get('xhr').NativeXMLHttpRequest).to.equal(
+        MockXMLHttpRequest
+      );
+      expect(polly.adapters.get('xhr').NativeXMLHttpRequest).to.not.equal(
+        adapterOptions.xhr.context.XMLHttpRequest
+      );
 
-    await one.stop();
-    await two.stop();
+      expect(function() {
+        polly.configure({
+          adapterOptions: { xhr: { context: {} } }
+        });
+      }).to.throw(/XHR global not found/);
+
+      await polly.stop();
+    });
   });
 
-  it('should allow you to register new instances once stopped', async function() {
-    const one = new Polly('one');
-    const two = new Polly('two');
+  describe('Concurrency', function() {
+    it('should prevent concurrent XHR adapter instances on the same context', async function() {
+      const one = new Polly('one');
+      const two = new Polly('two');
+      const three = new Polly('three', {
+        adapterOptions: {
+          xhr: {
+            context: { XMLHttpRequest: MockXMLHttpRequest }
+          }
+        }
+      });
 
-    one.connectTo(XHRAdapter);
-    await one.stop();
+      one.connectTo(XHRAdapter);
 
-    expect(function() {
-      two.connectTo(XHRAdapter);
-    }).to.not.throw();
+      expect(function() {
+        two.connectTo(XHRAdapter);
+      }).to.throw(/Running concurrent XHR adapters is unsupported/);
 
-    await one.stop();
-    await two.stop();
+      three.connectTo(XHRAdapter);
+
+      await one.stop();
+      await two.stop();
+      await three.stop();
+    });
+
+    it('should allow you to register new instances once stopped', async function() {
+      const one = new Polly('one');
+      const two = new Polly('two');
+
+      one.connectTo(XHRAdapter);
+      await one.stop();
+
+      expect(function() {
+        two.connectTo(XHRAdapter);
+      }).to.not.throw();
+
+      await one.stop();
+      await two.stop();
+    });
   });
 });
