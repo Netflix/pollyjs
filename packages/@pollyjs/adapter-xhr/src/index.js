@@ -5,7 +5,7 @@ import resolveXhr from './utils/resolve-xhr';
 import serializeResponseHeaders from './utils/serialize-response-headers';
 
 const SEND = Symbol();
-const IS_STUBBED = Symbol();
+const stubbedXhrs = new WeakSet();
 
 export default class XHRAdapter extends Adapter {
   static get name() {
@@ -25,7 +25,7 @@ export default class XHRAdapter extends Adapter {
     this.assert('XHR global not found.', fakeXhrForContext.xhr.supportsXHR);
     this.assert(
       'Running concurrent XHR adapters is unsupported, stop any running Polly instances.',
-      !context.XMLHttpRequest[IS_STUBBED]
+      !stubbedXhrs.has(context.XMLHttpRequest)
     );
 
     this.NativeXMLHttpRequest = context.XMLHttpRequest;
@@ -45,13 +45,13 @@ export default class XHRAdapter extends Adapter {
       };
     };
 
-    context.XMLHttpRequest[IS_STUBBED] = true;
+    stubbedXhrs.add(context.XMLHttpRequest);
   }
 
   onDisconnect() {
     const { context } = this.options;
 
-    delete context.XMLHttpRequest[IS_STUBBED];
+    stubbedXhrs.delete(context.XMLHttpRequest);
     this.xhr.restore();
   }
 

@@ -63,9 +63,16 @@ describe('Integration | XHR Adapter | Init', function() {
   });
 
   describe('Concurrency', function() {
-    it('should prevent concurrent XHR adapter instances', async function() {
+    it('should prevent concurrent XHR adapter instances on the same context', async function() {
       const one = new Polly('one');
       const two = new Polly('two');
+      const three = new Polly('three', {
+        adapterOptions: {
+          xhr: {
+            context: { XMLHttpRequest: MockXMLHttpRequest }
+          }
+        }
+      });
 
       one.connectTo(XHRAdapter);
 
@@ -73,8 +80,11 @@ describe('Integration | XHR Adapter | Init', function() {
         two.connectTo(XHRAdapter);
       }).to.throw(/Running concurrent XHR adapters is unsupported/);
 
+      three.connectTo(XHRAdapter);
+
       await one.stop();
       await two.stop();
+      await three.stop();
     });
 
     it('should allow you to register new instances once stopped', async function() {
