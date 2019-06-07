@@ -16,11 +16,13 @@ export default class Logger {
   connect() {
     this._middleware = this.polly.server
       .any()
+      .on('error', (...args) => this.logError(...args))
       .on('response', (...args) => this.logRequest(...args));
   }
 
   disconnect() {
     this.groupEnd();
+    this._middleware.off('error');
     this._middleware.off('response');
   }
 
@@ -42,19 +44,36 @@ export default class Logger {
 
   groupEnd() {
     if (this.groupName) {
-      console.groupEnd(this.groupName);
+      console.groupEnd();
     }
   }
 
   logRequest(request) {
     if (request.config.logging) {
       this.groupStart(request.recordingName);
-      console.log(
+
+      console.groupCollapsed(
         `${FORMATTED_ACTIONS[request.action]} ➞ ${request.method} ${
           request.url
-        } ${request.response.statusCode} • ${request.responseTime}ms`,
-        request
+        } ${request.response.statusCode} • ${request.responseTime}ms`
       );
+      console.log('Request:', request);
+      console.log('Response:', request.response);
+      console.log('Identifiers:', request.identifiers);
+      console.groupEnd();
+    }
+  }
+
+  logError(request, error) {
+    if (request.config.logging) {
+      this.groupStart(request.recordingName);
+
+      console.groupCollapsed(`Errored ➞ ${request.method} ${request.url}`);
+      console.error(error);
+      console.log('Request:', request);
+      console.log('Response:', request.response);
+      console.log('Identifiers:', request.identifiers);
+      console.groupEnd();
     }
   }
 }
