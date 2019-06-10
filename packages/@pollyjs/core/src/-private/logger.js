@@ -71,7 +71,11 @@ export default class Logger {
       console.groupCollapsed(`Errored ➞ ${request.method} ${request.url}`);
       console.error(error);
       console.log('Request:', request);
-      console.log('Response:', request.response);
+
+      if (request.didRespond) {
+        console.log('Response:', request.response);
+      }
+
       console.log('Identifiers:', request.identifiers);
       console.groupEnd();
     }
