@@ -41,8 +41,8 @@
     "@pollyjs/persister": "^2.1.0"
   },
   "devDependencies": {
-    "fixturify": "^0.3.4",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.67.0"
+    "fixturify": "^1.2.0",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.14.6"
   }
 }
