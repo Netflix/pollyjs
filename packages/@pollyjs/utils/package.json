@@ -35,10 +35,10 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "qs": "^6.6.0",
-    "url-parse": "^1.4.4"
+    "qs": "^6.7.0",
+    "url-parse": "^1.4.7"
   },
   "devDependencies": {
-    "rollup": "^0.67.0"
+    "rollup": "^1.14.6"
   }
 }

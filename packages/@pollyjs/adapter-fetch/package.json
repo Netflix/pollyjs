@@ -46,6 +46,6 @@
     "@pollyjs/core": "^2.5.0",
     "@pollyjs/persister-local-storage": "*",
     "@pollyjs/persister-rest": "*",
-    "rollup": "^0.67.0"
+    "rollup": "^1.14.6"
   }
 }

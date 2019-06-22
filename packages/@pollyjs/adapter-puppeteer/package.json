@@ -43,8 +43,8 @@
   "devDependencies": {
     "@pollyjs/core": "^2.5.0",
     "@pollyjs/persister-fs": "*",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.0",
     "puppeteer": "1.10.0",
-    "rollup": "^0.67.0"
+    "rollup": "^1.14.6"
   }
 }
