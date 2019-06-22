@@ -71,11 +71,7 @@ export default class Persister {
         const entry = new Entry(request);
 
         this.assert(
-          `Cannot persist response for [${entry.request.method}] ${
-            entry.request.url
-          } because the status code was ${
-            entry.response.status
-          } and \`recordFailedRequests\` is \`false\``,
+          `Cannot persist response for [${entry.request.method}] ${entry.request.url} because the status code was ${entry.response.status} and \`recordFailedRequests\` is \`false\``,
           request.response.ok || request.config.recordFailedRequests
         );
 

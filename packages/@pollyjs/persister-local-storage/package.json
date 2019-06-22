@@ -41,6 +41,6 @@
     "@pollyjs/persister": "^2.1.0"
   },
   "devDependencies": {
-    "rollup": "^0.67.0"
+    "rollup": "^1.14.6"
   }
 }
