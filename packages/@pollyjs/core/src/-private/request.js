@@ -82,6 +82,9 @@ export default class PollyRequest extends HTTPBase {
   }
 
   set url(value) {
+    if (typeof value === 'object' && 'url' in value) {
+      value = value.url;
+    }
     // Make sure to coerce the value into a string as the passed value could be
     // a WHATWG's URL object.
     this[PARSED_URL] = parseUrl(`${value}`, true);
