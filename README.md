@@ -173,12 +173,7 @@ _In alphabetical order:_
 
 ## We're hiring!
 
-Join the Netflix Studio & Content Engineering teams to help us build projects like this!
-
-Open Roles:
-
-- [Senior UI Engineer - Production Visibility Engineering](https://jobs.netflix.com/jobs/868295)
-- [Senior UI Engineer - Production Workflows Engineering](https://jobs.netflix.com/jobs/868224)
+Join the Netflix Studio UI team to help us build projects like this! You can check out our open roles here on our [team page](https://jobs.netflix.com/teams/client-applications).
 
 ## License
 
