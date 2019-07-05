@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   List,
   Datagrid,
@@ -9,9 +10,14 @@ import {
   ShowButton
 } from 'react-admin';
 
-// eslint-disable-next-line react/prop-types
 const UserTitle = ({ record }) => {
   return <span>Users - {record ? `${record.name}` : ''}</span>;
+};
+
+UserTitle.propTypes = {
+  record: PropTypes.PropTypes.shape({
+    name: PropTypes.string
+  })
 };
 
 export const UserList = props => (
