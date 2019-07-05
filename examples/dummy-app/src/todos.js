@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   List,
   Edit,
@@ -29,9 +30,14 @@ const TodoFilter = props => (
   </Filter>
 );
 
-// eslint-disable-next-line react/prop-types
 const TodoTitle = ({ record }) => {
   return <span>Todos - {record ? `${record.title}` : ''}</span>;
+};
+
+TodoTitle.propTypes = {
+  record: PropTypes.PropTypes.shape({
+    title: PropTypes.string
+  })
 };
 
 export const TodoList = props => (
