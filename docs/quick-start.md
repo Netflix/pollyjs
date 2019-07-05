@@ -68,23 +68,28 @@ new Polly('<Recording Name>', {
 
 ## Using Polly in the Browser?
 
-In order to write to disk from the browser, Polly will make networks requests to a
-local server using the [REST Persister](persisters/rest). If you don't want to use
-the provided [CLI](cli/overview) and you have your own express server, see the
-[Express Integrations](node-server/express-integrations) documentation on
-integrating with your existing server.
+Polly fully supports native in-browser usage, but because browsers can't write
+to disk in the same way as conventional applications considerations need to be
+made for persisting recordings.
 
-Using the installed CLI, run the [listen](cli/commands#listen)
-command to start up the node server.
+If permanent, long-term persistence is not required then you can simply use the
+[Local Storage Persister](persisters/local-storage), which writes to
+`window.localStorage`.
+
+For conventional file system storage you will need to use the
+[REST Persister](persisters/rest) which runs as a separate process listening for
+PollyJS activity. The server can be run in 2 ways. Firstly via the provided
+[CLI](cli/overview)'s [listen](cli/commands#listen) command:
 
 ```bash
 npm install @pollyjs/cli -g
 polly listen
 ```
 
-Optionally, Polly can persist to local storage which would not require setting up
-any server integrations. See the [Local Storage Persister](persisters/local-storage)
-documentation for more details.
+However, secondly there is also a convenient
+[Express Integration](node-server/express-integrations) that appends the REST
+server's endpoints to an existing server such as
+[Webpack's Dev Server](https://webpack.js.org/configuration/dev-server/).
 
 ## Usage
 
