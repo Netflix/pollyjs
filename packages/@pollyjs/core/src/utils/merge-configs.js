@@ -1,25 +1,21 @@
 import mergeWith from 'lodash-es/mergeWith';
-import { assert, EXPIRY_STRATEGIES } from '@pollyjs/utils';
+import { EXPIRY_STRATEGIES } from '@pollyjs/utils';
 
 function deprecateRecordIfExpired(mergedConfig) {
-  // throw if you used both recordIfExpired and expiryStrategy
-  assert(
-    'recordIfExpired is deprecated and cannot be used with expiryStrategy',
-    mergedConfig.hasOwnProperty('recordIfExpired') &&
-      mergedConfig.hasOwnProperty('expiryStrategy')
-  );
+  if (mergedConfig.hasOwnProperty('recordIfExpired')) {
+    console.warn(
+      '[Polly] config option "recordIfExpired" is deprecated. Please use "expiryStrategy".'
+    );
 
-  // return if you only used expiryStrategy
-  if (mergedConfig.hasOwnProperty('expiryStrategy')) {
-    return mergedConfig;
-  }
+    if (mergedConfig.recordIfExpired) {
+      // replace recordIfExpired: true with expiryStrategy: record
+      mergedConfig.expiryStrategy = EXPIRY_STRATEGIES.RECORD;
+    } else {
+      // replace recordIfExpired: false with expiryStrategy: warn
+      mergedConfig.expiryStrategy = EXPIRY_STRATEGIES.WARN;
+    }
 
-  if (mergedConfig.recordIfExpired) {
-    // replace recordIfExpired: true with expiryStrategy: record
-    mergedConfig.expiryStrategy = EXPIRY_STRATEGIES.RECORD;
-  } else {
-    // replace recordIfExpired: false with expiryStrategy: warn
-    mergedConfig.expiryStrategy = EXPIRY_STRATEGIES.WARN;
+    delete mergedConfig.recordIfExpired;
   }
 
   return mergedConfig;

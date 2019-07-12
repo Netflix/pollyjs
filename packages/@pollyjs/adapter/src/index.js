@@ -144,7 +144,7 @@ export default class Adapter {
 
     if ('navigator' in global && !navigator.onLine) {
       console.warn(
-        '[Polly] Recording will fail because the browser is offline.\n' +
+        '[Polly] Recording may fail because the browser is offline.\n' +
           `${stringifyRequest(pollyRequest)}`
       );
     }
@@ -162,19 +162,30 @@ export default class Adapter {
       if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
         const message =
           'Recording for the following request has expired.\n' +
-          `${recordingEntry.request.method} ${recordingEntry.request.url}\n`;
+          `${stringifyRequest(pollyRequest, null, 2)}`;
 
-        if (config.expiryStrategy === EXPIRY_STRATEGIES.ERROR) {
-          assert(message);
-        } else if (config.expiryStrategy === EXPIRY_STRATEGIES.WARN) {
-          console.warn(`[Polly] ${message}`, recordingEntry);
-        } else if (config.expiryStrategy === EXPIRY_STRATEGIES.RECORD) {
-          return this.record(pollyRequest);
-        } else {
-          // TODO should there be a generic validator available for all config options?
-          assert(
-            `Invalid config option passed for "expiryStrategy": "${config.expiryStrategy}"`
-          );
+        switch (config.expiryStrategy) {
+          // exit into the record flow if expiryStrategy is "record".
+          case EXPIRY_STRATEGIES.RECORD:
+            console.log('using record strategy');
+
+            return this.record(pollyRequest);
+          // throw an error and exit if expiryStrategy is "error".
+          case EXPIRY_STRATEGIES.ERROR:
+            console.log('using error strategy');
+            this.assert(message);
+            break;
+          // log a warning and continue if expiryStrategy is "warn".
+          case EXPIRY_STRATEGIES.WARN:
+            console.log('using warn strategy');
+            console.warn(`[Polly] ${message}`);
+            break;
+          // throw an error if we encounter an unsupported expiryStrategy.
+          default:
+            this.assert(
+              `Invalid config option passed for "expiryStrategy": "${config.expiryStrategy}"`
+            );
+            break;
         }
       }
 

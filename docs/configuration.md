@@ -54,8 +54,9 @@ polly.configure({
 });
 ```
 
-## recordIfExpired - _deprecated! use expiryStrategy_
+## recordIfExpired
 
+_deprecated! use [expiryStrategy](#expiryStrategy)_
 _Type_: `Boolean`
 _Default_: `false`
 

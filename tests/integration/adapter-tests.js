@@ -209,84 +209,88 @@ export default function adapterTests() {
   });
 
   describe('expired tests', () => {
+    async function testExpiration() {
+      const { persister, recordingId } = this.polly;
+      const url = '/api';
+      let har;
+
+      // request number one - records the request
+      this.polly.record();
+      await this.relativeFetch(url);
+      await persister.persist();
+      har = await persister.find(recordingId);
+
+      expect(har).to.be.an('object');
+      expect(har.log.entries).to.have.lengthOf(1);
+      const prevDateTime = har.log.entries[0].startedDateTime;
+
+      // wait for the first request to expire
+      await new Promise(r => setTimeout(r, 10));
+
+      // request number two - the first request is now expired
+      this.polly.replay();
+      await this.relativeFetch(url);
+      await persister.persist();
+      har = await persister.find(recordingId);
+
+      expect(har).to.be.an('object');
+      expect(har.log.entries).to.have.lengthOf(1);
+      const nextDateTime = har.log.entries[0].startedDateTime;
+
+      // boolean returned is true if re-record occurred
+      return prevDateTime !== nextDateTime;
+    }
+
+    beforeEach(function() {
+      this.polly.configure({
+        expiresIn: '1ms',
+        matchRequestsBy: {
+          order: false
+        }
+      });
+    });
+
     afterEach(async function() {
       await this.polly.persister.delete(this.polly.recordingId);
     });
 
     it('re-records on expired recording if recordIfExpired is true', async function() {
-      const { server } = this.polly;
-
-      const url = '/api';
-      let persistCount = 0;
-
-      this.polly.configure({
-        mode: 'replay',
-        recordIfMissing: true,
-        recordIfExpired: true,
-        expiresIn: '1ms',
-        matchRequestsBy: {
-          order: false
-        }
-      });
-
-      server.get(url).on('beforePersist', () => {
-        console.log('beforePersist');
-        persistCount += 1;
-      });
-
-      // request number one - records the request
-      await this.relativeFetch(url);
-      await this.polly.flush();
-      await this.polly.persister.persist();
-
-      // wait for the first request to expire
-      await new Promise(r => setTimeout(r, 10));
-
-      // request number two - the first request is now expired
-      await this.relativeFetch(url);
-      await this.polly.flush();
-      await this.polly.persister.persist();
-
-      // the recorded request is expired - did that trigger a re-record?
-      expect(persistCount).to.equal(2);
+      this.polly.configure({ recordIfExpired: true });
+      expect(await testExpiration.call(this)).to.equal(true);
     });
 
     it('replays the expired recording if recordIfExpired is false', async function() {
+      this.polly.configure({ recordIfExpired: false });
+      expect(await testExpiration.call(this)).to.equal(false);
+    });
+
+    it('warns and plays back on expired recording if expiryStrategy is "warn"', async function() {
+      this.polly.configure({ expiryStrategy: 'warn' });
+      expect(await testExpiration.call(this)).to.equal(false);
+    });
+
+    it('re-records on expired recording if expiryStrategy is "record"', async function() {
+      this.polly.configure({ expiryStrategy: 'record' });
+      expect(await testExpiration.call(this)).to.equal(true);
+    });
+
+    it('throws on expired recording if expiryStrategy is "error"', async function() {
       const { server } = this.polly;
+      let error;
 
-      const url = '/api';
-      let persistCount = 0;
+      this.polly.configure({ expiryStrategy: 'error' });
+      server.any().on('error', (req, e) => (error = e));
 
-      this.polly.configure({
-        mode: 'replay',
-        recordIfMissing: true,
-        recordIfExpired: false,
-        expiresIn: '1ms',
-        matchRequestsBy: {
-          order: false
-        }
-      });
+      try {
+        await testExpiration.call(this);
+      } catch (e) {
+        // noop
+      }
 
-      server.get(url).on('beforePersist', () => {
-        console.log('beforePersist');
-        persistCount += 1;
-      });
-
-      // request number one - records the request
-      await this.relativeFetch(url);
-      await this.polly.flush();
-      await this.polly.persister.persist();
-
-      // wait for the first request to expire
-      await new Promise(r => setTimeout(r, 10));
-
-      // request number two - the first request is now expired
-      await this.relativeFetch(url);
-      await this.polly.flush();
-      await this.polly.persister.persist();
-
-      // the recorded request is expired - did that trigger a re-record?
-      expect(persistCount).to.equal(1);
+      expect(error).to.exist;
+      expect(error.message).to.match(
+        /Recording for the following request has expired/
+      );
     });
   });
 }
