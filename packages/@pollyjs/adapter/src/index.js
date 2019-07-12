@@ -1,4 +1,10 @@
-import { ACTIONS, MODES, Serializers, assert } from '@pollyjs/utils';
+import {
+  ACTIONS,
+  MODES,
+  EXPIRY_STRATEGIES,
+  Serializers,
+  assert
+} from '@pollyjs/utils';
 
 import isExpired from './utils/is-expired';
 import stringifyRequest from './utils/stringify-request';
@@ -50,36 +56,6 @@ export default class Adapter {
       this.onDisconnect();
       this.isConnected = false;
     }
-  }
-
-  shouldReRecord(pollyRequest, recordingEntry) {
-    const { config } = pollyRequest;
-
-    if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
-      if (!config.recordIfExpired) {
-        console.warn(
-          '[Polly] Recording for the following request has expired but `recordIfExpired` is `false`.\n' +
-            `${recordingEntry.request.method} ${recordingEntry.request.url}\n`,
-          recordingEntry
-        );
-
-        return false;
-      }
-
-      if ('navigator' in global && !navigator.onLine) {
-        console.warn(
-          '[Polly] Recording for the following request has expired but the browser is offline.\n' +
-            `${recordingEntry.request.method} ${recordingEntry.request.url}\n`,
-          recordingEntry
-        );
-
-        return false;
-      }
-
-      return true;
-    }
-
-    return false;
   }
 
   timeout(pollyRequest, { time }) {
@@ -183,8 +159,23 @@ export default class Adapter {
     if (recordingEntry) {
       await pollyRequest._emit('beforeReplay', recordingEntry);
 
-      if (this.shouldReRecord(pollyRequest, recordingEntry)) {
-        return this.record(pollyRequest);
+      if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
+        const message =
+          'Recording for the following request has expired.\n' +
+          `${recordingEntry.request.method} ${recordingEntry.request.url}\n`;
+
+        if (config.expiryStrategy === EXPIRY_STRATEGIES.ERROR) {
+          assert(message);
+        } else if (config.expiryStrategy === EXPIRY_STRATEGIES.WARN) {
+          console.warn(`[Polly] ${message}`, recordingEntry);
+        } else if (config.expiryStrategy === EXPIRY_STRATEGIES.RECORD) {
+          return this.record(pollyRequest);
+        } else {
+          // TODO should there be a generic validator available for all config options?
+          assert(
+            `Invalid config option passed for "expiryStrategy": "${config.expiryStrategy}"`
+          );
+        }
       }
 
       await this.timeout(pollyRequest, recordingEntry);

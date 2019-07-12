@@ -16,10 +16,10 @@ export default {
   logging: false,
 
   recordIfMissing: true,
-  recordIfExpired: false,
   recordFailedRequests: false,
 
   expiresIn: null,
+  expiryStrategy: 'replay',
   timing: Timing.fixed(0),
 
   matchRequestsBy: {
