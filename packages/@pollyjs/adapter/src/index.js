@@ -166,6 +166,13 @@ export default class Adapter {
   async record(pollyRequest) {
     pollyRequest.action = ACTIONS.RECORD;
 
+    if ('navigator' in global && !navigator.onLine) {
+      console.warn(
+        '[Polly] Recording will fail because the browser is offline.\n' +
+          `${stringifyRequest(pollyRequest)}`
+      );
+    }
+
     return this.onRecord(pollyRequest);
   }
 
