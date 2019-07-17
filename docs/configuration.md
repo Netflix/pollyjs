@@ -56,6 +56,7 @@ polly.configure({
 
 ## recordIfExpired
 
+_deprecated! use [expiryStrategy](#expiryStrategy)_
 _Type_: `Boolean`
 _Default_: `false`
 
@@ -93,7 +94,8 @@ _Type_: `String`
 _Default_: `null`
 
 After how long the recorded request will be considered expired from the time
-it was persisted.
+it was persisted. A recorded request is considered expired if the recording's
+`startedDateTime` plus the current `expiresIn` duration is in the past.
 
 **Example**
 
@@ -104,6 +106,25 @@ polly.configure({
 
 polly.configure({
   expiresIn: '5 min 10 seconds 100 milliseconds' // expires in 5 minutes, 10 seconds, and 100 milliseconds
+});
+```
+
+## expiryStrategy
+
+_Type_: `String`
+_Default_: `warn`
+
+The strategy for what should occur when Polly tries to use an expired recording in `replay` mode. Can be one of the following:
+
+- `warn`: Log a console warning about the expired recording.
+- `error`: Throw an error.
+- `record`: Re-record by making a new network request.
+
+**Example**
+
+```js
+polly.configure({
+  expiryStrategy: 'error'
 });
 ```
 

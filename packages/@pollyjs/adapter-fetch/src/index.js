@@ -37,6 +37,11 @@ export default class FetchAdapter extends Adapter {
     this.native = context.fetch;
 
     context.fetch = (url, options = {}) => {
+      // Support Request object
+      if (typeof url === 'object' && 'url' in url) {
+        url = url.url;
+      }
+
       let respond;
       const promise = new Promise((resolve, reject) => {
         respond = ({ response, error }) => {

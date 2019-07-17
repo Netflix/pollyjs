@@ -1,6 +1,7 @@
 import {
   ACTIONS,
   MODES,
+  EXPIRY_STRATEGIES,
   PollyError,
   Serializers,
   assert
@@ -56,36 +57,6 @@ export default class Adapter {
       this.onDisconnect();
       this.isConnected = false;
     }
-  }
-
-  shouldReRecord(pollyRequest, recordingEntry) {
-    const { config } = pollyRequest;
-
-    if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
-      if (!config.recordIfExpired) {
-        console.warn(
-          '[Polly] Recording for the following request has expired but `recordIfExpired` is `false`.\n' +
-            `${recordingEntry.request.method} ${recordingEntry.request.url}\n`,
-          recordingEntry
-        );
-
-        return false;
-      }
-
-      if ('navigator' in global && !navigator.onLine) {
-        console.warn(
-          '[Polly] Recording for the following request has expired but the browser is offline.\n' +
-            `${recordingEntry.request.method} ${recordingEntry.request.url}\n`,
-          recordingEntry
-        );
-
-        return false;
-      }
-
-      return true;
-    }
-
-    return false;
   }
 
   timeout(pollyRequest, { time }) {
@@ -170,6 +141,13 @@ export default class Adapter {
   async record(pollyRequest) {
     pollyRequest.action = ACTIONS.RECORD;
 
+    if ('navigator' in global && !navigator.onLine) {
+      console.warn(
+        '[Polly] Recording may fail because the browser is offline.\n' +
+          `${stringifyRequest(pollyRequest)}`
+      );
+    }
+
     return this.onRecord(pollyRequest);
   }
 
@@ -180,8 +158,30 @@ export default class Adapter {
     if (recordingEntry) {
       await pollyRequest._emit('beforeReplay', recordingEntry);
 
-      if (this.shouldReRecord(pollyRequest, recordingEntry)) {
-        return this.record(pollyRequest);
+      if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
+        const message =
+          'Recording for the following request has expired.\n' +
+          `${stringifyRequest(pollyRequest, null, 2)}`;
+
+        switch (config.expiryStrategy) {
+          // exit into the record flow if expiryStrategy is "record".
+          case EXPIRY_STRATEGIES.RECORD:
+            return this.record(pollyRequest);
+          // throw an error and exit if expiryStrategy is "error".
+          case EXPIRY_STRATEGIES.ERROR:
+            this.assert(message);
+            break;
+          // log a warning and continue if expiryStrategy is "warn".
+          case EXPIRY_STRATEGIES.WARN:
+            console.warn(`[Polly] ${message}`);
+            break;
+          // throw an error if we encounter an unsupported expiryStrategy.
+          default:
+            this.assert(
+              `Invalid config option passed for "expiryStrategy": "${config.expiryStrategy}"`
+            );
+            break;
+        }
       }
 
       await this.timeout(pollyRequest, recordingEntry);

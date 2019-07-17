@@ -2,6 +2,7 @@ export { default as MODES } from './constants/modes';
 export { default as ACTIONS } from './constants/actions';
 export { default as HTTP_METHODS } from './constants/http-methods';
 export { default as HTTP_STATUS_CODES } from './constants/http-status-codes';
+export { default as EXPIRY_STRATEGIES } from './constants/expiry-strategies';
 
 export { default as assert } from './utils/assert';
 export { default as timeout } from './utils/timeout';
