@@ -1,4 +1,7 @@
+import { PollyError } from '@pollyjs/utils';
+
 import Polly from '../polly';
+
 const { defineProperty } = Object;
 
 export function beforeEach(context, recordingName, defaults) {
@@ -17,8 +20,8 @@ export async function afterEach(context, framework) {
     enumerable: true,
     configurable: true,
     get() {
-      throw new Error(
-        `[Polly] You are trying to access an instance of Polly that is no longer available.\n` +
+      throw new PollyError(
+        `You are trying to access an instance of Polly that is no longer available.\n` +
           `See: https://netflix.github.io/pollyjs/#/test-frameworks/${framework}?id=test-hook-ordering`
       );
     }

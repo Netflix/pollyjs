@@ -1,4 +1,5 @@
 import assert from '../../../src/utils/assert';
+import PollyError from '../../../src/utils/polly-error';
 
 describe('Unit | Utils | assert', function() {
   it('should exist', function() {
@@ -6,7 +7,11 @@ describe('Unit | Utils | assert', function() {
   });
 
   it('should throw with a false condition', function() {
-    expect(() => assert('Test', false)).to.throw(Error, '[Polly] Test');
+    expect(() => assert('Test', false)).to.throw(PollyError, /Test/);
+  });
+
+  it('should throw without a condition', function() {
+    expect(() => assert('Test')).to.throw(PollyError, /Test/);
   });
 
   it('should not throw with a true condition', function() {

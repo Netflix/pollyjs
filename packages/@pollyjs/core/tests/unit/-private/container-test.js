@@ -1,3 +1,5 @@
+import { PollyError } from '@pollyjs/utils';
+
 import Container from '../../../src/-private/container';
 
 let container;
@@ -40,15 +42,15 @@ describe('Unit | Container', function() {
       }
 
       expect(() => container.register()).to.throw(
-        Error,
+        PollyError,
         /invalid factory provided/
       );
       expect(() => container.register(NoName)).to.throw(
-        Error,
+        PollyError,
         /Invalid registration name provided/
       );
       expect(() => container.register(NoType)).to.throw(
-        Error,
+        PollyError,
         /Invalid registration type provided/
       );
     });

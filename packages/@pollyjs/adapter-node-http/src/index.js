@@ -75,18 +75,13 @@ export default class HttpAdapter extends Adapter {
           body = JSON.stringify(body);
         }
 
-        adapter
-          .handleRequest({
-            url,
-            method,
-            headers,
-            body,
-            requestArguments: { req, body, respond, parsedArguments }
-          })
-          .catch(e => {
-            // This allows the consumer to handle the error gracefully
-            req.emit('error', e);
-          });
+        adapter.handleRequest({
+          url,
+          method,
+          headers,
+          body,
+          requestArguments: { req, body, respond, parsedArguments }
+        });
       });
     });
 
@@ -206,6 +201,9 @@ export default class HttpAdapter extends Adapter {
       // correctly handle it.
       // https://github.com/nock/nock/blob/v10.0.6/lib/request_overrider.js#L394-L397
       respond(error);
+
+      // This allows the consumer to handle the error gracefully
+      req.emit('error', error);
 
       return;
     }

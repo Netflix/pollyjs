@@ -36,21 +36,32 @@ export default class FetchAdapter extends Adapter {
 
     this.native = context.fetch;
 
-    context.fetch = async (url, options = {}) => {
+    context.fetch = (url, options = {}) => {
       // Support Request object
       if (typeof url === 'object' && 'url' in url) {
         url = url.url;
       }
 
-      const pollyRequest = await this.handleRequest({
+      let respond;
+      const promise = new Promise((resolve, reject) => {
+        respond = ({ response, error }) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(response);
+          }
+        };
+      });
+
+      this.handleRequest({
         url,
         method: options.method || 'GET',
         headers: serializeHeaders(new context.Headers(options.headers)),
         body: options.body,
-        requestArguments: { options }
+        requestArguments: { options, respond }
       });
 
-      return makeResponse(context.Response, pollyRequest);
+      return promise;
     };
 
     defineProperty(context.fetch, IS_STUBBED, { value: true });
@@ -80,24 +91,36 @@ export default class FetchAdapter extends Adapter {
       body: await response.text()
     };
   }
-}
 
-function makeResponse(Response, pollyRequest) {
-  const { absoluteUrl, response } = pollyRequest;
-  const { statusCode } = response;
+  respondToRequest(pollyRequest, error) {
+    const {
+      context: { Response }
+    } = this.options;
+    const { respond } = pollyRequest.requestArguments;
 
-  const responseBody =
-    statusCode === 204 && response.body === '' ? null : response.body;
-  const fetchResponse = new Response(responseBody, {
-    status: statusCode,
-    headers: response.headers
-  });
+    if (error) {
+      respond({ error });
 
-  /*
-    Response does not allow `url` to be set manually (either via the
-    constructor or assignment) so force the url property via `defineProperty`.
-  */
-  defineProperty(fetchResponse, 'url', { value: absoluteUrl });
+      return;
+    }
 
-  return fetchResponse;
+    const { absoluteUrl, response: pollyResponse } = pollyRequest;
+    const { statusCode } = pollyResponse;
+    const responseBody =
+      statusCode === 204 && pollyResponse.body === ''
+        ? null
+        : pollyResponse.body;
+    const response = new Response(responseBody, {
+      status: statusCode,
+      headers: pollyResponse.headers
+    });
+
+    /*
+      Response does not allow `url` to be set manually (either via the
+      constructor or assignment) so force the url property via `defineProperty`.
+    */
+    defineProperty(response, 'url', { value: absoluteUrl });
+
+    respond({ response });
+  }
 }

@@ -36,10 +36,12 @@ export default class EventEmitter {
    * @param {Object} options
    * @param {String[]} options.eventNames - Supported events
    */
-  constructor({ eventNames = [] }) {
+  constructor(options = {}) {
+    const { eventNames } = options;
+
     assert(
       'An array of supported events must be provided via the `eventNames` option.',
-      eventNames && eventNames.length > 0
+      Array.isArray(eventNames) && eventNames.length > 0
     );
 
     this[EVENTS] = new Map();

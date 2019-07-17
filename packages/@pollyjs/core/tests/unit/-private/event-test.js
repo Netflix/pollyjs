@@ -1,3 +1,5 @@
+import { PollyError } from '@pollyjs/utils';
+
 import Event from '../../../src/-private/event';
 
 const EVENT_TYPE = 'foo';
@@ -8,7 +10,7 @@ describe('Unit | Event', function() {
   });
 
   it('should throw if no type is specified', function() {
-    expect(() => new Event()).to.throw(Error, /Invalid type provided/);
+    expect(() => new Event()).to.throw(PollyError, /Invalid type provided/);
   });
 
   it('should have the correct defaults', function() {

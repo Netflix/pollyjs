@@ -1,6 +1,6 @@
 import Adapter from '@pollyjs/adapter';
 import Persister from '@pollyjs/persister';
-import { MODES } from '@pollyjs/utils';
+import { MODES, PollyError } from '@pollyjs/utils';
 
 import defaults from '../../src/defaults/config';
 import Polly from '../../src/polly';
@@ -29,7 +29,7 @@ describe('Unit | Polly', function() {
       const polly = new Polly('test');
 
       expect(() => (polly.recordingName = value)).to.throw(
-        Error,
+        PollyError,
         /Invalid recording name provided/
       );
 
@@ -73,7 +73,7 @@ describe('Unit | Polly', function() {
     const polly = new Polly('squawk');
 
     expect(() => (polly.mode = 'INVALID')).to.throw(
-      Error,
+      PollyError,
       /Invalid mode provided/
     );
 
@@ -134,8 +134,8 @@ describe('Unit | Polly', function() {
     it('should not be configurable once requests are handled', async function() {
       this.polly._requests.push({});
       expect(() => this.polly.configure()).to.throw(
-        Error,
-        '[Polly] Cannot call `configure` once requests have been handled.'
+        PollyError,
+        'Cannot call `configure` once requests have been handled.'
       );
     });
 
@@ -143,8 +143,8 @@ describe('Unit | Polly', function() {
       await this.polly.stop();
 
       expect(() => this.polly.configure()).to.throw(
-        Error,
-        '[Polly] Cannot call `configure` on an instance of Polly that is not running.'
+        PollyError,
+        'Cannot call `configure` on an instance of Polly that is not running.'
       );
     });
 
@@ -450,7 +450,7 @@ describe('Unit | Polly', function() {
         Polly.once('create', () => {});
         Polly.once('create', () => Promise.resolve());
 
-        expect(() => new Polly('Test')).to.throw(Error);
+        expect(() => new Polly('Test')).to.throw(PollyError);
       });
 
       it('create - configuration order should be preserved', async function() {
