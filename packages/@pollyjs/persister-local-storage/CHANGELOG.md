@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-local-storage/compare/v2.5.0...v2.6.0) (2019-07-17)
+
+**Note:** Version bump only for package @pollyjs/persister-local-storage
+
+
+
+
+
 # [2.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-local-storage/compare/v2.0.0...v2.1.0) (2019-02-04)
 
 **Note:** Version bump only for package @pollyjs/persister-local-storage

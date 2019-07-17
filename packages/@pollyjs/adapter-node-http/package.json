@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-node-http",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Node HTTP adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-node-http.js",
   "module": "dist/es/pollyjs-adapter-node-http.js",
@@ -41,15 +41,15 @@
     "watch": "yarn build -w"
   },
   "dependencies": {
-    "@pollyjs/adapter": "^2.4.0",
-    "@pollyjs/utils": "^2.1.0",
+    "@pollyjs/adapter": "^2.6.0",
+    "@pollyjs/utils": "^2.6.0",
     "lodash-es": "^4.17.11",
     "nock": "^10.0.6",
     "semver": "^6.1.1"
   },
   "devDependencies": {
-    "@pollyjs/core": "^2.5.0",
-    "@pollyjs/persister-fs": "*",
+    "@pollyjs/core": "^2.6.0",
+    "@pollyjs/persister-fs": "^2.6.0",
     "node-fetch": "^2.6.0",
     "rollup": "^1.14.6"
   }

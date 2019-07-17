@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/v2.5.0...v2.6.0) (2019-07-17)
+
+
+### Bug Fixes
+
+* **adapter-fetch:** Handle `Request` objects as URLs ([#220](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/issues/220)) ([bb28d54](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/commit/bb28d54))
+
+
+### Features
+
+* PollyError and improved adapter error handling ([#234](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/issues/234)) ([23a2127](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/commit/23a2127))
+
+
+
+
+
 # [2.5.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/v2.4.0...v2.5.0) (2019-06-06)
 
 **Note:** Version bump only for package @pollyjs/adapter-fetch

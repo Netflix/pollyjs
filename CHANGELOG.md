@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/netflix/pollyjs/compare/v2.5.0...v2.6.0) (2019-07-17)
+
+
+### Bug Fixes
+
+* **adapter-fetch:** Handle `Request` objects as URLs ([#220](https://github.com/netflix/pollyjs/issues/220)) ([bb28d54](https://github.com/netflix/pollyjs/commit/bb28d54))
+
+
+### Features
+
+* **core:** Improved logging ([#217](https://github.com/netflix/pollyjs/issues/217)) ([3e876a8](https://github.com/netflix/pollyjs/commit/3e876a8))
+* PollyError and improved adapter error handling ([#234](https://github.com/netflix/pollyjs/issues/234)) ([23a2127](https://github.com/netflix/pollyjs/commit/23a2127))
+
+
+
+
+
 # [2.5.0](https://github.com/netflix/pollyjs/compare/v2.4.0...v2.5.0) (2019-06-06)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-rest",
-  "version": "2.1.0",
+  "version": "2.6.0",
   "description": "REST persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-rest.js",
   "module": "dist/es/pollyjs-persister-rest.js",
@@ -38,8 +38,8 @@
     "watch": "yarn build -w"
   },
   "dependencies": {
-    "@pollyjs/persister": "^2.1.0",
-    "@pollyjs/utils": "^2.1.0"
+    "@pollyjs/persister": "^2.6.0",
+    "@pollyjs/utils": "^2.6.0"
   },
   "devDependencies": {
     "rollup": "^1.14.6"
