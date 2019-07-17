@@ -37,6 +37,11 @@ export default class FetchAdapter extends Adapter {
     this.native = context.fetch;
 
     context.fetch = async (url, options = {}) => {
+      // Support Request object
+      if (typeof url === 'object' && 'url' in url) {
+        url = url.url;
+      }
+
       const pollyRequest = await this.handleRequest({
         url,
         method: options.method || 'GET',

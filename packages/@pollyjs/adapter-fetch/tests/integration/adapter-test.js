@@ -29,6 +29,16 @@ describe('Integration | Fetch Adapter', function() {
     expect(res.status).to.equal(200);
   });
 
+  it('should support Request objects', async function() {
+    const { server } = this.polly;
+
+    server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
+
+    const res = await this.fetch(new Request(this.recordUrl()));
+
+    expect(res.status).to.equal(200);
+  });
+
   it('should support array of key/value pair headers', async function() {
     const { server } = this.polly;
     let headers;
