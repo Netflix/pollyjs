@@ -104,22 +104,23 @@ export default class FetchAdapter extends Adapter {
       return;
     }
 
-    const { absoluteUrl, response } = pollyRequest;
-    const { statusCode } = response;
+    const { absoluteUrl, response: pollyResponse } = pollyRequest;
+    const { statusCode } = pollyResponse;
     const responseBody =
-      statusCode === 204 && response.body === '' ? null : response.body;
-
-    const fetchResponse = new Response(responseBody, {
+      statusCode === 204 && pollyResponse.body === ''
+        ? null
+        : pollyResponse.body;
+    const response = new Response(responseBody, {
       status: statusCode,
-      headers: response.headers
+      headers: pollyResponse.headers
     });
 
     /*
       Response does not allow `url` to be set manually (either via the
       constructor or assignment) so force the url property via `defineProperty`.
     */
-    defineProperty(fetchResponse, 'url', { value: absoluteUrl });
+    defineProperty(response, 'url', { value: absoluteUrl });
 
-    respond({ response: fetchResponse });
+    respond({ response });
   }
 }
