@@ -1,4 +1,4 @@
-import { MODES } from '@pollyjs/utils';
+import { MODES, EXPIRY_STRATEGIES } from '@pollyjs/utils';
 
 import Timing from '../utils/timing';
 
@@ -16,10 +16,10 @@ export default {
   logging: false,
 
   recordIfMissing: true,
-  recordIfExpired: false,
   recordFailedRequests: false,
 
   expiresIn: null,
+  expiryStrategy: EXPIRY_STRATEGIES.WARN,
   timing: Timing.fixed(0),
 
   matchRequestsBy: {
