@@ -95,6 +95,8 @@ export default class FetchAdapter extends Adapter {
 
     if (error) {
       respond({ error });
+
+      return;
     }
 
     const { absoluteUrl, response } = pollyRequest;
