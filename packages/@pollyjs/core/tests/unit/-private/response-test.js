@@ -1,3 +1,5 @@
+import { PollyError } from '@pollyjs/utils';
+
 import PollyResponse from '../../../src/-private/response';
 
 let response;
@@ -26,7 +28,7 @@ describe('Unit | Response', function() {
 
       [null, '', 0, 99, 600, 999].forEach(statusCode => {
         expect(() => response.status(statusCode)).to.throw(
-          Error,
+          PollyError,
           /Invalid status code/
         );
       });

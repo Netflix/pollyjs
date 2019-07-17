@@ -1,4 +1,5 @@
 import { setupMocha as setupPolly } from '@pollyjs/core';
+import { PollyError } from '@pollyjs/utils';
 
 import pollyConfig from '../utils/polly-config';
 
@@ -80,7 +81,7 @@ describe('Integration | Server', function() {
         'persisterOptions'
       ].forEach(key =>
         expect(() => server.any().configure({ [key]: 'foo' })).to.throw(
-          Error,
+          PollyError,
           /Invalid configuration option/
         )
       );
@@ -197,7 +198,7 @@ describe('Integration | Server', function() {
       const { server } = this.polly;
 
       expect(() => server.any().filter()).to.throw(
-        Error,
+        PollyError,
         /Invalid filter callback provided/
       );
     });

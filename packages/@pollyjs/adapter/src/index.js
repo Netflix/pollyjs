@@ -1,4 +1,10 @@
-import { ACTIONS, MODES, Serializers, assert } from '@pollyjs/utils';
+import {
+  ACTIONS,
+  MODES,
+  PollyError,
+  Serializers,
+  assert
+} from '@pollyjs/utils';
 
 import isExpired from './utils/is-expired';
 import stringifyRequest from './utils/stringify-request';
@@ -93,19 +99,17 @@ export default class Adapter {
   async handleRequest(request) {
     const pollyRequest = this.polly.registerRequest(request);
 
-    pollyRequest.on('identify', (...args) => this.onIdentifyRequest(...args));
-
-    await pollyRequest.setup();
-    await this.onRequest(pollyRequest);
-
     try {
+      pollyRequest.on('identify', (...args) => this.onIdentifyRequest(...args));
+
+      await pollyRequest.setup();
+      await this.onRequest(pollyRequest);
       await this[REQUEST_HANDLER](pollyRequest);
       await this.onRequestFinished(pollyRequest);
 
       return pollyRequest;
     } catch (error) {
       await this.onRequestFailed(pollyRequest, error);
-      throw error;
     }
   }
 
@@ -298,11 +302,16 @@ export default class Adapter {
    * @param {Error} error
    */
   async onRequestFailed(pollyRequest, error) {
-    error =
-      error || new Error('[Polly] Request failed due to an unknown error.');
+    error = error || new PollyError('Request failed due to an unknown error.');
 
-    await pollyRequest._emit('error', error);
-    await this.respondToRequest(pollyRequest, error);
-    pollyRequest.promise.reject(error);
+    try {
+      await pollyRequest._emit('error', error);
+      await this.respondToRequest(pollyRequest, error);
+    } catch (e) {
+      // Rethrow any error not handled by `respondToRequest`.
+      throw e;
+    } finally {
+      pollyRequest.promise.reject(error);
+    }
   }
 }

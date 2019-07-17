@@ -1,5 +1,7 @@
+import PollyError from './polly-error';
+
 export default function(msg, condition) {
   if (!condition) {
-    throw new Error(`[Polly] ${msg}`);
+    throw new PollyError(msg);
   }
 }

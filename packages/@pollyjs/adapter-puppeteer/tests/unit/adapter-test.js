@@ -1,4 +1,5 @@
 import { setupMocha as setupPolly } from '@pollyjs/core';
+import { PollyError } from '@pollyjs/utils';
 
 import PuppeteerAdapter from '../../src';
 
@@ -10,6 +11,6 @@ describe('Unit | Puppeteer Adapter', function() {
       this.polly.configure({
         adapters: [PuppeteerAdapter]
       })
-    ).to.throw(Error, /A puppeteer page instance is required/);
+    ).to.throw(PollyError, /A puppeteer page instance is required/);
   });
 });

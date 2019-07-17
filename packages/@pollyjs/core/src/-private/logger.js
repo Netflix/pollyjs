@@ -65,19 +65,17 @@ export default class Logger {
   }
 
   logError(request, error) {
-    if (request.config.logging) {
-      this.groupStart(request.recordingName);
+    this.groupStart(request.recordingName);
 
-      console.groupCollapsed(`Errored ➞ ${request.method} ${request.url}`);
-      console.error(error);
-      console.log('Request:', request);
+    console.group(`Errored ➞ ${request.method} ${request.url}`);
+    console.error(error);
+    console.log('Request:', request);
 
-      if (request.didRespond) {
-        console.log('Response:', request.response);
-      }
-
-      console.log('Identifiers:', request.identifiers);
-      console.groupEnd();
+    if (request.didRespond) {
+      console.log('Response:', request.response);
     }
+
+    console.log('Identifiers:', request.identifiers);
+    console.groupEnd();
   }
 }

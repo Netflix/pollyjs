@@ -1,4 +1,4 @@
-import { timeout } from '@pollyjs/utils';
+import { PollyError, timeout } from '@pollyjs/utils';
 
 import EventEmitter from '../../../src/-private/event-emitter';
 
@@ -6,18 +6,18 @@ let emitter;
 
 function assertEventName(methodName) {
   expect(() => emitter[methodName]()).to.throw(
-    Error,
+    PollyError,
     /Invalid event name provided. Expected string/
   );
   expect(() => emitter[methodName]('invalid')).to.throw(
-    Error,
+    PollyError,
     /Possible events: a, b/
   );
 }
 
 function assertListener(methodName) {
   expect(() => emitter[methodName]('a')).to.throw(
-    Error,
+    PollyError,
     /Invalid listener provided/
   );
 }
@@ -29,9 +29,9 @@ describe('Unit | EventEmitter', function() {
   });
 
   it('should throw without eventNames', function() {
-    expect(() => new EventEmitter()).to.throw(Error);
+    expect(() => new EventEmitter()).to.throw(PollyError);
     expect(() => new EventEmitter({ eventNames: [] })).to.throw(
-      Error,
+      PollyError,
       /supported events must be provided/
     );
   });
@@ -82,12 +82,12 @@ describe('Unit | EventEmitter', function() {
       const listener = () => listenerCalled++;
 
       expect(() => emitter.on('a', listener, { times: '1' })).to.throw(
-        Error,
+        PollyError,
         /Invalid number provided/
       );
 
       expect(() => emitter.on('a', listener, { times: -1 })).to.throw(
-        Error,
+        PollyError,
         /The number must be greater than 0/
       );
 
@@ -244,7 +244,7 @@ describe('Unit | EventEmitter', function() {
     it('.emitSync()', async function() {
       emitter.once('a', () => Promise.resolve());
       expect(() => emitter.emitSync('a')).to.throw(
-        Error,
+        PollyError,
         /Attempted to emit a synchronous event/
       );
 
