@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   List,
   Edit,
@@ -28,9 +29,14 @@ const PostFilter = props => (
   </Filter>
 );
 
-// eslint-disable-next-line react/prop-types
 const PostTitle = ({ record }) => {
   return <span>Posts - {record ? `${record.title}` : ''}</span>;
+};
+
+PostTitle.propTypes = {
+  record: PropTypes.PropTypes.shape({
+    title: PropTypes.string
+  })
 };
 
 export const PostList = props => (
