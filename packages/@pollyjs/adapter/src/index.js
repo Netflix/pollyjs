@@ -167,17 +167,13 @@ export default class Adapter {
         switch (config.expiryStrategy) {
           // exit into the record flow if expiryStrategy is "record".
           case EXPIRY_STRATEGIES.RECORD:
-            console.log('using record strategy');
-
             return this.record(pollyRequest);
           // throw an error and exit if expiryStrategy is "error".
           case EXPIRY_STRATEGIES.ERROR:
-            console.log('using error strategy');
             this.assert(message);
             break;
           // log a warning and continue if expiryStrategy is "warn".
           case EXPIRY_STRATEGIES.WARN:
-            console.log('using warn strategy');
             console.warn(`[Polly] ${message}`);
             break;
           // throw an error if we encounter an unsupported expiryStrategy.
