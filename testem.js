@@ -5,17 +5,12 @@ module.exports = {
   port: 4000,
   fail_on_zero_tests: true,
   test_page: 'tests/index.mustache',
-  on_start: 'yarn test:clean',
-  before_tests: 'npm-run-all --parallel build test:build',
-  on_exit: 'yarn test:clean',
   launch_in_ci: ['Chrome', 'Node', 'Jest', 'Ember', 'ESLint'],
   launch_in_dev: ['Chrome', 'Node', 'Jest', 'Ember', 'ESLint'],
   watch_files: [
     './scripts/rollup/**/*',
-    './tests/*',
-    './tests/!(recordings)/**/*',
-    './packages/@pollyjs/*/src/**/*',
-    './packages/@pollyjs/*/tests/**/*'
+    './packages/@pollyjs/*/build/**/*',
+    './packages/@pollyjs/*/dist/**/*'
   ],
   serve_files: ['./packages/@pollyjs/*/build/browser/*.js'],
   browser_args: {

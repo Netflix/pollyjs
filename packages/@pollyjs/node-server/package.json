@@ -33,7 +33,8 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "watch": "yarn build -w"
+    "watch": "yarn build -w",
+    "watch-all": "yarn build"
   },
   "dependencies": {
     "@pollyjs/utils": "^2.6.0",
