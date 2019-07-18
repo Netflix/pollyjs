@@ -61,7 +61,8 @@
     "release:version": "lerna version",
     "prerelease:publish": "npm-run-all clean build:prod",
     "release:publish": "lerna publish from-git",
-    "postrelease:publish": "yarn docs:publish"
+    "postrelease:publish": "yarn docs:publish",
+    "contributors": "npx contributor-faces -e '*\\[bot\\]'"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -77,6 +78,7 @@
     "@commitlint/travis-cli": "^8.0.0",
     "chai": "^4.2.0",
     "compression": "^1.7.4",
+    "contributor-faces": "^1.0.2",
     "deepmerge": "^3.2.0",
     "docsify-cli": "^4.3.0",
     "eslint": "^5.16.0",

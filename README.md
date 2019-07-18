@@ -171,6 +171,30 @@ _In alphabetical order:_
 - [Offir Golan](https://twitter.com/offirgolan) - Creator / Maintainer
 - [Sophinie Som](https://twitter.com/s0phinie) - Branding / Logo
 
+## Contributors
+
+[//]: contributor-faces
+
+<a href="https://github.com/offirgolan"><img src="https://avatars2.githubusercontent.com/u/575938?v=4" title="offirgolan" width="80" height="80"></a>
+<a href="https://github.com/jasonmit"><img src="https://avatars1.githubusercontent.com/u/3108309?v=4" title="jasonmit" width="80" height="80"></a>
+<a href="https://github.com/cibernox"><img src="https://avatars2.githubusercontent.com/u/265339?v=4" title="cibernox" width="80" height="80"></a>
+<a href="https://github.com/DenrizSusam"><img src="https://avatars1.githubusercontent.com/u/39295979?v=4" title="DenrizSusam" width="80" height="80"></a>
+<a href="https://github.com/dustinsoftware"><img src="https://avatars3.githubusercontent.com/u/942358?v=4" title="dustinsoftware" width="80" height="80"></a>
+<a href="https://github.com/tombh"><img src="https://avatars2.githubusercontent.com/u/160835?v=4" title="tombh" width="80" height="80"></a>
+<a href="https://github.com/zkwentz"><img src="https://avatars2.githubusercontent.com/u/4832?v=4" title="zkwentz" width="80" height="80"></a>
+<a href="https://github.com/ericclemmons"><img src="https://avatars0.githubusercontent.com/u/15182?v=4" title="ericclemmons" width="80" height="80"></a>
+<a href="https://github.com/feinoujc"><img src="https://avatars2.githubusercontent.com/u/1733707?v=4" title="feinoujc" width="80" height="80"></a>
+<a href="https://github.com/karlhorky"><img src="https://avatars2.githubusercontent.com/u/1935696?v=4" title="karlhorky" width="80" height="80"></a>
+<a href="https://github.com/kennethlarsen"><img src="https://avatars3.githubusercontent.com/u/1408595?v=4" title="kennethlarsen" width="80" height="80"></a>
+<a href="https://github.com/poteto"><img src="https://avatars0.githubusercontent.com/u/1390709?v=4" title="poteto" width="80" height="80"></a>
+<a href="https://github.com/fastfrwrd"><img src="https://avatars3.githubusercontent.com/u/231133?v=4" title="fastfrwrd" width="80" height="80"></a>
+<a href="https://github.com/gribnoysup"><img src="https://avatars2.githubusercontent.com/u/5036933?v=4" title="gribnoysup" width="80" height="80"></a>
+<a href="https://github.com/geigerzaehler"><img src="https://avatars2.githubusercontent.com/u/3919579?v=4" title="geigerzaehler" width="80" height="80"></a>
+<a href="https://github.com/vikr01"><img src="https://avatars0.githubusercontent.com/u/28772991?v=4" title="vikr01" width="80" height="80"></a>
+<a href="https://github.com/yasinuslu"><img src="https://avatars0.githubusercontent.com/u/1007479?v=4" title="yasinuslu" width="80" height="80"></a>
+
+[//]: contributor-faces
+
 ## We're hiring!
 
 Join the Netflix Studio UI team to help us build projects like this! You can check out our open roles here on our [team page](https://jobs.netflix.com/teams/client-applications).
