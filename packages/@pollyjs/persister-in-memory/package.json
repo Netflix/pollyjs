@@ -1,0 +1,46 @@
+{
+  "name": "@pollyjs/persister-in-memory",
+  "version": "2.6.0",
+  "private": true,
+  "description": "In memory storage persister for @pollyjs",
+  "main": "dist/cjs/pollyjs-persister-in-memory.js",
+  "module": "dist/es/pollyjs-persister-in-memory.js",
+  "browser": "dist/umd/pollyjs-persister-in-memory.js",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-in-memory",
+  "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Jason Mitchell",
+      "email": "jason.mitchell.w@gmail.com"
+    },
+    {
+      "name": "Offir Golan",
+      "email": "offirgolan@gmail.com"
+    }
+  ],
+  "keywords": [
+    "polly",
+    "pollyjs",
+    "record",
+    "replay",
+    "persister"
+  ],
+  "publishConfig": {
+    "access": "private"
+  },
+  "scripts": {
+    "build": "rollup -c ../../../scripts/rollup/default.config.js",
+    "test:build": "rollup -c rollup.config.test.js",
+    "watch": "yarn build -w"
+  },
+  "dependencies": {
+    "@pollyjs/persister": "^2.6.0"
+  },
+  "devDependencies": {
+    "rollup": "^1.14.6"
+  }
+}
