@@ -1,4 +1,4 @@
-import FSPersister from '@pollyjs/persister-fs';
+import InMemoryPersister from '@pollyjs/persister-in-memory';
 import puppeteer from 'puppeteer';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
@@ -21,10 +21,7 @@ describe('Integration | Puppeteer Adapter', function() {
 
   setupPolly.beforeEach({
     recordFailedRequests: true,
-    persister: FSPersister,
-    persisterOptions: {
-      fs: { recordingsDir: 'tests/recordings' }
-    },
+    persister: InMemoryPersister,
     matchRequestsBy: {
       headers: {
         exclude: [
