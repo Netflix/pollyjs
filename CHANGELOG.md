@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.1](https://github.com/netflix/pollyjs/compare/v2.6.0...v2.6.1) (2019-08-01)
+
+
+### Bug Fixes
+
+* **persister:** Default to empty string if userAgent is empty ([#242](https://github.com/netflix/pollyjs/issues/242)) ([c46d65c](https://github.com/netflix/pollyjs/commit/c46d65c))
+
+
+
+
+
 # [2.6.0](https://github.com/netflix/pollyjs/compare/v2.5.0...v2.6.0) (2019-07-17)
 
 
