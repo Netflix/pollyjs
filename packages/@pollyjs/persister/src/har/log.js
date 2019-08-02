@@ -2,8 +2,8 @@ import uniqWith from 'lodash-es/uniqWith';
 import Bowser from 'bowser';
 
 const bowser =
-  'navigator' in global
-    ? Bowser.getParser(global.navigator.userAgent || '').getBrowser()
+  global.navigator && global.navigator.userAgent
+    ? Bowser.getParser(global.navigator.userAgent).getBrowser()
     : null;
 const browser =
   bowser && bowser.name && bowser.version
