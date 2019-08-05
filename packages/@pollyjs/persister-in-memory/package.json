@@ -35,7 +35,10 @@
   "scripts": {
     "build": "rollup -c ../../../scripts/rollup/default.config.js",
     "test:build": "rollup -c rollup.config.test.js",
-    "watch": "yarn build -w"
+    "test:build:watch": "rollup -c rollup.config.test.js -w",
+    "build:watch": "yarn build -w",
+    "watch-all": "npm-run-all --parallel build:watch test:build:watch"
+
   },
   "dependencies": {
     "@pollyjs/persister": "^2.6.0"
