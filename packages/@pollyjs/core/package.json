@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/core",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Record, replay, and stub HTTP Interactions",
   "main": "dist/cjs/pollyjs-core.js",
   "module": "dist/es/pollyjs-core.js",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@pollyjs/adapter": "^2.6.0",
-    "@pollyjs/persister": "^2.6.1",
+    "@pollyjs/persister": "^2.6.2",
     "rollup": "^1.14.6"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-in-memory",
-  "version": "2.6.0",
+  "version": "2.6.2",
   "private": true,
   "description": "In memory storage persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-in-memory.js",
@@ -38,7 +38,7 @@
     "watch": "yarn build -w"
   },
   "dependencies": {
-    "@pollyjs/persister": "^2.6.0"
+    "@pollyjs/persister": "^2.6.2"
   },
   "devDependencies": {
     "rollup": "^1.14.6"

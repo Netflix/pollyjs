@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v2.6.1...v2.6.2) (2019-08-05)
+
+
+### Bug Fixes
+
+* Bowser.getParser empty string UserAgent error ([#246](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/issues/246)) ([2c9c4b9](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/2c9c4b9))
+
+
+
+
+
 ## [2.6.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v2.6.0...v2.6.1) (2019-08-01)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-fs",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-fs.js",
   "module": "dist/es/pollyjs-persister-fs.js",
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@pollyjs/node-server": "^2.6.0",
-    "@pollyjs/persister": "^2.6.1"
+    "@pollyjs/persister": "^2.6.2"
   },
   "devDependencies": {
     "fixturify": "^1.2.0",
