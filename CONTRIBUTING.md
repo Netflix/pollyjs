@@ -30,15 +30,39 @@ package scripts to manage the project, E.g. `yarn run test` or
 
 ## Running Tests
 
-To run the test suite, from the root directory run:
+### Full Suite
+
+To run the full test suite, from the root directory run:
 
 ```bash
 yarn test
 ```
 
-This will bootstrap & build the packages, stand up the node test server, and
-instantiate testem. Once running, the test suite will be rerun when any changes
-are made to the src or test files.
+This will perform a full bootstrap, clean and build on all of the sub-packages
+and test suite, stand up the node server, run the test suite and then terminate.
+
+### Running only changed tests
+
+While developing, it may become cumbersome to run the entire suite after each change.
+In one terminal tab, run the following:
+
+```bash
+yarn watch
+```
+
+This will build all of the sub-packages and test suite, watch for any changes, and
+perform incremental builds when the suite or packages are changed.
+
+Wait until the build settles (i.e. build output stops scrolling). Then, in another tab:
+
+```bash
+yarn test:watch
+```
+
+This will launch an interactive test runner (`testem`), which will automatically detect
+and re-run changed tests. To manually re-run the suite, hit `enter`. To exit, hit `q` and
+then `ctrl-c` your watch process. For more information, look at the
+[https://github.com/testem/testem](testem docs).
 
 ## Running Node Tests with Chrome Inspector
 
