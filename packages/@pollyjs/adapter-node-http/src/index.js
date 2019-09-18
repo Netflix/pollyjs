@@ -73,6 +73,14 @@ export default class HttpAdapter extends Adapter {
         // dealing with json content to convert it back to a string.
         if (body && typeof body !== 'string') {
           body = JSON.stringify(body);
+        } else if (
+          req.headers['content-type'] &&
+          /^multipart\/form-data;/.test(req.headers['content-type'])
+        ) {
+          // Nock returns a hex-encoded `body` form `multipart/form-data`
+          // requests. Transform it here:
+          // https://github.com/nock/nock/blob/9d5cda02efac32967babc8264bb4ae61795ad88d/lib/match_body.js#L13-L19
+          body = Buffer.from(body, 'hex').toString();
         }
 
         adapter.handleRequest({
