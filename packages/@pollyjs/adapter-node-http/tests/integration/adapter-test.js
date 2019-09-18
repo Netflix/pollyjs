@@ -1,6 +1,10 @@
+import fs from 'fs';
 import http from 'http';
 import https from 'https';
+import path from 'path';
 
+import FormData from 'form-data';
+import getStream from 'get-stream';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import { Polly, setupMocha as setupPolly } from '@pollyjs/core';
@@ -108,5 +112,31 @@ function commonTests(transport) {
     ]);
 
     expect(nativeHash).to.equal(recordedHash);
+  });
+
+  it('should be able to upload a file', async function() {
+    const url = `${protocol}//example.com/upload`;
+    const { server } = this.polly;
+    const requests = [];
+    const formData = new FormData();
+
+    server.post(url).intercept((req, res) => {
+      requests.push(req);
+      res.send(201);
+    });
+
+    formData.append(
+      'upload',
+      fs.createReadStream(path.resolve(__dirname, '../../package.json'))
+    );
+    const body = await getStream(formData);
+
+    await nativeRequest(transport, url, {
+      body,
+      headers: formData.getHeaders(),
+      method: 'POST'
+    });
+
+    expect(requests.length).toBe(1);
   });
 }

@@ -52,6 +52,8 @@
   "devDependencies": {
     "@pollyjs/core": "^2.6.2",
     "@pollyjs/persister-fs": "^2.6.2",
+    "form-data": "^2.5.1",
+    "get-stream": "^5.1.0",
     "node-fetch": "^2.6.0",
     "rollup": "^1.14.6"
   }
