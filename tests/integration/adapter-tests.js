@@ -147,10 +147,17 @@ export default function adapterTests() {
   });
 
   it('should handle a compressed response', async function() {
+    const { server } = this.polly;
+
+    server.post('/compress').intercept((req, res, interceptor) => {
+      expect(req.id).to.equal('0c1a33662d259d89649dd7699ae31ccb');
+      interceptor.passthrough();
+    });
+
     const res = await this.relativeFetch('/compress', {
       method: 'POST',
       body: JSON.stringify({ foo: 'bar' }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json;charset=utf-8' }
     });
 
     expect(res.status).to.equal(200);
