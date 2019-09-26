@@ -75,8 +75,8 @@ describe('Integration | Fetch Adapter | Init', function() {
         adapterOptions
       });
 
-      expect(polly.adapters.get('fetch').native).to.equal(fetch);
-      expect(polly.adapters.get('fetch').native).to.not.equal(
+      expect(polly.adapters.get('fetch').nativeFetch).to.equal(fetch);
+      expect(polly.adapters.get('fetch').nativeFetch).to.not.equal(
         adapterOptions.fetch.context.fetch
       );
 
