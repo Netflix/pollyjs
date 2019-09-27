@@ -60,6 +60,28 @@ describe('Integration | Fetch Adapter', function() {
       expect(res.status).to.equal(200);
     });
 
+    it('should set bodyUsed to true if a body is present', async function() {
+      const { server } = this.polly;
+      const request = new Request('/', { method: 'POST', body: '{}' });
+
+      server.any().intercept((_, res) => res.sendStatus(200));
+
+      expect(request.bodyUsed).to.equal(false);
+      await this.fetch(request);
+      expect(request.bodyUsed).to.equal(true);
+    });
+
+    it('should not set bodyUsed to true if a body is not present', async function() {
+      const { server } = this.polly;
+      const request = new Request('/');
+
+      server.any().intercept((_, res) => res.sendStatus(200));
+
+      expect(request.bodyUsed).to.equal(false);
+      await this.fetch(request);
+      expect(request.bodyUsed).to.equal(false);
+    });
+
     function testRequestOptions(createRequest, options) {
       return async function() {
         const { server } = this.polly;
