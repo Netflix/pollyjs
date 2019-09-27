@@ -5,7 +5,6 @@ import serializeHeaders from './utils/serializer-headers';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
-const IS_REQUEST = Symbol();
 const REQUEST_ARGUMENTS = Symbol();
 
 export default class FetchAdapter extends Adapter {
@@ -45,7 +44,7 @@ export default class FetchAdapter extends Adapter {
       `await req.blob()` as well as not having to hard code each option we want
       to extract from the Request instance.
     */
-    context.Request = class Request extends context.Request {
+    class ExtendedRequest extends context.Request {
       constructor(url, options) {
         super(url, options);
 
@@ -58,7 +57,7 @@ export default class FetchAdapter extends Adapter {
           the first argument so we use its arguments and merge it with the
           new options.
         */
-        if (typeof url === 'object' && url[IS_REQUEST]) {
+        if (url instanceof ExtendedRequest) {
           const reqArgs = url[REQUEST_ARGUMENTS];
 
           args = { ...reqArgs, options: { ...reqArgs.options, ...options } };
@@ -66,22 +65,22 @@ export default class FetchAdapter extends Adapter {
           args = { url, options };
         }
 
-        defineProperty(this, IS_REQUEST, { value: true });
         defineProperty(this, REQUEST_ARGUMENTS, { value: args });
       }
 
       clone() {
-        return new Request(this);
+        return new ExtendedRequest(this);
       }
-    };
+    }
 
+    context.Request = ExtendedRequest;
     defineProperty(context.Request, IS_STUBBED, { value: true });
 
     context.fetch = (url, options = {}) => {
       let respond;
 
       // Support Request object
-      if (typeof url === 'object' && url[IS_REQUEST]) {
+      if (url instanceof ExtendedRequest) {
         const req = url;
         const reqArgs = req[REQUEST_ARGUMENTS];
 
