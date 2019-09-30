@@ -171,6 +171,12 @@ _In alphabetical order:_
 - [Offir Golan](https://twitter.com/offirgolan) - Creator / Maintainer
 - [Sophinie Som](https://twitter.com/s0phinie) - Branding / Logo
 
+## Prior Art
+
+The "Client Server" API of Polly is heavily influenced by the very popular mock server library [pretender](https://github.com/pretenderjs/pretender).  Pretender supports XHR and Fetch stubbing and is a great lightweight alternative to Polly if your project does not require persisting capabilities or Node adapters.
+
+Thank you to all contributors especially the maintainers: [trek](https://github.com/trek), [stefanpenner](https://github.com/stefanpenner), and [xg-wang](https://github.com/xg-wang).
+
 ## Contributors
 
 [//]: contributor-faces

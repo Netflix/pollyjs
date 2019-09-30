@@ -5,6 +5,7 @@ import serializeHeaders from './utils/serializer-headers';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
+const REQUEST_ARGUMENTS = Symbol();
 
 export default class FetchAdapter extends Adapter {
   static get name() {
@@ -26,23 +27,72 @@ export default class FetchAdapter extends Adapter {
       );
     }
 
-    ['fetch', 'Response', 'Headers'].forEach(key =>
+    ['fetch', 'Request', 'Response', 'Headers'].forEach(key =>
       this.assert(`${key} global not found.`, !!(context && context[key]))
     );
     this.assert(
       'Running concurrent fetch adapters is unsupported, stop any running Polly instances.',
-      !context.fetch[IS_STUBBED]
+      !context.fetch[IS_STUBBED] && !context.Request[IS_STUBBED]
     );
 
-    this.native = context.fetch;
+    this.nativeFetch = context.fetch;
+    this.NativeRequest = context.Request;
 
-    context.fetch = (url, options = {}) => {
-      // Support Request object
-      if (typeof url === 'object' && 'url' in url) {
-        url = url.url;
+    /*
+      Patch the Request class so we can store all the passed in options. This
+      allows us the access the `body` directly instead of having to do
+      `await req.blob()` as well as not having to hard code each option we want
+      to extract from the Request instance.
+    */
+    class ExtendedRequest extends context.Request {
+      constructor(url, options) {
+        super(url, options);
+
+        let args;
+
+        options = options || {};
+
+        /*
+          The Request constructor can receive another Request instance as
+          the first argument so we use its arguments and merge it with the
+          new options.
+        */
+        if (url instanceof ExtendedRequest) {
+          const reqArgs = url[REQUEST_ARGUMENTS];
+
+          args = { ...reqArgs, options: { ...reqArgs.options, ...options } };
+        } else {
+          args = { url, options };
+        }
+
+        defineProperty(this, REQUEST_ARGUMENTS, { value: args });
       }
 
+      clone() {
+        return new ExtendedRequest(this);
+      }
+    }
+
+    context.Request = ExtendedRequest;
+    defineProperty(context.Request, IS_STUBBED, { value: true });
+
+    context.fetch = (url, options = {}) => {
       let respond;
+
+      // Support Request object
+      if (url instanceof ExtendedRequest) {
+        const req = url;
+        const reqArgs = req[REQUEST_ARGUMENTS];
+
+        url = reqArgs.url;
+        options = { ...reqArgs.options, ...options };
+
+        // If a body exists in the Request instance, mimic reading the body
+        if ('body' in reqArgs.options) {
+          defineProperty(req, 'bodyUsed', { value: true });
+        }
+      }
+
       const promise = new Promise((resolve, reject) => {
         respond = ({ response, error }) => {
           if (error) {
@@ -68,14 +118,20 @@ export default class FetchAdapter extends Adapter {
   }
 
   onDisconnect() {
-    this.options.context.fetch = this.native;
-    this.native = null;
+    const { context } = this.options;
+
+    context.fetch = this.nativeFetch;
+    context.Request = this.NativeRequest;
+
+    this.nativeFetch = null;
+    this.NativeRequest = null;
   }
 
   async passthroughRequest(pollyRequest) {
+    const { context } = this.options;
     const { options } = pollyRequest.requestArguments;
 
-    const response = await this.native.apply(global, [
+    const response = await this.nativeFetch.apply(context, [
       pollyRequest.url,
       {
         ...options,

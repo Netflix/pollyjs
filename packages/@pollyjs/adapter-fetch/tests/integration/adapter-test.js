@@ -7,6 +7,7 @@ import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-test
 import FetchAdapter from '../../src';
 import pollyConfig from '../utils/polly-config';
 
+class MockRequest {}
 class MockResponse {}
 class MockHeaders {}
 
@@ -29,16 +30,6 @@ describe('Integration | Fetch Adapter', function() {
     expect(res.status).to.equal(200);
   });
 
-  it('should support Request objects', async function() {
-    const { server } = this.polly;
-
-    server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
-
-    const res = await this.fetch(new Request(this.recordUrl()));
-
-    expect(res.status).to.equal(200);
-  });
-
   it('should support array of key/value pair headers', async function() {
     const { server } = this.polly;
     let headers;
@@ -57,27 +48,127 @@ describe('Integration | Fetch Adapter', function() {
     expect(res.status).to.equal(200);
     expect(headers).to.deep.equal({ 'content-type': 'application/json' });
   });
+
+  describe('Request', function() {
+    it('should support Request objects', async function() {
+      const { server } = this.polly;
+
+      server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
+
+      const res = await this.fetch(new Request(this.recordUrl()));
+
+      expect(res.status).to.equal(200);
+    });
+
+    it('should set bodyUsed to true if a body is present', async function() {
+      const { server } = this.polly;
+      const request = new Request('/', { method: 'POST', body: '{}' });
+
+      server.any().intercept((_, res) => res.sendStatus(200));
+
+      expect(request.bodyUsed).to.equal(false);
+      await this.fetch(request);
+      expect(request.bodyUsed).to.equal(true);
+    });
+
+    it('should not set bodyUsed to true if a body is not present', async function() {
+      const { server } = this.polly;
+      const request = new Request('/');
+
+      server.any().intercept((_, res) => res.sendStatus(200));
+
+      expect(request.bodyUsed).to.equal(false);
+      await this.fetch(request);
+      expect(request.bodyUsed).to.equal(false);
+    });
+
+    function testRequestOptions(createRequest, options) {
+      return async function() {
+        const { server } = this.polly;
+        let receivedOptions;
+
+        server.any().intercept((req, res) => {
+          receivedOptions = req.requestArguments.options;
+          res.sendStatus(200);
+        });
+
+        const res = await this.fetch(createRequest());
+
+        expect(res.status).to.equal(200);
+        expect(options).to.deep.equal(receivedOptions);
+      };
+    }
+
+    it(
+      'should handle no options',
+      testRequestOptions(() => new Request('/'), {})
+    );
+
+    it(
+      'should handle simple options',
+      testRequestOptions(
+        () =>
+          new Request('/', { method: 'POST', body: '{}', cache: 'no-cache' }),
+        { method: 'POST', body: '{}', cache: 'no-cache' }
+      )
+    );
+
+    it(
+      'should handle a cloned request',
+      testRequestOptions(
+        () => new Request('/', { method: 'POST', body: '{}' }).clone(),
+        { method: 'POST', body: '{}' }
+      )
+    );
+
+    it(
+      'should handle a request instance',
+      testRequestOptions(
+        () => new Request(new Request('/', { method: 'POST', body: '{}' })),
+        { method: 'POST', body: '{}' }
+      )
+    );
+
+    it(
+      'should handle a request instance with overrides',
+      testRequestOptions(
+        () =>
+          new Request(new Request('/', { method: 'POST', body: '{}' }), {
+            method: 'PATCH',
+            headers: { foo: 'bar' }
+          }),
+        { method: 'PATCH', headers: { foo: 'bar' }, body: '{}' }
+      )
+    );
+  });
 });
 
 describe('Integration | Fetch Adapter | Init', function() {
   describe('Context', function() {
-    it(`should assign context's fetch as the native fetch`, async function() {
+    it(`should assign context's fetch as the native fetch and Request as the native Request`, async function() {
       const polly = new Polly('context', { adapters: [] });
       const fetch = () => {};
       const adapterOptions = {
         fetch: {
-          context: { fetch, Response: MockResponse, Headers: MockHeaders }
+          context: {
+            fetch,
+            Request: MockRequest,
+            Response: MockResponse,
+            Headers: MockHeaders
+          }
         }
       };
 
-      polly.configure({
-        adapters: [FetchAdapter],
-        adapterOptions
-      });
+      polly.configure({ adapters: [FetchAdapter], adapterOptions });
 
-      expect(polly.adapters.get('fetch').native).to.equal(fetch);
-      expect(polly.adapters.get('fetch').native).to.not.equal(
+      expect(polly.adapters.get('fetch').nativeFetch).to.equal(fetch);
+      expect(polly.adapters.get('fetch').nativeFetch).to.not.equal(
         adapterOptions.fetch.context.fetch
+      );
+
+      expect(polly.adapters.get('fetch').NativeRequest).to.equal(MockRequest);
+      expect(polly.adapters.get('fetch').NativeRequest).to.not.equal(
+        adapterOptions.fetch.context.Request
       );
 
       expect(function() {
@@ -89,7 +180,7 @@ describe('Integration | Fetch Adapter | Init', function() {
       await polly.stop();
     });
 
-    it('should throw when context, fetch, Response, and Headers are undefined', async function() {
+    it('should throw when context, fetch, Request, Response, and Headers are undefined', async function() {
       const polly = new Polly('context', { adapters: [] });
 
       polly.configure({
@@ -108,6 +199,7 @@ describe('Integration | Fetch Adapter | Init', function() {
             fetch: {
               context: {
                 fetch: undefined,
+                Request: MockRequest,
                 Response: MockResponse,
                 Headers: MockHeaders
               }
@@ -120,7 +212,27 @@ describe('Integration | Fetch Adapter | Init', function() {
         polly.configure({
           adapterOptions: {
             fetch: {
-              context: { fetch() {}, Response: undefined, Headers: MockHeaders }
+              context: {
+                fetch() {},
+                Request: undefined,
+                Response: MockResponse,
+                Headers: MockHeaders
+              }
+            }
+          }
+        });
+      }).to.throw(/Request global not found/);
+
+      expect(function() {
+        polly.configure({
+          adapterOptions: {
+            fetch: {
+              context: {
+                fetch() {},
+                Request: MockRequest,
+                Response: undefined,
+                Headers: MockHeaders
+              }
             }
           }
         });
@@ -132,6 +244,7 @@ describe('Integration | Fetch Adapter | Init', function() {
             fetch: {
               context: {
                 fetch() {},
+                Request: MockRequest,
                 Response: MockResponse,
                 Headers: undefined
               }

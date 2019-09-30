@@ -208,7 +208,7 @@ export default function adapterTests() {
     expect(res.ok).to.be.true;
   });
 
-  describe('expired tests', () => {
+  describe('Expiration', () => {
     async function testExpiration() {
       const { persister, recordingId } = this.polly;
       const url = '/api';
