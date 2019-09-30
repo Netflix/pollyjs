@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-xhr",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "description": "XHR adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-xhr.js",
   "module": "dist/es/pollyjs-adapter-xhr.js",
@@ -40,13 +40,13 @@
     "watch-all": "npm-run-all --parallel build:watch test:build:watch"
   },
   "dependencies": {
-    "@pollyjs/adapter": "^2.6.0",
-    "@pollyjs/utils": "^2.6.0",
+    "@pollyjs/adapter": "^2.6.3",
+    "@pollyjs/utils": "^2.6.3",
     "nise": "^1.5.0"
   },
   "devDependencies": {
-    "@pollyjs/core": "^2.6.2",
-    "@pollyjs/persister-rest": "^2.6.2",
+    "@pollyjs/core": "^2.6.3",
+    "@pollyjs/persister-rest": "^2.6.3",
     "rollup": "^1.14.6"
   }
 }
