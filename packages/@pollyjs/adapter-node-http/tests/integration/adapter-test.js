@@ -1,6 +1,7 @@
 import http from 'http';
 import https from 'https';
 
+import adapterIdentifierTests from '@pollyjs-tests/integration/adapter-identifier-tests';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import { Polly, setupMocha as setupPolly } from '@pollyjs/core';
@@ -55,6 +56,7 @@ describe('Integration | Node Http Adapter', function() {
     setupPolly.afterEach();
 
     adapterTests();
+    adapterIdentifierTests();
     commonTests(http);
   });
 
