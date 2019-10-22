@@ -163,24 +163,28 @@ export default class PuppeteerAdapter extends Adapter {
     parsedUrl.query[PASSTHROUGH_REQ_ID_QP] = requestId;
 
     try {
-      const response = await new Promise((resolve, reject) => {
+      const response = await new Promise(async (resolve, reject) => {
         this[PASSTHROUGH_PROMISES].set(requestId, { resolve, reject });
 
         // This gets evaluated within the browser's context, meaning that
         // this fetch call executes from within the browser.
-        page.evaluate(
-          new Function(
-            'url',
-            'method',
-            'headers',
-            'body',
-            'return fetch(url, { method, headers, body });'
-          ),
-          parsedUrl.toString(),
-          method,
-          headers,
-          body
-        );
+        try {
+          await page.evaluate(
+            new Function(
+              'url',
+              'method',
+              'headers',
+              'body',
+              'return fetch(url, { method, headers, body });'
+            ),
+            parsedUrl.toString(),
+            method,
+            headers,
+            body
+          );
+        } catch (error) {
+          reject(error);
+        }
       });
 
       return {
