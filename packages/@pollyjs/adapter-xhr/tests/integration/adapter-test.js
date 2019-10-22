@@ -2,6 +2,7 @@ import { Polly, setupMocha as setupPolly } from '@pollyjs/core';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
+import adapterIdentifierTests from '@pollyjs-tests/integration/adapter-identifier-tests';
 import InMemoryPersister from '@pollyjs/persister-in-memory';
 
 import xhrRequest from '../utils/xhr-request';
@@ -25,6 +26,7 @@ describe('Integration | XHR Adapter', function() {
 
   adapterTests();
   adapterBrowserTests();
+  adapterIdentifierTests();
 });
 
 describe('Integration | XHR Adapter | Init', function() {

@@ -3,6 +3,7 @@ import { URL } from '@pollyjs/utils';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
+import adapterIdentifierTests from '@pollyjs-tests/integration/adapter-identifier-tests';
 
 import FetchAdapter from '../../src';
 import pollyConfig from '../utils/polly-config';
@@ -19,6 +20,7 @@ describe('Integration | Fetch Adapter', function() {
 
   adapterTests();
   adapterBrowserTests();
+  adapterIdentifierTests();
 
   it('should support URL instances', async function() {
     const { server } = this.polly;
