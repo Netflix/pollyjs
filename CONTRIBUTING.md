@@ -62,7 +62,7 @@ yarn test:watch
 This will launch an interactive test runner (`testem`), which will automatically detect
 and re-run changed tests. To manually re-run the suite, hit `enter`. To exit, hit `q` and
 then `ctrl-c` your watch process. For more information, look at the
-[https://github.com/testem/testem](testem docs).
+[testem docs](https://github.com/testem/testem).
 
 ## Running Node Tests with Chrome Inspector
 
