@@ -1,5 +1,6 @@
 import path from 'path';
 
+import stringify from 'json-stable-stringify';
 import fs from 'fs-extra';
 import { assert } from '@pollyjs/utils';
 
@@ -26,9 +27,10 @@ export default class API {
   }
 
   saveRecording(recording, data) {
-    fs.outputJsonSync(this.filenameFor(recording), data, {
-      spaces: 2
-    });
+    fs.outputFileSync(
+      this.filenameFor(recording),
+      stringify(data, { space: 2 })
+    );
 
     return this.respond(201);
   }

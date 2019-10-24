@@ -41,8 +41,9 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "fs-extra": "^8.0.1",
+    "fs-extra": "^8.1.0",
     "http-graceful-shutdown": "^2.3.1",
+    "json-stable-stringify": "^1.0.1",
     "morgan": "^1.9.1",
     "nocache": "^2.1.0"
   },
