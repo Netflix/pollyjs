@@ -126,7 +126,7 @@ export default function adapterTests() {
     ]);
   });
 
-  it('should emit an error event', async function() {
+  it.only('should emit an error event', async function() {
     const { server } = this.polly;
     let error;
 

@@ -12,7 +12,7 @@ import pollyConfig from '../utils/polly-config';
 import getResponseFromRequest from '../utils/get-response-from-request';
 import calculateHashFromStream from '../utils/calculate-hash-from-stream';
 
-describe('Integration | Node Http Adapter', function() {
+describe.only('Integration | Node Http Adapter', function() {
   describe('Concurrency', function() {
     it('should prevent concurrent Node HTTP adapter instances', async function() {
       const one = new Polly('one');
