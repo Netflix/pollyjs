@@ -7,7 +7,8 @@ import nock from 'nock';
 import {
   normalizeClientRequestArgs,
   isUtf8Representable,
-  isContentEncoded
+  isContentEncoded,
+  isJSONContent
 } from 'nock/lib/common';
 import Adapter from '@pollyjs/adapter';
 import { HTTP_METHODS } from '@pollyjs/utils';
@@ -79,13 +80,11 @@ export default class HttpAdapter extends Adapter {
               body = Buffer.from(body, 'hex');
             }
 
-            body = body.toString('utf8');
-          } else if (typeof body === 'object') {
-            try {
-              body = JSON.stringify(body);
-            } catch (e) {
-              // not a valid JSON string
-            }
+            body = body.toString();
+          } else if (isJSONContent(headers)) {
+            // Nock will parse json content into an object. We have our own way
+            // of dealing with json content so convert it back to a string.
+            body = JSON.stringify(body);
           }
         }
 
@@ -209,9 +208,6 @@ export default class HttpAdapter extends Adapter {
       // If an error was received then forward it over to nock so it can
       // correctly handle it.
       respond(error);
-
-      // This allows the consumer to handle the error gracefully
-      req.emit('error', error);
 
       return;
     }
