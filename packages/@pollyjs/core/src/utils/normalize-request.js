@@ -12,17 +12,17 @@ function isFunction(fn) {
   return typeof fn === 'function';
 }
 
-export function method(method, config) {
-  return isFunction(config) ? config(method) : method.toUpperCase();
+export function method(method, req, config) {
+  return isFunction(config) ? config(method, req) : method.toUpperCase();
 }
 
-export function url(url, config = {}) {
+export function url(url, req, config = {}) {
   const parsedUrl = parseUrl(url, true);
 
   // Remove any url properties that have been disabled via the config
   keys(config).forEach(key => {
     if (isFunction(config[key])) {
-      parsedUrl.set(key, config[key](parsedUrl[key]));
+      parsedUrl.set(key, config[key](parsedUrl[key], req));
     } else if (!config[key]) {
       parsedUrl.set(key, '');
     }
@@ -36,11 +36,11 @@ export function url(url, config = {}) {
   return parsedUrl.href;
 }
 
-export function headers(headers, config) {
+export function headers(headers, req, config) {
   const normalizedHeaders = new HTTPHeaders(headers);
 
   if (isFunction(config)) {
-    return config(normalizedHeaders);
+    return config(normalizedHeaders, req);
   }
 
   if (isObjectLike(config) && isArray(config.exclude)) {
@@ -50,8 +50,8 @@ export function headers(headers, config) {
   return normalizedHeaders;
 }
 
-export function body(body, config) {
-  return isFunction(config) ? config(body) : body;
+export function body(body, req, config) {
+  return isFunction(config) ? config(body, req) : body;
 }
 
 export default {
