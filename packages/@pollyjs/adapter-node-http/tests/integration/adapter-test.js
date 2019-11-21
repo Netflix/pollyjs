@@ -73,7 +73,7 @@ describe('Integration | Node Http Adapter', function() {
 function commonTests(transport) {
   const { protocol } = transport.globalAgent;
 
-  it('should handle posting a buffer', async function() {
+  it('should be able to upload a binary data', async function() {
     const { server } = this.polly;
     const url = `${protocol}//example.com`;
     const body = Buffer.from('Node HTTP Adapter', 'base64');
@@ -89,6 +89,9 @@ function commonTests(transport) {
 
     expect(requests).to.have.lengthOf(2);
     expect(requests[0].id).to.equal(requests[1].id);
+    expect(requests[0].body.toString('base64')).to.equal(
+      body.toString('base64')
+    );
     expect(requests[0].identifiers.body).to.equal(body.toString('hex'));
   });
 
@@ -118,29 +121,6 @@ function commonTests(transport) {
     expect(request).to.exist;
     expect(typeof request.body).to.equal('string');
     expect(request.body).to.include('@pollyjs/adapter-node-http');
-  });
-
-  it('should be able to upload a binary file', async function() {
-    const url = `${protocol}//example.com/upload`;
-    const { server } = this.polly;
-    let request;
-
-    server.post(url).intercept((req, res) => {
-      request = req;
-      res.send(201);
-    });
-
-    await nativeRequest(transport, url, {
-      body: Buffer.from('test', 'base64'),
-      headers: {
-        'Content-Type': 'application/octet-stream'
-      },
-      method: 'POST'
-    });
-
-    expect(request).to.exist;
-    expect(Buffer.isBuffer(request.body)).to.equal(true);
-    expect(request.body.toString('base64')).to.equal('test');
   });
 
   it('should be able to download binary content', async function() {
