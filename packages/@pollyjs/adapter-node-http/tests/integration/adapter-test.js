@@ -92,6 +92,57 @@ function commonTests(transport) {
     expect(requests[0].identifiers.body).to.equal(body.toString('hex'));
   });
 
+  it('should be able to upload form data', async function() {
+    const url = `${protocol}//example.com/upload`;
+    const { server } = this.polly;
+    const formData = new FormData();
+    let request;
+
+    server.post(url).intercept((req, res) => {
+      request = req;
+      res.send(201);
+    });
+
+    formData.append(
+      'upload',
+      fs.createReadStream(path.resolve(__dirname, '../../package.json'))
+    );
+    const body = await getStream(formData);
+
+    await nativeRequest(transport, url, {
+      body,
+      headers: formData.getHeaders(),
+      method: 'POST'
+    });
+
+    expect(request).to.exist;
+    expect(typeof request.body).to.equal('string');
+    expect(request.body).to.include('@pollyjs/adapter-node-http');
+  });
+
+  it('should be able to upload a binary file', async function() {
+    const url = `${protocol}//example.com/upload`;
+    const { server } = this.polly;
+    let request;
+
+    server.post(url).intercept((req, res) => {
+      request = req;
+      res.send(201);
+    });
+
+    await nativeRequest(transport, url, {
+      body: Buffer.from('test', 'base64'),
+      headers: {
+        'Content-Type': 'application/octet-stream'
+      },
+      method: 'POST'
+    });
+
+    expect(request).to.exist;
+    expect(Buffer.isBuffer(request.body)).to.equal(true);
+    expect(request.body.toString('base64')).to.equal('test');
+  });
+
   it('should be able to download binary content', async function() {
     const url = `${protocol}//via.placeholder.com/150/92c952`;
     const { server } = this.polly;
@@ -114,31 +165,5 @@ function commonTests(transport) {
     ]);
 
     expect(nativeHash).to.equal(recordedHash);
-  });
-
-  it('should be able to upload a file', async function() {
-    const url = `${protocol}//example.com/upload`;
-    const { server } = this.polly;
-    const requests = [];
-    const formData = new FormData();
-
-    server.post(url).intercept((req, res) => {
-      requests.push(req);
-      res.send(201);
-    });
-
-    formData.append(
-      'upload',
-      fs.createReadStream(path.resolve(__dirname, '../../package.json'))
-    );
-    const body = await getStream(formData);
-
-    await nativeRequest(transport, url, {
-      body,
-      headers: formData.getHeaders(),
-      method: 'POST'
-    });
-
-    expect(requests.length).toBe(1);
   });
 }
