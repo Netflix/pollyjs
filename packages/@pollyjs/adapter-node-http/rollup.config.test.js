@@ -3,7 +3,7 @@ import createJestTestConfig from '../../../scripts/rollup/jest.test.config';
 
 import { external } from './rollup.config.shared';
 
-const testExternal = [...external, 'crypto'];
+const testExternal = [...external, 'crypto', 'fs', 'path'];
 
 export default [
   createNodeTestConfig({ external: testExternal }),

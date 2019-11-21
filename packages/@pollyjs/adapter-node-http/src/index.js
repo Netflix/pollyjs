@@ -70,17 +70,15 @@ export default class HttpAdapter extends Adapter {
           ...REQUEST_ARGUMENTS.get(req)
         );
         const url = getUrlFromOptions(parsedArguments.options);
-        const contentType = (headers['content-type'] || '').toString();
-        const isMultiPart = contentType.includes('multipart');
 
         if (body) {
-          if (isMultiPart && Buffer.isBuffer(body)) {
-            // Nock can return a hex-encoded body multipart/form-data
-            if (!isUtf8Representable(body)) {
-              body = Buffer.from(body, 'hex');
-            }
-
-            body = body.toString();
+          if (
+            typeof body === 'string' &&
+            !isUtf8Representable(Buffer.from(body, 'hex'))
+          ) {
+            // Nock internally converts a binary buffer into its hexadecimal
+            // representation so convert it back to a buffer.
+            body = Buffer.from(body, 'hex');
           } else if (isJSONContent(headers)) {
             // Nock will parse json content into an object. We have our own way
             // of dealing with json content so convert it back to a string.
