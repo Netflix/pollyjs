@@ -3,5 +3,5 @@ export default {
   quiet: false,
   recordingSizeLimit: '50mb',
   recordingsDir: 'recordings',
-  apiNamespace: 'polly'
+  apiNamespace: '/polly'
 };
