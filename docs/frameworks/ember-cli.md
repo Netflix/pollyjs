@@ -17,25 +17,20 @@ ember install @pollyjs/ember
 ## Configuration
 
 Addon and [server API configuration](node-server/overview#api-configuration) can be
-be specified in `ember-cli-build.js`. The default configuration options are shown
-below.
+be specified in `<ember app root>/config/polly.js`. The default configuration options are shown below.
 
 ```js
-module.exports = function(defaults) {
-  const app = new EmberApp(defaults, {
-    pollyjs: {
-      // Addon Configuration Options
-      enabled: EmberApp.env() !== 'production',
+module.exports = function(env) {
+  return {
+    // Addon Configuration Options
+    enabled: env !== 'production',
 
-      // Server Configuration Options
-      server: {
-        apiNamespace: 'polly',
-        recordingsDir: 'recordings'
-      }
+    // Server Configuration Options
+    server: {
+      apiNamespace: '/polly',
+      recordingsDir: 'recordings'
     }
-  });
-
-  return app.toTree();
+  };
 };
 ```
 

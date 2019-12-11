@@ -4,6 +4,7 @@
 
 # dependencies
 /bower_components/
+/node_modules/
 
 # misc
 /.bowerrc
@@ -16,12 +17,12 @@
 /.travis.yml
 /.watchmanconfig
 /bower.json
-/config/ember-try.js
 /ember-cli-build.js
 /testem.js
 /tests/
 /yarn.lock
 .gitkeep
+/config/
 
 # ember-try
 /.node_modules.ember-try/
