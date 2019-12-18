@@ -77,7 +77,7 @@ option.
 polly.configure({
   persisterOptions: {
     rest: {
-      apiNamespace: '/pollyjs'
+      apiNamespace: '/polly'
     }
   }
 });
