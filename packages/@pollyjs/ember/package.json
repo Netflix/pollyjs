@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/ember",
-  "version": "2.7.0",
+  "version": "3.0.0",
   "description": "Use @pollyjs in your Ember-CLI application",
   "keywords": [
     "polly",
@@ -36,12 +36,12 @@
     "clean": "rimraf dist tmp"
   },
   "dependencies": {
-    "@pollyjs/adapter-fetch": "^2.6.3",
-    "@pollyjs/adapter-xhr": "^2.6.3",
-    "@pollyjs/core": "^2.6.3",
-    "@pollyjs/node-server": "^2.6.3",
-    "@pollyjs/persister-local-storage": "^2.6.3",
-    "@pollyjs/persister-rest": "^2.6.3",
+    "@pollyjs/adapter-fetch": "^3.0.0",
+    "@pollyjs/adapter-xhr": "^3.0.0",
+    "@pollyjs/core": "^3.0.0",
+    "@pollyjs/node-server": "^3.0.0",
+    "@pollyjs/persister-local-storage": "^3.0.0",
+    "@pollyjs/persister-rest": "^3.0.0",
     "ember-auto-import": "^1.2.15",
     "ember-cli-babel": "^6.16.0",
     "minimist": "^1.2.0"

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v2.7.0...v3.0.0) (2019-12-18)
+
+
+### Bug Fixes
+
+* **ember:** loads polly config for ember by its own module ([#277](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/issues/277)) ([0569040](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/0569040))
+
+
+### BREAKING CHANGES
+
+* **ember:** moves location of polly configuration
+
+
+
+
+
 # [2.7.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v2.6.3...v2.7.0) (2019-11-21)
 
 **Note:** Version bump only for package @pollyjs/ember
