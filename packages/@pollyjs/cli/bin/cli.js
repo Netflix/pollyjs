@@ -3,10 +3,10 @@
 // Provide a title to the process in `ps`
 process.title = 'polly';
 
-var Polly = require('@pollyjs/node-server');
-var cli = require('commander');
+const Polly = require('@pollyjs/node-server');
+const cli = require('commander');
 
-var version = require('../package.json').version;
+const version = require('../package.json').version;
 
 cli.name('polly').version(version, '-v, --version');
 
