@@ -32,8 +32,7 @@ export default class FetchAdapter extends Adapter {
     );
     this.assert(
       'Running concurrent fetch adapters is unsupported, stop any running Polly instances.',
-      !context.fetch[IS_STUBBED] &&
-        !context.Request.prototype.constructor[IS_STUBBED]
+      !context.fetch[IS_STUBBED] && !context.Request[IS_STUBBED]
     );
 
     this.nativeFetch = context.fetch;
