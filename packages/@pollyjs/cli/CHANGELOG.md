@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/cli/compare/v3.0.0...v3.0.1) (2019-12-25)
+
+**Note:** Version bump only for package @pollyjs/cli
+
+
+
+
+
 # [3.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/cli/compare/v2.7.0...v3.0.0) (2019-12-18)
 
 **Note:** Version bump only for package @pollyjs/cli

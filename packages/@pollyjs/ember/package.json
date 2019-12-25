@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/ember",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Use @pollyjs in your Ember-CLI application",
   "keywords": [
     "polly",
@@ -36,7 +36,7 @@
     "clean": "rimraf dist tmp"
   },
   "dependencies": {
-    "@pollyjs/adapter-fetch": "^3.0.0",
+    "@pollyjs/adapter-fetch": "^3.0.1",
     "@pollyjs/adapter-xhr": "^3.0.0",
     "@pollyjs/core": "^3.0.0",
     "@pollyjs/node-server": "^3.0.0",

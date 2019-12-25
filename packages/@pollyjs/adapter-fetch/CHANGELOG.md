@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/v3.0.0...v3.0.1) (2019-12-25)
+
+
+### Bug Fixes
+
+* **adapter-fetch:** Fix "failed to construct Request" issue ([#287](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/issues/287)) ([d17ab9b](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/commit/d17ab9b)), closes [#286](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/issues/286)
+
+
+
+
+
 # [3.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/v2.7.0...v3.0.0) (2019-12-18)
 
 **Note:** Version bump only for package @pollyjs/adapter-fetch
