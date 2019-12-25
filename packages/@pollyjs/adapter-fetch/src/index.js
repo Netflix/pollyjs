@@ -32,55 +32,57 @@ export default class FetchAdapter extends Adapter {
     );
     this.assert(
       'Running concurrent fetch adapters is unsupported, stop any running Polly instances.',
-      !context.fetch[IS_STUBBED] && !context.Request[IS_STUBBED]
+      !context.fetch[IS_STUBBED] &&
+        !context.Request.prototype.constructor[IS_STUBBED]
     );
 
     this.nativeFetch = context.fetch;
     this.NativeRequest = context.Request;
 
+    const NativeRequest = this.NativeRequest;
+
     /*
-      Patch the Request class so we can store all the passed in options. This
-      allows us the access the `body` directly instead of having to do
+      Patch the Request constructor so we can store all the passed in options.
+      This allows us to access the `body` directly instead of having to do
       `await req.blob()` as well as not having to hard code each option we want
       to extract from the Request instance.
     */
-    class ExtendedRequest extends context.Request {
-      constructor(url, options) {
-        super(url, options);
+    context.Request = function Request(url, options) {
+      const request = new NativeRequest(url, options);
+      let args;
 
-        let args;
+      options = options || {};
 
-        options = options || {};
+      /*
+        The Request constructor can receive another Request instance as
+        the first argument so we use its arguments and merge it with the
+        new options.
+     */
+      if (typeof url === 'object' && url[REQUEST_ARGUMENTS]) {
+        const reqArgs = url[REQUEST_ARGUMENTS];
 
-        /*
-          The Request constructor can receive another Request instance as
-          the first argument so we use its arguments and merge it with the
-          new options.
-        */
-        if (url instanceof ExtendedRequest) {
-          const reqArgs = url[REQUEST_ARGUMENTS];
-
-          args = { ...reqArgs, options: { ...reqArgs.options, ...options } };
-        } else {
-          args = { url, options };
-        }
-
-        defineProperty(this, REQUEST_ARGUMENTS, { value: args });
+        args = { ...reqArgs, options: { ...reqArgs.options, ...options } };
+      } else {
+        args = { url, options };
       }
 
-      clone() {
-        return new ExtendedRequest(this);
-      }
-    }
+      defineProperty(request, REQUEST_ARGUMENTS, { value: args });
 
-    context.Request = ExtendedRequest;
+      // Override the clone method to use our overridden constructor
+      request.clone = function clone() {
+        return new context.Request(request);
+      };
+
+      return request;
+    };
+
     defineProperty(context.Request, IS_STUBBED, { value: true });
 
     context.fetch = (url, options = {}) => {
       let respond;
 
       // Support Request object
-      if (url instanceof ExtendedRequest) {
+      if (typeof url === 'object' && url[REQUEST_ARGUMENTS]) {
         const req = url;
         const reqArgs = req[REQUEST_ARGUMENTS];
 
