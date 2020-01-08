@@ -46,7 +46,7 @@
     "@pollyjs/adapter": "^3.0.0",
     "@pollyjs/utils": "^3.0.0",
     "lodash-es": "^4.17.11",
-    "nock": "^11.7.0"
+    "nock": "^11.7.2"
   },
   "devDependencies": {
     "@pollyjs/core": "^3.0.0",
