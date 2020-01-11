@@ -179,6 +179,17 @@ played back from a saved recording.
 polly.replay();
 ```
 
+### passthrough
+
+Puts polly in pass-through mode. All requests going forward will pass-through
+directly to the server without being recorded or replayed.
+
+**Example**
+
+```js
+polly.passthrough();
+```
+
 ### pause
 
 Disconnects the polly instance from all connected adapters. This ensures that
@@ -186,6 +197,9 @@ no requests will be handled by the polly instance until calling [play](api#play)
 or manually connecting to a new adapter via [connectTo](api#connectTo). The
 previously connected adapters will be saved and can be restored by
 calling [play](api#play).
+
+?> If using the [Puppeteer Adapter](adapters/puppeteer), you'll need to also
+disable request interception via `await page.setRequestInterception(false)`.
 
 **Example**
 
@@ -200,6 +214,9 @@ await fetch('/api/secret');
 
 Reconnects to the adapters that were disconnected when [pause](api#pause)
 was called.
+
+?> If using the [Puppeteer Adapter](adapters/puppeteer), you'll need to also
+enable request interception via `await page.setRequestInterception(true)`.
 
 **Example**
 

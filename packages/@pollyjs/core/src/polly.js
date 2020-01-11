@@ -202,6 +202,14 @@ export default class Polly {
    * @public
    * @memberof Polly
    */
+  passthrough() {
+    this.mode = MODES.PASSTHROUGH;
+  }
+
+  /**
+   * @public
+   * @memberof Polly
+   */
   pause() {
     this[PAUSED_ADAPTERS] = [...this.adapters.keys()];
     this.disconnect();

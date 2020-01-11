@@ -270,6 +270,14 @@ describe('Unit | Polly', function() {
       expect(this.polly.mode).to.equal(MODES.REPLAY);
     });
 
+    it('.passthrough()', async function() {
+      this.polly.mode = MODES.RECORD;
+
+      expect(this.polly.mode).to.equal(MODES.RECORD);
+      this.polly.passthrough();
+      expect(this.polly.mode).to.equal(MODES.PASSTHROUGH);
+    });
+
     it('.pause()', async function() {
       this.polly.configure({ adapters: [MockAdapterA, MockAdapterB] });
 
