@@ -1,6 +1,10 @@
+import fs from 'fs';
 import http from 'http';
 import https from 'https';
+import path from 'path';
 
+import FormData from 'form-data';
+import getStream from 'get-stream';
 import adapterIdentifierTests from '@pollyjs-tests/integration/adapter-identifier-tests';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
@@ -69,7 +73,7 @@ describe('Integration | Node Http Adapter', function() {
 function commonTests(transport) {
   const { protocol } = transport.globalAgent;
 
-  it('should handle posting a buffer', async function() {
+  it('should be able to upload a binary data', async function() {
     const { server } = this.polly;
     const url = `${protocol}//example.com`;
     const body = Buffer.from('Node HTTP Adapter', 'base64');
@@ -85,7 +89,38 @@ function commonTests(transport) {
 
     expect(requests).to.have.lengthOf(2);
     expect(requests[0].id).to.equal(requests[1].id);
+    expect(requests[0].body.toString('base64')).to.equal(
+      body.toString('base64')
+    );
     expect(requests[0].identifiers.body).to.equal(body.toString('hex'));
+  });
+
+  it('should be able to upload form data', async function() {
+    const url = `${protocol}//example.com/upload`;
+    const { server } = this.polly;
+    const formData = new FormData();
+    let request;
+
+    server.post(url).intercept((req, res) => {
+      request = req;
+      res.send(201);
+    });
+
+    formData.append(
+      'upload',
+      fs.createReadStream(path.resolve(__dirname, '../../package.json'))
+    );
+    const body = await getStream(formData);
+
+    await nativeRequest(transport, url, {
+      body,
+      headers: formData.getHeaders(),
+      method: 'POST'
+    });
+
+    expect(request).to.exist;
+    expect(typeof request.body).to.equal('string');
+    expect(request.body).to.include('@pollyjs/adapter-node-http');
   });
 
   it('should be able to download binary content', async function() {

@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/netflix/pollyjs/compare/v3.0.1...v3.0.2) (2020-01-08)
+
+
+### Bug Fixes
+
+* **adapter-node-http:** Bump nock version to correctly handle re… ([#289](https://github.com/netflix/pollyjs/issues/289)) ([8d0ae97](https://github.com/netflix/pollyjs/commit/8d0ae97)), closes [#278](https://github.com/netflix/pollyjs/issues/278)
+
+
+
+
+
+## [3.0.1](https://github.com/netflix/pollyjs/compare/v3.0.0...v3.0.1) (2019-12-25)
+
+
+### Bug Fixes
+
+* **adapter-fetch:** Fix "failed to construct Request" issue ([#287](https://github.com/netflix/pollyjs/issues/287)) ([d17ab9b](https://github.com/netflix/pollyjs/commit/d17ab9b)), closes [#286](https://github.com/netflix/pollyjs/issues/286)
+
+
+
+
+
+# [3.0.0](https://github.com/netflix/pollyjs/compare/v2.7.0...v3.0.0) (2019-12-18)
+
+
+### Bug Fixes
+
+* **ember:** loads polly config for ember by its own module ([#277](https://github.com/netflix/pollyjs/issues/277)) ([0569040](https://github.com/netflix/pollyjs/commit/0569040))
+
+
+### BREAKING CHANGES
+
+* **ember:** moves location of polly configuration
+
+
+
+
+
+# [2.7.0](https://github.com/netflix/pollyjs/compare/v2.6.3...v2.7.0) (2019-11-21)
+
+
+### Bug Fixes
+
+* **adapter-node-http:** Correctly handle uploading binary data ([#257](https://github.com/netflix/pollyjs/issues/257)) ([31f0e0a](https://github.com/netflix/pollyjs/commit/31f0e0a))
+
+
+### Features
+
+* **adapter-node-http:** Upgrade nock to v11.x ([#273](https://github.com/netflix/pollyjs/issues/273)) ([5d42cbd](https://github.com/netflix/pollyjs/commit/5d42cbd))
+
+
+
+
+
 ## [2.6.3](https://github.com/netflix/pollyjs/compare/v2.6.2...v2.6.3) (2019-09-30)
 
 

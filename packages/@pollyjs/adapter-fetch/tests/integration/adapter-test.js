@@ -2,6 +2,7 @@ import { Polly, setupMocha as setupPolly } from '@pollyjs/core';
 import { URL } from '@pollyjs/utils';
 import setupFetchRecord from '@pollyjs-tests/helpers/setup-fetch-record';
 import adapterTests from '@pollyjs-tests/integration/adapter-tests';
+import adapterPollyTests from '@pollyjs-tests/integration/adapter-polly-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
 import adapterIdentifierTests from '@pollyjs-tests/integration/adapter-identifier-tests';
 
@@ -19,6 +20,7 @@ describe('Integration | Fetch Adapter', function() {
   setupPolly.afterEach();
 
   adapterTests();
+  adapterPollyTests();
   adapterBrowserTests();
   adapterIdentifierTests();
 

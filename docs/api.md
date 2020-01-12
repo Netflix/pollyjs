@@ -179,32 +179,55 @@ played back from a saved recording.
 polly.replay();
 ```
 
-### pause
+### passthrough
 
-Puts polly in a paused mode. All requests going forward will pass through
-and will not be recorded or replayed. The previous mode will be saved and can
-be restored by calling [play](api#play)
+Puts polly in pass-through mode. All requests going forward will pass-through
+directly to the server without being recorded or replayed.
 
 **Example**
 
 ```js
-// polly.mode === 'replay'
+polly.passthrough();
+```
+
+### pause
+
+Disconnects the polly instance from all connected adapters. This ensures that
+no requests will be handled by the polly instance until calling [play](api#play)
+or manually connecting to a new adapter via [connectTo](api#connectTo). The
+previously connected adapters will be saved and can be restored by
+calling [play](api#play).
+
+?> If using the [Puppeteer Adapter](adapters/puppeteer), you'll need to also
+disable request interception via `await page.setRequestInterception(false)`.
+
+**Example**
+
+```js
+await fetch('/api/not-a-secret');
 polly.pause();
-// polly.mode === 'passthrough'
+// This and all subsequent requests will no longer be handled by polly
+await fetch('/api/secret');
 ```
 
 ### play
 
-Restores the mode to the one before [pause](api#pause) was called.
+Reconnects to the adapters that were disconnected when [pause](api#pause)
+was called.
+
+?> If using the [Puppeteer Adapter](adapters/puppeteer), you'll need to also
+enable request interception via `await page.setRequestInterception(true)`.
 
 **Example**
 
 ```js
-// polly.mode === 'replay'
+await fetch('/api/not-a-secret');
 polly.pause();
-// polly.mode === 'passthrough'
+// This and all subsequent requests will no longer be handled by polly
+await fetch('/api/secret');
 polly.play();
-// polly.mode === 'replay'
+// This and all subsequent requests will again be handled by polly
+await fetch('/api/not-a-secret');
 ```
 
 ### stop

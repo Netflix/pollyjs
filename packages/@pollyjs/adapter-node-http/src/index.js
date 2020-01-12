@@ -1,18 +1,21 @@
 import http from 'http';
 import https from 'https';
-import URL from 'url';
-import { Readable } from 'stream';
+import { URL } from 'url';
+import { Readable as ReadableStream } from 'stream';
 
 import nock from 'nock';
-import semver from 'semver';
+import {
+  normalizeClientRequestArgs,
+  isUtf8Representable,
+  isContentEncoded,
+  isJSONContent
+} from 'nock/lib/common';
 import Adapter from '@pollyjs/adapter';
 import { HTTP_METHODS } from '@pollyjs/utils';
 
-import parseRequestArguments from './utils/parse-request-arguments';
 import getUrlFromOptions from './utils/get-url-from-options';
-import isBinaryBuffer from './utils/is-binary-buffer';
-import isContentEncoded from './utils/is-content-encoded';
 import mergeChunks from './utils/merge-chunks';
+import urlToOptions from './utils/url-to-options';
 
 const IS_STUBBED = Symbol();
 const REQUEST_ARGUMENTS = new WeakMap();
@@ -63,16 +66,24 @@ export default class HttpAdapter extends Adapter {
       interceptor.intercept(/.*/, m).reply(function(_, body, respond) {
         const { req, method } = this;
         const { headers } = req;
-        const parsedArguments = parseRequestArguments(
+        const parsedArguments = normalizeClientRequestArgs(
           ...REQUEST_ARGUMENTS.get(req)
         );
         const url = getUrlFromOptions(parsedArguments.options);
 
-        // body will always be a string unless the content-type is application/json
-        // in which nock will then parse into an object. We have our own way of
-        // dealing with json content to convert it back to a string.
-        if (body && typeof body !== 'string') {
-          body = JSON.stringify(body);
+        if (body) {
+          if (
+            typeof body === 'string' &&
+            !isUtf8Representable(Buffer.from(body, 'hex'))
+          ) {
+            // Nock internally converts a binary buffer into its hexadecimal
+            // representation so convert it back to a buffer.
+            body = Buffer.from(body, 'hex');
+          } else if (isJSONContent(headers)) {
+            // Nock will parse json content into an object. We have our own way
+            // of dealing with json content so convert it back to a string.
+            body = JSON.stringify(body);
+          }
         }
 
         adapter.handleRequest({
@@ -109,16 +120,13 @@ export default class HttpAdapter extends Adapter {
     http.ClientRequest[IS_STUBBED] = true;
 
     // Patch http.request, http.get, https.request, and https.get
-    // to support new Node.js 10.9 signature `http.request(url[, options][, callback])`
-    // (https://github.com/nock/nock/issues/1227).
-    //
-    // This patch is also needed to set some default values which nock doesn't
-    // properly set.
+    // to set some default values which nock doesn't properly set.
     Object.keys(modules).forEach(moduleName => {
       const module = modules[moduleName];
       const { request, get, globalAgent } = module;
-      const parseArgs = function() {
-        const args = parseRequestArguments(...arguments);
+
+      function parseArgs() {
+        const args = normalizeClientRequestArgs(...arguments);
 
         if (moduleName === 'https') {
           args.options = {
@@ -133,7 +141,7 @@ export default class HttpAdapter extends Adapter {
         }
 
         return args;
-      };
+      }
 
       module.request = function _request() {
         const { options, callback } = parseArgs(...arguments);
@@ -141,13 +149,11 @@ export default class HttpAdapter extends Adapter {
         return request(options, callback);
       };
 
-      if (semver.satisfies(process.version, '>=8')) {
-        module.get = function _get() {
-          const { options, callback } = parseArgs(...arguments);
+      module.get = function _get() {
+        const { options, callback } = parseArgs(...arguments);
 
-          return get(options, callback);
-        };
-      }
+        return get(options, callback);
+      };
     });
   }
 
@@ -160,7 +166,7 @@ export default class HttpAdapter extends Adapter {
       ...options,
       method,
       headers: { ...headers },
-      ...URL.parse(pollyRequest.url)
+      ...urlToOptions(new URL(pollyRequest.url))
     });
 
     const chunks = this.getChunksFromBody(body, headers);
@@ -199,18 +205,14 @@ export default class HttpAdapter extends Adapter {
     if (error) {
       // If an error was received then forward it over to nock so it can
       // correctly handle it.
-      // https://github.com/nock/nock/blob/v10.0.6/lib/request_overrider.js#L394-L397
       respond(error);
-
-      // This allows the consumer to handle the error gracefully
-      req.emit('error', error);
 
       return;
     }
 
     const { statusCode, body, headers } = pollyRequest.response;
     const chunks = this.getChunksFromBody(body, headers);
-    const stream = new Readable();
+    const stream = new ReadableStream();
 
     // Expose the response data as a stream of chunks since
     // it could contain encoded data which is needed
@@ -262,7 +264,7 @@ export default class HttpAdapter extends Adapter {
     // The merged buffer can be one of two things:
     //  1. A binary buffer which then has to be recorded as a hex string.
     //  2. A string buffer.
-    return buffer.toString(isBinaryBuffer(buffer) ? 'hex' : 'utf8');
+    return buffer.toString(isUtf8Representable(buffer) ? 'utf8' : 'hex');
   }
 
   getChunksFromBody(body, headers) {
@@ -287,6 +289,6 @@ export default class HttpAdapter extends Adapter {
     // The body can be one of two things:
     //  1. A hex string which then means its binary data.
     //  2. A utf8 string which means a regular string.
-    return [Buffer.from(buffer, isBinaryBuffer(buffer) ? 'hex' : 'utf8')];
+    return [Buffer.from(buffer, isUtf8Representable(buffer) ? 'utf8' : 'hex')];
   }
 }

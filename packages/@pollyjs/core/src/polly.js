@@ -14,7 +14,7 @@ import { validateRecordingName } from './utils/validators';
 
 const RECORDING_NAME = Symbol();
 const RECORDING_ID = Symbol();
-const PAUSED_MODE = Symbol();
+const PAUSED_ADAPTERS = Symbol();
 
 const FACTORY_REGISTRATION = new WeakMap();
 const EVENT_EMITTER = new EventEmitter({
@@ -202,8 +202,7 @@ export default class Polly {
    * @public
    * @memberof Polly
    */
-  pause() {
-    this[PAUSED_MODE] = this.mode;
+  passthrough() {
     this.mode = MODES.PASSTHROUGH;
   }
 
@@ -211,10 +210,19 @@ export default class Polly {
    * @public
    * @memberof Polly
    */
+  pause() {
+    this[PAUSED_ADAPTERS] = [...this.adapters.keys()];
+    this.disconnect();
+  }
+
+  /**
+   * @public
+   * @memberof Polly
+   */
   play() {
-    if (this[PAUSED_MODE]) {
-      this.mode = this[PAUSED_MODE];
-      delete this[PAUSED_MODE];
+    if (this[PAUSED_ADAPTERS]) {
+      this[PAUSED_ADAPTERS].forEach(adapterName => this.connectTo(adapterName));
+      delete this[PAUSED_ADAPTERS];
     }
   }
 

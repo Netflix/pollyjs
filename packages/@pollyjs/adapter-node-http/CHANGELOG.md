@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v3.0.1...v3.0.2) (2020-01-08)
+
+
+### Bug Fixes
+
+* **adapter-node-http:** Bump nock version to correctly handle re… ([#289](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/289)) ([8d0ae97](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/commit/8d0ae97)), closes [#278](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/278)
+
+
+
+
+
+# [3.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v2.7.0...v3.0.0) (2019-12-18)
+
+**Note:** Version bump only for package @pollyjs/adapter-node-http
+
+
+
+
+
+# [2.7.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v2.6.3...v2.7.0) (2019-11-21)
+
+
+### Bug Fixes
+
+* **adapter-node-http:** Correctly handle uploading binary data ([#257](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/257)) ([31f0e0a](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/commit/31f0e0a))
+
+
+### Features
+
+* **adapter-node-http:** Upgrade nock to v11.x ([#273](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/273)) ([5d42cbd](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/commit/5d42cbd))
+
+
+
+
+
 ## [2.6.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v2.6.2...v2.6.3) (2019-09-30)
 
 
