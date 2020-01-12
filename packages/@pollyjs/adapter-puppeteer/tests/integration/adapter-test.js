@@ -34,7 +34,7 @@ describe('Integration | Puppeteer Adapter', function() {
     }
   });
 
-  setupFetchRecord({ host: HOST });
+  setupFetchRecord.beforeEach({ host: HOST });
 
   beforeEach(function() {
     // Override this.fetch here since it needs access to the current context
@@ -54,6 +54,14 @@ describe('Integration | Puppeteer Adapter', function() {
       }
     });
   });
+
+  afterEach(async function() {
+    // Turn off request interception before setupFetchRecord's afterEach so it
+    // can correctly do it's thing
+    await this.page.setRequestInterception(false);
+  });
+
+  setupFetchRecord.afterEach();
 
   afterEach(async function() {
     await this.page.close();

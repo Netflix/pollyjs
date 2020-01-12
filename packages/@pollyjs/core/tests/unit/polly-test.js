@@ -239,6 +239,21 @@ describe('Unit | Polly', function() {
   describe('API', function() {
     setupPolly();
 
+    class MockAdapterA extends Adapter {
+      static get name() {
+        return 'adapter-a';
+      }
+
+      onConnect() {}
+      onDisconnect() {}
+    }
+
+    class MockAdapterB extends MockAdapterA {
+      static get name() {
+        return 'adapter-b';
+      }
+    }
+
     it('.record()', async function() {
       this.polly.mode = MODES.REPLAY;
 
@@ -255,24 +270,44 @@ describe('Unit | Polly', function() {
       expect(this.polly.mode).to.equal(MODES.REPLAY);
     });
 
-    it('.pause()', async function() {
+    it('.passthrough()', async function() {
       this.polly.mode = MODES.RECORD;
 
       expect(this.polly.mode).to.equal(MODES.RECORD);
-      this.polly.pause();
+      this.polly.passthrough();
       expect(this.polly.mode).to.equal(MODES.PASSTHROUGH);
     });
 
-    it('.play()', async function() {
-      this.polly.mode = MODES.RECORD;
+    it('.pause()', async function() {
+      this.polly.configure({ adapters: [MockAdapterA, MockAdapterB] });
 
-      expect(this.polly.mode).to.equal(MODES.RECORD);
-      this.polly.play();
-      expect(this.polly.mode).to.equal(MODES.RECORD);
+      expect([...this.polly.adapters.keys()]).to.deep.equal([
+        'adapter-a',
+        'adapter-b'
+      ]);
       this.polly.pause();
-      expect(this.polly.mode).to.equal(MODES.PASSTHROUGH);
+      expect([...this.polly.adapters.keys()]).to.deep.equal([]);
+    });
+
+    it('.play()', async function() {
+      this.polly.configure({ adapters: [MockAdapterA, MockAdapterB] });
+
+      expect([...this.polly.adapters.keys()]).to.deep.equal([
+        'adapter-a',
+        'adapter-b'
+      ]);
       this.polly.play();
-      expect(this.polly.mode).to.equal(MODES.RECORD);
+      expect([...this.polly.adapters.keys()]).to.deep.equal([
+        'adapter-a',
+        'adapter-b'
+      ]);
+      this.polly.pause();
+      expect([...this.polly.adapters.keys()]).to.deep.equal([]);
+      this.polly.play();
+      expect([...this.polly.adapters.keys()]).to.deep.equal([
+        'adapter-a',
+        'adapter-b'
+      ]);
     });
 
     it('.stop()', async function() {
