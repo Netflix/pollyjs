@@ -153,9 +153,18 @@ export default class Adapter {
 
   async replay(pollyRequest) {
     const { config } = pollyRequest;
-    const recordingEntry = await this.persister.findEntry(pollyRequest);
+    let recordingEntry = await this.persister.findEntry(pollyRequest);
 
     if (recordingEntry) {
+      /*
+        Clone the recording entry so any changes will not actually persist to
+        the stored recording.
+
+        Note: Using JSON.parse/stringify instead of lodash/cloneDeep since
+              the recording entry is stored as json.
+      */
+      recordingEntry = JSON.parse(JSON.stringify(recordingEntry));
+
       await pollyRequest._emit('beforeReplay', recordingEntry);
 
       if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
