@@ -12,21 +12,25 @@ function isFunction(fn) {
   return typeof fn === 'function';
 }
 
-export function method(method, req, config) {
+export function method(method, config, req) {
   return isFunction(config) ? config(method, req) : method.toUpperCase();
 }
 
-export function url(url, req, config = {}) {
-  const parsedUrl = parseUrl(url, true);
+export function url(url, config, req) {
+  let parsedUrl = parseUrl(url, true);
 
-  // Remove any url properties that have been disabled via the config
-  keys(config).forEach(key => {
-    if (isFunction(config[key])) {
-      parsedUrl.set(key, config[key](parsedUrl[key], req));
-    } else if (!config[key]) {
-      parsedUrl.set(key, '');
-    }
-  });
+  if (isFunction(config)) {
+    parsedUrl = parseUrl(config(url, req), true);
+  } else {
+    // Remove any url properties that have been disabled via the config
+    keys(config || {}).forEach(key => {
+      if (isFunction(config[key])) {
+        parsedUrl.set(key, config[key](parsedUrl[key], req));
+      } else if (!config[key]) {
+        parsedUrl.set(key, '');
+      }
+    });
+  }
 
   // Sort Query Params
   if (isObjectLike(parsedUrl.query)) {
@@ -36,7 +40,7 @@ export function url(url, req, config = {}) {
   return parsedUrl.href;
 }
 
-export function headers(headers, req, config) {
+export function headers(headers, config, req) {
   const normalizedHeaders = new HTTPHeaders(headers);
 
   if (isFunction(config)) {
@@ -50,7 +54,7 @@ export function headers(headers, req, config) {
   return normalizedHeaders;
 }
 
-export function body(body, req, config) {
+export function body(body, config, req) {
   return isFunction(config) ? config(body, req) : body;
 }
 

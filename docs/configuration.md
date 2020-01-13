@@ -328,7 +328,7 @@ a GUID for the request.
 
   polly.configure({
     matchRequestsBy: {
-      method(method) {
+      method(method, req) {
         return method.toLowerCase();
       }
     }
@@ -353,7 +353,7 @@ a GUID for the request.
 
   polly.configure({
     matchRequestsBy: {
-      headers(headers) {
+      headers(headers, req) {
         delete headers['X-AUTH-TOKEN'];
         return headers;
       }
@@ -395,7 +395,7 @@ a GUID for the request.
 
   polly.configure({
     matchRequestsBy: {
-      body(body) {
+      body(body, req) {
         const json = JSON.parse(body);
 
         delete json.email;
@@ -442,6 +442,42 @@ a GUID for the request.
   });
   ```
 
+- ### url
+
+  _Type_: `Boolean | Function | Object`
+  _Default_: `{ protocol: true, username: true, ... }`
+
+  The request url.
+
+  **Example**
+
+  ```js
+  polly.configure({
+    matchRequestsBy: {
+      url: false
+    }
+  });
+
+  polly.configure({
+    matchRequestsBy: {
+      url(url, req) {
+        return url.replace('test', '');
+      }
+    }
+  });
+
+  polly.configure({
+    matchRequestsBy: {
+      url: {
+        protocol(protocol) {
+          return 'https:';
+        },
+        query: false
+      }
+    }
+  });
+  ```
+
 - ### url.protocol
 
   _Type_: `Boolean | Function`
@@ -463,7 +499,7 @@ a GUID for the request.
   polly.configure({
     matchRequestsBy: {
       url: {
-        protocol(protocol) {
+        protocol(protocol, req) {
           return 'https:';
         }
       }
@@ -491,7 +527,7 @@ a GUID for the request.
   polly.configure({
     matchRequestsBy: {
       url: {
-        username(username) {
+        username(username, req) {
           return 'username';
         }
       }
@@ -517,7 +553,7 @@ a GUID for the request.
     }
     matchRequestsBy: {
       url: {
-        password(password) {
+        password(password, req) {
           return 'password';
         }
       }
@@ -546,7 +582,7 @@ a GUID for the request.
   polly.configure({
     matchRequestsBy: {
       url: {
-        hostname(hostname) {
+        hostname(hostname, req) {
           return hostname.replace('.com', '.net');
         }
       }
@@ -575,7 +611,7 @@ a GUID for the request.
   polly.configure({
     matchRequestsBy: {
       url: {
-        port(port) {
+        port(port, req) {
           return 3000;
         }
       }
@@ -596,7 +632,7 @@ a GUID for the request.
   polly.configure({
     matchRequestsBy: {
       url: {
-        pathname(pathname) {
+        pathname(pathname, req) {
           return pathname.replace('/api/v1', '/api');
         }
       }
@@ -625,7 +661,7 @@ a GUID for the request.
   polly.configure({
     matchRequestsBy: {
       url: {
-        query(query) {
+        query(query, req) {
           return { ...query, token: '' };
         }
       }
@@ -654,7 +690,7 @@ a GUID for the request.
   polly.configure({
     matchRequestsBy: {
       url: {
-        hash(hash) {
+        hash(hash, req) {
           return hash.replace(/token=[0-9]+/, '');
         }
       }

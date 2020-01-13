@@ -90,6 +90,27 @@ function adapterIdentifierTests() {
     });
 
     describe('url', function() {
+      testConfiguration('url', false, {
+        expected: {
+          id: '3914e0be4d2f04139554f5ffada7191c',
+          identifiers: {
+            headers: { 'content-type': 'application/json;charset=utf-8' },
+            method: 'POST',
+            body: '{}'
+          }
+        },
+        overrides: {
+          'node-http': {
+            id: 'ecc7560697b752deb2529686affcaa71',
+            identifiers: {
+              headers: {
+                host: 'localhost:4000'
+              }
+            }
+          }
+        }
+      });
+
       testConfiguration('url.protocol', false, {
         expected: {
           id: '79224baf23dc29f8115516cb8fe0546f',
