@@ -54,23 +54,6 @@ polly.configure({
 });
 ```
 
-## recordIfExpired
-
-_deprecated! use [expiryStrategy](#expiryStrategy)_
-_Type_: `Boolean`
-_Default_: `false`
-
-If a request's recording has expired, pass-through to the server and
-record a new response.
-
-**Example**
-
-```js
-polly.configure({
-  recordIfExpired: true
-});
-```
-
 ## recordFailedRequests
 
 _Type_: `Boolean`
