@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/cli",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "@pollyjs CLI",
   "files": [
     "bin"
@@ -28,7 +28,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@pollyjs/node-server": "^3.0.0",
+    "@pollyjs/node-server": "^4.0.0",
     "commander": "^2.20.0"
   },
   "devDependencies": {

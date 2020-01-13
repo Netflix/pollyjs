@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v3.0.2...v4.0.0) (2020-01-13)
+
+
+### chore
+
+* Drop node 8 support ([#292](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/issues/292)) ([4448be5](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/4448be5))
+
+
+### BREAKING CHANGES
+
+* Drop support for Node 8 as it is now EOL
+
+
+
+
+
 ## [3.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v3.0.0...v3.0.1) (2019-12-25)
 
 **Note:** Version bump only for package @pollyjs/ember

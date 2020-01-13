@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v3.0.2...v4.0.0) (2020-01-13)
+
+
+### Bug Fixes
+
+* **adapter:** Clone the recording entry before mutating it ([#294](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/issues/294)) ([d7e1303](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/d7e1303))
+
+
+
+
+
 # [3.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v2.7.0...v3.0.0) (2019-12-18)
 
 **Note:** Version bump only for package @pollyjs/adapter

@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/netflix/pollyjs/compare/v3.0.2...v4.0.0) (2020-01-13)
+
+
+### Bug Fixes
+
+* **adapter:** Clone the recording entry before mutating it ([#294](https://github.com/netflix/pollyjs/issues/294)) ([d7e1303](https://github.com/netflix/pollyjs/commit/d7e1303))
+* **core:** Disconnect from all adapters when `pause` is called ([#291](https://github.com/netflix/pollyjs/issues/291)) ([5c655bf](https://github.com/netflix/pollyjs/commit/5c655bf))
+
+
+### chore
+
+* Drop node 8 support ([#292](https://github.com/netflix/pollyjs/issues/292)) ([4448be5](https://github.com/netflix/pollyjs/commit/4448be5))
+
+
+### Features
+
+* **core:** Provide the request as an argument to matchRequestsBy methods ([#293](https://github.com/netflix/pollyjs/issues/293)) ([4e3163f](https://github.com/netflix/pollyjs/commit/4e3163f))
+* **core:** Remove deprecated `recordIfExpired` option ([#295](https://github.com/netflix/pollyjs/issues/295)) ([5fe991d](https://github.com/netflix/pollyjs/commit/5fe991d))
+
+
+### BREAKING CHANGES
+
+* **core:** `recordIfExpired` is no longer supported, please use `expiryStrategy` instead.
+* Drop support for Node 8 as it is now EOL
+* **core:** Calling `polly.pause()` will now disconnect from all connected adapters instead of setting the mode to passthrough. Calling `polly.play()` will reconnect to the disconnected adapters before pause was called.
+
+
+
+
+
 ## [3.0.2](https://github.com/netflix/pollyjs/compare/v3.0.1...v3.0.2) (2020-01-08)
 
 
