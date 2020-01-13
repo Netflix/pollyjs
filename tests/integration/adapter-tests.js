@@ -254,16 +254,6 @@ export default function adapterTests() {
       await this.polly.persister.delete(this.polly.recordingId);
     });
 
-    it('re-records on expired recording if recordIfExpired is true', async function() {
-      this.polly.configure({ recordIfExpired: true });
-      expect(await testExpiration.call(this)).to.equal(true);
-    });
-
-    it('replays the expired recording if recordIfExpired is false', async function() {
-      this.polly.configure({ recordIfExpired: false });
-      expect(await testExpiration.call(this)).to.equal(false);
-    });
-
     it('warns and plays back on expired recording if expiryStrategy is "warn"', async function() {
       this.polly.configure({ expiryStrategy: 'warn' });
       expect(await testExpiration.call(this)).to.equal(false);
