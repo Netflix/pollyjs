@@ -1,3 +1,4 @@
+import { Polly } from '@pollyjs/core';
 import { ACTIONS } from '@pollyjs/utils';
 
 export default function adapterTests() {
@@ -124,6 +125,47 @@ export default function adapterTests() {
       'beforeResponse',
       'response'
     ]);
+  });
+
+  it('should call beforeReplay with a cloned recording entry', async function() {
+    const { recordingId, recordingName, config } = this.polly;
+    let replayedEntry;
+
+    this.polly.record();
+    await this.fetchRecord();
+    await this.polly.stop();
+
+    this.polly = new Polly(recordingName, config);
+    this.polly.replay();
+
+    const har = await this.polly.persister.find(recordingId);
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(1);
+
+    this.polly.server
+      .get(this.recordUrl())
+      .on('beforeReplay', (_req, entry) => (replayedEntry = entry));
+
+    const entry = har.log.entries[0];
+
+    await this.fetchRecord();
+
+    expect(replayedEntry).to.be.an('object');
+
+    expect(entry).to.deep.equal(replayedEntry);
+    expect(entry).to.not.equal(replayedEntry);
+
+    expect(entry.request).to.deep.equal(replayedEntry.request);
+    expect(entry.request).to.not.equal(replayedEntry.request);
+
+    expect(entry.response).to.deep.equal(replayedEntry.response);
+    expect(entry.response).to.not.equal(replayedEntry.response);
+
+    expect(entry.response.content).to.deep.equal(
+      replayedEntry.response.content
+    );
+    expect(entry.response.content).to.not.equal(replayedEntry.response.content);
   });
 
   it('should emit an error event', async function() {

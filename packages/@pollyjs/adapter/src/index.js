@@ -156,9 +156,18 @@ export default class Adapter {
     const recordingEntry = await this.persister.findEntry(pollyRequest);
 
     if (recordingEntry) {
-      await pollyRequest._emit('beforeReplay', recordingEntry);
+      /*
+        Clone the recording entry so any changes will not actually persist to
+        the stored recording.
 
-      if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
+        Note: Using JSON.parse/stringify instead of lodash/cloneDeep since
+              the recording entry is stored as json.
+      */
+      const clonedRecordingEntry = JSON.parse(JSON.stringify(recordingEntry));
+
+      await pollyRequest._emit('beforeReplay', clonedRecordingEntry);
+
+      if (isExpired(clonedRecordingEntry.startedDateTime, config.expiresIn)) {
         const message =
           'Recording for the following request has expired.\n' +
           `${stringifyRequest(pollyRequest, null, 2)}`;
@@ -184,13 +193,13 @@ export default class Adapter {
         }
       }
 
-      await this.timeout(pollyRequest, recordingEntry);
+      await this.timeout(pollyRequest, clonedRecordingEntry);
       pollyRequest.action = ACTIONS.REPLAY;
 
       return this.onReplay(
         pollyRequest,
-        normalizeRecordedResponse(recordingEntry.response),
-        recordingEntry
+        normalizeRecordedResponse(clonedRecordingEntry.response),
+        clonedRecordingEntry
       );
     }
 
