@@ -26,6 +26,21 @@ describe('Unit | Utils | Normalize Request', function() {
     it('should support a custom fn', function() {
       expect(method('GET', m => m.toLowerCase())).to.equal('get');
     });
+
+    it('should pass the correct arguments to the custom fn', function() {
+      const req = {};
+
+      method(
+        'GET',
+        (method, request) => {
+          expect(method).to.equal('GET');
+          expect(request).to.equal(req);
+
+          return method;
+        },
+        req
+      );
+    });
   });
 
   describe('headers', function() {
@@ -71,6 +86,22 @@ describe('Unit | Utils | Normalize Request', function() {
       ).to.deep.equal({ accept: 'foo', 'content-type': 'Bar' });
     });
 
+    it('should pass the correct arguments to the custom fn', function() {
+      const req = {};
+      const reqHeaders = { foo: 'foo' };
+
+      headers(
+        reqHeaders,
+        (headers, request) => {
+          expect(headers).to.deep.equal(reqHeaders);
+          expect(request).to.equal(req);
+
+          return headers;
+        },
+        req
+      );
+    });
+
     it('should not mutate the original headers in the custom fn', function() {
       const reqHeaders = { foo: 'bar' };
 
@@ -88,7 +119,7 @@ describe('Unit | Utils | Normalize Request', function() {
 
   describe('url', function() {
     it('should sort query params', function() {
-      expect(url('http://foo.com?b=1&c=1&a=1')).to.equal(
+      expect(url('http://foo.com?b=1&c=1&a=1', {})).to.equal(
         'http://foo.com?a=1&b=1&c=1'
       );
     });
@@ -162,11 +193,64 @@ describe('Unit | Utils | Normalize Request', function() {
     it('should respect relative urls', function() {
       expect(url('/some/path')).to.equal('/some/path');
     });
+
+    it('should support a custom fn', function() {
+      expect(url('https://foo.bar', url => url.replace('bar', 'foo'))).to.equal(
+        'https://foo.foo'
+      );
+    });
+
+    it('should pass the correct arguments to the custom fn', function() {
+      const req = {};
+
+      url(
+        'https://foo.bar',
+        (url, request) => {
+          expect(url).to.deep.equal('https://foo.bar');
+          expect(request).to.equal(req);
+
+          return url;
+        },
+        req
+      );
+    });
+
+    it("should pass the correct arguments to the individual `matchRequestsBy.url` option's custom fn", function() {
+      const req = {};
+
+      url(
+        'https://foo.bar',
+        {
+          protocol: (protocol, request) => {
+            expect(protocol).to.deep.equal('https:');
+            expect(request).to.equal(req);
+
+            return protocol;
+          }
+        },
+        req
+      );
+    });
   });
 
   describe('body', function() {
     it('should support a custom fn', function() {
       expect(body('foo', b => b.toUpperCase())).to.equal('FOO');
+    });
+
+    it('should pass the correct arguments to the custom fn', function() {
+      const req = {};
+
+      url(
+        'body',
+        (body, request) => {
+          expect(body).to.deep.equal('body');
+          expect(request).to.equal(req);
+
+          return body;
+        },
+        req
+      );
     });
   });
 });

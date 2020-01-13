@@ -239,7 +239,8 @@ export default class PollyRequest extends HTTPBase {
       if (this[key] && matchRequestsBy[key]) {
         this.identifiers[key] = NormalizeRequest[key](
           this[key],
-          matchRequestsBy[key]
+          matchRequestsBy[key],
+          this
         );
       }
     });
