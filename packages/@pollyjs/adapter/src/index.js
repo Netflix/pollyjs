@@ -153,7 +153,7 @@ export default class Adapter {
 
   async replay(pollyRequest) {
     const { config } = pollyRequest;
-    let recordingEntry = await this.persister.findEntry(pollyRequest);
+    const recordingEntry = await this.persister.findEntry(pollyRequest);
 
     if (recordingEntry) {
       /*
@@ -163,11 +163,11 @@ export default class Adapter {
         Note: Using JSON.parse/stringify instead of lodash/cloneDeep since
               the recording entry is stored as json.
       */
-      recordingEntry = JSON.parse(JSON.stringify(recordingEntry));
+      const clonedRecordingEntry = JSON.parse(JSON.stringify(recordingEntry));
 
-      await pollyRequest._emit('beforeReplay', recordingEntry);
+      await pollyRequest._emit('beforeReplay', clonedRecordingEntry);
 
-      if (isExpired(recordingEntry.startedDateTime, config.expiresIn)) {
+      if (isExpired(clonedRecordingEntry.startedDateTime, config.expiresIn)) {
         const message =
           'Recording for the following request has expired.\n' +
           `${stringifyRequest(pollyRequest, null, 2)}`;
@@ -193,13 +193,13 @@ export default class Adapter {
         }
       }
 
-      await this.timeout(pollyRequest, recordingEntry);
+      await this.timeout(pollyRequest, clonedRecordingEntry);
       pollyRequest.action = ACTIONS.REPLAY;
 
       return this.onReplay(
         pollyRequest,
-        normalizeRecordedResponse(recordingEntry.response),
-        recordingEntry
+        normalizeRecordedResponse(clonedRecordingEntry.response),
+        clonedRecordingEntry
       );
     }
 
