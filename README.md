@@ -210,7 +210,7 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 
 ## We're hiring!
 
-Join the Netflix Studio UI team to help us build projects like this! You can check out our open roles here on our [team page](https://jobs.netflix.com/teams/client-applications).
+Join the Netflix Studio UI team to help us build projects like this! You can check out our open roles here on our [team page](https://jobs.netflix.com/teams/client-and-ui-engineering).
 
 ## License
 
