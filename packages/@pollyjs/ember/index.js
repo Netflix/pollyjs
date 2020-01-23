@@ -75,7 +75,7 @@ module.exports = {
       server: {}
     };
 
-    let configPath = path.join(this.root, 'config', 'polly.js');
+    let configPath = path.join(this.project.root, 'config', 'polly.js');
 
     if (fs.existsSync(configPath)) {
       let configGenerator = require(configPath);
@@ -84,7 +84,7 @@ module.exports = {
     }
 
     config.server.recordingsDir = path.join(
-      this.root,
+      this.project.root,
       config.server.recordingsDir || Defaults.recordingsDir
     );
 
