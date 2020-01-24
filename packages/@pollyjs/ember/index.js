@@ -7,6 +7,8 @@ const path = require('path');
 const { registerExpressAPI, Defaults } = require('@pollyjs/node-server');
 const parseArgs = require('minimist');
 
+const root = process.cwd();
+
 function determineEnv() {
   if (process.env.EMBER_ENV) {
     return process.env.EMBER_ENV;
@@ -70,21 +72,25 @@ module.exports = {
 
   _pollyConfig(env) {
     // defaults
-    let config = {
+    const config = {
       enabled: env !== 'production',
       server: {}
     };
 
-    let configPath = path.join(this.root, 'config', 'polly.js');
+    // NOTE: this is because we cannot assume `this.project` is always set.
+    // If unavailable, we default to process.cwd (root) to determine the project root.
+    // See: https://github.com/Netflix/pollyjs/issues/276
+    const projectRoot = this.project && this.project.root ? this.project.root : root;
+    const configPath = path.join(projectRoot, 'config', 'polly.js');
 
     if (fs.existsSync(configPath)) {
-      let configGenerator = require(configPath);
+      const configGenerator = require(configPath);
 
       Object.assign(config, configGenerator(env));
     }
 
     config.server.recordingsDir = path.join(
-      this.root,
+      projectRoot,
       config.server.recordingsDir || Defaults.recordingsDir
     );
 
