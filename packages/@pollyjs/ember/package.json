@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/ember",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Use @pollyjs in your Ember-CLI application",
   "keywords": [
     "polly",

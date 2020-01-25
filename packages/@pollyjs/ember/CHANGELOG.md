@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v4.0.0...v4.0.1) (2020-01-25)
+
+
+### Bug Fixes
+
+* **ember:** Config read from project root ([7d6da38](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/7d6da38))
+
+
+
+
+
 # [4.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v3.0.2...v4.0.0) (2020-01-13)
 
 
