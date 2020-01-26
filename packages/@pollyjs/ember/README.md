@@ -24,8 +24,7 @@ documentation for more details.
 
 ## Configuration
 
-Addon and [server API configuration](https://netflix.github.io/pollyjs/#/node-server/overview#api-configuration) can be
-can be be specified in `<app root>/config/polly.js`. The default configuration options are shown below.
+Addon and [server API configuration](https://netflix.github.io/pollyjs/#/node-server/overview#api-configuration) can be specified in `<app root>/config/polly.js`. The default configuration options are shown below.
 
 ```js
 module.exports = function(env) {
