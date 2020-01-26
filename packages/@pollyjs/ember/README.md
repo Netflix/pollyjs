@@ -25,26 +25,20 @@ documentation for more details.
 ## Configuration
 
 Addon and [server API configuration](https://netflix.github.io/pollyjs/#/node-server/overview#api-configuration) can be
-be specified in `ember-cli-build.js`. By default, the addon will only be
-enabled in non-production environments.
+can be be specified in `<app root>/config/polly.js`. The default configuration options are shown below.
 
 ```js
-module.exports = function(defaults) {
-  const app = new EmberApp(defaults, {
-    pollyjs: {
-      // Addon Configuration Options
-      enabled: EmberApp.env() !== 'production',
+module.exports = function(env) {
+  return {
+    // Addon Configuration Options
+    enabled: env !== 'production',
 
-      // Server Configuration Options
-      server: {
-        apiNamespace: '/polly',
-        recordingsDir: 'recordings',
-        recordingSizeLimit: '50mb'
-      }
+    // Server Configuration Options
+    server: {
+      apiNamespace: '/polly',
+      recordingsDir: 'recordings'
     }
-  });
-
-  return app.toTree();
+  };
 };
 ```
 
