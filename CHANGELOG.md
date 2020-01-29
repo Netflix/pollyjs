@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/netflix/pollyjs/compare/v4.0.1...v4.0.2) (2020-01-29)
+
+
+### Bug Fixes
+
+* **core:** Strict null query param handling ([#302](https://github.com/netflix/pollyjs/issues/302)) ([5cf70aa](https://github.com/netflix/pollyjs/commit/5cf70aa))
+
+
+
+
+
 ## [4.0.1](https://github.com/netflix/pollyjs/compare/v4.0.0...v4.0.1) (2020-01-25)
 
 
