@@ -9,12 +9,17 @@ function parseQuery(query, options) {
   return qs.parse(query, {
     plainObjects: true,
     ignoreQueryPrefix: true,
+    strictNullHandling: true,
     ...options
   });
 }
 
 function stringifyQuery(obj, options = {}) {
-  return qs.stringify(obj, { addQueryPrefix: true, ...options });
+  return qs.stringify(obj, {
+    addQueryPrefix: true,
+    strictNullHandling: true,
+    ...options
+  });
 }
 
 /**
