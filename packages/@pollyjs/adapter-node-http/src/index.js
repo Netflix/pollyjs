@@ -7,14 +7,14 @@ import nock from 'nock';
 import {
   normalizeClientRequestArgs,
   isUtf8Representable,
-  isContentEncoded,
-  isJSONContent
+  isContentEncoded
 } from 'nock/lib/common';
 import Adapter from '@pollyjs/adapter';
 import { HTTP_METHODS } from '@pollyjs/utils';
 
 import getUrlFromOptions from './utils/get-url-from-options';
 import mergeChunks from './utils/merge-chunks';
+import { parseBody } from './utils/request-body';
 import urlToOptions from './utils/url-to-options';
 
 const IS_STUBBED = Symbol();
@@ -71,20 +71,7 @@ export default class HttpAdapter extends Adapter {
         );
         const url = getUrlFromOptions(parsedArguments.options);
 
-        if (body) {
-          if (
-            typeof body === 'string' &&
-            !isUtf8Representable(Buffer.from(body, 'hex'))
-          ) {
-            // Nock internally converts a binary buffer into its hexadecimal
-            // representation so convert it back to a buffer.
-            body = Buffer.from(body, 'hex');
-          } else if (isJSONContent(headers)) {
-            // Nock will parse json content into an object. We have our own way
-            // of dealing with json content so convert it back to a string.
-            body = JSON.stringify(body);
-          }
-        }
+        body = parseBody(body, headers);
 
         adapter.handleRequest({
           url,
