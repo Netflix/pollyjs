@@ -9,7 +9,9 @@ export function parseBody(body, headers) {
     // Nock automatically parses json content, but we have our own way
     // of dealing with json content, so convert it back to a string.
     return JSON.stringify(body);
-  } else if (
+  }
+
+  if (
     typeof body === 'string' &&
     !isUtf8Representable(Buffer.from(body, 'hex'))
   ) {
