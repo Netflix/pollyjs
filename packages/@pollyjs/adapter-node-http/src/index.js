@@ -7,8 +7,7 @@ import nock from 'nock';
 import {
   normalizeClientRequestArgs,
   isUtf8Representable,
-  isContentEncoded,
-  isJSONContent
+  isContentEncoded
 } from 'nock/lib/common';
 import Adapter from '@pollyjs/adapter';
 import { HTTP_METHODS } from '@pollyjs/utils';
@@ -63,28 +62,17 @@ export default class HttpAdapter extends Adapter {
 
     HTTP_METHODS.forEach(m => {
       // Add an intercept for each supported HTTP method that will match all paths
-      interceptor.intercept(/.*/, m).reply(function(_, body, respond) {
+      interceptor.intercept(/.*/, m).reply(function(_, _body, respond) {
         const { req, method } = this;
         const { headers } = req;
         const parsedArguments = normalizeClientRequestArgs(
           ...REQUEST_ARGUMENTS.get(req)
         );
         const url = getUrlFromOptions(parsedArguments.options);
-
-        if (body) {
-          if (
-            typeof body === 'string' &&
-            !isUtf8Representable(Buffer.from(body, 'hex'))
-          ) {
-            // Nock internally converts a binary buffer into its hexadecimal
-            // representation so convert it back to a buffer.
-            body = Buffer.from(body, 'hex');
-          } else if (isJSONContent(headers)) {
-            // Nock will parse json content into an object. We have our own way
-            // of dealing with json content so convert it back to a string.
-            body = JSON.stringify(body);
-          }
-        }
+        const requestBodyBuffer = Buffer.concat(req.requestBodyBuffers);
+        const body = isUtf8Representable(requestBodyBuffer)
+          ? requestBodyBuffer.toString('utf8')
+          : requestBodyBuffer;
 
         adapter.handleRequest({
           url,
