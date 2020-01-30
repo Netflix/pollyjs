@@ -9,8 +9,12 @@ Polly.register(PuppeteerAdapter);
 Polly.register(FSPersister);
 
 describe('jest-puppeteer', () => {
+  // NOTE: `context.polly` is not accessible until the jasmine/jest hook `before`
+  // is called. This means it's not accessible in the same tick here. Worth mentioning
+  // since it trolled me while debugging.
   const context = setupPolly({
     adapters: ['puppeteer'],
+    // NOTE: `page` is set by jest.config.js preset "jest-puppeteer"
     adapterOptions: { puppeteer: { page } },
     persister: 'fs',
     persisterOptions: {
@@ -54,7 +58,6 @@ describe('jest-puppeteer', () => {
     await expect(header).toMatch('Users');
 
     // Wait for all requests to resolve, this can also be replaced with
-    // `await context.polly.flush()`
-    await page.waitForResponse(() => true);
+    await context.polly.flush();
   });
 });

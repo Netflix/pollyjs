@@ -8,12 +8,12 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@pollyjs/adapter-puppeteer": "*",
-    "@pollyjs/core": "*",
-    "@pollyjs/persister-fs": "*",
-    "jest": "*",
-    "jest-puppeteer": "*",
-    "puppeteer": "*",
-    "setup-polly-jest": "*"
+    "@pollyjs/adapter-puppeteer": "^4.0.2",
+    "@pollyjs/core": "^4.0.2",
+    "@pollyjs/persister-fs": "^4.0.2",
+    "jest": "^24.0.0",
+    "jest-puppeteer": "^4.0.0",
+    "puppeteer": "1.10.0",
+    "setup-polly-jest": "^0.6.0"
   }
 }
