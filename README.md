@@ -192,6 +192,7 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 <a href="https://github.com/agraves"><img src="https://avatars3.githubusercontent.com/u/46964?v=4" title="agraves" width="80" height="80"></a>
 <a href="https://github.com/swashcap"><img src="https://avatars1.githubusercontent.com/u/1858316?v=4" title="swashcap" width="80" height="80"></a>
 <a href="https://github.com/DanielRuf"><img src="https://avatars1.githubusercontent.com/u/827205?v=4" title="DanielRuf" width="80" height="80"></a>
+<a href="https://github.com/dciccale"><img src="https://avatars0.githubusercontent.com/u/539546?v=4" title="dciccale" width="80" height="80"></a>
 <a href="https://github.com/ericclemmons"><img src="https://avatars0.githubusercontent.com/u/15182?v=4" title="ericclemmons" width="80" height="80"></a>
 <a href="https://github.com/jamesgeorge007"><img src="https://avatars2.githubusercontent.com/u/25279263?v=4" title="jamesgeorge007" width="80" height="80"></a>
 <a href="https://github.com/feinoujc"><img src="https://avatars2.githubusercontent.com/u/1733707?v=4" title="feinoujc" width="80" height="80"></a>
