@@ -1,6 +1,6 @@
 module.exports = {
   launch: {
-    headless: false
+    headless: true
   },
   server: {
     command: '(cd ../dummy-app && yarn start:ci)',
