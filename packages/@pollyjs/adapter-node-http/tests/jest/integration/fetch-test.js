@@ -1,4 +1,4 @@
-import '@pollyjs-tests/helpers/global-fetch';
+import '@pollyjs-tests/helpers/global-node-fetch';
 
 import { Polly } from '@pollyjs/core';
 
