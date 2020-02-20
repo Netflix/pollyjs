@@ -29,9 +29,11 @@ setupFetchRecord.beforeEach = function(options = {}) {
 
 setupFetchRecord.afterEach = function() {
   afterEach(async function() {
-    this.polly.pause();
-    await this.fetchRecord({ method: 'DELETE' });
-    this.polly.play();
+    if (this.polly) {
+      this.polly.pause();
+      await this.fetchRecord({ method: 'DELETE' });
+      this.polly.play();
+    }
   });
 };
 

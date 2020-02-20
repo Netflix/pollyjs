@@ -84,7 +84,7 @@ describe('Unit | Polly', function() {
     let connectCalled, disconnectCalled;
 
     class MockAdapter extends Adapter {
-      static get name() {
+      static get id() {
         return 'mock';
       }
 
@@ -109,6 +109,10 @@ describe('Unit | Polly', function() {
     let instantiated, persistCalled;
 
     class MockPersister extends Persister {
+      static get id() {
+        return 'mock';
+      }
+
       constructor() {
         super(...arguments);
         instantiated = true;
@@ -166,7 +170,7 @@ describe('Unit | Polly', function() {
 
     it('should not deep merge adapter options', async function() {
       class MockAdapterA extends Adapter {
-        static get name() {
+        static get id() {
           return 'mock-a';
         }
 
@@ -175,7 +179,7 @@ describe('Unit | Polly', function() {
       }
 
       class MockAdapterB extends MockAdapterA {
-        static get name() {
+        static get id() {
           return 'mock-b';
         }
       }
@@ -194,7 +198,7 @@ describe('Unit | Polly', function() {
       let connectCalled = false;
 
       class MockAdapter extends Adapter {
-        static get name() {
+        static get id() {
           return 'mock';
         }
 
@@ -214,7 +218,7 @@ describe('Unit | Polly', function() {
       let disconnectCount = 0;
 
       class MockAdapter extends Adapter {
-        static get name() {
+        static get id() {
           return 'mock';
         }
 
@@ -240,7 +244,7 @@ describe('Unit | Polly', function() {
     setupPolly();
 
     class MockAdapterA extends Adapter {
-      static get name() {
+      static get id() {
         return 'adapter-a';
       }
 
@@ -249,7 +253,7 @@ describe('Unit | Polly', function() {
     }
 
     class MockAdapterB extends MockAdapterA {
-      static get name() {
+      static get id() {
         return 'adapter-b';
       }
     }
@@ -326,7 +330,7 @@ describe('Unit | Polly', function() {
       let disconnectCount = 0;
 
       class MockAdapter extends Adapter {
-        static get name() {
+        static get id() {
           return 'mock';
         }
 
@@ -355,7 +359,7 @@ describe('Unit | Polly', function() {
       let disconnectCount = 0;
 
       class MockAdapter extends Adapter {
-        static get name() {
+        static get id() {
           return 'mock';
         }
 
@@ -385,7 +389,7 @@ describe('Unit | Polly', function() {
       const disconnects = [];
 
       class MockAdapterA extends Adapter {
-        static get name() {
+        static get id() {
           return 'mock-a';
         }
 
@@ -397,7 +401,7 @@ describe('Unit | Polly', function() {
       }
 
       class MockAdapterB extends MockAdapterA {
-        static get name() {
+        static get id() {
           return 'mock-b';
         }
       }
@@ -420,7 +424,7 @@ describe('Unit | Polly', function() {
 
     describe('Methods', function() {
       class MockAdapter extends Adapter {
-        static get name() {
+        static get id() {
           return 'mock';
         }
       }

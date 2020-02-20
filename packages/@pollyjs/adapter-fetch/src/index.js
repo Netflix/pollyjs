@@ -8,7 +8,7 @@ const IS_STUBBED = Symbol();
 const REQUEST_ARGUMENTS = Symbol();
 
 export default class FetchAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'fetch';
   }
 

@@ -4,7 +4,7 @@ import { buildUrl } from '@pollyjs/utils';
 import ajax from './ajax';
 
 export default class RestPersister extends Persister {
-  static get name() {
+  static get id() {
     return 'rest';
   }
 

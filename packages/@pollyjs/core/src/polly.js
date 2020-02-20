@@ -3,7 +3,7 @@ import { MODES, assert } from '@pollyjs/utils';
 import { version } from '../package.json';
 
 import Logger from './-private/logger';
-import Container from './-private/container';
+import Container, { nameOfFactory } from './-private/container';
 import DefaultConfig from './defaults/config';
 import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
@@ -170,7 +170,7 @@ export default class Polly {
     if (persister) {
       if (typeof persister === 'function') {
         container.register(persister);
-        persister = persister.name;
+        persister = nameOfFactory(persister);
       }
 
       assert(
@@ -262,7 +262,7 @@ export default class Polly {
 
     if (typeof nameOrFactory === 'function') {
       container.register(nameOrFactory);
-      adapterName = nameOrFactory.name;
+      adapterName = nameOfFactory(nameOrFactory);
     }
 
     assert(
@@ -288,7 +288,7 @@ export default class Polly {
     let adapterName = nameOrFactory;
 
     if (typeof nameOrFactory === 'function') {
-      adapterName = nameOrFactory.name;
+      adapterName = nameOfFactory(nameOrFactory);
     }
 
     if (adapters.has(adapterName)) {

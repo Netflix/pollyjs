@@ -29,7 +29,7 @@ yarn add @pollyjs/adapter -D
 import Adapter from '@pollyjs/adapter';
 
 class CustomAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'custom';
   }
 
@@ -47,7 +47,7 @@ class CustomAdapter extends Adapter {
 
   /* optional */
   async respondToRequest(pollyRequest) {
-    const { statusCode, body, headers } = pollyRequest.response
+    const { statusCode, body, headers } = pollyRequest.response;
     /* Deliver the response to the user */
   }
 }
@@ -74,10 +74,9 @@ full examples, please refer to the source code for the
 & [XHR](https://github.com/Netflix/pollyjs/blob/master/packages/%40pollyjs/adapter-xhr/src/index.js)
 adapters.
 
-
 ```js
 class FetchAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'fetch';
   }
 
@@ -89,7 +88,7 @@ class FetchAdapter extends Adapter {
         url,
         method: options.method,
         headers: options.headers,
-        body: options.body,
+        body: options.body
       });
 
       return new Response(response.body, {
@@ -100,7 +99,7 @@ class FetchAdapter extends Adapter {
   }
 
   onDisconnect() {
-    window.fetch = this.originalFetch
+    window.fetch = this.originalFetch;
   }
 
   async passthroughRequest(pollyRequest) {

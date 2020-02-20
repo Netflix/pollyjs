@@ -3,7 +3,7 @@ import Persister from '@pollyjs/persister';
 const { parse } = JSON;
 
 export default class LocalStoragePersister extends Persister {
-  static get name() {
+  static get id() {
     return 'local-storage';
   }
 

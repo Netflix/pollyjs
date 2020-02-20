@@ -24,7 +24,7 @@ const REQUEST_ARGUMENTS = new WeakMap();
 nock.restore();
 
 export default class HttpAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'node-http';
   }
 

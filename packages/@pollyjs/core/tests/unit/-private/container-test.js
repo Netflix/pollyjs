@@ -5,8 +5,8 @@ import Container from '../../../src/-private/container';
 let container;
 
 class Factory {
-  static get name() {
-    return 'foo';
+  static get id() {
+    return 'factory-id';
   }
 
   static get type() {
@@ -27,16 +27,20 @@ describe('Unit | Container', function() {
 
     it('.register()', function() {
       container.register(Factory);
-      expect(container.has('factory:foo')).to.be.true;
+      expect(container.has('factory:factory-id')).to.be.true;
     });
 
     it('.register() - validation', function() {
-      class NoName extends Factory {
+      class NoId extends Factory {
         /* eslint-disable-next-line getter-return */
-        static get name() {}
+        static get id() {}
       }
 
       class NoType extends Factory {
+        static get id() {
+          return 'notype';
+        }
+
         /* eslint-disable-next-line getter-return */
         static get type() {}
       }
@@ -45,9 +49,9 @@ describe('Unit | Container', function() {
         PollyError,
         /invalid factory provided/
       );
-      expect(() => container.register(NoName)).to.throw(
+      expect(() => container.register(NoId)).to.throw(
         PollyError,
-        /Invalid registration name provided/
+        /Invalid registration id provided/
       );
       expect(() => container.register(NoType)).to.throw(
         PollyError,
@@ -57,36 +61,42 @@ describe('Unit | Container', function() {
 
     it('.unregister() - by key', function() {
       container.register(Factory);
-      expect(container.has('factory:foo')).to.be.true;
+      expect(container.has('factory:factory-id')).to.be.true;
 
-      container.unregister('factory:foo');
-      expect(container.has('factory:foo')).to.be.false;
+      container.unregister('factory:factory-id');
+      expect(container.has('factory:factory-id')).to.be.false;
     });
 
     it('.unregister() - by factory', function() {
       container.register(Factory);
-      expect(container.has('factory:foo')).to.be.true;
+      expect(container.has('factory:factory-id')).to.be.true;
 
       container.unregister(Factory);
-      expect(container.has('factory:foo')).to.be.false;
+      expect(container.has('factory:factory-id')).to.be.false;
     });
 
     it('.lookup()', function() {
       container.register(Factory);
-      expect(container.lookup('factory:foo')).to.equal(Factory);
+      expect(container.lookup('factory:factory-id')).to.equal(Factory);
       expect(container.lookup('factory:bar')).to.be.null;
     });
 
     it('.has() - by key', function() {
       container.register(Factory);
-      expect(container.has('factory:foo')).to.be.true;
+      expect(container.has('factory:factory-id')).to.be.true;
       expect(container.has('factory:bar')).to.be.false;
     });
 
     it('.has() - by factory', function() {
+      class ExtendedFactory extends Factory {
+        static get id() {
+          return 'extended-factory-id';
+        }
+      }
+
       container.register(Factory);
       expect(container.has(Factory)).to.be.true;
-      expect(container.has(class Foo extends Factory {})).to.be.false;
+      expect(container.has(ExtendedFactory)).to.be.false;
     });
   });
 });

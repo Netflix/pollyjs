@@ -8,7 +8,7 @@ const SEND = Symbol();
 const stubbedXhrs = new WeakSet();
 
 export default class XHRAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'xhr';
   }
 

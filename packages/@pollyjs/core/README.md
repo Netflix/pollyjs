@@ -58,7 +58,7 @@ import RESTPersister from '@pollyjs/persister-rest';
 
 /*
   Register the adapters and persisters we want to use. This way all future
-  polly instances can access them by name.
+  polly instances can access them by name/id.
 */
 Polly.register(XHRAdapter);
 Polly.register(FetchAdapter);
@@ -77,6 +77,7 @@ describe('Netflix Homepage', function() {
       adapters: ['xhr', 'fetch'],
       persister: 'rest'
     });
+
     const { server } = polly;
 
     /* Intercept all Google Analytic requests and respond with a 200 */

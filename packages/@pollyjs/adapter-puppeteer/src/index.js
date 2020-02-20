@@ -6,7 +6,7 @@ const PASSTHROUGH_PROMISES = Symbol();
 const PASSTHROUGH_REQ_ID_QP = 'pollyjs_passthrough_req_id';
 
 export default class PuppeteerAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'puppeteer';
   }
 

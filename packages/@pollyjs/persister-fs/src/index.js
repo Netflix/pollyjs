@@ -9,7 +9,7 @@ export default class FSPersister extends Persister {
     this.api = new API(this.options);
   }
 
-  static get name() {
+  static get id() {
     return 'fs';
   }
 
