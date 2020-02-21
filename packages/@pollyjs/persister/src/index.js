@@ -22,12 +22,6 @@ export default class Persister {
     assert('Must override the static `id` getter.');
   }
 
-  static get name() {
-    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
-    // and therefore still referencing `name`.  Remove in 5.0.0
-    return this.id;
-  }
-
   get defaultOptions() {
     return {};
   }

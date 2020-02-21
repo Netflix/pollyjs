@@ -1,6 +1,6 @@
 import { assert } from '@pollyjs/utils';
 
-export function nameOfFactory(Factory) {
+export function idOfFactory(Factory) {
   if (Factory.hasOwnProperty('id')) {
     return Factory.id;
   }
@@ -13,10 +13,10 @@ export function nameOfFactory(Factory) {
 }
 
 function keyFor(Factory) {
-  return `${Factory.type}:${nameOfFactory(Factory)}`;
+  return `${Factory.type}:${idOfFactory(Factory)}`;
 }
 
-export default class Container {
+export class Container {
   constructor() {
     this._registry = new Map();
   }
@@ -33,7 +33,7 @@ export default class Container {
     );
 
     const { type } = Factory;
-    const name = nameOfFactory(Factory);
+    const name = idOfFactory(Factory);
 
     assert(
       `Invalid registration id provided. Expected string, received: "${typeof name}"`,

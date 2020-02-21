@@ -3,7 +3,7 @@ import { MODES, assert } from '@pollyjs/utils';
 import { version } from '../package.json';
 
 import Logger from './-private/logger';
-import Container, { nameOfFactory } from './-private/container';
+import { Container, idOfFactory } from './-private/container';
 import DefaultConfig from './defaults/config';
 import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
@@ -170,7 +170,7 @@ export default class Polly {
     if (persister) {
       if (typeof persister === 'function') {
         container.register(persister);
-        persister = nameOfFactory(persister);
+        persister = idOfFactory(persister);
       }
 
       assert(
@@ -221,7 +221,7 @@ export default class Polly {
    */
   play() {
     if (this[PAUSED_ADAPTERS]) {
-      this[PAUSED_ADAPTERS].forEach(adapterName => this.connectTo(adapterName));
+      this[PAUSED_ADAPTERS].forEach(adapterId => this.connectTo(adapterId));
       delete this[PAUSED_ADAPTERS];
     }
   }
@@ -252,48 +252,48 @@ export default class Polly {
   }
 
   /**
-   * @param {String|Function} nameOrFactory
+   * @param {String|Function} idOrFactory
    * @public
    * @memberof Polly
    */
-  connectTo(nameOrFactory) {
+  connectTo(idOrFactoryIdGetter) {
     const { container, adapters } = this;
-    let adapterName = nameOrFactory;
+    let adapterId = idOrFactoryIdGetter;
 
-    if (typeof nameOrFactory === 'function') {
-      container.register(nameOrFactory);
-      adapterName = nameOfFactory(nameOrFactory);
+    if (typeof idOrFactoryIdGetter === 'function') {
+      container.register(idOrFactoryIdGetter);
+      adapterId = idOfFactory(idOrFactoryIdGetter);
     }
 
     assert(
-      `Adapter matching the name \`${adapterName}\` was not registered.`,
-      container.has(`adapter:${adapterName}`)
+      `Adapter matching the name \`${adapterId}\` was not registered.`,
+      container.has(`adapter:${adapterId}`)
     );
 
-    this.disconnectFrom(adapterName);
+    this.disconnectFrom(adapterId);
 
-    const adapter = new (container.lookup(`adapter:${adapterName}`))(this);
+    const adapter = new (container.lookup(`adapter:${adapterId}`))(this);
 
     adapter.connect();
-    adapters.set(adapterName, adapter);
+    adapters.set(adapterId, adapter);
   }
 
   /**
-   * @param {String|Function} nameOrFactory
+   * @param {String|Function} idOrFactoryIdGetter
    * @public
    * @memberof Polly
    */
-  disconnectFrom(nameOrFactory) {
+  disconnectFrom(idOrFactoryIdGetter) {
     const { adapters } = this;
-    let adapterName = nameOrFactory;
+    let adapterId = idOrFactoryIdGetter;
 
-    if (typeof nameOrFactory === 'function') {
-      adapterName = nameOfFactory(nameOrFactory);
+    if (typeof idOrFactoryIdGetter === 'function') {
+      adapterId = idOfFactory(idOrFactoryIdGetter);
     }
 
-    if (adapters.has(adapterName)) {
-      adapters.get(adapterName).disconnect();
-      adapters.delete(adapterName);
+    if (adapters.has(adapterId)) {
+      adapters.get(adapterId).disconnect();
+      adapters.delete(adapterId);
     }
   }
 
@@ -302,8 +302,8 @@ export default class Polly {
    * @memberof Polly
    */
   disconnect() {
-    for (const adapterName of this.adapters.keys()) {
-      this.disconnectFrom(adapterName);
+    for (const adapterId of this.adapters.keys()) {
+      this.disconnectFrom(adapterId);
     }
   }
 

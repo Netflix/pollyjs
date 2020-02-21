@@ -4,7 +4,7 @@ import { MODES, PollyError } from '@pollyjs/utils';
 
 import defaults from '../../src/defaults/config';
 import Polly from '../../src/polly';
-import Container from '../../src/-private/container';
+import { Container } from '../../src/-private/container';
 import setupPolly from '../../src/test-helpers/mocha';
 
 describe('Unit | Polly', function() {

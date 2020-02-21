@@ -28,6 +28,12 @@ export default class HttpAdapter extends Adapter {
     return 'node-http';
   }
 
+  static get name() {
+    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
+    // and therefore still referencing `name`.  Remove in 5.0.0
+    return this.id;
+  }
+
   onConnect() {
     this.assert(
       'Running concurrent node-http adapters is unsupported, stop any running Polly instances.',

@@ -1,6 +1,6 @@
 import { PollyError } from '@pollyjs/utils';
 
-import Container from '../../../src/-private/container';
+import { Container } from '../../../src/-private/container';
 
 let container;
 
@@ -32,17 +32,15 @@ describe('Unit | Container', function() {
 
     it('.register() - validation', function() {
       class NoId extends Factory {
-        /* eslint-disable-next-line getter-return */
-        static get id() {}
+        static get id() {
+          return undefined;
+        }
       }
 
       class NoType extends Factory {
-        static get id() {
-          return 'notype';
+        static get type() {
+          return undefined;
         }
-
-        /* eslint-disable-next-line getter-return */
-        static get type() {}
       }
 
       expect(() => container.register()).to.throw(
