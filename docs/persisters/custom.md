@@ -29,7 +29,7 @@ yarn add @pollyjs/persister -D
 import Persister from '@pollyjs/persister';
 
 class CustomPersister extends Persister {
-  static get name() {
+  static get id() {
     return 'custom';
   }
 

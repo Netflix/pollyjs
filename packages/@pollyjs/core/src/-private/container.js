@@ -1,10 +1,22 @@
 import { assert } from '@pollyjs/utils';
 
-function keyFor(Factory) {
-  return `${Factory.type}:${Factory.name}`;
+export function idOfFactory(Factory) {
+  if (Factory.hasOwnProperty('id')) {
+    return Factory.id;
+  }
+
+  console.warn(
+    `[Polly] ${Factory.id}:${Factory.name} "name" is deprecated and has been renamed to "id".`
+  );
+
+  return Factory.name;
 }
 
-export default class Container {
+function keyFor(Factory) {
+  return `${Factory.type}:${idOfFactory(Factory)}`;
+}
+
+export class Container {
   constructor() {
     this._registry = new Map();
   }
@@ -20,10 +32,11 @@ export default class Container {
       typeof Factory === 'function'
     );
 
-    const { type, name } = Factory;
+    const { type } = Factory;
+    const name = idOfFactory(Factory);
 
     assert(
-      `Invalid registration name provided. Expected string, received: "${typeof name}"`,
+      `Invalid registration id provided. Expected string, received: "${typeof name}"`,
       typeof name === 'string'
     );
 

@@ -18,8 +18,8 @@ export default class Persister {
   }
 
   /* eslint-disable-next-line getter-return */
-  static get name() {
-    assert('Must override the static `name` getter.');
+  static get id() {
+    assert('Must override the static `id` getter.');
   }
 
   get defaultOptions() {
@@ -27,11 +27,11 @@ export default class Persister {
   }
 
   get options() {
-    const { name } = this.constructor;
+    const { id } = this.constructor;
 
     return {
       ...(this.defaultOptions || {}),
-      ...((this.polly.config.persisterOptions || {})[name] || {})
+      ...((this.polly.config.persisterOptions || {})[id] || {})
     };
   }
 
@@ -53,7 +53,7 @@ export default class Persister {
     const creator = {
       name: CREATOR_NAME,
       version: this.polly.constructor.VERSION,
-      comment: `${this.constructor.type}:${this.constructor.name}`
+      comment: `${this.constructor.type}:${this.constructor.id}`
     };
 
     for (const [recordingId, { name, requests }] of this.pending) {
@@ -173,7 +173,7 @@ export default class Persister {
 
   assert(message, ...args) {
     assert(
-      `[${this.constructor.type}:${this.constructor.name}] ${message}`,
+      `[${this.constructor.type}:${this.constructor.id}] ${message}`,
       ...args
     );
   }

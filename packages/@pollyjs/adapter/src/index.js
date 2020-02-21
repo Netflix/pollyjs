@@ -24,8 +24,8 @@ export default class Adapter {
   }
 
   /* eslint-disable-next-line getter-return */
-  static get name() {
-    assert('Must override the static `name` getter.');
+  static get id() {
+    assert('Must override the static `id` getter.');
   }
 
   get defaultOptions() {
@@ -33,11 +33,9 @@ export default class Adapter {
   }
 
   get options() {
-    const { name } = this.constructor;
-
     return {
       ...(this.defaultOptions || {}),
-      ...((this.polly.config.adapterOptions || {})[name] || {})
+      ...((this.polly.config.adapterOptions || {})[this.constructor.id] || {})
     };
   }
 
@@ -215,7 +213,7 @@ export default class Adapter {
 
   assert(message, ...args) {
     assert(
-      `[${this.constructor.type}:${this.constructor.name}] ${message}`,
+      `[${this.constructor.type}:${this.constructor.id}] ${message}`,
       ...args
     );
   }

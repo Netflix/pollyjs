@@ -8,8 +8,14 @@ const SEND = Symbol();
 const stubbedXhrs = new WeakSet();
 
 export default class XHRAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'xhr';
+  }
+
+  static get name() {
+    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
+    // and therefore still referencing `name`.  Remove in 5.0.0
+    return this.id;
   }
 
   get defaultOptions() {

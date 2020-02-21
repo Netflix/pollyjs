@@ -6,8 +6,14 @@ const PASSTHROUGH_PROMISES = Symbol();
 const PASSTHROUGH_REQ_ID_QP = 'pollyjs_passthrough_req_id';
 
 export default class PuppeteerAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'puppeteer';
+  }
+
+  static get name() {
+    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
+    // and therefore still referencing `name`.  Remove in 5.0.0
+    return this.id;
   }
 
   get defaultOptions() {

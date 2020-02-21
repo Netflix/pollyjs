@@ -4,8 +4,14 @@ import { buildUrl } from '@pollyjs/utils';
 import ajax from './ajax';
 
 export default class RestPersister extends Persister {
-  static get name() {
+  static get id() {
     return 'rest';
+  }
+
+  static get name() {
+    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
+    // and therefore still referencing `name`.  Remove in 5.0.0
+    return this.id;
   }
 
   get defaultOptions() {

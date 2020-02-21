@@ -20,8 +20,8 @@ describe('Unit | FS Persister', function() {
     expect(FSPersister).to.be.a('function');
   });
 
-  it('should have a name', function() {
-    expect(FSPersister.name).to.equal('fs');
+  it('should have a id', function() {
+    expect(FSPersister.id).to.equal('fs');
   });
 
   describe('Options', function() {

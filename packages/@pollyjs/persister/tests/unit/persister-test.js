@@ -21,6 +21,10 @@ describe('Unit | Persister', function() {
       };
 
       class CustomPersister extends Persister {
+        static get id() {
+          return 'CustomPersister';
+        }
+
         async findRecording() {
           callCounts.find++;
           await timeout(1);

@@ -36,7 +36,7 @@ documentation for more details.
 import Adapter from '@pollyjs/adapter';
 
 class CustomAdapter extends Adapter {
-  static get name() {
+  static get id() {
     return 'custom';
   }
 
