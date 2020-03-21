@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v4.0.3...v4.0.4) (2020-03-21)
+
+
+### Bug Fixes
+
+* Deprecates adapter & persister `name` in favor of `id` ([#310](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/issues/310)) ([41dd093](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/41dd093))
+
+
+
+
+
 ## [4.0.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v4.0.1...v4.0.2) (2020-01-29)
 
 **Note:** Version bump only for package @pollyjs/persister

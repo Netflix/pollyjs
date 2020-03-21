@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v4.0.3...v4.0.4) (2020-03-21)
+
+
+### Bug Fixes
+
+* Deprecates adapter & persister `name` in favor of `id` ([#310](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/310)) ([41dd093](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/commit/41dd093))
+* **adapter-node-http:** Bump nock version ([#319](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/319)) ([7d361a6](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/commit/7d361a6))
+
+
+
+
+
 ## [4.0.3](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v4.0.2...v4.0.3) (2020-01-30)
 
 

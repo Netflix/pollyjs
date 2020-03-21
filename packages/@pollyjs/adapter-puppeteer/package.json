@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-puppeteer",
-  "version": "4.0.2",
+  "version": "4.0.4",
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-puppeteer.js",
   "module": "dist/es/pollyjs-adapter-puppeteer.js",
@@ -39,12 +39,12 @@
     "watch-all": "npm-run-all --parallel build:watch test:build:watch"
   },
   "dependencies": {
-    "@pollyjs/adapter": "^4.0.2",
+    "@pollyjs/adapter": "^4.0.4",
     "@pollyjs/utils": "^4.0.2"
   },
   "devDependencies": {
-    "@pollyjs/core": "^4.0.2",
-    "@pollyjs/persister-fs": "^4.0.2",
+    "@pollyjs/core": "^4.0.4",
+    "@pollyjs/persister-fs": "^4.0.4",
     "node-fetch": "^2.6.0",
     "puppeteer": "1.10.0",
     "rollup": "^1.14.6"
