@@ -61,10 +61,22 @@ export default class XHRAdapter extends Adapter {
     this.xhr.restore();
   }
 
+  onRequest(pollyRequest) {
+    const { xhr } = pollyRequest.requestArguments;
+
+    if (xhr.aborted) {
+      pollyRequest.abort();
+    } else {
+      xhr.addEventListener('abort', () => pollyRequest.abort());
+    }
+  }
+
   respondToRequest(pollyRequest, error) {
     const { xhr } = pollyRequest.requestArguments;
 
-    if (error) {
+    if (pollyRequest.aborted) {
+      return;
+    } else if (error) {
       // If an error was received then call the `error` method on the fake XHR
       // request provided by nise which will simulate a network error on the request.
       // The onerror handler will be called and the status will be 0.
@@ -78,7 +90,7 @@ export default class XHRAdapter extends Adapter {
   }
 
   async passthroughRequest(pollyRequest) {
-    const fakeXhr = pollyRequest.requestArguments.xhr;
+    const { xhr: fakeXhr } = pollyRequest.requestArguments;
     const xhr = new this.NativeXMLHttpRequest();
 
     xhr.open(

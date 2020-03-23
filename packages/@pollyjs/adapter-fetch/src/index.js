@@ -134,6 +134,18 @@ export default class FetchAdapter extends Adapter {
     this.NativeRequest = null;
   }
 
+  onRequest(pollyRequest) {
+    const { options } = pollyRequest.requestArguments;
+
+    if (options.signal) {
+      if (options.signal.aborted) {
+        pollyRequest.abort();
+      } else {
+        options.signal.addEventListener('abort', () => pollyRequest.abort());
+      }
+    }
+  }
+
   async passthroughRequest(pollyRequest) {
     const { context } = this.options;
     const { options } = pollyRequest.requestArguments;
@@ -160,6 +172,17 @@ export default class FetchAdapter extends Adapter {
       context: { Response }
     } = this.options;
     const { respond } = pollyRequest.requestArguments;
+
+    if (pollyRequest.aborted) {
+      respond({
+        error: new DOMException(
+          'The user aborted a request.',
+          DOMException.ABORT_ERR
+        )
+      });
+
+      return;
+    }
 
     if (error) {
       respond({ error });

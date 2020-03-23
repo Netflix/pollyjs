@@ -53,6 +53,33 @@ describe('Integration | Fetch Adapter', function() {
     expect(headers).to.deep.equal({ 'content-type': 'application/json' });
   });
 
+  it('should handle aborting a request', async function() {
+    const { server } = this.polly;
+    const controller = new AbortController();
+    let request;
+    let error;
+
+    server
+      .any(this.recordUrl())
+      .on('abort', req => (request = req))
+      .intercept(async (_, res) => {
+        await server.timeout(50);
+        res.sendStatus(200);
+      });
+
+    try {
+      const promise = this.fetchRecord({ signal: controller.signal });
+
+      setTimeout(() => controller.abort(), 25);
+      await promise;
+    } catch (e) {
+      error = e;
+    }
+
+    expect(request.aborted).to.equal(true);
+    expect(error.message).to.contain('The user aborted a request.');
+  });
+
   describe('Request', function() {
     it('should support Request objects', async function() {
       const { server } = this.polly;

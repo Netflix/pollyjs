@@ -38,6 +38,7 @@ export default class PollyRequest extends HTTPBase {
     );
 
     this.didRespond = false;
+    this.aborted = false;
     this.url = request.url;
     this.method = request.method.toUpperCase();
     this.body = request.body;
@@ -155,7 +156,7 @@ export default class PollyRequest extends HTTPBase {
     return this;
   }
 
-  async setup() {
+  async init() {
     // Trigger the `request` event
     await this._emit('request');
 
@@ -177,6 +178,10 @@ export default class PollyRequest extends HTTPBase {
       'Cannot respond to a request that already has a response.',
       !this.didRespond
     );
+
+    if (this.aborted) {
+      return;
+    }
 
     // Timestamp the response
     this.response.timestamp = timestamp();
@@ -206,6 +211,10 @@ export default class PollyRequest extends HTTPBase {
 
     // Trigger the `response` event
     await this._emit('response', this.response);
+  }
+
+  abort() {
+    this.aborted = true;
   }
 
   _overrideRecordingName(recordingName) {

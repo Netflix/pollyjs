@@ -151,6 +151,16 @@ export default class HttpAdapter extends Adapter {
     });
   }
 
+  onRequest(pollyRequest) {
+    const { req } = pollyRequest.requestArguments;
+
+    if (req.aborted) {
+      pollyRequest.abort();
+    } else {
+      req.once('abort', () => pollyRequest.abort());
+    }
+  }
+
   async passthroughRequest(pollyRequest) {
     const { parsedArguments } = pollyRequest.requestArguments;
     const { method, headers, body } = pollyRequest;
@@ -195,6 +205,15 @@ export default class HttpAdapter extends Adapter {
 
   async respondToRequest(pollyRequest, error) {
     const { req, respond } = pollyRequest.requestArguments;
+    const { statusCode, body, headers } = pollyRequest.response;
+
+    if (pollyRequest.aborted) {
+      // Even if the request has been aborted, we need to respond to the nock
+      // request in order to resolve its awaiting promise.
+      respond(null, [statusCode, undefined, headers]);
+
+      return;
+    }
 
     if (error) {
       // If an error was received then forward it over to nock so it can
@@ -204,7 +223,6 @@ export default class HttpAdapter extends Adapter {
       return;
     }
 
-    const { statusCode, body, headers } = pollyRequest.response;
     const chunks = this.getChunksFromBody(body, headers);
     const stream = new ReadableStream();
 
@@ -219,13 +237,9 @@ export default class HttpAdapter extends Adapter {
     // that the deferred promise used by `polly.flush()` doesn't resolve before
     // the response was actually received.
     const requestFinishedPromise = new Promise(resolve => {
-      if (req.aborted) {
-        resolve();
-      } else {
-        req.once('response', resolve);
-        req.once('abort', resolve);
-        req.once('error', resolve);
-      }
+      req.once('response', resolve);
+      req.once('abort', resolve);
+      req.once('error', resolve);
     });
 
     respond(null, [statusCode, stream, headers]);
