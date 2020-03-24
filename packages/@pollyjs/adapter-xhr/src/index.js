@@ -5,6 +5,7 @@ import resolveXhr from './utils/resolve-xhr';
 import serializeResponseHeaders from './utils/serialize-response-headers';
 
 const SEND = Symbol();
+const ABORT_HANDLER = Symbol();
 const stubbedXhrs = new WeakSet();
 
 export default class XHRAdapter extends Adapter {
@@ -67,12 +68,17 @@ export default class XHRAdapter extends Adapter {
     if (xhr.aborted) {
       pollyRequest.abort();
     } else {
-      xhr.addEventListener('abort', () => pollyRequest.abort());
+      pollyRequest[ABORT_HANDLER] = () => pollyRequest.abort();
+      xhr.addEventListener('abort', pollyRequest[ABORT_HANDLER]);
     }
   }
 
   respondToRequest(pollyRequest, error) {
     const { xhr } = pollyRequest.requestArguments;
+
+    if (pollyRequest[ABORT_HANDLER]) {
+      xhr.removeEventListener('abort', pollyRequest[ABORT_HANDLER]);
+    }
 
     if (pollyRequest.aborted) {
       return;

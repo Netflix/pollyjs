@@ -17,16 +17,52 @@ describe('Integration | XHR Adapter', function() {
     persister: InMemoryPersister
   });
 
-  setupFetchRecord({
-    fetch() {
-      return xhrRequest(...arguments);
-    }
-  });
+  setupFetchRecord({ fetch: xhrRequest });
   setupPolly.afterEach();
 
   adapterTests();
   adapterBrowserTests();
   adapterIdentifierTests();
+
+  it('should handle aborting a request', async function() {
+    const { server } = this.polly;
+    const xhr = new XMLHttpRequest();
+    let abortEventCalled;
+
+    server
+      .any(this.recordUrl())
+      .on('request', () => xhr.abort())
+      .on('abort', () => (abortEventCalled = true))
+      .intercept((_, res) => {
+        res.sendStatus(200);
+      });
+
+    await this.fetchRecord({ xhr });
+    await this.polly.flush();
+
+    expect(abortEventCalled).to.equal(true);
+  });
+
+  it('should handle immediately aborting a request', async function() {
+    const { server } = this.polly;
+    const xhr = new XMLHttpRequest();
+    let abortEventCalled;
+
+    server
+      .any(this.recordUrl())
+      .on('abort', () => (abortEventCalled = true))
+      .intercept((_, res) => {
+        res.sendStatus(200);
+      });
+
+    const promise = this.fetchRecord({ xhr });
+
+    xhr.abort();
+    await promise;
+    await this.polly.flush();
+
+    expect(abortEventCalled).to.equal(true);
+  });
 });
 
 describe('Integration | XHR Adapter | Init', function() {

@@ -17,6 +17,7 @@ import mergeChunks from './utils/merge-chunks';
 import urlToOptions from './utils/url-to-options';
 
 const IS_STUBBED = Symbol();
+const ABORT_HANDLER = Symbol();
 const REQUEST_ARGUMENTS = new WeakMap();
 
 // nock begins to intercept network requests on import which is not the
@@ -157,7 +158,8 @@ export default class HttpAdapter extends Adapter {
     if (req.aborted) {
       pollyRequest.abort();
     } else {
-      req.once('abort', () => pollyRequest.abort());
+      pollyRequest[ABORT_HANDLER] = () => pollyRequest.abort();
+      req.once('abort', pollyRequest[ABORT_HANDLER]);
     }
   }
 
@@ -207,10 +209,14 @@ export default class HttpAdapter extends Adapter {
     const { req, respond } = pollyRequest.requestArguments;
     const { statusCode, body, headers } = pollyRequest.response;
 
+    if (pollyRequest[ABORT_HANDLER]) {
+      req.off('abort', pollyRequest[ABORT_HANDLER]);
+    }
+
     if (pollyRequest.aborted) {
       // Even if the request has been aborted, we need to respond to the nock
       // request in order to resolve its awaiting promise.
-      respond(null, [statusCode, undefined, headers]);
+      respond(null, [0, undefined, {}]);
 
       return;
     }
@@ -237,9 +243,13 @@ export default class HttpAdapter extends Adapter {
     // that the deferred promise used by `polly.flush()` doesn't resolve before
     // the response was actually received.
     const requestFinishedPromise = new Promise(resolve => {
-      req.once('response', resolve);
-      req.once('abort', resolve);
-      req.once('error', resolve);
+      if (req.aborted) {
+        resolve();
+      } else {
+        req.once('response', resolve);
+        req.once('abort', resolve);
+        req.once('error', resolve);
+      }
     });
 
     respond(null, [statusCode, stream, headers]);

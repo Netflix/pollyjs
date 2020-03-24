@@ -5,6 +5,7 @@ import serializeHeaders from './utils/serializer-headers';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
+const ABORT_HANDLER = Symbol();
 const REQUEST_ARGUMENTS = Symbol();
 
 export default class FetchAdapter extends Adapter {
@@ -135,13 +136,16 @@ export default class FetchAdapter extends Adapter {
   }
 
   onRequest(pollyRequest) {
-    const { options } = pollyRequest.requestArguments;
+    const {
+      options: { signal }
+    } = pollyRequest.requestArguments;
 
-    if (options.signal) {
-      if (options.signal.aborted) {
+    if (signal) {
+      if (signal.aborted) {
         pollyRequest.abort();
       } else {
-        options.signal.addEventListener('abort', () => pollyRequest.abort());
+        pollyRequest[ABORT_HANDLER] = () => pollyRequest.abort();
+        signal.addEventListener('abort', pollyRequest[ABORT_HANDLER]);
       }
     }
   }
@@ -171,14 +175,18 @@ export default class FetchAdapter extends Adapter {
     const {
       context: { Response }
     } = this.options;
-    const { respond } = pollyRequest.requestArguments;
+    const {
+      respond,
+      options: { signal }
+    } = pollyRequest.requestArguments;
+
+    if (signal && pollyRequest[ABORT_HANDLER]) {
+      signal.removeEventListener('abort', pollyRequest[ABORT_HANDLER]);
+    }
 
     if (pollyRequest.aborted) {
       respond({
-        error: new DOMException(
-          'The user aborted a request.',
-          DOMException.ABORT_ERR
-        )
+        error: new DOMException('The user aborted a request.', 'AbortError')
       });
 
       return;

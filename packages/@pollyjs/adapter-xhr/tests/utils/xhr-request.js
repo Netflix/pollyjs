@@ -2,7 +2,7 @@ import serializeResponseHeaders from '../../src/utils/serialize-response-headers
 
 export default function request(url, obj = {}) {
   return new Promise(resolve => {
-    const xhr = new XMLHttpRequest();
+    const xhr = obj.xhr || new XMLHttpRequest();
 
     xhr.open(obj.method || 'GET', url);
 

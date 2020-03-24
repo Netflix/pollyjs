@@ -91,6 +91,10 @@ export default class Adapter {
     const { mode } = this.polly;
     const { _interceptor: interceptor } = pollyRequest;
 
+    if (pollyRequest.aborted) {
+      return;
+    }
+
     if (pollyRequest.shouldIntercept) {
       await this.intercept(pollyRequest, interceptor);
 
