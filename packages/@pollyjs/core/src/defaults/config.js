@@ -10,7 +10,8 @@ export default {
 
   persister: null,
   persisterOptions: {
-    keepUnusedRequests: false
+    keepUnusedRequests: false,
+    disableSortingHarEntries: true
   },
 
   logging: false,
