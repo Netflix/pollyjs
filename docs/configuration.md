@@ -241,6 +241,25 @@ polly.configure({
 });
 ```
 
+### disableSortingHarEntries
+
+_Type_: `Boolean`
+_Default_: `false`
+
+When disabled, entries in the the final HAR will be sorted by the request's timestamp.
+This is done by default to satisfy the HAR 1.2 spec but can be enabled to improve
+diff readability when committing recordings to git.
+
+**Example**
+
+```js
+polly.configure({
+  persisterOptions: {
+    disableSortingHarEntries: true
+  }
+});
+```
+
 ## timing
 
 _Type_: `Function`

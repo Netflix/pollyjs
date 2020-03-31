@@ -87,6 +87,10 @@ export default class Persister {
 
       har.log.addEntries(entries);
 
+      if (!this.polly.config.persisterOptions.disableSortingHarEntries) {
+        har.log.sortEntries();
+      }
+
       if (!this.polly.config.persisterOptions.keepUnusedRequests) {
         this._removeUnusedEntries(recordingId, har);
       }

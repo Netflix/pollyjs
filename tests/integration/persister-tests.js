@@ -264,4 +264,86 @@ export default function persisterTests() {
     expect(har.log.entries[0].request.url).to.include(orderedRecordUrl(1));
     expect(har.log.entries[1].request.url).to.include(orderedRecordUrl(3));
   });
+
+  it('should sort the entries by date', async function() {
+    this.polly.configure({
+      persisterOptions: {
+        keepUnusedRequests: true
+      }
+    });
+    const { recordingName, recordingId, config } = this.polly;
+
+    const orderedRecordUrl = order => `${this.recordUrl()}?order=${order}`;
+
+    await this.fetch(orderedRecordUrl(1));
+    await this.fetch(orderedRecordUrl(2));
+    await this.polly.persister.persist();
+
+    let har = await this.polly.persister.find(recordingId);
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(2);
+    expect(har.log.entries[0].request.url).to.include(orderedRecordUrl(1));
+    expect(har.log.entries[1].request.url).to.include(orderedRecordUrl(2));
+
+    await this.polly.stop();
+
+    this.polly = new Polly(recordingName, config);
+    this.polly.record();
+
+    await this.fetch(orderedRecordUrl(3));
+    await this.fetch(orderedRecordUrl(4));
+    await this.fetch(orderedRecordUrl(2));
+    await this.polly.persister.persist();
+
+    har = await this.polly.persister.find(recordingId);
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(4);
+    expect(har.log.entries[0].request.url).to.include(orderedRecordUrl(1));
+    expect(har.log.entries[1].request.url).to.include(orderedRecordUrl(3));
+    expect(har.log.entries[2].request.url).to.include(orderedRecordUrl(4));
+    expect(har.log.entries[3].request.url).to.include(orderedRecordUrl(2));
+  });
+
+  it('should not sort the entries by date if `disableSortingHarEntries` is true', async function() {
+    this.polly.configure({
+      persisterOptions: {
+        keepUnusedRequests: true,
+        disableSortingHarEntries: true
+      }
+    });
+    const { recordingName, recordingId, config } = this.polly;
+
+    const orderedRecordUrl = order => `${this.recordUrl()}?order=${order}`;
+
+    await this.fetch(orderedRecordUrl(1));
+    await this.fetch(orderedRecordUrl(2));
+    await this.polly.persister.persist();
+
+    let har = await this.polly.persister.find(recordingId);
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(2);
+    expect(har.log.entries[0].request.url).to.include(orderedRecordUrl(1));
+    expect(har.log.entries[1].request.url).to.include(orderedRecordUrl(2));
+
+    await this.polly.stop();
+
+    this.polly = new Polly(recordingName, config);
+    this.polly.replay();
+
+    await this.fetch(orderedRecordUrl(3));
+    await this.fetch(orderedRecordUrl(4));
+    await this.polly.persister.persist();
+
+    har = await this.polly.persister.find(recordingId);
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(4);
+    expect(har.log.entries[0].request.url).to.include(orderedRecordUrl(3));
+    expect(har.log.entries[1].request.url).to.include(orderedRecordUrl(4));
+    expect(har.log.entries[2].request.url).to.include(orderedRecordUrl(1));
+    expect(har.log.entries[3].request.url).to.include(orderedRecordUrl(2));
+  });
 }

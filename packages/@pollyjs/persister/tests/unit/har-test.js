@@ -34,7 +34,7 @@ describe('Unit | HAR', function() {
       ).to.be.true;
     });
 
-    it('addEntries: Entries should be unique & sorted', async function() {
+    it('addEntries: Entries should be unique', async function() {
       const now = new Date().getTime();
       const log = new Log({
         entries: [
@@ -72,10 +72,10 @@ describe('Unit | HAR', function() {
       expect(
         log.entries.map(({ _id, _order, _new }) => ({ _id, _order, _new }))
       ).to.include.deep.ordered.members([
-        { _id: 'ghi', _order: 0, _new: true },
-        { _id: 'def', _order: 0, _new: false },
         { _id: 'abc', _order: 0, _new: true },
-        { _id: 'abc', _order: 1, _new: true }
+        { _id: 'abc', _order: 1, _new: true },
+        { _id: 'ghi', _order: 0, _new: true },
+        { _id: 'def', _order: 0, _new: false }
       ]);
     });
 

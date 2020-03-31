@@ -34,8 +34,6 @@ export default class Log {
       [...entries, ...this.entries],
       (a, b) => a._id === b._id && a._order === b._order
     );
-
-    this.sortEntries();
   }
 
   sortEntries() {
