@@ -17,6 +17,7 @@ import mergeChunks from './utils/merge-chunks';
 import urlToOptions from './utils/url-to-options';
 
 const IS_STUBBED = Symbol();
+const ABORT_HANDLER = Symbol();
 const REQUEST_ARGUMENTS = new WeakMap();
 
 // nock begins to intercept network requests on import which is not the
@@ -151,6 +152,17 @@ export default class HttpAdapter extends Adapter {
     });
   }
 
+  onRequest(pollyRequest) {
+    const { req } = pollyRequest.requestArguments;
+
+    if (req.aborted) {
+      pollyRequest.abort();
+    } else {
+      pollyRequest[ABORT_HANDLER] = () => pollyRequest.abort();
+      req.once('abort', pollyRequest[ABORT_HANDLER]);
+    }
+  }
+
   async passthroughRequest(pollyRequest) {
     const { parsedArguments } = pollyRequest.requestArguments;
     const { method, headers, body } = pollyRequest;
@@ -195,6 +207,19 @@ export default class HttpAdapter extends Adapter {
 
   async respondToRequest(pollyRequest, error) {
     const { req, respond } = pollyRequest.requestArguments;
+    const { statusCode, body, headers } = pollyRequest.response;
+
+    if (pollyRequest[ABORT_HANDLER]) {
+      req.off('abort', pollyRequest[ABORT_HANDLER]);
+    }
+
+    if (pollyRequest.aborted) {
+      // Even if the request has been aborted, we need to respond to the nock
+      // request in order to resolve its awaiting promise.
+      respond(null, [0, undefined, {}]);
+
+      return;
+    }
 
     if (error) {
       // If an error was received then forward it over to nock so it can
@@ -204,7 +229,6 @@ export default class HttpAdapter extends Adapter {
       return;
     }
 
-    const { statusCode, body, headers } = pollyRequest.response;
     const chunks = this.getChunksFromBody(body, headers);
     const stream = new ReadableStream();
 

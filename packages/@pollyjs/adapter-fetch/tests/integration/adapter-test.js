@@ -53,6 +53,56 @@ describe('Integration | Fetch Adapter', function() {
     expect(headers).to.deep.equal({ 'content-type': 'application/json' });
   });
 
+  it('should handle aborting a request', async function() {
+    const { server } = this.polly;
+    const controller = new AbortController();
+    let abortEventCalled = false;
+    let error;
+
+    server
+      .any(this.recordUrl())
+      .on('request', () => controller.abort())
+      .on('abort', () => (abortEventCalled = true))
+      .intercept((_, res) => {
+        res.sendStatus(200);
+      });
+
+    try {
+      await this.fetchRecord({ signal: controller.signal });
+    } catch (e) {
+      error = e;
+    }
+
+    expect(abortEventCalled).to.equal(true);
+    expect(error.message).to.contain('The user aborted a request.');
+  });
+
+  it('should handle immediately aborting a request', async function() {
+    const { server } = this.polly;
+    const controller = new AbortController();
+    let abortEventCalled = false;
+    let error;
+
+    server
+      .any(this.recordUrl())
+      .on('abort', () => (abortEventCalled = true))
+      .intercept((_, res) => {
+        res.sendStatus(200);
+      });
+
+    try {
+      const promise = this.fetchRecord({ signal: controller.signal });
+
+      controller.abort();
+      await promise;
+    } catch (e) {
+      error = e;
+    }
+
+    expect(abortEventCalled).to.equal(true);
+    expect(error.message).to.contain('The user aborted a request.');
+  });
+
   describe('Request', function() {
     it('should support Request objects', async function() {
       const { server } = this.polly;

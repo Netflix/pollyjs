@@ -71,20 +71,29 @@ export default class Adapter {
     try {
       pollyRequest.on('identify', (...args) => this.onIdentifyRequest(...args));
 
-      await pollyRequest.setup();
       await this.onRequest(pollyRequest);
+      await pollyRequest.init();
       await this[REQUEST_HANDLER](pollyRequest);
-      await this.onRequestFinished(pollyRequest);
 
-      return pollyRequest;
+      if (pollyRequest.aborted) {
+        throw new PollyError('Request aborted.');
+      }
+
+      await this.onRequestFinished(pollyRequest);
     } catch (error) {
       await this.onRequestFailed(pollyRequest, error);
     }
+
+    return pollyRequest;
   }
 
   async [REQUEST_HANDLER](pollyRequest) {
     const { mode } = this.polly;
     const { _interceptor: interceptor } = pollyRequest;
+
+    if (pollyRequest.aborted) {
+      return;
+    }
 
     if (pollyRequest.shouldIntercept) {
       await this.intercept(pollyRequest, interceptor);
@@ -228,7 +237,7 @@ export default class Adapter {
 
   /**
    * @param {PollyRequest} pollyRequest
-   * @returns {{ statusCode: number, headers: Object, body: string }}
+   * @returns {Object({ statusCode: number, headers: Object, body: string })}
    */
   async passthroughRequest(/* pollyRequest */) {
     this.assert('Must implement the `passthroughRequest` hook.');
@@ -241,15 +250,19 @@ export default class Adapter {
    * Calling `pollyjs.flush()` will await this method.
    *
    * @param {PollyRequest} pollyRequest
+   * @param {Error} [error]
    */
-  async respondToRequest(/* pollyRequest */) {}
+  async respondToRequest(/* pollyRequest, error */) {}
 
   /**
    * @param {PollyRequest} pollyRequest
    */
   async onRecord(pollyRequest) {
     await this.onPassthrough(pollyRequest);
-    await this.persister.recordRequest(pollyRequest);
+
+    if (!pollyRequest.aborted) {
+      await this.persister.recordRequest(pollyRequest);
+    }
   }
 
   /**
@@ -300,19 +313,25 @@ export default class Adapter {
    */
   async onRequestFinished(pollyRequest) {
     await this.respondToRequest(pollyRequest);
-
     pollyRequest.promise.resolve();
   }
 
   /**
    * @param {PollyRequest} pollyRequest
-   * @param {Error} error
+   * @param {Error} [error]
    */
   async onRequestFailed(pollyRequest, error) {
+    const { aborted } = pollyRequest;
+
     error = error || new PollyError('Request failed due to an unknown error.');
 
     try {
-      await pollyRequest._emit('error', error);
+      if (aborted) {
+        await pollyRequest._emit('abort');
+      } else {
+        await pollyRequest._emit('error', error);
+      }
+
       await this.respondToRequest(pollyRequest, error);
     } catch (e) {
       // Rethrow any error not handled by `respondToRequest`.

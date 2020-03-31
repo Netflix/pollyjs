@@ -5,6 +5,7 @@ import resolveXhr from './utils/resolve-xhr';
 import serializeResponseHeaders from './utils/serialize-response-headers';
 
 const SEND = Symbol();
+const ABORT_HANDLER = Symbol();
 const stubbedXhrs = new WeakSet();
 
 export default class XHRAdapter extends Adapter {
@@ -61,10 +62,27 @@ export default class XHRAdapter extends Adapter {
     this.xhr.restore();
   }
 
+  onRequest(pollyRequest) {
+    const { xhr } = pollyRequest.requestArguments;
+
+    if (xhr.aborted) {
+      pollyRequest.abort();
+    } else {
+      pollyRequest[ABORT_HANDLER] = () => pollyRequest.abort();
+      xhr.addEventListener('abort', pollyRequest[ABORT_HANDLER]);
+    }
+  }
+
   respondToRequest(pollyRequest, error) {
     const { xhr } = pollyRequest.requestArguments;
 
-    if (error) {
+    if (pollyRequest[ABORT_HANDLER]) {
+      xhr.removeEventListener('abort', pollyRequest[ABORT_HANDLER]);
+    }
+
+    if (pollyRequest.aborted) {
+      return;
+    } else if (error) {
       // If an error was received then call the `error` method on the fake XHR
       // request provided by nise which will simulate a network error on the request.
       // The onerror handler will be called and the status will be 0.
@@ -78,7 +96,7 @@ export default class XHRAdapter extends Adapter {
   }
 
   async passthroughRequest(pollyRequest) {
-    const fakeXhr = pollyRequest.requestArguments.xhr;
+    const { xhr: fakeXhr } = pollyRequest.requestArguments;
     const xhr = new this.NativeXMLHttpRequest();
 
     xhr.open(

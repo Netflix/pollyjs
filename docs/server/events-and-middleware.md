@@ -150,6 +150,24 @@ server.any().on('error', (req, error) => {
 });
 ```
 
+### abort
+
+Fires when a request is aborted.
+
+| Param | Type                      | Description          |
+| ----- | ------------------------- | -------------------- |
+| req   | [Request](server/request) | The request instance |
+| event | [Event](server/event)     | The event instance   |
+
+**Example**
+
+```js
+server.any().on('abort', req => {
+  console.error('Request aborted.');
+  process.exit(1);
+});
+```
+
 ## Middleware
 
 Middleware can be added via the `.any()` method.

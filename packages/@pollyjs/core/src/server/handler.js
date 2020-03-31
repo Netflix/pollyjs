@@ -19,6 +19,7 @@ export default class Handler extends Map {
     this._eventEmitter = new EventEmitter({
       eventNames: [
         'error',
+        'abort',
         'request',
         'beforeReplay',
         'beforePersist',

@@ -146,4 +146,55 @@ function commonTests(transport) {
 
     expect(nativeHash).to.equal(recordedHash);
   });
+
+  it('should handle aborting a request', async function() {
+    const { server } = this.polly;
+    const url = `${protocol}//example.com`;
+    const req = transport.request(url);
+    let abortEventCalled = false;
+
+    server
+      .any(url)
+      .on('request', () => req.abort())
+      .on('abort', () => (abortEventCalled = true))
+      .intercept((_, res) => {
+        res.sendStatus(200);
+      });
+
+    try {
+      await getResponseFromRequest(req);
+    } catch (e) {
+      // no-op
+    }
+
+    await this.polly.flush();
+    expect(abortEventCalled).to.equal(true);
+  });
+
+  it('should handle immediately aborting a request', async function() {
+    const { server } = this.polly;
+    const url = `${protocol}//example.com`;
+    const req = transport.request(url);
+    let abortEventCalled = false;
+
+    server
+      .any(url)
+      .on('abort', () => (abortEventCalled = true))
+      .intercept((_, res) => {
+        res.sendStatus(200);
+      });
+
+    const promise = getResponseFromRequest(req);
+
+    req.abort();
+
+    try {
+      await promise;
+    } catch (e) {
+      // no-op
+    }
+
+    await this.polly.flush();
+    expect(abortEventCalled).to.equal(true);
+  });
 }
