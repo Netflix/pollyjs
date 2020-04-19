@@ -23,10 +23,15 @@ export default class Adapter {
     return 'adapter';
   }
 
-  /* eslint-disable-next-line getter-return */
   static get id() {
-    assert('Must override the static `id` getter.');
+    return this.name;
   }
+
+  /* eslint-disable-next-line getter-return */
+  static get name() {
+    assert('Must override the static `name` getter.');
+  }
+
 
   get defaultOptions() {
     return {};

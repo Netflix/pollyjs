@@ -17,9 +17,14 @@ export default class Persister {
     return 'persister';
   }
 
-  /* eslint-disable-next-line getter-return */
   static get id() {
-    assert('Must override the static `id` getter.');
+    return this.name;
+  }
+
+  // NOTE: deprecated in 4.1.0. Remove in 5.0.0
+  /* eslint-disable-next-line getter-return */
+  static get name() {
+    assert('Must override the static `name` getter.');
   }
 
   get defaultOptions() {
