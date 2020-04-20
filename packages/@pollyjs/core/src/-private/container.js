@@ -1,19 +1,7 @@
-import { assert } from '@pollyjs/utils';
-
-export function idOfFactory(Factory) {
-  if (Factory.hasOwnProperty('id')) {
-    return Factory.id;
-  }
-
-  console.warn(
-    `[Polly] ${Factory.id}:${Factory.name} "name" is deprecated and has been renamed to "id".`
-  );
-
-  return Factory.name;
-}
+import { assert, getFactoryId } from '@pollyjs/utils';
 
 function keyFor(Factory) {
-  return `${Factory.type}:${idOfFactory(Factory)}`;
+  return `${Factory.type}:${getFactoryId(Factory)}`;
 }
 
 export class Container {
@@ -33,7 +21,7 @@ export class Container {
     );
 
     const { type } = Factory;
-    const name = idOfFactory(Factory);
+    const name = getFactoryId(Factory);
 
     assert(
       `Invalid registration id provided. Expected string, received: "${typeof name}"`,

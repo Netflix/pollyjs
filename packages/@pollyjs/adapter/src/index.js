@@ -4,7 +4,8 @@ import {
   EXPIRY_STRATEGIES,
   PollyError,
   Serializers,
-  assert
+  assert,
+  getFactoryId
 } from '@pollyjs/utils';
 
 import isExpired from './utils/is-expired';
@@ -35,7 +36,9 @@ export default class Adapter {
   get options() {
     return {
       ...(this.defaultOptions || {}),
-      ...((this.polly.config.adapterOptions || {})[this.constructor.id] || {})
+      ...((this.polly.config.adapterOptions || {})[
+        getFactoryId(this.constructor)
+      ] || {})
     };
   }
 
@@ -222,7 +225,7 @@ export default class Adapter {
 
   assert(message, ...args) {
     assert(
-      `[${this.constructor.type}:${this.constructor.id}] ${message}`,
+      `[${this.constructor.type}:${getFactoryId(this.constructor)}] ${message}`,
       ...args
     );
   }

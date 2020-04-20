@@ -1,9 +1,9 @@
-import { MODES, assert } from '@pollyjs/utils';
+import { MODES, getFactoryId, assert } from '@pollyjs/utils';
 
 import { version } from '../package.json';
 
 import Logger from './-private/logger';
-import { Container, idOfFactory } from './-private/container';
+import { Container } from './-private/container';
 import DefaultConfig from './defaults/config';
 import PollyRequest from './-private/request';
 import guidForRecording from './utils/guid-for-recording';
@@ -170,7 +170,7 @@ export default class Polly {
     if (persister) {
       if (typeof persister === 'function') {
         container.register(persister);
-        persister = idOfFactory(persister);
+        persister = getFactoryId(persister);
       }
 
       assert(
@@ -262,7 +262,7 @@ export default class Polly {
 
     if (typeof idOrFactoryIdGetter === 'function') {
       container.register(idOrFactoryIdGetter);
-      adapterId = idOfFactory(idOrFactoryIdGetter);
+      adapterId = getFactoryId(idOrFactoryIdGetter);
     }
 
     assert(
@@ -288,7 +288,7 @@ export default class Polly {
     let adapterId = idOrFactoryIdGetter;
 
     if (typeof idOrFactoryIdGetter === 'function') {
-      adapterId = idOfFactory(idOrFactoryIdGetter);
+      adapterId = getFactoryId(idOrFactoryIdGetter);
     }
 
     if (adapters.has(adapterId)) {
