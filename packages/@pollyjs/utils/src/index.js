@@ -13,3 +13,5 @@ export { default as PollyError } from './utils/polly-error';
 export { default as Serializers } from './utils/serializers';
 
 export { default as URL } from './utils/url';
+
+export { default as getFactoryId } from './utils/get-factory-id';
