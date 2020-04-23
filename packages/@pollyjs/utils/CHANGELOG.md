@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v4.0.4...v4.1.0) (2020-04-23)
+
+
+### Bug Fixes
+
+* Legacy persisters and adapters should register ([#325](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/issues/325)) ([8fd4d19](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/8fd4d19))
+
+
+
+
+
 ## [4.0.2](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v4.0.1...v4.0.2) (2020-01-29)
 
 

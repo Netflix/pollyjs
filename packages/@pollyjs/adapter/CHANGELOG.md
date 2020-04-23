@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v4.0.4...v4.1.0) (2020-04-23)
+
+
+### Bug Fixes
+
+* Improve abort handling ([#320](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/issues/320)) ([cc46bb4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/cc46bb4))
+* Legacy persisters and adapters should register ([#325](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/issues/325)) ([8fd4d19](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/commit/8fd4d19))
+
+
+
+
+
 ## [4.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v4.0.3...v4.0.4) (2020-03-21)
 
 

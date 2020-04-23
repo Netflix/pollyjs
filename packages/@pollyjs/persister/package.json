@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister",
-  "version": "4.0.4",
+  "version": "4.1.0",
   "description": "Extendable base persister class used by @pollyjs",
   "main": "dist/cjs/pollyjs-persister.js",
   "module": "dist/es/pollyjs-persister.js",
@@ -37,7 +37,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@pollyjs/utils": "^4.0.2",
+    "@pollyjs/utils": "^4.1.0",
     "bowser": "^2.4.0",
     "fast-json-stable-stringify": "^2.0.0",
     "lodash-es": "^4.17.11",

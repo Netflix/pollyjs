@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v4.0.4...v4.1.0) (2020-04-23)
+
+
+### Bug Fixes
+
+* Improve abort handling ([#320](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/320)) ([cc46bb4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/commit/cc46bb4))
+
+
+
+
+
 ## [4.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v4.0.3...v4.0.4) (2020-03-21)
 
 

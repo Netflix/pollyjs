@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-rest/compare/v4.0.4...v4.1.0) (2020-04-23)
+
+**Note:** Version bump only for package @pollyjs/persister-rest
+
+
+
+
+
 ## [4.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-rest/compare/v4.0.3...v4.0.4) (2020-03-21)
 
 

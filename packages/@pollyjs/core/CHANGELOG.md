@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/v4.0.4...v4.1.0) (2020-04-23)
+
+
+### Bug Fixes
+
+* Improve abort handling ([#320](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/issues/320)) ([cc46bb4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/cc46bb4))
+* Legacy persisters and adapters should register ([#325](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/issues/325)) ([8fd4d19](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/8fd4d19))
+
+
+### Features
+
+* **persister:** Add `disableSortingHarEntries` option ([#321](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/issues/321)) ([0003c0e](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/commit/0003c0e))
+
+
+
+
+
 ## [4.0.4](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/core/compare/v4.0.3...v4.0.4) (2020-03-21)
 
 
