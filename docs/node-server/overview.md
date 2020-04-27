@@ -83,6 +83,22 @@ new Server({
 });
 ```
 
+### corsOptions
+
+_Type_: `Object | Function`
+_Default_: `undefined`
+
+Options passed to the ([CORS](https://github.com/expressjs/cors)) middleware.
+
+```js
+new Server({
+  corsOptions: {
+    origin: 'http://localhost:4000',
+    credentials: true
+  }
+});
+```
+
 ## API Configuration
 
 ### recordingsDir
