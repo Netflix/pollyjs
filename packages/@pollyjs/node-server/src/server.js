@@ -12,7 +12,7 @@ export default class Server {
   constructor(config = {}) {
     this.config = { ...DefaultConfig, ...config };
     this.app = express();
-    this.app.use(cors());
+    this.app.use(cors(this.config.corsOptions));
 
     if (!this.config.quiet) {
       this.app.use(morgan('dev'));
