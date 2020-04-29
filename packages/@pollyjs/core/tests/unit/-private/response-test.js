@@ -14,6 +14,10 @@ describe('Unit | Response', function() {
     expect(new PollyResponse().statusCode).to.equal(200);
   });
 
+  it('should default isBinary to false', function() {
+    expect(new PollyResponse().isBinary).to.be.false;
+  });
+
   describe('API', function() {
     beforeEach(function() {
       response = new PollyResponse();
