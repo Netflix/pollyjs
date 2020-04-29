@@ -201,13 +201,14 @@ export default class HttpAdapter extends Adapter {
     return {
       headers: response.headers,
       statusCode: response.statusCode,
-      body: responseBody
+      body: responseBody.body,
+      isBinary: responseBody.isBinary
     };
   }
 
   async respondToRequest(pollyRequest, error) {
     const { req, respond } = pollyRequest.requestArguments;
-    const { statusCode, body, headers } = pollyRequest.response;
+    const { statusCode, body, headers, isBinary } = pollyRequest.response;
 
     if (pollyRequest[ABORT_HANDLER]) {
       req.off('abort', pollyRequest[ABORT_HANDLER]);
@@ -229,7 +230,7 @@ export default class HttpAdapter extends Adapter {
       return;
     }
 
-    const chunks = this.getChunksFromBody(body, headers);
+    const chunks = this.getChunksFromBody(body, headers, isBinary);
     const stream = new ReadableStream();
 
     // Expose the response data as a stream of chunks since
@@ -274,18 +275,25 @@ export default class HttpAdapter extends Adapter {
         return chunk.toString('hex');
       });
 
-      return JSON.stringify(hexChunks);
+      return {
+        isBinary: true,
+        body: JSON.stringify(hexChunks)
+      };
     }
 
     const buffer = mergeChunks(chunks);
+    const isBinaryBuffer = !isUtf8Representable(buffer);
 
     // The merged buffer can be one of two things:
     //  1. A binary buffer which then has to be recorded as a hex string.
     //  2. A string buffer.
-    return buffer.toString(isUtf8Representable(buffer) ? 'utf8' : 'hex');
+    return {
+      isBinary: isBinaryBuffer,
+      body: buffer.toString(isBinaryBuffer ? 'hex' : 'utf8')
+    };
   }
 
-  getChunksFromBody(body, headers) {
+  getChunksFromBody(body, headers, isBinary = false) {
     if (!body) {
       return [];
     }
@@ -302,11 +310,9 @@ export default class HttpAdapter extends Adapter {
       return hexChunks.map(chunk => Buffer.from(chunk, 'hex'));
     }
 
-    const buffer = Buffer.from(body);
-
     // The body can be one of two things:
     //  1. A hex string which then means its binary data.
     //  2. A utf8 string which means a regular string.
-    return [Buffer.from(buffer, isUtf8Representable(buffer) ? 'utf8' : 'hex')];
+    return [Buffer.from(body, isBinary ? 'hex' : 'utf8')];
   }
 }

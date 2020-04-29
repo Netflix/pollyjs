@@ -125,26 +125,38 @@ function commonTests(transport) {
 
   it('should be able to download binary content', async function() {
     const url = `${protocol}//via.placeholder.com/150/92c952`;
-    const { server } = this.polly;
 
-    server.get(url).passthrough(true);
+    this.polly.disconnectFrom(NodeHTTPAdapter);
 
     const nativeResponseStream = await getResponseFromRequest(
       transport.request(url)
     );
 
-    server.get(url).passthrough(false);
+    this.polly.connectTo(NodeHTTPAdapter);
 
     const recordedResponseStream = await getResponseFromRequest(
       transport.request(url)
     );
 
-    const [nativeHash, recordedHash] = await Promise.all([
+    const { recordingName, config } = this.polly;
+
+    await this.polly.stop();
+    this.polly = new Polly(recordingName, config);
+    this.polly.replay();
+
+    const replayedResponseStream = await getResponseFromRequest(
+      transport.request(url)
+    );
+
+    const [nativeHash, recordedHash, replayedHash] = await Promise.all([
       calculateHashFromStream(nativeResponseStream),
-      calculateHashFromStream(recordedResponseStream)
+      calculateHashFromStream(recordedResponseStream),
+      calculateHashFromStream(replayedResponseStream)
     ]);
 
     expect(nativeHash).to.equal(recordedHash);
+    expect(recordedHash).to.equal(replayedHash);
+    expect(nativeHash).to.equal(replayedHash);
   });
 
   it('should handle aborting a request', async function() {

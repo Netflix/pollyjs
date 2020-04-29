@@ -37,6 +37,10 @@ export default class Response {
 
     if (response.body && typeof response.body === 'string') {
       this.content.text = response.body;
+
+      if (response.isBinary) {
+        this.content._isBinary = true;
+      }
     }
 
     const contentLength = getFirstHeader(response, 'Content-Length');

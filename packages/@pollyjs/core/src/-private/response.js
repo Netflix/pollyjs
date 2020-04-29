@@ -10,6 +10,7 @@ export default class PollyResponse extends HTTPBase {
     this.status(statusCode || DEFAULT_STATUS_CODE);
     this.setHeaders(headers);
     this.body = body;
+    this.isBinary = false;
   }
 
   get ok() {
