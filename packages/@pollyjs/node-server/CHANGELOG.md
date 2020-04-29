@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/compare/v4.1.0...v4.2.0) (2020-04-29)
+
+
+### Features
+
+* **node-server:** Pass options to the CORS middleware via `corsOptions` ([3d991f5](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/commit/3d991f5))
+
+
+
+
+
 # [4.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/node-server/compare/v4.0.4...v4.1.0) (2020-04-23)
 
 **Note:** Version bump only for package @pollyjs/node-server
