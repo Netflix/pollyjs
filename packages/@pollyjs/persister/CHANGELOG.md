@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v4.2.0...v4.2.1) (2020-04-30)
+
+
+### Bug Fixes
+
+* **adapter-node-http:** Improve binary response body handling ([#329](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/issues/329)) ([9466989](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/commit/9466989))
+
+
+
+
+
 # [4.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister/compare/v4.0.4...v4.1.0) (2020-04-23)
 
 

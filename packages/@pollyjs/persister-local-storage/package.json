@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-local-storage",
-  "version": "4.1.0",
+  "version": "4.2.1",
   "description": "Local storage persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-local-storage.js",
   "module": "dist/es/pollyjs-persister-local-storage.js",
@@ -40,7 +40,7 @@
     "watch-all": "npm-run-all --parallel build:watch test:build:watch"
   },
   "dependencies": {
-    "@pollyjs/persister": "^4.1.0"
+    "@pollyjs/persister": "^4.2.1"
   },
   "devDependencies": {
     "rollup": "^1.14.6"

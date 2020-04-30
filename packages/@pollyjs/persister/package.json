@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister",
-  "version": "4.1.0",
+  "version": "4.2.1",
   "description": "Extendable base persister class used by @pollyjs",
   "main": "dist/cjs/pollyjs-persister.js",
   "module": "dist/es/pollyjs-persister.js",
