@@ -346,4 +346,55 @@ export default function persisterTests() {
     expect(har.log.entries[2].request.url).to.include(orderedRecordUrl(1));
     expect(har.log.entries[3].request.url).to.include(orderedRecordUrl(2));
   });
+
+  it('should correctly handle binary responses', async function() {
+    const { recordingId, server, persister } = this.polly;
+    let har, content;
+
+    this.polly.record();
+
+    // Non binary content
+    server.get(this.recordUrl()).once('beforeResponse', (req, res) => {
+      res.body = 'Some content';
+    });
+
+    await this.fetchRecord();
+    await persister.persist();
+
+    har = await persister.find(recordingId);
+    content = har.log.entries[0].response.content;
+
+    expect(await validate.har(har)).to.be.true;
+    expect(content._isBinary).to.be.undefined;
+
+    // Binary content
+    server.get(this.recordUrl()).once('beforeResponse', (req, res) => {
+      res.isBinary = true;
+      res.body = 'Some binary content';
+    });
+
+    await this.fetchRecord();
+    await persister.persist();
+
+    har = await persister.find(recordingId);
+    content = har.log.entries[1].response.content;
+
+    expect(await validate.har(har)).to.be.true;
+    expect(content._isBinary).to.be.true;
+
+    // Binary content with no body
+    server.get(this.recordUrl()).once('beforeResponse', (req, res) => {
+      res.isBinary = true;
+      res.body = '';
+    });
+
+    await this.fetchRecord();
+    await persister.persist();
+
+    har = await persister.find(recordingId);
+    content = har.log.entries[2].response.content;
+
+    expect(await validate.har(har)).to.be.true;
+    expect(content._isBinary).to.be.undefined;
+  });
 }

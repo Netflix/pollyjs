@@ -5,11 +5,12 @@ import HTTPBase from './http-base';
 const DEFAULT_STATUS_CODE = 200;
 
 export default class PollyResponse extends HTTPBase {
-  constructor(statusCode, headers, body) {
+  constructor(statusCode, headers, body, isBinary = false) {
     super();
     this.status(statusCode || DEFAULT_STATUS_CODE);
     this.setHeaders(headers);
     this.body = body;
+    this.isBinary = isBinary;
   }
 
   get ok() {
