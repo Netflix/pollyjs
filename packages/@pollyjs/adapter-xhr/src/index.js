@@ -1,5 +1,7 @@
 import fakeXhr from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
+import { Buffer } from 'buffer/';
+import bufferToArrayBuffer from 'to-arraybuffer';
 
 import resolveXhr from './utils/resolve-xhr';
 import serializeResponseHeaders from './utils/serialize-response-headers';
@@ -73,6 +75,55 @@ export default class XHRAdapter extends Adapter {
     }
   }
 
+  async passthroughRequest(pollyRequest) {
+    const { xhr: fakeXhr } = pollyRequest.requestArguments;
+    const xhr = new this.NativeXMLHttpRequest();
+
+    xhr.open(
+      pollyRequest.method,
+      pollyRequest.url,
+      fakeXhr.async,
+      fakeXhr.username,
+      fakeXhr.password
+    );
+
+    xhr.async = fakeXhr.async;
+    xhr.responseType = fakeXhr.responseType;
+
+    if (fakeXhr.async) {
+      xhr.timeout = fakeXhr.timeout;
+      xhr.withCredentials = fakeXhr.withCredentials;
+    }
+
+    for (const h in pollyRequest.headers) {
+      xhr.setRequestHeader(h, pollyRequest.headers[h]);
+    }
+
+    await resolveXhr(xhr, pollyRequest.body);
+
+    const { response, responseType } = xhr;
+    let body;
+
+    if (responseType === 'arraybuffer') {
+      body = Buffer.from(response).toString('hex');
+    } else if (responseType === 'blob') {
+      body = Buffer.from(await new Response(response).arrayBuffer()).toString(
+        'hex'
+      );
+    } else if (responseType === 'json') {
+      body = JSON.stringify(response);
+    } else {
+      body = `${response}`;
+    }
+
+    return {
+      statusCode: xhr.status,
+      headers: serializeResponseHeaders(xhr.getAllResponseHeaders()),
+      isBinary: responseType === 'arraybuffer' || responseType === 'blob',
+      body
+    };
+  }
+
   respondToRequest(pollyRequest, error) {
     const { xhr } = pollyRequest.requestArguments;
 
@@ -89,41 +140,19 @@ export default class XHRAdapter extends Adapter {
       // https://github.com/sinonjs/nise/blob/v1.4.10/lib/fake-xhr/index.js#L614-L621
       xhr.error();
     } else {
+      const { responseType } = xhr;
       const { response } = pollyRequest;
+      let body = response.body;
 
-      xhr.respond(response.statusCode, response.headers, response.body);
+      if (responseType === 'arraybuffer') {
+        body = bufferToArrayBuffer(Buffer.from(body, 'hex'));
+      } else if (responseType === 'blob') {
+        body = new Blob([Buffer.from(body, 'hex')], {
+          type: response.getHeader('Content-Type')
+        });
+      }
+
+      xhr.respond(response.statusCode, response.headers, body);
     }
-  }
-
-  async passthroughRequest(pollyRequest) {
-    const { xhr: fakeXhr } = pollyRequest.requestArguments;
-    const xhr = new this.NativeXMLHttpRequest();
-
-    xhr.open(
-      pollyRequest.method,
-      pollyRequest.url,
-      fakeXhr.async,
-      fakeXhr.username,
-      fakeXhr.password
-    );
-
-    xhr.async = fakeXhr.async;
-
-    if (fakeXhr.async) {
-      xhr.timeout = fakeXhr.timeout;
-      xhr.withCredentials = fakeXhr.withCredentials;
-    }
-
-    for (const h in pollyRequest.headers) {
-      xhr.setRequestHeader(h, pollyRequest.headers[h]);
-    }
-
-    await resolveXhr(xhr, pollyRequest.body);
-
-    return {
-      statusCode: xhr.status,
-      headers: serializeResponseHeaders(xhr.getAllResponseHeaders()),
-      body: xhr.responseText
-    };
   }
 }
