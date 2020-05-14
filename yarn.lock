@@ -3914,6 +3914,14 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
+buffer@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.6.0.tgz#a31749dc7d81d84db08abf937b6b8c4033f62786"
+  integrity sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==
+  dependencies:
+    base64-js "^1.0.2"
+    ieee754 "^1.1.4"
+
 builtin-modules@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.1.0.tgz#aad97c15131eb76b65b50ef208e7584cd76a7484"
@@ -13542,7 +13550,7 @@ to-array@0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/to-array/-/to-array-0.1.4.tgz#17e6c11f73dd4f3d74cda7a4ff3238e9ad9bf890"
 
-to-arraybuffer@^1.0.0:
+to-arraybuffer@^1.0.0, to-arraybuffer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/to-arraybuffer/-/to-arraybuffer-1.0.1.tgz#7d229b1fcc637e466ca081180836a7aabff83f43"
 
