@@ -13,6 +13,10 @@ module.exports = function attachMiddleware(app) {
     recordingsDir: path.join(__dirname, 'recordings')
   });
 
+  app.get('/assets/:name', (req, res) => {
+    res.sendFile(path.join(__dirname, 'assets', req.params.name));
+  });
+
   app.use(bodyParser.json());
 
   app.get('/echo', (req, res) => {

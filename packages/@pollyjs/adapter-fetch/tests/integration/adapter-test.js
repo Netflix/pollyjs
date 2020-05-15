@@ -109,9 +109,7 @@ describe('Integration | Fetch Adapter', function() {
 
     const fetch = async () =>
       Buffer.from(
-        await this.fetch('https://placekitten.com/32/32').then(res =>
-          res.arrayBuffer()
-        )
+        await this.fetch('/assets/32x32.png').then(res => res.arrayBuffer())
       );
 
     this.polly.disconnectFrom(FetchAdapter);
