@@ -104,7 +104,7 @@ describe('Integration | XHR Adapter', function() {
     });
   }
 
-  // testDownloadingBinaryData('arraybuffer');
+  testDownloadingBinaryData('arraybuffer');
   testDownloadingBinaryData('blob');
 });
 
