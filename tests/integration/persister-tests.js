@@ -370,7 +370,7 @@ export default function persisterTests() {
     // Binary content
     server.get(this.recordUrl()).once('beforeResponse', (req, res) => {
       res.isBinary = true;
-      res.body = 'Some binary content';
+      res.body = '536f6d6520636f6e74656e74';
     });
 
     await this.fetchRecord();
