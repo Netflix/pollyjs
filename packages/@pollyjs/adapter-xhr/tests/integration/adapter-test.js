@@ -65,13 +65,13 @@ describe('Integration | XHR Adapter', function() {
     expect(abortEventCalled).to.equal(true);
   });
 
-  function testDownloadingBinaryData(responseType) {
+  ['arraybuffer', 'blob'].forEach(responseType =>
     it(`should be able to download binary content (${responseType})`, async function() {
       this.timeout(10000);
 
       const fetch = async () =>
         Buffer.from(
-          await this.fetch('https://placekitten.com/32/32', {
+          await this.fetch('/assets/32x32.png', {
             responseType
           }).then(res => res.arrayBuffer())
         );
@@ -101,11 +101,8 @@ describe('Integration | XHR Adapter', function() {
       expect(nativeResponseBuffer.equals(replayedResponseBuffer)).to.equal(
         true
       );
-    });
-  }
-
-  testDownloadingBinaryData('arraybuffer');
-  testDownloadingBinaryData('blob');
+    })
+  );
 });
 
 describe('Integration | XHR Adapter | Init', function() {
