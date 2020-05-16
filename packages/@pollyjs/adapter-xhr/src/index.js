@@ -1,5 +1,6 @@
 import fakeXhr from 'nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
+import { isBufferUtf8Representable } from '@pollyjs/utils';
 import { Buffer } from 'buffer/';
 import bufferToArrayBuffer from 'to-arraybuffer';
 
@@ -88,7 +89,7 @@ export default class XHRAdapter extends Adapter {
     );
 
     xhr.async = fakeXhr.async;
-    xhr.responseType = fakeXhr.responseType;
+    xhr.responseType = 'arraybuffer';
 
     if (fakeXhr.async) {
       xhr.timeout = fakeXhr.timeout;
@@ -101,26 +102,14 @@ export default class XHRAdapter extends Adapter {
 
     await resolveXhr(xhr, pollyRequest.body);
 
-    const { response, responseType } = xhr;
-    let body;
-
-    if (responseType === 'arraybuffer') {
-      body = Buffer.from(response).toString('hex');
-    } else if (responseType === 'blob') {
-      body = Buffer.from(await new Response(response).arrayBuffer()).toString(
-        'hex'
-      );
-    } else if (responseType === 'json') {
-      body = JSON.stringify(response);
-    } else {
-      body = `${response}`;
-    }
+    const buffer = Buffer.from(xhr.response);
+    const isBinaryBuffer = !isBufferUtf8Representable(buffer);
 
     return {
       statusCode: xhr.status,
       headers: serializeResponseHeaders(xhr.getAllResponseHeaders()),
-      isBinary: responseType === 'arraybuffer' || responseType === 'blob',
-      body
+      body: buffer.toString(isBinaryBuffer ? 'hex' : 'utf8'),
+      isBinary: isBinaryBuffer
     };
   }
 
@@ -140,19 +129,20 @@ export default class XHRAdapter extends Adapter {
       // https://github.com/sinonjs/nise/blob/v1.4.10/lib/fake-xhr/index.js#L614-L621
       xhr.error();
     } else {
-      const { responseType } = xhr;
-      const { response } = pollyRequest;
-      let body = response.body;
+      const { statusCode, headers, body, isBinary } = pollyRequest.response;
+      let responseBody = body;
 
-      if (responseType === 'arraybuffer') {
-        body = bufferToArrayBuffer(Buffer.from(body, 'hex'));
-      } else if (responseType === 'blob') {
-        body = new Blob([Buffer.from(body, 'hex')], {
-          type: response.getHeader('Content-Type')
-        });
+      if (isBinary) {
+        const buffer = Buffer.from(body, 'hex');
+
+        if (['arraybuffer', 'blob'].includes(xhr.responseType)) {
+          responseBody = bufferToArrayBuffer(buffer);
+        } else {
+          responseBody = buffer.toString('utf8');
+        }
       }
 
-      xhr.respond(response.statusCode, response.headers, body);
+      xhr.respond(statusCode, headers, responseBody);
     }
   }
 }

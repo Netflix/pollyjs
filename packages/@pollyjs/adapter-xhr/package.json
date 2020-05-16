@@ -42,7 +42,7 @@
   "dependencies": {
     "@pollyjs/adapter": "^4.2.1",
     "@pollyjs/utils": "^4.1.0",
-    "nise": "^1.5.0",
+    "nise": "^4.0.3",
     "to-arraybuffer": "^1.0.1"
   },
   "devDependencies": {

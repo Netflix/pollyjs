@@ -65,7 +65,7 @@ describe('Integration | XHR Adapter', function() {
     expect(abortEventCalled).to.equal(true);
   });
 
-  ['arraybuffer', 'blob'].forEach(responseType =>
+  ['arraybuffer', 'blob', 'text'].forEach(responseType =>
     it(`should be able to download binary content (${responseType})`, async function() {
       this.timeout(10000);
 

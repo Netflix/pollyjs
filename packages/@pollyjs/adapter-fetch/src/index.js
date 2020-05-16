@@ -1,10 +1,10 @@
 import Adapter from '@pollyjs/adapter';
+import { isBufferUtf8Representable } from '@pollyjs/utils';
 import isNode from 'detect-node';
 import { Buffer } from 'buffer/';
 import bufferToArrayBuffer from 'to-arraybuffer';
 
 import serializeHeaders from './utils/serializer-headers';
-import isBufferUtf8Representable from './utils/is-buffer-utf8-representable';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
