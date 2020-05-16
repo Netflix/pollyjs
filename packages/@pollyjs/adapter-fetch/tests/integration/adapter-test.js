@@ -5,6 +5,7 @@ import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterPollyTests from '@pollyjs-tests/integration/adapter-polly-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
 import adapterIdentifierTests from '@pollyjs-tests/integration/adapter-identifier-tests';
+import { Buffer } from 'buffer/';
 
 import FetchAdapter from '../../src';
 import pollyConfig from '../utils/polly-config';
@@ -101,6 +102,37 @@ describe('Integration | Fetch Adapter', function() {
 
     expect(abortEventCalled).to.equal(true);
     expect(error.message).to.contain('The user aborted a request.');
+  });
+
+  it('should be able to download binary content', async function() {
+    this.timeout(10000);
+
+    const fetch = async () =>
+      Buffer.from(
+        await this.fetch('/assets/32x32.png').then(res => res.arrayBuffer())
+      );
+
+    this.polly.disconnectFrom(FetchAdapter);
+
+    const nativeResponseBuffer = await fetch();
+
+    this.polly.connectTo(FetchAdapter);
+
+    const recordedResponseBuffer = await fetch();
+
+    const { recordingName, config } = this.polly;
+
+    await this.polly.stop();
+    this.polly = new Polly(recordingName, config);
+    this.polly.replay();
+
+    const replayedResponseBuffer = await fetch();
+
+    expect(nativeResponseBuffer.equals(recordedResponseBuffer)).to.equal(true);
+    expect(recordedResponseBuffer.equals(replayedResponseBuffer)).to.equal(
+      true
+    );
+    expect(nativeResponseBuffer.equals(replayedResponseBuffer)).to.equal(true);
   });
 
   describe('Request', function() {

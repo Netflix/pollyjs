@@ -1,7 +1,10 @@
 import Adapter from '@pollyjs/adapter';
 import isNode from 'detect-node';
+import { Buffer } from 'buffer/';
+import bufferToArrayBuffer from 'to-arraybuffer';
 
 import serializeHeaders from './utils/serializer-headers';
+import isBufferUtf8Representable from './utils/is-buffer-utf8-representable';
 
 const { defineProperty } = Object;
 const IS_STUBBED = Symbol();
@@ -164,10 +167,14 @@ export default class FetchAdapter extends Adapter {
       }
     ]);
 
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const isBinaryBuffer = !isBufferUtf8Representable(buffer);
+
     return {
       statusCode: response.status,
       headers: serializeHeaders(response.headers),
-      body: await response.text()
+      body: buffer.toString(isBinaryBuffer ? 'hex' : 'utf8'),
+      isBinary: isBinaryBuffer
     };
   }
 
@@ -199,11 +206,16 @@ export default class FetchAdapter extends Adapter {
     }
 
     const { absoluteUrl, response: pollyResponse } = pollyRequest;
-    const { statusCode } = pollyResponse;
-    const responseBody =
-      statusCode === 204 && pollyResponse.body === ''
-        ? null
-        : pollyResponse.body;
+    const { statusCode, body, isBinary } = pollyResponse;
+
+    let responseBody = body;
+
+    if (statusCode === 204 && responseBody === '') {
+      responseBody = null;
+    } else if (isBinary) {
+      responseBody = bufferToArrayBuffer(Buffer.from(body, 'hex'));
+    }
+
     const response = new Response(responseBody, {
       status: statusCode,
       headers: pollyResponse.headers
