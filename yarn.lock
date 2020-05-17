@@ -1857,6 +1857,17 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
+"@offirgolan/nise@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@offirgolan/nise/-/nise-4.1.0.tgz#11ef964cc8a7d8134555134b55c16b9d2b707387"
+  integrity sha512-7GEUt4YBlYdQM3D5cyQTUiupvBtSNapNiplkz1AI9hJETjFOemUPUHJq0+NmlaBt3WjdHGq8zg+FfKwjYTSQcw==
+  dependencies:
+    "@sinonjs/commons" "^1.7.0"
+    "@sinonjs/fake-timers" "^6.0.0"
+    "@sinonjs/text-encoding" "^0.7.1"
+    just-extend "^4.0.2"
+    path-to-regexp "^1.7.0"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
@@ -10376,17 +10387,6 @@ nested-error-stacks@^2.0.0:
 nice-try@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.4.tgz#d93962f6c52f2c1558c0fbda6d512819f1efe1c4"
-
-nise@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/nise/-/nise-4.0.3.tgz#9f79ff02fa002ed5ffbc538ad58518fa011dc913"
-  integrity sha512-EGlhjm7/4KvmmE6B/UFsKh7eHykRl9VH+au8dduHLCyWUO/hr7+N+WtTvDUwc9zHuM1IaIJs/0lQ6Ag1jDkQSg==
-  dependencies:
-    "@sinonjs/commons" "^1.7.0"
-    "@sinonjs/fake-timers" "^6.0.0"
-    "@sinonjs/text-encoding" "^0.7.1"
-    just-extend "^4.0.2"
-    path-to-regexp "^1.7.0"
 
 no-case@^2.2.0:
   version "2.3.2"

@@ -1,4 +1,4 @@
-import fakeXhr from 'nise/lib/fake-xhr';
+import fakeXhr from '@offirgolan/nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
 import { isBufferUtf8Representable } from '@pollyjs/utils';
 import { Buffer } from 'buffer/';
