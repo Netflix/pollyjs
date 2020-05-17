@@ -11,6 +11,8 @@ const SEND = Symbol();
 const ABORT_HANDLER = Symbol();
 const stubbedXhrs = new WeakSet();
 
+const BINARY_RESPONSE_TYPES = ['arraybuffer', 'blob'];
+
 export default class XHRAdapter extends Adapter {
   static get id() {
     return 'xhr';
@@ -89,7 +91,9 @@ export default class XHRAdapter extends Adapter {
     );
 
     xhr.async = fakeXhr.async;
-    xhr.responseType = 'arraybuffer';
+    xhr.responseType = BINARY_RESPONSE_TYPES.includes(fakeXhr.responseType)
+      ? 'arraybuffer'
+      : 'text';
 
     if (fakeXhr.async) {
       xhr.timeout = fakeXhr.timeout;
@@ -102,14 +106,22 @@ export default class XHRAdapter extends Adapter {
 
     await resolveXhr(xhr, pollyRequest.body);
 
-    const buffer = Buffer.from(xhr.response);
-    const isBinaryBuffer = !isBufferUtf8Representable(buffer);
+    let body = xhr.response;
+    let isBinary = false;
+
+    // responseType will either be `arraybuffer` or `text`
+    if (xhr.responseType === 'arraybuffer') {
+      const buffer = Buffer.from(xhr.response);
+
+      isBinary = !isBufferUtf8Representable(buffer);
+      body = buffer.toString(isBinary ? 'hex' : 'utf8');
+    }
 
     return {
       statusCode: xhr.status,
       headers: serializeResponseHeaders(xhr.getAllResponseHeaders()),
-      body: buffer.toString(isBinaryBuffer ? 'hex' : 'utf8'),
-      isBinary: isBinaryBuffer
+      body,
+      isBinary
     };
   }
 
@@ -135,7 +147,7 @@ export default class XHRAdapter extends Adapter {
       if (isBinary) {
         const buffer = Buffer.from(body, 'hex');
 
-        if (['arraybuffer', 'blob'].includes(xhr.responseType)) {
+        if (BINARY_RESPONSE_TYPES.includes(xhr.responseType)) {
           responseBody = bufferToArrayBuffer(buffer);
         } else {
           responseBody = buffer.toString('utf8');
