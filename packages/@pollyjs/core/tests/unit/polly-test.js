@@ -169,6 +169,28 @@ describe('Unit | Polly', function() {
     expect(recognizedOptions.context).to.equal(fakeContext);
   });
 
+  it('calls flush when flushRequestsOnStop is enabled', async function() {
+    let polly = new Polly('squawk', { flushRequestsOnStop: false });
+    let flushCalled = false;
+
+    polly.flush = async () => {
+      flushCalled = true;
+    };
+
+    await polly.stop();
+    expect(flushCalled).to.be.false;
+
+    polly = new Polly('squawk', { flushRequestsOnStop: true });
+    flushCalled = false;
+
+    polly.flush = async () => {
+      flushCalled = true;
+    };
+
+    await polly.stop();
+    expect(flushCalled).to.be.true;
+  });
+
   describe('configure', function() {
     setupPolly();
 
@@ -480,6 +502,13 @@ describe('Unit | Polly', function() {
       expect(disconnects.length).to.equal(0);
       expect(this.polly.disconnect());
       expect(disconnects.length).to.equal(2);
+    });
+
+    it('.flush()', async function() {
+      const promise = this.polly.flush();
+
+      expect(promise).to.be.a('promise');
+      await promise;
     });
   });
 

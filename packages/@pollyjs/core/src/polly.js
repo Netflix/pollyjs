@@ -232,6 +232,10 @@ export default class Polly {
    */
   async stop() {
     if (this.mode !== MODES.STOPPED) {
+      if (this.config.flushRequestsOnStop) {
+        await this.flush();
+      }
+
       this.disconnect();
       this.logger.disconnect();
       await (this.persister && this.persister.persist());

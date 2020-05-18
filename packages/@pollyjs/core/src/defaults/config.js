@@ -15,6 +15,7 @@ export default {
   },
 
   logging: false,
+  flushRequestsOnStop: false,
 
   recordIfMissing: true,
   recordFailedRequests: false,
