@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v4.2.1...v4.3.0) (2020-05-18)
+
+
+### Features
+
+* **adapter-xhr:** Add support for handling binary data ([#333](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/issues/333)) ([48ea1d7](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/commit/48ea1d7))
+
+
+
+
+
 ## [4.2.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v4.2.0...v4.2.1) (2020-04-30)
 
 

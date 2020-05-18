@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/netflix/pollyjs/compare/v4.2.1...v4.3.0) (2020-05-18)
+
+
+### Features
+
+* **adapter-fetch:** Add support for handling binary data ([#332](https://github.com/netflix/pollyjs/issues/332)) ([111bebf](https://github.com/netflix/pollyjs/commit/111bebf))
+* **adapter-xhr:** Add support for handling binary data ([#333](https://github.com/netflix/pollyjs/issues/333)) ([48ea1d7](https://github.com/netflix/pollyjs/commit/48ea1d7))
+* **core:** Add `flushRequestsOnStop` configuration option ([#335](https://github.com/netflix/pollyjs/issues/335)) ([ab4a2e1](https://github.com/netflix/pollyjs/commit/ab4a2e1))
+
+
+
+
+
 ## [4.2.1](https://github.com/netflix/pollyjs/compare/v4.2.0...v4.2.1) (2020-04-30)
 
 
