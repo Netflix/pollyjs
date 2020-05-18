@@ -71,6 +71,22 @@ polly.configure({
 });
 ```
 
+## flushRequestsOnStop
+
+_Type_: `Boolean`
+_Default_: `false`
+
+Await any unresolved requests handled by the polly instance
+(via [flush](api#flush)) when [stop](api#stop) is called.
+
+**Example**
+
+```js
+polly.configure({
+  flushRequestsOnStop: true
+});
+```
+
 ## expiresIn
 
 _Type_: `String`
