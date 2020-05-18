@@ -12,6 +12,10 @@ export default function request(url, obj = {}) {
       }
     }
 
+    if (obj.responseType) {
+      xhr.responseType = obj.responseType;
+    }
+
     xhr.onreadystatechange = () =>
       xhr.readyState === XMLHttpRequest.DONE && resolve(xhr);
     xhr.onerror = () => resolve(xhr);
@@ -19,7 +23,7 @@ export default function request(url, obj = {}) {
     xhr.send(obj.body);
   }).then(xhr => {
     const responseBody =
-      xhr.status === 204 && xhr.responseText === '' ? null : xhr.responseText;
+      xhr.status === 204 && xhr.response === '' ? null : xhr.response;
 
     return new Response(responseBody, {
       status: xhr.status || 500,

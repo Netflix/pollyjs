@@ -40,9 +40,10 @@
     "watch-all": "npm-run-all --parallel build:watch test:build:watch"
   },
   "dependencies": {
+    "@offirgolan/nise": "^4.1.0",
     "@pollyjs/adapter": "^4.2.1",
     "@pollyjs/utils": "^4.1.0",
-    "nise": "^1.5.0"
+    "to-arraybuffer": "^1.0.1"
   },
   "devDependencies": {
     "@pollyjs/core": "^4.2.1",

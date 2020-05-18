@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer/';
+import { Buffer } from 'buffer';
 
 /**
  * Determine if the given buffer is utf8.

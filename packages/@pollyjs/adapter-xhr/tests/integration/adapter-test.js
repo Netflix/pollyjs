@@ -4,6 +4,7 @@ import adapterTests from '@pollyjs-tests/integration/adapter-tests';
 import adapterBrowserTests from '@pollyjs-tests/integration/adapter-browser-tests';
 import adapterIdentifierTests from '@pollyjs-tests/integration/adapter-identifier-tests';
 import InMemoryPersister from '@pollyjs/persister-in-memory';
+import { Buffer } from 'buffer/';
 
 import xhrRequest from '../utils/xhr-request';
 import XHRAdapter from '../../src';
@@ -63,6 +64,43 @@ describe('Integration | XHR Adapter', function() {
 
     expect(abortEventCalled).to.equal(true);
   });
+
+  ['arraybuffer', 'blob', 'text'].forEach(responseType =>
+    it(`should be able to download binary content (${responseType})`, async function() {
+      const fetch = async () =>
+        Buffer.from(
+          await this.fetch('/assets/32x32.png', {
+            responseType
+          }).then(res => res.arrayBuffer())
+        );
+
+      this.polly.disconnectFrom(XHRAdapter);
+
+      const nativeResponseBuffer = await fetch();
+
+      this.polly.connectTo(XHRAdapter);
+
+      const recordedResponseBuffer = await fetch();
+
+      const { recordingName, config } = this.polly;
+
+      await this.polly.stop();
+      this.polly = new Polly(recordingName, config);
+      this.polly.replay();
+
+      const replayedResponseBuffer = await fetch();
+
+      expect(nativeResponseBuffer.equals(recordedResponseBuffer)).to.equal(
+        true
+      );
+      expect(recordedResponseBuffer.equals(replayedResponseBuffer)).to.equal(
+        true
+      );
+      expect(nativeResponseBuffer.equals(replayedResponseBuffer)).to.equal(
+        true
+      );
+    })
+  );
 });
 
 describe('Integration | XHR Adapter | Init', function() {
