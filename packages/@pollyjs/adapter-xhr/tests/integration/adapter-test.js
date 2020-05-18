@@ -67,8 +67,6 @@ describe('Integration | XHR Adapter', function() {
 
   ['arraybuffer', 'blob', 'text'].forEach(responseType =>
     it(`should be able to download binary content (${responseType})`, async function() {
-      this.timeout(10000);
-
       const fetch = async () =>
         Buffer.from(
           await this.fetch('/assets/32x32.png', {

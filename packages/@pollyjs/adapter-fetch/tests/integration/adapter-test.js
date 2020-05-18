@@ -105,8 +105,6 @@ describe('Integration | Fetch Adapter', function() {
   });
 
   it('should be able to download binary content', async function() {
-    this.timeout(10000);
-
     const fetch = async () =>
       Buffer.from(
         await this.fetch('/assets/32x32.png').then(res => res.arrayBuffer())

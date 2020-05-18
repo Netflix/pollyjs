@@ -14,7 +14,6 @@ import NodeHTTPAdapter from '../../src';
 import nativeRequest from '../utils/native-request';
 import pollyConfig from '../utils/polly-config';
 import getResponseFromRequest from '../utils/get-response-from-request';
-import calculateHashFromStream from '../utils/calculate-hash-from-stream';
 
 describe('Integration | Node Http Adapter', function() {
   describe('Concurrency', function() {
@@ -64,19 +63,20 @@ describe('Integration | Node Http Adapter', function() {
     commonTests(http);
 
     it('should be able to download binary content', async function() {
-      const url = 'http://localhost:4000/assets/32x32.png';
+      const fetch = async () =>
+        Buffer.from(
+          await this.relativeFetch('/assets/32x32.png').then(res =>
+            res.arrayBuffer()
+          )
+        );
 
       this.polly.disconnectFrom(NodeHTTPAdapter);
 
-      const nativeResponseStream = await getResponseFromRequest(
-        http.request(url)
-      );
+      const nativeResponseBuffer = await fetch();
 
       this.polly.connectTo(NodeHTTPAdapter);
 
-      const recordedResponseStream = await getResponseFromRequest(
-        http.request(url)
-      );
+      const recordedResponseBuffer = await fetch();
 
       const { recordingName, config } = this.polly;
 
@@ -84,19 +84,17 @@ describe('Integration | Node Http Adapter', function() {
       this.polly = new Polly(recordingName, config);
       this.polly.replay();
 
-      const replayedResponseStream = await getResponseFromRequest(
-        http.request(url)
+      const replayedResponseBuffer = await fetch();
+
+      expect(nativeResponseBuffer.equals(recordedResponseBuffer)).to.equal(
+        true
       );
-
-      const [nativeHash, recordedHash, replayedHash] = await Promise.all([
-        calculateHashFromStream(nativeResponseStream),
-        calculateHashFromStream(recordedResponseStream),
-        calculateHashFromStream(replayedResponseStream)
-      ]);
-
-      expect(nativeHash).to.equal(recordedHash);
-      expect(recordedHash).to.equal(replayedHash);
-      expect(nativeHash).to.equal(replayedHash);
+      expect(recordedResponseBuffer.equals(replayedResponseBuffer)).to.equal(
+        true
+      );
+      expect(nativeResponseBuffer.equals(replayedResponseBuffer)).to.equal(
+        true
+      );
     });
   });
 
