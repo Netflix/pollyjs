@@ -14,7 +14,7 @@ Polly.JS is a standalone, framework-agnostic JavaScript library that enables rec
 ## Why Polly?
 
 Keeping fixtures and factories in parity with your APIs can be a time consuming process.
-Polly alleviates this by recording and maintaining actual server responses without foregoing flexibility.
+Polly alleviates this process by recording and maintaining actual server responses while also staying flexible.
 
 - Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
 - Use Polly's client-side server to modify or intercept requests and responses to simulate different application states (e.g. loading, error, etc.).
@@ -48,7 +48,7 @@ Check out the [Quick Start](https://netflix.github.io/pollyjs/#/quick-start) doc
 
 ## Usage
 
-Lets take a look at what an example test case would look like using Polly.
+Let's take a look at what an example test case would look like using Polly.
 
 ```js
 import { Polly } from '@pollyjs/core';
