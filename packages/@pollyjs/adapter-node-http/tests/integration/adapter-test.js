@@ -62,6 +62,42 @@ describe('Integration | Node Http Adapter', function() {
     adapterTests();
     adapterIdentifierTests();
     commonTests(http);
+
+    it('should be able to download binary content', async function() {
+      const url = 'http://localhost:4000/assets/32x32.png';
+
+      this.polly.disconnectFrom(NodeHTTPAdapter);
+
+      const nativeResponseStream = await getResponseFromRequest(
+        http.request(url)
+      );
+
+      this.polly.connectTo(NodeHTTPAdapter);
+
+      const recordedResponseStream = await getResponseFromRequest(
+        http.request(url)
+      );
+
+      const { recordingName, config } = this.polly;
+
+      await this.polly.stop();
+      this.polly = new Polly(recordingName, config);
+      this.polly.replay();
+
+      const replayedResponseStream = await getResponseFromRequest(
+        http.request(url)
+      );
+
+      const [nativeHash, recordedHash, replayedHash] = await Promise.all([
+        calculateHashFromStream(nativeResponseStream),
+        calculateHashFromStream(recordedResponseStream),
+        calculateHashFromStream(replayedResponseStream)
+      ]);
+
+      expect(nativeHash).to.equal(recordedHash);
+      expect(recordedHash).to.equal(replayedHash);
+      expect(nativeHash).to.equal(replayedHash);
+    });
   });
 
   describe('https', function() {
@@ -121,42 +157,6 @@ function commonTests(transport) {
     expect(request).to.exist;
     expect(typeof request.body).to.equal('string');
     expect(request.body).to.include('@pollyjs/adapter-node-http');
-  });
-
-  it('should be able to download binary content', async function() {
-    const url = `${protocol}//via.placeholder.com/150/92c952`;
-
-    this.polly.disconnectFrom(NodeHTTPAdapter);
-
-    const nativeResponseStream = await getResponseFromRequest(
-      transport.request(url)
-    );
-
-    this.polly.connectTo(NodeHTTPAdapter);
-
-    const recordedResponseStream = await getResponseFromRequest(
-      transport.request(url)
-    );
-
-    const { recordingName, config } = this.polly;
-
-    await this.polly.stop();
-    this.polly = new Polly(recordingName, config);
-    this.polly.replay();
-
-    const replayedResponseStream = await getResponseFromRequest(
-      transport.request(url)
-    );
-
-    const [nativeHash, recordedHash, replayedHash] = await Promise.all([
-      calculateHashFromStream(nativeResponseStream),
-      calculateHashFromStream(recordedResponseStream),
-      calculateHashFromStream(replayedResponseStream)
-    ]);
-
-    expect(nativeHash).to.equal(recordedHash);
-    expect(recordedHash).to.equal(replayedHash);
-    expect(nativeHash).to.equal(replayedHash);
   });
 
   it('should handle aborting a request', async function() {
