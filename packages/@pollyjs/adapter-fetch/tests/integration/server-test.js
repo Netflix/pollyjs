@@ -23,6 +23,7 @@ describe('Integration | Server', function() {
     const json = await res.json();
 
     expect(res.status).to.equal(200);
+    expect(res.statusText).to.equal('OK');
     expect(res.headers.get('x-foo')).to.equal('bar');
     expect(json).to.deep.equal({ foo: 'bar' });
   });

@@ -93,6 +93,7 @@ class FetchAdapter extends Adapter {
 
       return new Response(response.body, {
         status: response.statusCode,
+        statusText: response.statusText,
         headers: response.headers
       });
     };

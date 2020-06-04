@@ -218,6 +218,7 @@ export default class FetchAdapter extends Adapter {
 
     const response = new Response(responseBody, {
       status: statusCode,
+      statusText: pollyResponse.statusText,
       headers: pollyResponse.headers
     });
 
