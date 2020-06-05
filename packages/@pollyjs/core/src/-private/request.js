@@ -265,13 +265,14 @@ export default class PollyRequest extends HTTPBase {
     // Guid is a string representation of the identifiers
     this.id = md5(stringify(this.identifiers));
 
-    // Order is calculated on other requests with the same id
+    // Order is calculated on other requests with the same id and recording id
     // Only requests before this current one are taken into account.
     this.order =
       matchRequestsBy.order && !this.shouldPassthrough && !this.shouldIntercept
         ? requests
             .slice(0, requests.indexOf(this))
-            .filter(r => r.id === this.id).length
+            .filter(r => r.id === this.id && r.recordingId === this.recordingId)
+            .length
         : 0;
   }
 }

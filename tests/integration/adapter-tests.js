@@ -3,28 +3,68 @@ import { ACTIONS } from '@pollyjs/utils';
 
 export default function adapterTests() {
   it('should respect request order', async function() {
-    let res = await this.fetchRecord();
+    const testOrder = async () => {
+      let res = await this.fetchRecord();
 
-    expect(res.status).to.equal(404);
+      expect(res.status).to.equal(404);
 
-    res = await this.fetchRecord({
-      method: 'POST',
-      body: JSON.stringify({ foo: 'bar' }),
-      headers: { 'Content-Type': 'application/json' }
+      res = await this.fetchRecord({
+        method: 'POST',
+        body: JSON.stringify({ foo: 'bar' }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      expect(res.status).to.equal(200);
+
+      res = await this.fetchRecord();
+      const json = await res.json();
+
+      expect(json).to.deep.equal({ foo: 'bar' });
+
+      res = await this.fetchRecord({ method: 'DELETE' });
+      expect(res.status).to.equal(200);
+
+      res = await this.fetchRecord();
+      expect(res.status).to.equal(404);
+    };
+
+    this.polly.configure({ recordIfMissing: false });
+
+    const { recordingName, config } = this.polly;
+
+    this.polly.record();
+    await testOrder();
+    await this.polly.stop();
+
+    this.polly = new Polly(recordingName, config);
+    this.polly.replay();
+    await testOrder();
+  });
+
+  it('should respect request order across multiple recordings', async function() {
+    const recordingName = this.polly.recordingName;
+    const otherRecordingName = `${this.polly.recordingName}-other`;
+    const order = {
+      [recordingName]: [],
+      [otherRecordingName]: []
+    };
+
+    this.polly.server.any(this.recordUrl()).on('beforeResponse', req => {
+      order[req.recordingName].push(req.order);
     });
 
-    expect(res.status).to.equal(200);
+    await this.fetchRecord();
+    await this.fetchRecord();
 
-    res = await this.fetchRecord();
-    const json = await res.json();
+    this.polly.server.any(this.recordUrl()).recordingName(otherRecordingName);
+    await this.fetchRecord();
+    await this.fetchRecord();
 
-    expect(json).to.deep.equal({ foo: 'bar' });
+    this.polly.server.any(this.recordUrl()).recordingName();
+    await this.fetchRecord();
 
-    res = await this.fetchRecord({ method: 'DELETE' });
-    expect(res.status).to.equal(200);
-
-    res = await this.fetchRecord();
-    expect(res.status).to.equal(404);
+    expect(order[recordingName]).to.have.ordered.members([0, 1, 2]);
+    expect(order[otherRecordingName]).to.have.ordered.members([0, 1]);
   });
 
   it('should properly handle 204 status code response', async function() {
