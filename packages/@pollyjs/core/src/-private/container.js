@@ -1,7 +1,7 @@
-import { assert, getFactoryId } from '@pollyjs/utils';
+import { assert } from '@pollyjs/utils';
 
 function keyFor(Factory) {
-  return `${Factory.type}:${getFactoryId(Factory)}`;
+  return `${Factory.type}:${Factory.id}`;
 }
 
 export class Container {
@@ -21,7 +21,7 @@ export class Container {
     );
 
     const { type } = Factory;
-    const name = getFactoryId(Factory);
+    const name = Factory.id;
 
     assert(
       `Invalid registration id provided. Expected string, received: "${typeof name}"`,
