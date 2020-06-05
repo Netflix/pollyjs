@@ -133,6 +133,16 @@ describe('Integration | Fetch Adapter', function() {
     expect(nativeResponseBuffer.equals(replayedResponseBuffer)).to.equal(true);
   });
 
+  it('should return status text', async function() {
+    const { server } = this.polly;
+
+    server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
+
+    const res = await this.fetch(new Request(this.recordUrl()));
+
+    expect(res.statusText).to.equal('OK');
+  });
+
   describe('Request', function() {
     it('should support Request objects', async function() {
       const { server } = this.polly;
