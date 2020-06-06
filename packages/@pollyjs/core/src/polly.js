@@ -1,4 +1,4 @@
-import { MODES, getFactoryId, assert } from '@pollyjs/utils';
+import { MODES, assert } from '@pollyjs/utils';
 
 import { version } from '../package.json';
 
@@ -170,7 +170,7 @@ export default class Polly {
     if (persister) {
       if (typeof persister === 'function') {
         container.register(persister);
-        persister = getFactoryId(persister);
+        persister = persister.id;
       }
 
       assert(
@@ -260,13 +260,13 @@ export default class Polly {
    * @public
    * @memberof Polly
    */
-  connectTo(idOrFactoryIdGetter) {
+  connectTo(idOrAdapter) {
     const { container, adapters } = this;
-    let adapterId = idOrFactoryIdGetter;
+    let adapterId = idOrAdapter;
 
-    if (typeof idOrFactoryIdGetter === 'function') {
-      container.register(idOrFactoryIdGetter);
-      adapterId = getFactoryId(idOrFactoryIdGetter);
+    if (typeof idOrAdapter === 'function') {
+      container.register(idOrAdapter);
+      adapterId = idOrAdapter.id;
     }
 
     assert(
@@ -283,16 +283,16 @@ export default class Polly {
   }
 
   /**
-   * @param {String|Function} idOrFactoryIdGetter
+   * @param {String|Function} idOrAdapter
    * @public
    * @memberof Polly
    */
-  disconnectFrom(idOrFactoryIdGetter) {
+  disconnectFrom(idOrAdapter) {
     const { adapters } = this;
-    let adapterId = idOrFactoryIdGetter;
+    let adapterId = idOrAdapter;
 
-    if (typeof idOrFactoryIdGetter === 'function') {
-      adapterId = getFactoryId(idOrFactoryIdGetter);
+    if (typeof idOrAdapter === 'function') {
+      adapterId = idOrAdapter.id;
     }
 
     if (adapters.has(adapterId)) {

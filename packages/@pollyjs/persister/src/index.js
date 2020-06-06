@@ -1,5 +1,5 @@
 import stringify from 'fast-json-stable-stringify';
-import { ACTIONS, assert, getFactoryId } from '@pollyjs/utils';
+import { ACTIONS, assert } from '@pollyjs/utils';
 
 import HAR from './har';
 import Entry from './har/entry';
@@ -29,9 +29,7 @@ export default class Persister {
   get options() {
     return {
       ...(this.defaultOptions || {}),
-      ...((this.polly.config.persisterOptions || {})[
-        getFactoryId(this.constructor)
-      ] || {})
+      ...((this.polly.config.persisterOptions || {})[this.constructor.id] || {})
     };
   }
 
@@ -53,7 +51,7 @@ export default class Persister {
     const creator = {
       name: CREATOR_NAME,
       version: this.polly.constructor.VERSION,
-      comment: `${this.constructor.type}:${getFactoryId(this.constructor)}`
+      comment: `${this.constructor.type}:${this.constructor.id}`
     };
 
     for (const [recordingId, { name, requests }] of this.pending) {
@@ -177,7 +175,7 @@ export default class Persister {
 
   assert(message, ...args) {
     assert(
-      `[${this.constructor.type}:${getFactoryId(this.constructor)}] ${message}`,
+      `[${this.constructor.type}:${this.constructor.id}] ${message}`,
       ...args
     );
   }

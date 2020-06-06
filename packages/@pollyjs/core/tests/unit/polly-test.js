@@ -132,43 +132,6 @@ describe('Unit | Polly', function() {
     expect(persistCalled).to.be.true;
   });
 
-  it('it supports legacy custom persisters', async function() {
-    const fakeContext = {};
-    let instantiated, persistCalled, recognizedOptions;
-
-    class MockPersister extends Persister {
-      static get name() {
-        return 'mock';
-      }
-
-      constructor() {
-        super(...arguments);
-        instantiated = true;
-      }
-
-      persist() {
-        persistCalled = true;
-        recognizedOptions = this.options;
-        super.persist(...arguments);
-      }
-    }
-
-    const polly = new Polly('recording name', {
-      persister: MockPersister,
-      persisterOptions: {
-        mock: {
-          context: fakeContext
-        }
-      }
-    });
-
-    await polly.stop();
-
-    expect(instantiated).to.be.true;
-    expect(persistCalled).to.be.true;
-    expect(recognizedOptions.context).to.equal(fakeContext);
-  });
-
   it('calls flush when flushRequestsOnStop is enabled', async function() {
     let polly = new Polly('squawk', { flushRequestsOnStop: false });
     let flushCalled = false;
@@ -270,37 +233,6 @@ describe('Unit | Polly', function() {
       expect(connectCalled).to.be.false;
       this.polly.configure({ adapters: [MockAdapter] });
       expect(connectCalled).to.be.true;
-    });
-
-    it('should connect legacy custom adapters', async function() {
-      const fakeContext = {};
-      let connectCalled = false;
-      let options;
-
-      class MockAdapter extends Adapter {
-        static get name() {
-          return 'mock';
-        }
-
-        onConnect() {
-          connectCalled = true;
-          options = this.options;
-        }
-
-        onDisconnect() {}
-      }
-
-      expect(connectCalled).to.be.false;
-      this.polly.configure({
-        adapters: [MockAdapter],
-        adapterOptions: {
-          mock: {
-            context: fakeContext
-          }
-        }
-      });
-      expect(connectCalled).to.be.true;
-      expect(options.context).to.equal(fakeContext);
     });
 
     it('should disconnect from adapters before connecting', async function() {
