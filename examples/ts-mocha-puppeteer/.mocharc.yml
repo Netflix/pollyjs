@@ -1,0 +1,3 @@
+timeout: 1200000
+spec: '**/*.ts'
+exclude: 'node_modules/**'

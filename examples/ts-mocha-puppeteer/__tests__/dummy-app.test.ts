@@ -34,6 +34,13 @@ describe('Puppeteer Suite', async function() {
       },
       recordIfMissing: true,
     });
+
+    const { server } = this.polly;
+
+    server.host('http://localhost:3000', () => {
+      server.get('/sockjs-node/*').intercept((_, res) => res.sendStatus(200));
+    });
+    
     await page.goto('http://localhost:3000', {waitUntil: 'load', timeout: 0});
   });
 
