@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-rest",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "REST persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-rest.js",
   "module": "dist/es/pollyjs-persister-rest.js",
@@ -40,8 +40,8 @@
     "watch-all": "npm-run-all --parallel build:watch test:build:watch"
   },
   "dependencies": {
-    "@pollyjs/persister": "^4.3.0",
-    "@pollyjs/utils": "^4.3.0"
+    "@pollyjs/persister": "^5.0.0",
+    "@pollyjs/utils": "^5.0.0"
   },
   "devDependencies": {
     "rollup": "^1.14.6"

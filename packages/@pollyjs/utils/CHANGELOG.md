@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v4.3.0...v5.0.0) (2020-06-23)
+
+
+### Features
+
+* Remove deprecated Persister.name and Adapter.name ([#343](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/issues/343)) ([1223ba0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/commit/1223ba0))
+
+
+### BREAKING CHANGES
+
+* Persister.name and Adapter.name have been replaced with Persister.id and Adapter.id
+
+
+
+
+
 # [4.3.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v4.2.1...v4.3.0) (2020-05-18)
 
 

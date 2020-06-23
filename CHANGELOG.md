@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/netflix/pollyjs/compare/v4.3.0...v5.0.0) (2020-06-23)
+
+
+### Bug Fixes
+
+* **adapter-fetch:** Add statusText to the response ([#341](https://github.com/netflix/pollyjs/issues/341)) ([0d45953](https://github.com/netflix/pollyjs/commit/0d45953))
+* **core:** Compute order based on id and recording name ([#342](https://github.com/netflix/pollyjs/issues/342)) ([42004d2](https://github.com/netflix/pollyjs/commit/42004d2))
+
+
+### Features
+
+* Remove deprecated Persister.name and Adapter.name ([#343](https://github.com/netflix/pollyjs/issues/343)) ([1223ba0](https://github.com/netflix/pollyjs/commit/1223ba0))
+
+
+### BREAKING CHANGES
+
+* Persister.name and Adapter.name have been replaced with Persister.id and Adapter.id
+* **core:** A request's order is will now be computed based on its id and the recording name it will be persisted to.
+
+
+
+
+
 # [4.3.0](https://github.com/netflix/pollyjs/compare/v4.2.1...v4.3.0) (2020-05-18)
 
 

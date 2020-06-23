@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/persister-fs",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-fs.js",
   "module": "dist/es/pollyjs-persister-fs.js",
@@ -39,8 +39,8 @@
     "watch-all": "npm-run-all --parallel build:watch test:build:watch"
   },
   "dependencies": {
-    "@pollyjs/node-server": "^4.3.0",
-    "@pollyjs/persister": "^4.3.0"
+    "@pollyjs/node-server": "^5.0.0",
+    "@pollyjs/persister": "^5.0.0"
   },
   "devDependencies": {
     "fixturify": "^1.2.0",
