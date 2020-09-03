@@ -13,7 +13,7 @@
     "@pollyjs/persister-fs": "^4.0.2",
     "jest": "^24.0.0",
     "jest-puppeteer": "^4.0.0",
-    "puppeteer": "1.10.0",
+    "puppeteer": "2.1.1",
     "setup-polly-jest": "^0.6.0"
   }
 }
