@@ -91,9 +91,10 @@ export default class XHRAdapter extends Adapter {
     );
 
     xhr.async = fakeXhr.async;
-    xhr.responseType = BINARY_RESPONSE_TYPES.includes(fakeXhr.responseType)
-      ? 'arraybuffer'
-      : 'text';
+
+    if (BINARY_RESPONSE_TYPES.includes(fakeXhr.responseType)) {
+      xhr.responseType = 'arraybuffer';
+    }
 
     if (fakeXhr.async) {
       xhr.timeout = fakeXhr.timeout;
