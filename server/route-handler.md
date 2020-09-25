@@ -189,9 +189,9 @@ server.delete('/session/:id').intercept((req, res) => res.sendStatus(204));
 // Second call should 404 since the user no longer exists
 server.get('/session/:id').intercept((req, res) => res.sendStatus(404));
 
-await fetch('/users/1'); // --> 200
-await fetch('/users/1', { method: 'DELETE' }); // --> 204
-await fetch('/users/1'); // --> 404
+await fetch('/session/1'); // --> 200
+await fetch('/session/1', { method: 'DELETE' }); // --> 204
+await fetch('/session/1'); // --> 404
 ```
 
 ### passthrough
