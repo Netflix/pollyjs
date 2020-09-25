@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/ember",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Use @pollyjs in your Ember-CLI application",
   "keywords": [
     "polly",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@pollyjs/adapter-fetch": "^5.0.0",
-    "@pollyjs/adapter-xhr": "^5.0.0",
+    "@pollyjs/adapter-xhr": "^5.0.1",
     "@pollyjs/core": "^5.0.0",
     "@pollyjs/node-server": "^5.0.0",
     "@pollyjs/persister-local-storage": "^5.0.0",

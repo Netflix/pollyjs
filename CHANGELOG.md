@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/netflix/pollyjs/compare/v5.0.0...v5.0.1) (2020-09-25)
+
+
+### Bug Fixes
+
+* **adapter-xhr:** Only modify the `responseType` if it was changed ([#363](https://github.com/netflix/pollyjs/issues/363)) ([cff4e2d](https://github.com/netflix/pollyjs/commit/cff4e2d))
+
+
+
+
+
 # [5.0.0](https://github.com/netflix/pollyjs/compare/v4.3.0...v5.0.0) (2020-06-23)
 
 
