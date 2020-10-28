@@ -46,7 +46,7 @@
     "@pollyjs/core": "^5.0.0",
     "@pollyjs/persister-fs": "^5.0.0",
     "node-fetch": "^2.6.0",
-    "puppeteer": "1.10.0",
+    "puppeteer": "5.4.1",
     "rollup": "^1.14.6"
   }
 }

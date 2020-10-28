@@ -140,7 +140,7 @@ export default class PuppeteerAdapter extends Adapter {
       close: () => this[LISTENERS].delete(page)
     });
 
-    this._callListenersWith('prependListener', page);
+    this._callListenersWith('on', page);
   }
 
   onRequest(pollyRequest) {
