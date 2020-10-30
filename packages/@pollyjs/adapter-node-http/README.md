@@ -3,7 +3,7 @@
 </p>
 <h2 align="center">Record, Replay, and Stub HTTP Interactions</h2>
 
-[![Build Status](https://travis-ci.org/Netflix/pollyjs.svg?branch=master)](https://travis-ci.org/Netflix/pollyjs)
+[![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
 [![npm version](https://badge.fury.io/js/%40pollyjs%2Fadapter-node-http.svg)](https://badge.fury.io/js/%40pollyjs%2Fadapter-node-http)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
