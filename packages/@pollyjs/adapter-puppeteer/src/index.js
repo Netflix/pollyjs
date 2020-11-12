@@ -223,6 +223,19 @@ export default class PuppeteerAdapter extends Adapter {
     if (this[LISTENERS].has(target)) {
       const listeners = this[LISTENERS].get(target);
 
+      // puppeteer remove prependListener after v4.0.0, add it if missing
+      if (!target.prependListener) {
+        target.prependListener = function(event, handler) {
+          const all = this.emitter.all;
+          const handlers = all.get(event);
+          const added = handlers && handlers.unshift(handler);
+
+          if (!added) {
+            all.set(event, [handler]);
+          }
+        };
+      }
+
       for (const eventName in listeners) {
         target[methodName].apply(target, [eventName, listeners[eventName]]);
       }
