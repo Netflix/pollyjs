@@ -47,7 +47,7 @@ export default class PuppeteerAdapter extends Adapter {
 
   onDisconnect() {
     this[LISTENERS].forEach((_, target) =>
-      this._callListenersWith('removeListener', target)
+      this._callListenersWith('off', target)
     );
   }
 
