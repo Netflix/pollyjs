@@ -53,6 +53,7 @@ export default class HttpAdapter extends Adapter {
   }
 
   onDisconnect() {
+    this.unpatchOverriddenMethods();
     nock.cleanAll();
     nock.restore();
     this.NativeClientRequest = null;
@@ -120,6 +121,11 @@ export default class HttpAdapter extends Adapter {
       const module = modules[moduleName];
       const { request, get, globalAgent } = module;
 
+      this[moduleName] = {
+        get,
+        request
+      };
+
       function parseArgs() {
         const args = normalizeClientRequestArgs(...arguments);
 
@@ -149,6 +155,18 @@ export default class HttpAdapter extends Adapter {
 
         return get(options, callback);
       };
+    });
+  }
+
+  unpatchOverriddenMethods() {
+    const modules = { http, https };
+
+    Object.keys(modules).forEach(moduleName => {
+      const module = modules[moduleName];
+
+      module.request = this[moduleName].request;
+      module.get = this[moduleName].get;
+      this[moduleName] = undefined;
     });
   }
 
