@@ -66,13 +66,13 @@ export default class PollyRequest extends HTTPBase {
     this[ROUTE].applyFiltersWithArgs(this);
 
     // Handle config overrides defined by the route
-    this._configure(this[ROUTE].config());
+    this.configure(this[ROUTE].config());
 
     // Handle recording name override defined by the route
     const recordingName = this[ROUTE].recordingName();
 
     if (recordingName) {
-      this._overrideRecordingName(recordingName);
+      this.overrideRecordingName(recordingName);
     }
   }
 
@@ -219,13 +219,13 @@ export default class PollyRequest extends HTTPBase {
     this.aborted = true;
   }
 
-  _overrideRecordingName(recordingName) {
+  overrideRecordingName(recordingName) {
     validateRecordingName(recordingName);
     this.recordingName = recordingName;
     this.recordingId = guidForRecording(recordingName);
   }
 
-  _configure(config) {
+  configure(config) {
     validateRequestConfig(config);
     this.config = mergeConfigs(this[POLLY].config, this.config || {}, config);
   }

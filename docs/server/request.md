@@ -246,3 +246,35 @@ A shortcut method that calls JSON.parse on the request's body.
 ```js
 req.jsonBody();
 ```
+
+### overrideRecordingName
+
+Override the recording name for the request.
+
+| Param         | Type     | Description            |
+| ------------- | -------- | ---------------------- |
+| recordingName | `String` | The new recording name |
+
+**Example**
+
+```js
+req.overrideRecordingName(req.hostname);
+```
+
+### configure
+
+Override configuration options for the request.
+
+| Param  | Type     | Description                           |
+| ------ | -------- | ------------------------------------- |
+| config | `Object` | [Configuration](configuration) object |
+
+**Example**
+
+```js
+req.configure({ recordFailedRequests: true });
+
+req.configure({ timing: Timing.relative(3.0) });
+
+req.configure({ logging: true });
+```
