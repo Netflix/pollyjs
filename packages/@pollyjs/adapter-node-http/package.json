@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-node-http",
-  "version": "5.0.0",
+  "version": "5.0.2",
   "description": "Node HTTP adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-node-http.js",
   "module": "dist/es/pollyjs-adapter-node-http.js",
