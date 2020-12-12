@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/netflix/pollyjs/compare/v5.0.2...v5.1.0) (2020-12-12)
+
+
+### Bug Fixes
+
+* **adapter-puppeteer:** Add prependListener puppeteer@4.0.0 removed ([#368](https://github.com/netflix/pollyjs/issues/368)) ([6c35fd3](https://github.com/netflix/pollyjs/commit/6c35fd3))
+
+
+### Features
+
+* **core:** Add `overrideRecordingName` and `configure` to public API ([#372](https://github.com/netflix/pollyjs/issues/372)) ([cdbf513](https://github.com/netflix/pollyjs/commit/cdbf513))
+
+
+
+
+
 ## [5.0.2](https://github.com/netflix/pollyjs/compare/v5.0.1...v5.0.2) (2020-12-06)
 
 

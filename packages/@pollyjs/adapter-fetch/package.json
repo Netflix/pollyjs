@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-fetch",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Fetch adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-fetch.js",
   "module": "dist/es/pollyjs-adapter-fetch.js",
@@ -46,7 +46,7 @@
     "to-arraybuffer": "^1.0.1"
   },
   "devDependencies": {
-    "@pollyjs/core": "^5.0.0",
+    "@pollyjs/core": "^5.1.0",
     "@pollyjs/persister-local-storage": "^5.0.0",
     "@pollyjs/persister-rest": "^5.0.0",
     "rollup": "^1.14.6"

@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-node-http",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "Node HTTP adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-node-http.js",
   "module": "dist/es/pollyjs-adapter-node-http.js",
@@ -49,7 +49,7 @@
     "nock": "^12.0.3"
   },
   "devDependencies": {
-    "@pollyjs/core": "^5.0.0",
+    "@pollyjs/core": "^5.1.0",
     "@pollyjs/persister-fs": "^5.0.0",
     "form-data": "^2.5.1",
     "get-stream": "^5.1.0",

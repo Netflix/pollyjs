@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/v5.0.2...v5.1.0) (2020-12-12)
+
+**Note:** Version bump only for package @pollyjs/adapter-fetch
+
+
+
+
+
 # [5.0.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-fetch/compare/v4.3.0...v5.0.0) (2020-06-23)
 
 
