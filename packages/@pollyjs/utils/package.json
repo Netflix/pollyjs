@@ -38,7 +38,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "qs": "^6.7.0",
-    "url-parse": "^1.4.7"
+    "url-parse": "^1.5.1"
   },
   "devDependencies": {
     "rollup": "^1.14.6"
