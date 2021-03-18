@@ -144,9 +144,9 @@ describe('Unit | Utils | Normalize Request', function() {
         [
           'protocol',
           'http://protocol-test.com',
-          [true, 'http://protocol-test.com'],
-          [false, '//protocol-test.com'],
-          [p => p.replace('http', 'https'), 'https://protocol-test.com']
+          [true, 'http://protocol-test.com/'],
+          [false, '//protocol-test.com/'],
+          [p => p.replace('http', 'https'), 'https://protocol-test.com/']
         ],
         [
           'query',
@@ -196,7 +196,7 @@ describe('Unit | Utils | Normalize Request', function() {
 
     it('should support a custom fn', function() {
       expect(url('https://foo.bar', url => url.replace('bar', 'foo'))).to.equal(
-        'https://foo.foo'
+        'https://foo.foo/'
       );
     });
 
@@ -206,7 +206,7 @@ describe('Unit | Utils | Normalize Request', function() {
       url(
         'https://foo.bar',
         (url, request) => {
-          expect(url).to.deep.equal('https://foo.bar');
+          expect(url).to.deep.equal('https://foo.bar/');
           expect(request).to.equal(req);
 
           return url;
