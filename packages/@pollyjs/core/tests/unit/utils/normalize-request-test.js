@@ -120,7 +120,7 @@ describe('Unit | Utils | Normalize Request', function() {
   describe('url', function() {
     it('should sort query params', function() {
       expect(url('http://foo.com?b=1&c=1&a=1', {})).to.equal(
-        'http://foo.com?a=1&b=1&c=1'
+        'http://foo.com/?a=1&b=1&c=1'
       );
     });
 
@@ -132,13 +132,13 @@ describe('Unit | Utils | Normalize Request', function() {
           /* input url */
           'http://hash-test.com?b=1&c=1&a=1#hello=world',
           /* expected when true */
-          [true, 'http://hash-test.com?a=1&b=1&c=1#hello=world'],
+          [true, 'http://hash-test.com/?a=1&b=1&c=1#hello=world'],
           /* expected when false */
-          [false, 'http://hash-test.com?a=1&b=1&c=1'],
+          [false, 'http://hash-test.com/?a=1&b=1&c=1'],
           /* expected when custom fn */
           [
             h => h.replace('=', '!='),
-            'http://hash-test.com?a=1&b=1&c=1#hello!=world'
+            'http://hash-test.com/?a=1&b=1&c=1#hello!=world'
           ]
         ],
         [
@@ -151,9 +151,9 @@ describe('Unit | Utils | Normalize Request', function() {
         [
           'query',
           'http://query-test.com?b=1&c=1&a=1',
-          [true, 'http://query-test.com?a=1&b=1&c=1'],
+          [true, 'http://query-test.com/?a=1&b=1&c=1'],
           [false, 'http://query-test.com'],
-          [q => ({ ...q, c: 2 }), 'http://query-test.com?a=1&b=1&c=2']
+          [q => ({ ...q, c: 2 }), 'http://query-test.com/?a=1&b=1&c=2']
         ],
         [
           'username',
