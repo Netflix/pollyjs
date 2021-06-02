@@ -9,7 +9,7 @@ describe('Unit | Utils | URL', function() {
   });
 
   it('should work', function() {
-    expect(new URL('http://netflix.com').href).to.equal('http://netflix.com');
+    expect(new URL('http://netflix.com').href).to.equal('http://netflix.com/');
   });
 
   it('should should not parse the query string by default', function() {
