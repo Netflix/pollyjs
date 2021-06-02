@@ -1,5 +1,5 @@
 import Adapter from '@pollyjs/adapter';
-import { isBufferUtf8Representable } from '@pollyjs/utils';
+import { cloneArrayBuffer, isBufferUtf8Representable } from '@pollyjs/utils';
 import isNode from 'detect-node';
 import { Buffer } from 'buffer/';
 import bufferToArrayBuffer from 'to-arraybuffer';
@@ -167,7 +167,24 @@ export default class FetchAdapter extends Adapter {
       }
     ]);
 
-    const buffer = Buffer.from(await response.arrayBuffer());
+    let arrayBuffer = await response.arrayBuffer();
+
+    /*
+      If the returned array buffer is not an instance of the global ArrayBuffer,
+      clone it in order to pass Buffer.from's instanceof check. This can happen
+      when using this adapter with a different context.
+
+      https://github.com/feross/buffer/issues/289
+    */
+    if (
+      arrayBuffer &&
+      !(arrayBuffer instanceof ArrayBuffer) &&
+      'byteLength' in arrayBuffer
+    ) {
+      arrayBuffer = cloneArrayBuffer(arrayBuffer);
+    }
+
+    const buffer = Buffer.from(arrayBuffer);
     const isBinaryBuffer = !isBufferUtf8Representable(buffer);
 
     return {
