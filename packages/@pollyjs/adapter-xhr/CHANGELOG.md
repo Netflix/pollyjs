@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v5.1.0...v5.1.1) (2021-06-02)
+
+
+### Bug Fixes
+
+* Handle failed arraybuffer instanceof checks ([#393](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/issues/393)) ([247be0a](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/commit/247be0a))
+
+
+
+
+
 # [5.1.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-xhr/compare/v5.0.2...v5.1.0) (2020-12-12)
 
 **Note:** Version bump only for package @pollyjs/adapter-xhr
