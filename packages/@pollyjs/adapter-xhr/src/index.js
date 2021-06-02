@@ -1,6 +1,6 @@
 import fakeXhr from '@offirgolan/nise/lib/fake-xhr';
 import Adapter from '@pollyjs/adapter';
-import { isBufferUtf8Representable } from '@pollyjs/utils';
+import { cloneArrayBuffer, isBufferUtf8Representable } from '@pollyjs/utils';
 import { Buffer } from 'buffer/';
 import bufferToArrayBuffer from 'to-arraybuffer';
 
@@ -112,7 +112,24 @@ export default class XHRAdapter extends Adapter {
 
     // responseType will either be `arraybuffer` or `text`
     if (xhr.responseType === 'arraybuffer') {
-      const buffer = Buffer.from(xhr.response);
+      let arrayBuffer = xhr.response;
+
+      /*
+        If the returned array buffer is not an instance of the global ArrayBuffer,
+        clone it in order to pass Buffer.from's instanceof check. This can happen
+        when using this adapter with a different context.
+
+        https://github.com/feross/buffer/issues/289
+      */
+      if (
+        arrayBuffer &&
+        !(arrayBuffer instanceof ArrayBuffer) &&
+        'byteLength' in arrayBuffer
+      ) {
+        arrayBuffer = cloneArrayBuffer(arrayBuffer);
+      }
+
+      const buffer = Buffer.from(arrayBuffer);
 
       isBinary = !isBufferUtf8Representable(buffer);
       body = buffer.toString(isBinary ? 'hex' : 'utf8');
