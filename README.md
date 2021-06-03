@@ -6,13 +6,13 @@
 [![Build Status](https://travis-ci.com/Netflix/pollyjs.svg?branch=master)](https://travis-ci.com/Netflix/pollyjs)
 [![license](https://img.shields.io/github/license/Netflix/pollyjs.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-Polly.JS is a standalone, framework-agnostic JavaScript library that enables recording, replaying, and stubbing of HTTP interactions. By tapping into multiple request APIs across both Node & the browser, Polly.JS is able to mock requests and responses with little to no configuration while giving you the ability to take full control of each request with a simple, powerful, and intuitive API.
+Polly.JS is a standalone, framework-agnostic JavaScript library that enables recording, replaying, and stubbing of HTTP interactions. By tapping into multiple request APIs across both Node & the browser, Polly.JS can mock requests and responses with little to no configuration while giving you the ability to take full control of each request with a simple, powerful, and intuitive API.
 
 > Interested in contributing or just seeing Polly in action? Head over to [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to spin up the project!
 
 ## Why Polly?
 
-Keeping fixtures and factories in parity with your APIs can be a time consuming process.
+Keeping fixtures and factories in parity with your APIs can be a time-consuming process.
 Polly alleviates this process by recording and maintaining actual server responses while also staying flexible.
 
 - Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
@@ -56,7 +56,7 @@ describe('Netflix Homepage', function() {
 
       Connect Polly to both fetch and XHR browser APIs. By default, it will
       record any requests that it hasn't yet seen while replaying ones it
-      has already recorded.
+      has already been recorded.
     */
     const polly = new Polly('Sign In', {
       adapters: ['xhr', 'fetch'],
@@ -206,6 +206,7 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 <a href="https://github.com/geigerzaehler"><img src="https://avatars2.githubusercontent.com/u/3919579?v=4" title="geigerzaehler" width="80" height="80"></a>
 <a href="https://github.com/vikr01"><img src="https://avatars0.githubusercontent.com/u/28772991?v=4" title="vikr01" width="80" height="80"></a>
 <a href="https://github.com/yasinuslu"><img src="https://avatars0.githubusercontent.com/u/1007479?v=4" title="yasinuslu" width="80" height="80"></a>
+<a href="https://github.com/kitarp29"><img src="https://avatars.githubusercontent.com/u/56778773?v=4" title="kitarp29" width="80" height="80"></a>
 
 [//]: contributor-faces
 
