@@ -28,7 +28,11 @@ polly.configure({
 _Type_: `Boolean`
 _Default_: `false`
 
-Logs requests and their responses to the console grouped by the recording name.
+Flags control logs appear to console grouped by the recording name.
+it includes
+
+- Request/Response log
+- Error log like `Record Not Found`, `Request error...etc.`
 
 **Example**
 
