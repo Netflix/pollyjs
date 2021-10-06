@@ -42,8 +42,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs-extra": "^8.0.1",
-    "http-graceful-shutdown": "^2.3.1",
-    "morgan": "^1.9.1",
+    "http-graceful-shutdown": "^3.1.4",
+    "morgan": "^1.10.0",
     "nocache": "^2.1.0"
   },
   "devDependencies": {
