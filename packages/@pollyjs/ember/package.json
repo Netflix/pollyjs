@@ -32,7 +32,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember serve",
-    "test": "ember test ci --port=7300",
+    "test": "ember test ci --test-port=7300",
     "clean": "rimraf dist tmp"
   },
   "dependencies": {
@@ -43,7 +43,7 @@
     "@pollyjs/persister-local-storage": "^5.1.1",
     "@pollyjs/persister-rest": "^5.1.1",
     "ember-auto-import": "^1.2.15",
-    "ember-cli-babel": "^6.16.0",
+    "ember-cli-babel": "^7.26.6",
     "minimist": "^1.2.0"
   },
   "devDependencies": {
