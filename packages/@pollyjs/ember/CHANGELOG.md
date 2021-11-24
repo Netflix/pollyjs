@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v5.1.1...v5.2.0) (2021-11-24)
+
+
+### Features
+
+* **ember:** Upgrade ember-cli-babel to ^7.26.6 ([#411](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/issues/411)) ([4352881](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/commit/4352881))
+
+
+
+
+
 ## [5.1.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v5.1.0...v5.1.1) (2021-06-02)
 
 **Note:** Version bump only for package @pollyjs/ember
