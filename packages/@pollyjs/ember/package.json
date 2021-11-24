@@ -43,7 +43,7 @@
     "@pollyjs/persister-local-storage": "^5.1.1",
     "@pollyjs/persister-rest": "^5.1.1",
     "ember-auto-import": "^1.2.15",
-    "ember-cli-babel": "^6.16.0",
+    "ember-cli-babel": "^7.26.6",
     "minimist": "^1.2.0"
   },
   "devDependencies": {
