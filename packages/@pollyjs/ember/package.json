@@ -32,7 +32,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember serve",
-    "test": "ember test ci --port=7300",
+    "test": "ember test ci --test-port=7300",
     "clean": "rimraf dist tmp"
   },
   "dependencies": {
