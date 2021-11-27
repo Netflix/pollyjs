@@ -220,13 +220,13 @@ export default class HttpAdapter extends Adapter {
       headers: response.headers,
       statusCode: response.statusCode,
       body: responseBody.body,
-      isBinary: responseBody.isBinary
+      encoding: responseBody.encoding
     };
   }
 
   async respondToRequest(pollyRequest, error) {
     const { req, respond } = pollyRequest.requestArguments;
-    const { statusCode, body, headers, isBinary } = pollyRequest.response;
+    const { statusCode, body, headers, encoding } = pollyRequest.response;
 
     if (pollyRequest[ABORT_HANDLER]) {
       req.off('abort', pollyRequest[ABORT_HANDLER]);
@@ -248,7 +248,7 @@ export default class HttpAdapter extends Adapter {
       return;
     }
 
-    const chunks = this.getChunksFromBody(body, headers, isBinary);
+    const chunks = this.getChunksFromBody(body, headers, encoding);
     const stream = new ReadableStream();
 
     // Expose the response data as a stream of chunks since
@@ -281,7 +281,7 @@ export default class HttpAdapter extends Adapter {
     // should not be concatenated. Instead, the chunks should
     // be preserved as-is so that each chunk can be mocked individually
     if (isContentEncoded(headers)) {
-      const hexChunks = chunks.map((chunk) => {
+      const base64Chunks = chunks.map((chunk) => {
         if (!Buffer.isBuffer(chunk)) {
           this.assert(
             'content-encoded responses must all be binary buffers',
@@ -290,12 +290,12 @@ export default class HttpAdapter extends Adapter {
           chunk = Buffer.from(chunk);
         }
 
-        return chunk.toString('hex');
+        return chunk.toString('base64');
       });
 
       return {
-        isBinary: true,
-        body: JSON.stringify(hexChunks)
+        encoding: 'base64',
+        body: JSON.stringify(base64Chunks)
       };
     }
 
@@ -303,15 +303,15 @@ export default class HttpAdapter extends Adapter {
     const isBinaryBuffer = !isUtf8Representable(buffer);
 
     // The merged buffer can be one of two things:
-    //  1. A binary buffer which then has to be recorded as a hex string.
+    //  1. A binary buffer which then has to be recorded as a base64 string.
     //  2. A string buffer.
     return {
-      isBinary: isBinaryBuffer,
-      body: buffer.toString(isBinaryBuffer ? 'hex' : 'utf8')
+      encoding: isBinaryBuffer ? 'base64' : undefined,
+      body: buffer.toString(isBinaryBuffer ? 'base64' : 'utf8')
     };
   }
 
-  getChunksFromBody(body, headers, isBinary = false) {
+  getChunksFromBody(body, headers, encoding) {
     if (!body) {
       return [];
     }
@@ -321,16 +321,16 @@ export default class HttpAdapter extends Adapter {
     }
 
     // If content-encoding is set in the header then the body/content
-    // is as an array of hex strings
+    // is as an array of base64 strings
     if (isContentEncoded(headers)) {
-      const hexChunks = JSON.parse(body);
+      const base64Chunks = JSON.parse(body);
 
-      return hexChunks.map((chunk) => Buffer.from(chunk, 'hex'));
+      return base64Chunks.map((chunk) => Buffer.from(chunk, 'base64'));
     }
 
     // The body can be one of two things:
-    //  1. A hex string which then means its binary data.
+    //  1. A base64 string which then means its binary data.
     //  2. A utf8 string which means a regular string.
-    return [Buffer.from(body, isBinary ? 'hex' : 'utf8')];
+    return [Buffer.from(body, encoding ? encoding : 'utf8')];
   }
 }

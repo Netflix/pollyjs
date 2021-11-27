@@ -190,8 +190,8 @@ export default class FetchAdapter extends Adapter {
     return {
       statusCode: response.status,
       headers: serializeHeaders(response.headers),
-      body: buffer.toString(isBinaryBuffer ? 'hex' : 'utf8'),
-      isBinary: isBinaryBuffer
+      body: buffer.toString(isBinaryBuffer ? 'base64' : 'utf8'),
+      encoding: isBinaryBuffer ? 'base64' : undefined
     };
   }
 
@@ -223,14 +223,14 @@ export default class FetchAdapter extends Adapter {
     }
 
     const { absoluteUrl, response: pollyResponse } = pollyRequest;
-    const { statusCode, body, isBinary } = pollyResponse;
+    const { statusCode, body, encoding } = pollyResponse;
 
     let responseBody = body;
 
     if (statusCode === 204 && responseBody === '') {
       responseBody = null;
-    } else if (isBinary) {
-      responseBody = bufferToArrayBuffer(Buffer.from(body, 'hex'));
+    } else if (encoding) {
+      responseBody = bufferToArrayBuffer(Buffer.from(body, encoding));
     }
 
     const response = new Response(responseBody, {

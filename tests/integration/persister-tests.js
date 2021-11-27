@@ -365,12 +365,12 @@ export default function persisterTests() {
     content = har.log.entries[0].response.content;
 
     expect(await validate.har(har)).to.be.true;
-    expect(content._isBinary).to.be.undefined;
+    expect(content.encoding).to.be.undefined;
 
     // Binary content
     server.get(this.recordUrl()).once('beforeResponse', (req, res) => {
-      res.isBinary = true;
-      res.body = '536f6d6520636f6e74656e74';
+      res.encoding = 'base64';
+      res.body = 'U29tZSBjb250ZW50';
     });
 
     await this.fetchRecord();
@@ -380,11 +380,11 @@ export default function persisterTests() {
     content = har.log.entries[1].response.content;
 
     expect(await validate.har(har)).to.be.true;
-    expect(content._isBinary).to.be.true;
+    expect(content.encoding).to.equal('base64');
 
     // Binary content with no body
     server.get(this.recordUrl()).once('beforeResponse', (req, res) => {
-      res.isBinary = true;
+      res.encoding = 'base64';
       res.body = '';
     });
 
@@ -395,6 +395,6 @@ export default function persisterTests() {
     content = har.log.entries[2].response.content;
 
     expect(await validate.har(har)).to.be.true;
-    expect(content._isBinary).to.be.undefined;
+    expect(content.encoding).to.be.undefined;
   });
 }

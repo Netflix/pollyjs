@@ -172,7 +172,7 @@ export default class PollyRequest extends HTTPBase {
   }
 
   async respond(response) {
-    const { statusCode, headers, body, isBinary = false } = response || {};
+    const { statusCode, headers, body, encoding } = response || {};
 
     assert(
       'Cannot respond to a request that already has a response.',
@@ -195,7 +195,7 @@ export default class PollyRequest extends HTTPBase {
     // Set the body without modifying any headers (instead of using .send())
     this.response.body = body;
 
-    this.response.isBinary = isBinary;
+    this.response.encoding = encoding;
 
     // Trigger the `beforeResponse` event
     await this._emit('beforeResponse', this.response);

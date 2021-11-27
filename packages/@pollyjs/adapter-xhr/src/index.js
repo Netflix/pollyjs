@@ -132,14 +132,14 @@ export default class XHRAdapter extends Adapter {
       const buffer = Buffer.from(arrayBuffer);
 
       isBinary = !isBufferUtf8Representable(buffer);
-      body = buffer.toString(isBinary ? 'hex' : 'utf8');
+      body = buffer.toString(isBinary ? 'base64' : 'utf8');
     }
 
     return {
       statusCode: xhr.status,
       headers: serializeResponseHeaders(xhr.getAllResponseHeaders()),
-      body,
-      isBinary
+      encoding: isBinary ? 'base64' : undefined,
+      body
     };
   }
 
@@ -159,11 +159,11 @@ export default class XHRAdapter extends Adapter {
       // https://github.com/sinonjs/nise/blob/v1.4.10/lib/fake-xhr/index.js#L614-L621
       xhr.error();
     } else {
-      const { statusCode, headers, body, isBinary } = pollyRequest.response;
+      const { statusCode, headers, body, encoding } = pollyRequest.response;
       let responseBody = body;
 
-      if (isBinary) {
-        const buffer = Buffer.from(body, 'hex');
+      if (encoding) {
+        const buffer = Buffer.from(body, encoding);
 
         if (BINARY_RESPONSE_TYPES.includes(xhr.responseType)) {
           responseBody = bufferToArrayBuffer(buffer);
