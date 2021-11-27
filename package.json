@@ -15,28 +15,18 @@
   "workspaces": [
     "packages/@pollyjs/*"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "lint-staged": {
-    "linters": {
-      "*.js": [
-        "eslint --fix",
-        "git add"
-      ],
-      "*.{json,md,html,yml,css}": [
-        "prettier --ignore-path .eslintignore --write",
-        "git add"
-      ]
-    },
-    "globOptions": {
-      "dot": true
-    }
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,md,html,yml,css}": [
+      "prettier --ignore-path .eslintignore --write",
+      "git add"
+    ]
   },
   "scripts": {
+    "prepare": "husky install",
     "build": "lerna run build --ignore=@pollyjs/ember --parallel",
     "build:prod": "NODE_ENV=production yarn build && NODE_ENV=production MINIFY=true yarn build",
     "prewatch": "yarn server:build",
@@ -52,7 +42,7 @@
     "test:watch": "testem",
     "test:ci": "testem ci",
     "test:build": "lerna run test:build --parallel",
-    "test:node": "mocha --opts tests/mocha.opts",
+    "test:node": "mocha",
     "test:jest": "jest",
     "test:ember": "lerna run test --stream --no-prefix --scope=@pollyjs/ember",
     "server:build": "lerna run build --scope=@pollyjs/node-server --scope=@pollyjs/utils",
@@ -73,14 +63,14 @@
     "@babel/preset-env": "^7.16.4",
     "@babel/runtime": "^7.16.3",
     "@babel/runtime-corejs2": "^7.16.3",
-    "@commitlint/cli": "^8.0.0",
-    "@commitlint/config-conventional": "^8.0.0",
-    "@commitlint/config-lerna-scopes": "^8.0.0",
-    "@commitlint/travis-cli": "^8.0.0",
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@commitlint/config-lerna-scopes": "^15.0.0",
+    "@commitlint/travis-cli": "^15.0.0",
     "chai": "^4.3.4",
     "compression": "^1.7.4",
     "contributor-faces": "^1.1.0",
-    "deepmerge": "^3.2.0",
+    "deepmerge": "^4.2.0",
     "docsify-cli": "^4.4.3",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
@@ -89,15 +79,15 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "formdata-polyfill": "^4.0.10",
-    "gh-pages": "^2.0.1",
+    "gh-pages": "^3.2.3",
     "har-validator": "^5.1.3",
-    "husky": "^2.4.0",
-    "jest": "^24.8.0",
+    "husky": "^7.0.4",
+    "jest": "^27.3.1",
     "jest-tap-reporter": "^1.9.0",
-    "lerna": "^3.15.0",
+    "lerna": "^4.0.0",
     "lerna-alias": "^3.0.2",
-    "lint-staged": "^8.2.0",
-    "mocha": "^6.1.4",
+    "lint-staged": "^12.1.2",
+    "mocha": "^9.1.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.0",
     "rimraf": "^3.0.2",
