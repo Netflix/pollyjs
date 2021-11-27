@@ -29,7 +29,7 @@ export default function createNodeConfig(options = {}) {
               {
                 modules: false,
                 targets: {
-                  node: '8.0.0'
+                  node: '12.0.0'
                 }
               }
             ]

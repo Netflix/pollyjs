@@ -24,7 +24,7 @@ export default function createBrowserTestConfig(options = {}) {
       },
       /* target override */
       {
-        browsers: ['last 5 Chrome versions']
+        browsers: ['last 2 Chrome versions']
       }
     ),
     options

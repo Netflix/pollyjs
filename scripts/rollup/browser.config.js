@@ -31,7 +31,7 @@ export default function createBrowserConfig(options = {}, targets) {
               {
                 modules: false,
                 targets: targets || {
-                  browsers: ['last 2 versions', 'safari >= 7']
+                  browsers: ['last 2 versions']
                 }
               }
             ]

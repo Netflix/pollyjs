@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "fixturify": "^1.2.0",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.2",
     "rollup": "^1.14.6"
   }
 }
