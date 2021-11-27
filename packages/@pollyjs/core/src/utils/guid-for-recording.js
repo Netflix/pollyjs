@@ -17,8 +17,5 @@ function guidFor(str) {
 }
 
 export default function guidForRecording(recording) {
-  return (recording || '')
-    .split('/')
-    .map(guidFor)
-    .join('/');
+  return (recording || '').split('/').map(guidFor).join('/');
 }

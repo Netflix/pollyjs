@@ -9,7 +9,7 @@ Polly.register(FetchAdapter);
 Polly.register(RESTPersister);
 Polly.register(LocalStoragePersister);
 
-Polly.on('create', polly => {
+Polly.on('create', (polly) => {
   polly.configure({
     adapters: ['xhr', 'fetch'],
     persister: 'rest',

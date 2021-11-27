@@ -39,7 +39,9 @@ export default function dehumanizeTime(input) {
   }
 
   const parts = input.replace(/ /g, '').match(ALPHA_NUMERIC_DOT);
-  const sets = parts.map(part => part.split(ALPHA_NUMERIC_DOT).filter(o => o));
+  const sets = parts.map((part) =>
+    part.split(ALPHA_NUMERIC_DOT).filter((o) => o)
+  );
 
   return sets.reduce((accum, [number, unit]) => {
     return accum + parseFloat(number) * TIMES[unit];

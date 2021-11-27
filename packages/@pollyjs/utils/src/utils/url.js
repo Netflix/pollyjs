@@ -33,7 +33,7 @@ function arrayFormat(query) {
   const keys = (query || '')
     .replace('?', '')
     .split('&')
-    .map(str => decodeURIComponent(str.split('=')[0]));
+    .map((str) => decodeURIComponent(str.split('=')[0]));
 
   for (const key of keys) {
     if (INDICES_REGEX.test(key)) {
@@ -98,7 +98,7 @@ export default class URL extends URLParse {
    * @override
    */
   toString() {
-    return super.toString(obj =>
+    return super.toString((obj) =>
       stringifyQuery(obj, { arrayFormat: this[ARRAY_FORMAT] })
     );
   }

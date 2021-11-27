@@ -37,7 +37,7 @@ export default class FetchAdapter extends Adapter {
       );
     }
 
-    ['fetch', 'Request', 'Response', 'Headers'].forEach(key =>
+    ['fetch', 'Request', 'Response', 'Headers'].forEach((key) =>
       this.assert(`${key} global not found.`, !!(context && context[key]))
     );
     this.assert(

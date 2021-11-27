@@ -1,11 +1,11 @@
 import dehumanizeTime from '../../../src/utils/dehumanize-time';
 
-describe('Unit | Utils | dehumanizeTime', function() {
-  it('should exist', function() {
+describe('Unit | Utils | dehumanizeTime', function () {
+  it('should exist', function () {
     expect(dehumanizeTime).to.be.a('function');
   });
 
-  it('should work', function() {
+  it('should work', function () {
     expect(dehumanizeTime(null)).to.be.NaN;
     expect(dehumanizeTime(undefined)).to.be.NaN;
     expect(dehumanizeTime(true)).to.be.NaN;
@@ -30,7 +30,7 @@ describe('Unit | Utils | dehumanizeTime', function() {
         33005045006
       ]
     ].forEach(([inputs, value]) => {
-      inputs.forEach(str => expect(dehumanizeTime(str)).to.equal(value));
+      inputs.forEach((str) => expect(dehumanizeTime(str)).to.equal(value));
     });
   });
 });

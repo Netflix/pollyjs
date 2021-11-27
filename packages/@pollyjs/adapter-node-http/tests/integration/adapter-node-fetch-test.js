@@ -7,7 +7,7 @@ import { setupMocha as setupPolly } from '@pollyjs/core';
 
 import pollyConfig from '../utils/polly-config';
 
-describe('Integration | Node Http Adapter | node-fetch', function() {
+describe('Integration | Node Http Adapter | node-fetch', function () {
   setupPolly.beforeEach(pollyConfig);
 
   setupFetchRecord({ host: 'http://localhost:4000' });

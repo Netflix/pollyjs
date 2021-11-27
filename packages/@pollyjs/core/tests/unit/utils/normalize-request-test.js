@@ -5,16 +5,16 @@ import {
   url
 } from '../../../src/utils/normalize-request';
 
-describe('Unit | Utils | Normalize Request', function() {
-  it('should exist', function() {
+describe('Unit | Utils | Normalize Request', function () {
+  it('should exist', function () {
     expect(url).to.be.a('function');
     expect(body).to.be.a('function');
     expect(method).to.be.a('function');
     expect(headers).to.be.a('function');
   });
 
-  describe('method', function() {
-    it('should handle all verbs', function() {
+  describe('method', function () {
+    it('should handle all verbs', function () {
       expect(method('get')).to.equal('GET');
       expect(method('put')).to.equal('PUT');
       expect(method('post')).to.equal('POST');
@@ -23,11 +23,11 @@ describe('Unit | Utils | Normalize Request', function() {
       expect(method('option')).to.equal('OPTION');
     });
 
-    it('should support a custom fn', function() {
-      expect(method('GET', m => m.toLowerCase())).to.equal('get');
+    it('should support a custom fn', function () {
+      expect(method('GET', (m) => m.toLowerCase())).to.equal('get');
     });
 
-    it('should pass the correct arguments to the custom fn', function() {
+    it('should pass the correct arguments to the custom fn', function () {
       const req = {};
 
       method(
@@ -43,8 +43,8 @@ describe('Unit | Utils | Normalize Request', function() {
     });
   });
 
-  describe('headers', function() {
-    it('should lower-case all header keys', function() {
+  describe('headers', function () {
+    it('should lower-case all header keys', function () {
       expect(
         headers({
           Accept: 'foo',
@@ -56,7 +56,7 @@ describe('Unit | Utils | Normalize Request', function() {
       });
     });
 
-    it('should exclude specified headers', function() {
+    it('should exclude specified headers', function () {
       expect(
         headers(
           {
@@ -69,7 +69,7 @@ describe('Unit | Utils | Normalize Request', function() {
       ).to.deep.equal({ accept: 'foo' });
     });
 
-    it('should support a custom fn', function() {
+    it('should support a custom fn', function () {
       expect(
         headers(
           {
@@ -77,7 +77,7 @@ describe('Unit | Utils | Normalize Request', function() {
             test: 'test',
             'Content-Type': 'Bar'
           },
-          headers => {
+          (headers) => {
             delete headers.test;
 
             return headers;
@@ -86,7 +86,7 @@ describe('Unit | Utils | Normalize Request', function() {
       ).to.deep.equal({ accept: 'foo', 'content-type': 'Bar' });
     });
 
-    it('should pass the correct arguments to the custom fn', function() {
+    it('should pass the correct arguments to the custom fn', function () {
       const req = {};
       const reqHeaders = { foo: 'foo' };
 
@@ -102,11 +102,11 @@ describe('Unit | Utils | Normalize Request', function() {
       );
     });
 
-    it('should not mutate the original headers in the custom fn', function() {
+    it('should not mutate the original headers in the custom fn', function () {
       const reqHeaders = { foo: 'bar' };
 
       expect(
-        headers(reqHeaders, headers => {
+        headers(reqHeaders, (headers) => {
           delete headers.foo;
 
           return headers;
@@ -117,14 +117,14 @@ describe('Unit | Utils | Normalize Request', function() {
     });
   });
 
-  describe('url', function() {
-    it('should sort query params', function() {
+  describe('url', function () {
+    it('should sort query params', function () {
       expect(url('http://foo.com?b=1&c=1&a=1', {})).to.equal(
         'http://foo.com?a=1&b=1&c=1'
       );
     });
 
-    it('should respect `matchRequestsBy.url` config', function() {
+    it('should respect `matchRequestsBy.url` config', function () {
       [
         [
           /* config options */
@@ -137,7 +137,7 @@ describe('Unit | Utils | Normalize Request', function() {
           [false, 'http://hash-test.com?a=1&b=1&c=1'],
           /* expected when custom fn */
           [
-            h => h.replace('=', '!='),
+            (h) => h.replace('=', '!='),
             'http://hash-test.com?a=1&b=1&c=1#hello!=world'
           ]
         ],
@@ -146,42 +146,42 @@ describe('Unit | Utils | Normalize Request', function() {
           'http://protocol-test.com',
           [true, 'http://protocol-test.com'],
           [false, '//protocol-test.com'],
-          [p => p.replace('http', 'https'), 'https://protocol-test.com']
+          [(p) => p.replace('http', 'https'), 'https://protocol-test.com']
         ],
         [
           'query',
           'http://query-test.com?b=1&c=1&a=1',
           [true, 'http://query-test.com?a=1&b=1&c=1'],
           [false, 'http://query-test.com'],
-          [q => ({ ...q, c: 2 }), 'http://query-test.com?a=1&b=1&c=2']
+          [(q) => ({ ...q, c: 2 }), 'http://query-test.com?a=1&b=1&c=2']
         ],
         [
           'username',
           'https://username:password@username-test.com',
           [true, 'https://username:password@username-test.com'],
           [false, 'https://username-test.com'],
-          [u => `${u}123`, 'https://username123:password@username-test.com']
+          [(u) => `${u}123`, 'https://username123:password@username-test.com']
         ],
         [
           'password',
           'https://username:password@password-test.com',
           [true, 'https://username:password@password-test.com'],
           [false, 'https://username@password-test.com'],
-          [p => `${p}123`, 'https://username:password123@password-test.com']
+          [(p) => `${p}123`, 'https://username:password123@password-test.com']
         ],
         [
           'port',
           'https://port-test.com:8000',
           [true, 'https://port-test.com:8000'],
           [false, 'https://port-test.com'],
-          [p => Number(p) + 1, 'https://port-test.com:8001']
+          [(p) => Number(p) + 1, 'https://port-test.com:8001']
         ],
         [
           'pathname',
           'https://pathname-test.com/bar/baz',
           [true, 'https://pathname-test.com/bar/baz'],
           [false, 'https://pathname-test.com'],
-          [p => p.replace('bar', 'foo'), 'https://pathname-test.com/foo/baz']
+          [(p) => p.replace('bar', 'foo'), 'https://pathname-test.com/foo/baz']
         ]
       ].forEach(([rule, input, ...options]) => {
         options.forEach(([optionValue, expectedOutput]) => {
@@ -190,17 +190,17 @@ describe('Unit | Utils | Normalize Request', function() {
       });
     });
 
-    it('should respect relative urls', function() {
+    it('should respect relative urls', function () {
       expect(url('/some/path')).to.equal('/some/path');
     });
 
-    it('should support a custom fn', function() {
-      expect(url('https://foo.bar', url => url.replace('bar', 'foo'))).to.equal(
-        'https://foo.foo'
-      );
+    it('should support a custom fn', function () {
+      expect(
+        url('https://foo.bar', (url) => url.replace('bar', 'foo'))
+      ).to.equal('https://foo.foo');
     });
 
-    it('should pass the correct arguments to the custom fn', function() {
+    it('should pass the correct arguments to the custom fn', function () {
       const req = {};
 
       url(
@@ -215,7 +215,7 @@ describe('Unit | Utils | Normalize Request', function() {
       );
     });
 
-    it("should pass the correct arguments to the individual `matchRequestsBy.url` option's custom fn", function() {
+    it("should pass the correct arguments to the individual `matchRequestsBy.url` option's custom fn", function () {
       const req = {};
 
       url(
@@ -233,12 +233,12 @@ describe('Unit | Utils | Normalize Request', function() {
     });
   });
 
-  describe('body', function() {
-    it('should support a custom fn', function() {
-      expect(body('foo', b => b.toUpperCase())).to.equal('FOO');
+  describe('body', function () {
+    it('should support a custom fn', function () {
+      expect(body('foo', (b) => b.toUpperCase())).to.equal('FOO');
     });
 
-    it('should pass the correct arguments to the custom fn', function() {
+    it('should pass the correct arguments to the custom fn', function () {
       const req = {};
 
       url(

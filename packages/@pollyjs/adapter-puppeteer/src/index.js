@@ -55,7 +55,7 @@ export default class PuppeteerAdapter extends Adapter {
     const { requestResourceTypes } = this.options;
 
     this[LISTENERS].set(page, {
-      request: async request => {
+      request: async (request) => {
         if (requestResourceTypes.includes(request.resourceType())) {
           const url = request.url();
           const method = request.method();
@@ -105,7 +105,7 @@ export default class PuppeteerAdapter extends Adapter {
           request.continue();
         }
       },
-      requestfinished: request => {
+      requestfinished: (request) => {
         const response = request.response();
         const { passthroughs, pollyRequests } = this._requestsMapping;
 
@@ -121,7 +121,7 @@ export default class PuppeteerAdapter extends Adapter {
           pollyRequests.delete(request);
         }
       },
-      requestfailed: request => {
+      requestfailed: (request) => {
         const error = request.failure();
         const { passthroughs, pollyRequests } = this._requestsMapping;
 
@@ -194,8 +194,6 @@ export default class PuppeteerAdapter extends Adapter {
         headers: response.headers(),
         body: await response.text()
       };
-    } catch (error) {
-      throw error;
     } finally {
       this[PASSTHROUGH_PROMISES].delete(requestId);
     }
@@ -224,7 +222,7 @@ export default class PuppeteerAdapter extends Adapter {
       const listeners = this[LISTENERS].get(target);
 
       // puppeteer remove prependListener after v4.0.0, polyfill it if missing
-      const prependListenerPolyfill = function(event, handler) {
+      const prependListenerPolyfill = function (event, handler) {
         const all = this.emitter.all;
         const handlers = all.get(event);
         const added = handlers && handlers.unshift(handler);

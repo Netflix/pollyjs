@@ -11,7 +11,7 @@ import XHRAdapter from '../../src';
 
 class MockXMLHttpRequest {}
 
-describe('Integration | XHR Adapter', function() {
+describe('Integration | XHR Adapter', function () {
   setupPolly.beforeEach({
     recordFailedRequests: true,
     adapters: [XHRAdapter],
@@ -25,7 +25,7 @@ describe('Integration | XHR Adapter', function() {
   adapterBrowserTests();
   adapterIdentifierTests();
 
-  it('should handle aborting a request', async function() {
+  it('should handle aborting a request', async function () {
     const { server } = this.polly;
     const xhr = new XMLHttpRequest();
     let abortEventCalled;
@@ -44,7 +44,7 @@ describe('Integration | XHR Adapter', function() {
     expect(abortEventCalled).to.equal(true);
   });
 
-  it('should handle immediately aborting a request', async function() {
+  it('should handle immediately aborting a request', async function () {
     const { server } = this.polly;
     const xhr = new XMLHttpRequest();
     let abortEventCalled;
@@ -65,13 +65,13 @@ describe('Integration | XHR Adapter', function() {
     expect(abortEventCalled).to.equal(true);
   });
 
-  ['arraybuffer', 'blob', 'text'].forEach(responseType =>
-    it(`should be able to download binary content (${responseType})`, async function() {
+  ['arraybuffer', 'blob', 'text'].forEach((responseType) =>
+    it(`should be able to download binary content (${responseType})`, async function () {
       const fetch = async () =>
         Buffer.from(
           await this.fetch('/assets/32x32.png', {
             responseType
-          }).then(res => res.arrayBuffer())
+          }).then((res) => res.arrayBuffer())
         );
 
       this.polly.disconnectFrom(XHRAdapter);
@@ -103,9 +103,9 @@ describe('Integration | XHR Adapter', function() {
   );
 });
 
-describe('Integration | XHR Adapter | Init', function() {
-  describe('Context', function() {
-    it(`should assign context's XMLHttpRequest as the native XMLHttpRequest`, async function() {
+describe('Integration | XHR Adapter | Init', function () {
+  describe('Context', function () {
+    it(`should assign context's XMLHttpRequest as the native XMLHttpRequest`, async function () {
       const polly = new Polly('context', { adapters: [] });
       const adapterOptions = {
         xhr: {
@@ -125,7 +125,7 @@ describe('Integration | XHR Adapter | Init', function() {
         adapterOptions.xhr.context.XMLHttpRequest
       );
 
-      expect(function() {
+      expect(function () {
         polly.configure({
           adapterOptions: { xhr: { context: {} } }
         });
@@ -135,8 +135,8 @@ describe('Integration | XHR Adapter | Init', function() {
     });
   });
 
-  describe('Concurrency', function() {
-    it('should prevent concurrent XHR adapter instances on the same context', async function() {
+  describe('Concurrency', function () {
+    it('should prevent concurrent XHR adapter instances on the same context', async function () {
       const one = new Polly('one');
       const two = new Polly('two');
       const three = new Polly('three', {
@@ -149,7 +149,7 @@ describe('Integration | XHR Adapter | Init', function() {
 
       one.connectTo(XHRAdapter);
 
-      expect(function() {
+      expect(function () {
         two.connectTo(XHRAdapter);
       }).to.throw(/Running concurrent XHR adapters is unsupported/);
 
@@ -160,14 +160,14 @@ describe('Integration | XHR Adapter | Init', function() {
       await three.stop();
     });
 
-    it('should allow you to register new instances once stopped', async function() {
+    it('should allow you to register new instances once stopped', async function () {
       const one = new Polly('one');
       const two = new Polly('two');
 
       one.connectTo(XHRAdapter);
       await one.stop();
 
-      expect(function() {
+      expect(function () {
         two.connectTo(XHRAdapter);
       }).to.not.throw();
 

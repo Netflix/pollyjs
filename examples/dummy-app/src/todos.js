@@ -21,7 +21,7 @@ import {
   Filter
 } from 'react-admin';
 
-const TodoFilter = props => (
+const TodoFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Search" source="q" alwaysOn />
     <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
@@ -40,7 +40,7 @@ TodoTitle.propTypes = {
   })
 };
 
-export const TodoList = props => (
+export const TodoList = (props) => (
   <List
     title="Todos"
     {...props}
@@ -64,7 +64,7 @@ export const TodoList = props => (
   </List>
 );
 
-export const TodoShow = props => (
+export const TodoShow = (props) => (
   <Show title={<TodoTitle />} {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
@@ -82,7 +82,7 @@ export const TodoShow = props => (
   </Show>
 );
 
-export const TodoEdit = props => (
+export const TodoEdit = (props) => (
   <Edit title={<TodoTitle />} {...props}>
     <SimpleForm>
       <DisabledInput source="id" />
@@ -100,7 +100,7 @@ export const TodoEdit = props => (
   </Edit>
 );
 
-export const TodoCreate = props => (
+export const TodoCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="title" />

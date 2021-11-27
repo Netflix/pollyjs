@@ -1,12 +1,12 @@
 /* global setupPolly */
 
-describe('Events', function() {
+describe('Events', function () {
   setupPolly({
     adapters: ['fetch'],
     persister: 'local-storage'
   });
 
-  it('can help test dynamic data', async function() {
+  it('can help test dynamic data', async function () {
     const { server } = this.polly;
     let numPosts = 0;
 

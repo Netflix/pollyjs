@@ -151,7 +151,7 @@ export default class EventEmitter {
         events.get(eventName).delete(listener);
 
         // Remove any temp listeners that use the provided listener
-        this.listeners(eventName).forEach(l => {
+        this.listeners(eventName).forEach((l) => {
           if (l.listener === listener) {
             events.get(eventName).delete(l);
           }
@@ -239,7 +239,7 @@ export default class EventEmitter {
     const event = new Event(eventName);
 
     await Promise.all(
-      this.listeners(eventName).map(listener => listener(...args, event))
+      this.listeners(eventName).map((listener) => listener(...args, event))
     );
 
     if (event.shouldStopPropagating) {

@@ -18,14 +18,14 @@ class Sandbox {
   }
 }
 
-describe('Unit | Test Helpers | mocha', function() {
-  it('should exist', function() {
+describe('Unit | Test Helpers | mocha', function () {
+  it('should exist', function () {
     expect(setupPolly).to.be.a('function');
     expect(setupPolly.beforeEach).to.be.a('function');
     expect(setupPolly.afterEach).to.be.a('function');
   });
 
-  it('should invoke beforeEach and afterEach', function() {
+  it('should invoke beforeEach and afterEach', function () {
     const stub = new Sandbox();
 
     setupPolly({}, stub);
@@ -33,7 +33,7 @@ describe('Unit | Test Helpers | mocha', function() {
     expect(stub.afterEachCalled.size).to.equal(1);
   });
 
-  it('should create a polly property and set recordingName', function() {
+  it('should create a polly property and set recordingName', function () {
     const stub = new Sandbox();
 
     setupPolly({}, stub);
@@ -41,7 +41,7 @@ describe('Unit | Test Helpers | mocha', function() {
     expect(stub.context.polly.recordingName).to.equal('mockname');
   });
 
-  it('should concat title if test is deeply nested', function() {
+  it('should concat title if test is deeply nested', function () {
     const stub = new Sandbox({
       currentTest: {
         title: 'foo',

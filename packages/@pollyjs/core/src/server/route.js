@@ -65,7 +65,7 @@ export default class Route {
 
   applyFiltersWithArgs(req, ...args) {
     this[HANDLERS] = this[HANDLERS].filter(({ route, handler }) =>
-      [...handler.get('filters')].every(fn =>
+      [...handler.get('filters')].every((fn) =>
         fn(requestWithParams(req, route), ...args)
       )
     );
@@ -115,7 +115,7 @@ export default class Route {
 
   _orderedHandlers() {
     return [...this.middleware, this].reduce((handlers, route) => {
-      handlers.push(...route.handlers.map(handler => ({ route, handler })));
+      handlers.push(...route.handlers.map((handler) => ({ route, handler })));
 
       return handlers;
     }, []);

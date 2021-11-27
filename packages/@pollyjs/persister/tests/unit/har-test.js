@@ -6,8 +6,8 @@ import Entry from '../../src/har/entry';
 import Request from '../../src/har/request';
 import Response from '../../src/har/response';
 
-describe('Unit | HAR', function() {
-  it('should exist', function() {
+describe('Unit | HAR', function () {
+  it('should exist', function () {
     expect(HAR).to.be.a('function');
     expect(Log).to.be.a('function');
     expect(Entry).to.be.a('function');
@@ -15,16 +15,16 @@ describe('Unit | HAR', function() {
     expect(Response).to.be.a('function');
   });
 
-  describe('Log', function() {
-    it('should merge passed options', async function() {
+  describe('Log', function () {
+    it('should merge passed options', async function () {
       expect(new Log({ foo: 'foo' })).to.deep.include({ foo: 'foo' });
     });
 
-    it('should require creator', async function() {
+    it('should require creator', async function () {
       expect(await validate.log(new Log())).to.be.false;
     });
 
-    it('should be valid', async function() {
+    it('should be valid', async function () {
       expect(
         await validate.log(
           new Log({
@@ -34,7 +34,7 @@ describe('Unit | HAR', function() {
       ).to.be.true;
     });
 
-    it('addEntries: Entries should be unique', async function() {
+    it('addEntries: Entries should be unique', async function () {
       const now = new Date().getTime();
       const log = new Log({
         entries: [
@@ -79,7 +79,7 @@ describe('Unit | HAR', function() {
       ]);
     });
 
-    it('sortEntries: sorts by startedDateTime', async function() {
+    it('sortEntries: sorts by startedDateTime', async function () {
       const now = new Date().getTime();
       const log = new Log({
         entries: [
@@ -92,7 +92,7 @@ describe('Unit | HAR', function() {
 
       log.sortEntries();
 
-      expect(log.entries.map(e => e._id)).to.have.deep.ordered.members([
+      expect(log.entries.map((e) => e._id)).to.have.deep.ordered.members([
         'a',
         'b',
         'c',

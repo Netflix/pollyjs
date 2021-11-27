@@ -13,7 +13,6 @@
 # misc
 /coverage/
 !.*
-.*/
 .eslintcache
 
 # ember-try

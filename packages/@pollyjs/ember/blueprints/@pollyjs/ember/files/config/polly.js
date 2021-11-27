@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = function(env) {
+module.exports = function (env) {
   return {
     enabled: env !== 'production',
     server: {

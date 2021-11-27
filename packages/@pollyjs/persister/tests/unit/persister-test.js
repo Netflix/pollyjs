@@ -2,15 +2,15 @@ import { timeout } from '@pollyjs/utils';
 
 import Persister from '../../src';
 
-describe('Unit | Persister', function() {
-  it('should exist', function() {
+describe('Unit | Persister', function () {
+  it('should exist', function () {
     expect(Persister).to.be.a('function');
   });
 
-  describe('Caching', function() {
+  describe('Caching', function () {
     let callCounts, recording;
 
-    beforeEach(function() {
+    beforeEach(function () {
       callCounts = { find: 0, save: 0, delete: 0 };
       recording = {
         log: {
@@ -46,7 +46,7 @@ describe('Unit | Persister', function() {
       this.persister = new CustomPersister({});
     });
 
-    it('should handle concurrent find requests', async function() {
+    it('should handle concurrent find requests', async function () {
       await Promise.all([
         this.persister.find('test'),
         this.persister.find('test'),
@@ -56,7 +56,7 @@ describe('Unit | Persister', function() {
       expect(callCounts.find).to.equal(1);
     });
 
-    it('caches', async function() {
+    it('caches', async function () {
       await this.persister.find('test');
       await this.persister.find('test');
       await this.persister.find('test');
@@ -64,7 +64,7 @@ describe('Unit | Persister', function() {
       expect(callCounts.find).to.equal(1);
     });
 
-    it('does not cache falsy values', async function() {
+    it('does not cache falsy values', async function () {
       recording = null;
 
       await this.persister.find('test');
@@ -78,7 +78,7 @@ describe('Unit | Persister', function() {
       expect(callCounts.find).to.equal(3);
     });
 
-    it('busts the cache after a save', async function() {
+    it('busts the cache after a save', async function () {
       await this.persister.find('test');
       await this.persister.save('test');
       await this.persister.find('test');
@@ -88,7 +88,7 @@ describe('Unit | Persister', function() {
       expect(callCounts.find).to.equal(2);
     });
 
-    it('busts the cache after a delete', async function() {
+    it('busts the cache after a delete', async function () {
       await this.persister.find('test');
       await this.persister.delete('test');
       await this.persister.find('test');

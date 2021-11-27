@@ -1,12 +1,12 @@
 /* global setupPolly */
 
-describe('REST Persister', function() {
+describe('REST Persister', function () {
   setupPolly({
     adapters: ['fetch'],
     persister: 'rest'
   });
 
-  it('should work', async function() {
+  it('should work', async function () {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');
     const post = await res.json();
 

@@ -6,7 +6,7 @@ function request(url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
-    xhr.addEventListener('load', function() {
+    xhr.addEventListener('load', function () {
       resolve(xhr);
     });
 
@@ -16,7 +16,7 @@ function request(url) {
   });
 }
 
-describe('Integration | Jest | XHR', function() {
+describe('Integration | Jest | XHR', function () {
   let polly;
 
   beforeEach(() => {

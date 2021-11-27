@@ -2,7 +2,7 @@ import { Polly } from '@pollyjs/core';
 import * as validate from 'har-validator/lib/async';
 
 export default function persisterTests() {
-  it('should persist valid HAR', async function() {
+  it('should persist valid HAR', async function () {
     const { recordingId, persister } = this.polly;
 
     this.polly.record();
@@ -22,7 +22,7 @@ export default function persisterTests() {
     expect(await validate.har(await persister.find(recordingId))).to.be.true;
   });
 
-  it('should have the correct metadata', async function() {
+  it('should have the correct metadata', async function () {
     const { recordingId, recordingName, persister } = this.polly;
 
     this.polly.record();
@@ -46,11 +46,11 @@ export default function persisterTests() {
     expect(entry._order).to.equal(0);
   });
 
-  it('should add new entries to an existing recording', async function() {
+  it('should add new entries to an existing recording', async function () {
     const { recordingId, recordingName, config } = this.polly;
     let { persister } = this.polly;
 
-    const orderedRecordUrl = order => `${this.recordUrl()}?order=${order}`;
+    const orderedRecordUrl = (order) => `${this.recordUrl()}?order=${order}`;
 
     this.polly.record();
     await this.fetch(orderedRecordUrl(1));
@@ -75,14 +75,14 @@ export default function persisterTests() {
 
     expect(har.log.entries).to.have.lengthOf(3);
     expect(
-      har.log.entries.filter(e => e.request.url.includes(orderedRecordUrl(1)))
+      har.log.entries.filter((e) => e.request.url.includes(orderedRecordUrl(1)))
     ).to.have.lengthOf(2);
     expect(
-      har.log.entries.filter(e => e.request.url.includes(orderedRecordUrl(2)))
+      har.log.entries.filter((e) => e.request.url.includes(orderedRecordUrl(2)))
     ).to.have.lengthOf(1);
   });
 
-  it('should emit beforePersist', async function() {
+  it('should emit beforePersist', async function () {
     const { persister, server } = this.polly;
     let beforePersistCalled = false;
 
@@ -101,7 +101,7 @@ export default function persisterTests() {
     expect(beforePersistCalled).to.be.true;
   });
 
-  it('should respect recording name overrides', async function() {
+  it('should respect recording name overrides', async function () {
     const { server, persister } = this.polly;
     const recordingName = 'Default Override';
     let recordingId;
@@ -109,7 +109,7 @@ export default function persisterTests() {
     server
       .get(this.recordUrl())
       .recordingName(recordingName)
-      .on('request', req => {
+      .on('request', (req) => {
         expect(req.recordingName).to.equal(recordingName);
         recordingId = req.recordingId;
       });
@@ -129,7 +129,7 @@ export default function persisterTests() {
     this.polly.recordingName = recordingName;
   });
 
-  it('should correctly handle array header values', async function() {
+  it('should correctly handle array header values', async function () {
     const { recordingId, server, persister } = this.polly;
     let responseCalled = false;
 
@@ -170,7 +170,7 @@ export default function persisterTests() {
     expect(responseCalled).to.be.true;
   });
 
-  it('should correctly handle array header values where a single header is expected', async function() {
+  it('should correctly handle array header values where a single header is expected', async function () {
     const { recordingId, server, persister } = this.polly;
 
     this.polly.record();
@@ -193,7 +193,7 @@ export default function persisterTests() {
     expect(redirectURL).to.equal('./index.html');
   });
 
-  it('should error when persisting a failed request', async function() {
+  it('should error when persisting a failed request', async function () {
     let error;
 
     this.polly.configure({ recordFailedRequests: false });
@@ -217,7 +217,7 @@ export default function persisterTests() {
     }
   });
 
-  it('should not error when persisting a failed request and `recordFailedRequests` is true', async function() {
+  it('should not error when persisting a failed request and `recordFailedRequests` is true', async function () {
     this.polly.configure({ recordFailedRequests: true });
 
     await this.fetchRecord();
@@ -229,10 +229,10 @@ export default function persisterTests() {
     expect(har.log.entries).to.have.lengthOf(1);
   });
 
-  it('should remove unused entries when `keepUnusedRequests` is false', async function() {
+  it('should remove unused entries when `keepUnusedRequests` is false', async function () {
     const { recordingName, recordingId, config } = this.polly;
 
-    const orderedRecordUrl = order => `${this.recordUrl()}?order=${order}`;
+    const orderedRecordUrl = (order) => `${this.recordUrl()}?order=${order}`;
 
     await this.fetch(orderedRecordUrl(1));
     await this.fetch(orderedRecordUrl(2));
@@ -265,7 +265,7 @@ export default function persisterTests() {
     expect(har.log.entries[1].request.url).to.include(orderedRecordUrl(3));
   });
 
-  it('should sort the entries by date', async function() {
+  it('should sort the entries by date', async function () {
     this.polly.configure({
       persisterOptions: {
         keepUnusedRequests: true
@@ -273,7 +273,7 @@ export default function persisterTests() {
     });
     const { recordingName, recordingId, config } = this.polly;
 
-    const orderedRecordUrl = order => `${this.recordUrl()}?order=${order}`;
+    const orderedRecordUrl = (order) => `${this.recordUrl()}?order=${order}`;
 
     await this.fetch(orderedRecordUrl(1));
     await this.fetch(orderedRecordUrl(2));
@@ -306,7 +306,7 @@ export default function persisterTests() {
     expect(har.log.entries[3].request.url).to.include(orderedRecordUrl(2));
   });
 
-  it('should not sort the entries by date if `disableSortingHarEntries` is true', async function() {
+  it('should not sort the entries by date if `disableSortingHarEntries` is true', async function () {
     this.polly.configure({
       persisterOptions: {
         keepUnusedRequests: true,
@@ -315,7 +315,7 @@ export default function persisterTests() {
     });
     const { recordingName, recordingId, config } = this.polly;
 
-    const orderedRecordUrl = order => `${this.recordUrl()}?order=${order}`;
+    const orderedRecordUrl = (order) => `${this.recordUrl()}?order=${order}`;
 
     await this.fetch(orderedRecordUrl(1));
     await this.fetch(orderedRecordUrl(2));
@@ -347,7 +347,7 @@ export default function persisterTests() {
     expect(har.log.entries[3].request.url).to.include(orderedRecordUrl(2));
   });
 
-  it('should correctly handle binary responses', async function() {
+  it('should correctly handle binary responses', async function () {
     const { recordingId, server, persister } = this.polly;
     let har, content;
 

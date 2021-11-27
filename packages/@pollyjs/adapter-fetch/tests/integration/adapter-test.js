@@ -14,7 +14,7 @@ class MockRequest {}
 class MockResponse {}
 class MockHeaders {}
 
-describe('Integration | Fetch Adapter', function() {
+describe('Integration | Fetch Adapter', function () {
   setupPolly.beforeEach(pollyConfig);
 
   setupFetchRecord();
@@ -25,7 +25,7 @@ describe('Integration | Fetch Adapter', function() {
   adapterBrowserTests();
   adapterIdentifierTests();
 
-  it('should support URL instances', async function() {
+  it('should support URL instances', async function () {
     const { server } = this.polly;
 
     server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
@@ -35,13 +35,13 @@ describe('Integration | Fetch Adapter', function() {
     expect(res.status).to.equal(200);
   });
 
-  it('should support array of key/value pair headers', async function() {
+  it('should support array of key/value pair headers', async function () {
     const { server } = this.polly;
     let headers;
 
     server
       .any(this.recordUrl())
-      .on('request', req => {
+      .on('request', (req) => {
         headers = req.headers;
       })
       .intercept((_, res) => res.sendStatus(200));
@@ -54,7 +54,7 @@ describe('Integration | Fetch Adapter', function() {
     expect(headers).to.deep.equal({ 'content-type': 'application/json' });
   });
 
-  it('should handle aborting a request', async function() {
+  it('should handle aborting a request', async function () {
     const { server } = this.polly;
     const controller = new AbortController();
     let abortEventCalled = false;
@@ -78,7 +78,7 @@ describe('Integration | Fetch Adapter', function() {
     expect(error.message).to.contain('The user aborted a request.');
   });
 
-  it('should handle immediately aborting a request', async function() {
+  it('should handle immediately aborting a request', async function () {
     const { server } = this.polly;
     const controller = new AbortController();
     let abortEventCalled = false;
@@ -104,10 +104,10 @@ describe('Integration | Fetch Adapter', function() {
     expect(error.message).to.contain('The user aborted a request.');
   });
 
-  it('should be able to download binary content', async function() {
+  it('should be able to download binary content', async function () {
     const fetch = async () =>
       Buffer.from(
-        await this.fetch('/assets/32x32.png').then(res => res.arrayBuffer())
+        await this.fetch('/assets/32x32.png').then((res) => res.arrayBuffer())
       );
 
     this.polly.disconnectFrom(FetchAdapter);
@@ -133,7 +133,7 @@ describe('Integration | Fetch Adapter', function() {
     expect(nativeResponseBuffer.equals(replayedResponseBuffer)).to.equal(true);
   });
 
-  it('should return status text', async function() {
+  it('should return status text', async function () {
     const { server } = this.polly;
 
     server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
@@ -143,8 +143,8 @@ describe('Integration | Fetch Adapter', function() {
     expect(res.statusText).to.equal('OK');
   });
 
-  describe('Request', function() {
-    it('should support Request objects', async function() {
+  describe('Request', function () {
+    it('should support Request objects', async function () {
       const { server } = this.polly;
 
       server.any(this.recordUrl()).intercept((_, res) => res.sendStatus(200));
@@ -154,7 +154,7 @@ describe('Integration | Fetch Adapter', function() {
       expect(res.status).to.equal(200);
     });
 
-    it('should set bodyUsed to true if a body is present', async function() {
+    it('should set bodyUsed to true if a body is present', async function () {
       const { server } = this.polly;
       const request = new Request('/', { method: 'POST', body: '{}' });
 
@@ -165,7 +165,7 @@ describe('Integration | Fetch Adapter', function() {
       expect(request.bodyUsed).to.equal(true);
     });
 
-    it('should not set bodyUsed to true if a body is not present', async function() {
+    it('should not set bodyUsed to true if a body is not present', async function () {
       const { server } = this.polly;
       const request = new Request('/');
 
@@ -177,7 +177,7 @@ describe('Integration | Fetch Adapter', function() {
     });
 
     function testRequestOptions(createRequest, options) {
-      return async function() {
+      return async function () {
         const { server } = this.polly;
         let receivedOptions;
 
@@ -237,9 +237,9 @@ describe('Integration | Fetch Adapter', function() {
   });
 });
 
-describe('Integration | Fetch Adapter | Init', function() {
-  describe('Context', function() {
-    it(`should assign context's fetch as the native fetch and Request as the native Request`, async function() {
+describe('Integration | Fetch Adapter | Init', function () {
+  describe('Context', function () {
+    it(`should assign context's fetch as the native fetch and Request as the native Request`, async function () {
       const polly = new Polly('context', { adapters: [] });
       const fetch = () => {};
       const adapterOptions = {
@@ -265,7 +265,7 @@ describe('Integration | Fetch Adapter | Init', function() {
         adapterOptions.fetch.context.Request
       );
 
-      expect(function() {
+      expect(function () {
         polly.configure({
           adapterOptions: { fetch: { context: {} } }
         });
@@ -274,20 +274,20 @@ describe('Integration | Fetch Adapter | Init', function() {
       await polly.stop();
     });
 
-    it('should throw when context, fetch, Request, Response, and Headers are undefined', async function() {
+    it('should throw when context, fetch, Request, Response, and Headers are undefined', async function () {
       const polly = new Polly('context', { adapters: [] });
 
       polly.configure({
         adapters: [FetchAdapter]
       });
 
-      expect(function() {
+      expect(function () {
         polly.configure({
           adapterOptions: { fetch: { context: undefined } }
         });
       }).to.throw(/fetch global not found/);
 
-      expect(function() {
+      expect(function () {
         polly.configure({
           adapterOptions: {
             fetch: {
@@ -302,7 +302,7 @@ describe('Integration | Fetch Adapter | Init', function() {
         });
       }).to.throw(/fetch global not found/);
 
-      expect(function() {
+      expect(function () {
         polly.configure({
           adapterOptions: {
             fetch: {
@@ -317,7 +317,7 @@ describe('Integration | Fetch Adapter | Init', function() {
         });
       }).to.throw(/Request global not found/);
 
-      expect(function() {
+      expect(function () {
         polly.configure({
           adapterOptions: {
             fetch: {
@@ -332,7 +332,7 @@ describe('Integration | Fetch Adapter | Init', function() {
         });
       }).to.throw(/Response global not found/);
 
-      expect(function() {
+      expect(function () {
         polly.configure({
           adapterOptions: {
             fetch: {
@@ -351,14 +351,14 @@ describe('Integration | Fetch Adapter | Init', function() {
     });
   });
 
-  describe('Concurrency', function() {
-    it('should prevent concurrent fetch adapter instances', async function() {
+  describe('Concurrency', function () {
+    it('should prevent concurrent fetch adapter instances', async function () {
       const one = new Polly('one');
       const two = new Polly('two');
 
       one.connectTo(FetchAdapter);
 
-      expect(function() {
+      expect(function () {
         two.connectTo(FetchAdapter);
       }).to.throw(/Running concurrent fetch adapters is unsupported/);
 
@@ -366,14 +366,14 @@ describe('Integration | Fetch Adapter | Init', function() {
       await two.stop();
     });
 
-    it('should allow you to register new instances once stopped', async function() {
+    it('should allow you to register new instances once stopped', async function () {
       const one = new Polly('one');
       const two = new Polly('two');
 
       one.connectTo(FetchAdapter);
       await one.stop();
 
-      expect(function() {
+      expect(function () {
         two.connectTo(FetchAdapter);
       }).to.not.throw();
 

@@ -2,7 +2,7 @@ import 'formdata-polyfill';
 import File from '../helpers/file';
 
 export default function adapterBrowserTests() {
-  it('should handle recording requests posting FormData + Blob/File', async function() {
+  it('should handle recording requests posting FormData + Blob/File', async function () {
     const { server, recordingName } = this.polly;
     const form = new FormData();
 
@@ -40,7 +40,7 @@ export default function adapterBrowserTests() {
     expect(res.status).to.equal(200);
   });
 
-  it('should handle recording requests posting a Blob', async function() {
+  it('should handle recording requests posting a Blob', async function () {
     const { server, recordingName } = this.polly;
 
     server.post('/submit').intercept((req, res) => {

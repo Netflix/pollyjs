@@ -43,7 +43,7 @@ export default class Server {
           console.log(`Listening on http://${host || 'localhost'}:${port}/\n`);
         }
       })
-      .on('error', e => {
+      .on('error', (e) => {
         if (e.code === 'EADDRINUSE') {
           console.error(`Port ${port} already in use.`);
           process.exit(1);

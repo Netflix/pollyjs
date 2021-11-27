@@ -3,10 +3,10 @@ import { PollyError } from '@pollyjs/utils';
 
 import pollyConfig from '../utils/polly-config';
 
-describe('Integration | Server', function() {
+describe('Integration | Server', function () {
   setupPolly(pollyConfig);
 
-  it('calls all intercept handlers', async function() {
+  it('calls all intercept handlers', async function () {
     const { server } = this.polly;
 
     server.any().intercept(async (_, res) => {
@@ -27,7 +27,7 @@ describe('Integration | Server', function() {
     expect(json).to.deep.equal({ foo: 'bar' });
   });
 
-  it('breaks out of intercepts when using the interceptor API', async function() {
+  it('breaks out of intercepts when using the interceptor API', async function () {
     const { server } = this.polly;
     let numIntercepts = 0;
 
@@ -50,8 +50,8 @@ describe('Integration | Server', function() {
     expect(numIntercepts).to.equal(2);
   });
 
-  describe('API', function() {
-    it('.configure() - merges all configs', async function() {
+  describe('API', function () {
+    it('.configure() - merges all configs', async function () {
       const { server } = this.polly;
       let config;
 
@@ -69,7 +69,7 @@ describe('Integration | Server', function() {
       expect(config).to.include({ foo: 'baz', bar: 'bar' });
     });
 
-    it('.configure() - should throw when trying to override certain options', async function() {
+    it('.configure() - should throw when trying to override certain options', async function () {
       const { server } = this.polly;
 
       // The following options cannot be overridden on a per request basis
@@ -79,7 +79,7 @@ describe('Integration | Server', function() {
         'adapterOptions',
         'persister',
         'persisterOptions'
-      ].forEach(key =>
+      ].forEach((key) =>
         expect(() => server.any().configure({ [key]: 'foo' })).to.throw(
           PollyError,
           /Invalid configuration option/
@@ -87,7 +87,7 @@ describe('Integration | Server', function() {
       );
     });
 
-    it('.recordingName()', async function() {
+    it('.recordingName()', async function () {
       const { server } = this.polly;
       let recordingName;
 
@@ -103,7 +103,7 @@ describe('Integration | Server', function() {
       expect(recordingName).to.equal('Override');
     });
 
-    it('.recordingName() - should reset when called with no arguments', async function() {
+    it('.recordingName() - should reset when called with no arguments', async function () {
       const { server } = this.polly;
       let recordingName;
 
@@ -121,69 +121,69 @@ describe('Integration | Server', function() {
       expect(recordingName).to.not.equal('Override');
     });
 
-    it('.filter()', async function() {
+    it('.filter()', async function () {
       const { server } = this.polly;
 
       server
         .get('/ping')
-        .filter(req => req.query.num === '1')
+        .filter((req) => req.query.num === '1')
         .intercept((req, res) => res.sendStatus(201));
 
       server
         .get('/ping')
-        .filter(req => req.query.num === '2')
+        .filter((req) => req.query.num === '2')
         .intercept((req, res) => res.sendStatus(202));
 
       expect((await fetch('/ping?num=1')).status).to.equal(201);
       expect((await fetch('/ping?num=2')).status).to.equal(202);
     });
 
-    it('.filter() + events', async function() {
+    it('.filter() + events', async function () {
       const { server } = this.polly;
       let num;
 
       server
         .get('/ping')
-        .filter(req => req.query.num === '1')
-        .on('request', req => (num = req.query.num))
+        .filter((req) => req.query.num === '1')
+        .on('request', (req) => (num = req.query.num))
         .intercept((req, res) => res.sendStatus(201));
 
       server
         .get('/ping')
-        .filter(req => req.query.num === '2')
-        .on('request', req => (num = req.query.num))
+        .filter((req) => req.query.num === '2')
+        .on('request', (req) => (num = req.query.num))
         .intercept((req, res) => res.sendStatus(202));
 
       expect((await fetch('/ping?num=1')).status).to.equal(201);
       expect(num).to.equal('1');
     });
 
-    it('.filter() - multiple', async function() {
+    it('.filter() - multiple', async function () {
       const { server } = this.polly;
 
       server
         .get('/ping')
-        .filter(req => req.query.foo === 'foo')
-        .filter(req => req.query.bar === 'bar')
+        .filter((req) => req.query.foo === 'foo')
+        .filter((req) => req.query.bar === 'bar')
         .intercept((req, res) => res.sendStatus(201));
 
       server
         .get('/ping')
-        .filter(req => req.query.foo === 'foo')
-        .filter(req => req.query.baz === 'baz')
+        .filter((req) => req.query.foo === 'foo')
+        .filter((req) => req.query.baz === 'baz')
         .intercept((req, res) => res.sendStatus(202));
 
       expect((await fetch('/ping?foo=foo&bar=bar')).status).to.equal(201);
       expect((await fetch('/ping?foo=foo&baz=baz')).status).to.equal(202);
     });
 
-    it('.filter() - can access params', async function() {
+    it('.filter() - can access params', async function () {
       const { server } = this.polly;
       let id;
 
       server
         .get('/ping/:id')
-        .filter(req => {
+        .filter((req) => {
           id = req.params.id;
 
           return true;
@@ -194,7 +194,7 @@ describe('Integration | Server', function() {
       expect(id).to.equal('1');
     });
 
-    it('.filter() - should throw when not passed a function', async function() {
+    it('.filter() - should throw when not passed a function', async function () {
       const { server } = this.polly;
 
       expect(() => server.any().filter()).to.throw(
@@ -203,7 +203,7 @@ describe('Integration | Server', function() {
       );
     });
 
-    it('.times()', async function() {
+    it('.times()', async function () {
       const { server } = this.polly;
       let callCount = 0;
 
@@ -221,7 +221,7 @@ describe('Integration | Server', function() {
       expect(callCount).to.equal(1);
     });
 
-    it('.intercept(_, { times }) & .on(_, { times })', async function() {
+    it('.intercept(_, { times }) & .on(_, { times })', async function () {
       const { server } = this.polly;
       let callCount = 0;
 
@@ -240,8 +240,8 @@ describe('Integration | Server', function() {
     });
   });
 
-  describe('Events & Middleware', function() {
-    it('event: request', async function() {
+  describe('Events & Middleware', function () {
+    it('event: request', async function () {
       const { server } = this.polly;
       let requestCalled = false;
 
@@ -251,7 +251,7 @@ describe('Integration | Server', function() {
           expect(requestCalled).to.be.true;
           res.sendStatus(200);
         })
-        .on('request', req => {
+        .on('request', (req) => {
           expect(requestCalled).to.be.false;
 
           // Validate that we can modify the request
@@ -265,7 +265,7 @@ describe('Integration | Server', function() {
       expect(requestCalled).to.be.true;
     });
 
-    it('event: beforeResponse', async function() {
+    it('event: beforeResponse', async function () {
       const { server } = this.polly;
       let beforeResponseCalled = false;
 
@@ -287,7 +287,7 @@ describe('Integration | Server', function() {
       expect(beforeResponseCalled).to.be.true;
     });
 
-    it('event: response', async function() {
+    it('event: response', async function () {
       const { server } = this.polly;
       let responseCalled = false;
 
@@ -312,7 +312,7 @@ describe('Integration | Server', function() {
       expect(responseCalled).to.be.true;
     });
 
-    it('can register multiple event handlers', async function() {
+    it('can register multiple event handlers', async function () {
       const { server } = this.polly;
       const stack = [];
 
@@ -330,7 +330,7 @@ describe('Integration | Server', function() {
       expect(stack).to.deep.equal([1, 2, 3, 4, 5, 6]);
     });
 
-    it('can turn off events', async function() {
+    it('can turn off events', async function () {
       const { server } = this.polly;
       let requestCalled,
         beforeResponseCalled = false;
@@ -353,38 +353,38 @@ describe('Integration | Server', function() {
       expect(beforeResponseCalled).to.be.false;
     });
 
-    it('events receive params', async function() {
+    it('events receive params', async function () {
       const { server } = this.polly;
 
       server
         .any('/ping')
-        .on('request', req => {
+        .on('request', (req) => {
           expect(req.params).to.deep.equal({});
         })
-        .on('beforeResponse', req => {
+        .on('beforeResponse', (req) => {
           expect(req.params).to.deep.equal({});
         });
 
       server
         .any('/ping/:id')
-        .on('request', req => {
+        .on('request', (req) => {
           expect(req.params).to.deep.equal({ id: '1' });
         })
-        .on('beforeResponse', req => {
+        .on('beforeResponse', (req) => {
           expect(req.params).to.deep.equal({ id: '1' });
         });
 
       server
         .get('/ping/:id/:id2/*path')
         .intercept((req, res) => res.sendStatus(200))
-        .on('request', req => {
+        .on('request', (req) => {
           expect(req.params).to.deep.equal({
             id: '1',
             id2: '2',
             path: 'foo/bar'
           });
         })
-        .on('beforeResponse', req => {
+        .on('beforeResponse', (req) => {
           expect(req.params).to.deep.equal({
             id: '1',
             id2: '2',
@@ -395,7 +395,7 @@ describe('Integration | Server', function() {
       expect((await fetch('/ping/1/2/foo/bar')).status).to.equal(200);
     });
 
-    it('preserves middleware order', async function() {
+    it('preserves middleware order', async function () {
       const { server } = this.polly;
       const requestOrder = [];
       const beforeResponseOrder = [];
@@ -450,8 +450,8 @@ describe('Integration | Server', function() {
     });
   });
 
-  describe('Control Flow', function() {
-    it('can control flow with .times() & .stopPropagation()', async function() {
+  describe('Control Flow', function () {
+    it('can control flow with .times() & .stopPropagation()', async function () {
       const { server } = this.polly;
       let calledBeforeDelete = false;
       let calledAfterDelete = false;

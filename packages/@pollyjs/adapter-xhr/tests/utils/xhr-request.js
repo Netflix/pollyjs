@@ -1,7 +1,7 @@
 import serializeResponseHeaders from '../../src/utils/serialize-response-headers';
 
 export default function request(url, obj = {}) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const xhr = obj.xhr || new XMLHttpRequest();
 
     xhr.open(obj.method || 'GET', url);
@@ -21,7 +21,7 @@ export default function request(url, obj = {}) {
     xhr.onerror = () => resolve(xhr);
 
     xhr.send(obj.body);
-  }).then(xhr => {
+  }).then((xhr) => {
     const responseBody =
       xhr.status === 204 && xhr.response === '' ? null : xhr.response;
 

@@ -20,7 +20,7 @@ import {
   SimpleShowLayout
 } from 'react-admin';
 
-const PostFilter = props => (
+const PostFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Search" source="q" alwaysOn />
     <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
@@ -39,7 +39,7 @@ PostTitle.propTypes = {
   })
 };
 
-export const PostList = props => (
+export const PostList = (props) => (
   <List
     title="Posts"
     {...props}
@@ -63,7 +63,7 @@ export const PostList = props => (
   </List>
 );
 
-export const PostShow = props => (
+export const PostShow = (props) => (
   <Show title={<PostTitle />} {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
@@ -81,7 +81,7 @@ export const PostShow = props => (
   </Show>
 );
 
-export const PostEdit = props => (
+export const PostEdit = (props) => (
   <Edit title={<PostTitle />} {...props}>
     <SimpleForm>
       <DisabledInput source="id" />
@@ -99,7 +99,7 @@ export const PostEdit = props => (
   </Edit>
 );
 
-export const PostCreate = props => (
+export const PostCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="title" />

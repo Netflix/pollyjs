@@ -5,6 +5,6 @@ module.exports = {
   globals: {
     page: true,
     browser: true,
-    jestPuppeteer: true,
+    jestPuppeteer: true
   }
-}
+};

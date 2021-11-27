@@ -14,7 +14,5 @@ export { default as Serializers } from './utils/serializers';
 
 export { default as URL } from './utils/url';
 
-export {
-  default as isBufferUtf8Representable
-} from './utils/is-buffer-utf8-representable';
+export { default as isBufferUtf8Representable } from './utils/is-buffer-utf8-representable';
 export { default as cloneArrayBuffer } from './utils/clone-arraybuffer';

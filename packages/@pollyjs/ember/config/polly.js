@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = function(env) {
+module.exports = function (env) {
   // See: https://netflix.github.io/pollyjs/#/frameworks/ember-cli?id=configuration
   return {
     enabled: env !== 'production',

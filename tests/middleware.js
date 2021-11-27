@@ -20,7 +20,13 @@ module.exports = function attachMiddleware(app) {
   app.use(bodyParser.json());
 
   app.get('/echo', (req, res) => {
-    res.sendStatus(req.query.status);
+    const status = req.query.status;
+
+    if (status === '204') {
+      res.status(204).send();
+    } else {
+      res.sendStatus(req.query.status);
+    }
   });
 
   app.post('/compress', compression({ filter: () => true }), (req, res) => {

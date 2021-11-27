@@ -3,20 +3,20 @@ import URL from '../../../src/utils/url';
 const encode = encodeURIComponent;
 const decode = decodeURIComponent;
 
-describe('Unit | Utils | URL', function() {
-  it('should exist', function() {
+describe('Unit | Utils | URL', function () {
+  it('should exist', function () {
     expect(URL).to.be.a('function');
   });
 
-  it('should work', function() {
+  it('should work', function () {
     expect(new URL('http://netflix.com').href).to.equal('http://netflix.com');
   });
 
-  it('should should not parse the query string by default', function() {
+  it('should should not parse the query string by default', function () {
     expect(new URL('http://netflix.com?foo=bar').query).to.equal('?foo=bar');
   });
 
-  it('should correctly parse query params', function() {
+  it('should correctly parse query params', function () {
     [
       ['', {}],
       ['a&b=', { a: null, b: '' }],
@@ -30,7 +30,7 @@ describe('Unit | Utils | URL', function() {
     });
   });
 
-  it('should correctly stringify query params', function() {
+  it('should correctly stringify query params', function () {
     [
       // Query string will be undefined but we decode it in the assertion
       [{}, decode(undefined)],
@@ -47,14 +47,14 @@ describe('Unit | Utils | URL', function() {
     });
   });
 
-  it('should correctly detect original array formats', function() {
+  it('should correctly detect original array formats', function () {
     [
       'a[0]=1&a[1]=2',
       `${encode('a[0]')}=1&${encode('a[1]')}=2`,
       'a[]=1&a[]=2',
       `${encode('a[]')}=1&${encode('a[]')}=2`,
       'a=1&a=2'
-    ].forEach(query => {
+    ].forEach((query) => {
       const url = new URL(`http://foo.bar?${query}`, true);
 
       expect(decode(url.href.split('?')[1])).to.equal(decode(query));
@@ -62,10 +62,10 @@ describe('Unit | Utils | URL', function() {
     });
   });
 
-  it('should correctly handle changes in array formats', function() {
+  it('should correctly handle changes in array formats', function () {
     const url = new URL(`http://foo.bar`, true);
 
-    ['a[0]=1&a[1]=2', 'a[]=1&a[]=2', 'a=1&a=2'].forEach(query => {
+    ['a[0]=1&a[1]=2', 'a[]=1&a[]=2', 'a=1&a=2'].forEach((query) => {
       url.set('query', query);
 
       expect(decode(url.href.split('?')[1])).to.equal(query);

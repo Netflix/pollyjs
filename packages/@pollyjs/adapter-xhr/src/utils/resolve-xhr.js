@@ -1,5 +1,5 @@
 export default function resolveXhr(xhr, body) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     xhr.send(body);
 
     if (xhr.async) {

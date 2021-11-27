@@ -15,15 +15,15 @@ import nativeRequest from '../utils/native-request';
 import pollyConfig from '../utils/polly-config';
 import getResponseFromRequest from '../utils/get-response-from-request';
 
-describe('Integration | Node Http Adapter', function() {
-  describe('Concurrency', function() {
-    it('should prevent concurrent Node HTTP adapter instances', async function() {
+describe('Integration | Node Http Adapter', function () {
+  describe('Concurrency', function () {
+    it('should prevent concurrent Node HTTP adapter instances', async function () {
       const one = new Polly('one');
       const two = new Polly('two');
 
       one.connectTo(NodeHTTPAdapter);
 
-      expect(function() {
+      expect(function () {
         two.connectTo(NodeHTTPAdapter);
       }).to.throw(/Running concurrent node-http adapters is unsupported/);
 
@@ -31,13 +31,13 @@ describe('Integration | Node Http Adapter', function() {
       await two.stop();
     });
 
-    it('should prevent running nock concurrently with the node-http adapter', async function() {
+    it('should prevent running nock concurrently with the node-http adapter', async function () {
       const polly = new Polly('nock');
       const nock = require('nock');
 
       nock.activate();
 
-      expect(function() {
+      expect(function () {
         polly.connectTo(NodeHTTPAdapter);
       }).to.throw(
         /Running nock concurrently with the node-http adapter is unsupported/
@@ -48,7 +48,7 @@ describe('Integration | Node Http Adapter', function() {
     });
   });
 
-  describe('http', function() {
+  describe('http', function () {
     setupPolly.beforeEach(pollyConfig);
 
     setupFetchRecord({
@@ -62,10 +62,10 @@ describe('Integration | Node Http Adapter', function() {
     adapterIdentifierTests();
     commonTests(http);
 
-    it('should be able to download binary content', async function() {
+    it('should be able to download binary content', async function () {
       const fetch = async () =>
         Buffer.from(
-          await this.relativeFetch('/assets/32x32.png').then(res =>
+          await this.relativeFetch('/assets/32x32.png').then((res) =>
             res.arrayBuffer()
           )
         );
@@ -98,7 +98,7 @@ describe('Integration | Node Http Adapter', function() {
     });
   });
 
-  describe('https', function() {
+  describe('https', function () {
     setupPolly(pollyConfig);
     commonTests(https);
   });
@@ -107,7 +107,7 @@ describe('Integration | Node Http Adapter', function() {
 function commonTests(transport) {
   const { protocol } = transport.globalAgent;
 
-  it('should be able to upload a binary data', async function() {
+  it('should be able to upload a binary data', async function () {
     const { server } = this.polly;
     const url = `${protocol}//example.com`;
     const body = Buffer.from('Node HTTP Adapter', 'base64');
@@ -129,7 +129,7 @@ function commonTests(transport) {
     expect(requests[0].identifiers.body).to.equal(body.toString('hex'));
   });
 
-  it('should be able to upload form data', async function() {
+  it('should be able to upload form data', async function () {
     const url = `${protocol}//example.com/upload`;
     const { server } = this.polly;
     const formData = new FormData();
@@ -157,7 +157,7 @@ function commonTests(transport) {
     expect(request.body).to.include('@pollyjs/adapter-node-http');
   });
 
-  it('should handle aborting a request', async function() {
+  it('should handle aborting a request', async function () {
     const { server } = this.polly;
     const url = `${protocol}//example.com`;
     const req = transport.request(url);
@@ -181,7 +181,7 @@ function commonTests(transport) {
     expect(abortEventCalled).to.equal(true);
   });
 
-  it('should handle immediately aborting a request', async function() {
+  it('should handle immediately aborting a request', async function () {
     const { server } = this.polly;
     const url = `${protocol}//example.com`;
     const req = transport.request(url);

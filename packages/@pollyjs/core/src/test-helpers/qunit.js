@@ -10,13 +10,13 @@ export default function setupQunit(hooks, defaults = {}) {
 }
 
 setupQunit.beforeEach = function setupQunitBeforeEach(hooks, defaults = {}) {
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     return beforeEach(this, generateRecordingName(...arguments), defaults);
   });
 };
 
 setupQunit.afterEach = function setupQunitAfterEach(hooks) {
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     return afterEach(this, 'qunit');
   });
 };

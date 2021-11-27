@@ -23,7 +23,7 @@ export function url(url, config, req) {
     parsedUrl = parseUrl(config(url, req), true);
   } else {
     // Remove any url properties that have been disabled via the config
-    keys(config || {}).forEach(key => {
+    keys(config || {}).forEach((key) => {
       if (isFunction(config[key])) {
         parsedUrl.set(key, config[key](parsedUrl[key], req));
       } else if (!config[key]) {
@@ -48,7 +48,7 @@ export function headers(headers, config, req) {
   }
 
   if (isObjectLike(config) && isArray(config.exclude)) {
-    config.exclude.forEach(header => delete normalizedHeaders[header]);
+    config.exclude.forEach((header) => delete normalizedHeaders[header]);
   }
 
   return normalizedHeaders;

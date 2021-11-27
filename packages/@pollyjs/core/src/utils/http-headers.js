@@ -37,7 +37,7 @@ export default function HTTPHeaders(headers) {
   const proxy = new Proxy({}, HANDLER);
 
   if (isObjectLike(headers)) {
-    keys(headers).forEach(h => (proxy[h] = headers[h]));
+    keys(headers).forEach((h) => (proxy[h] = headers[h]));
   }
 
   return proxy;

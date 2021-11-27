@@ -10,10 +10,10 @@ function setupFetchRecord(options) {
   setupFetchRecord.afterEach();
 }
 
-setupFetchRecord.beforeEach = function(options = {}) {
+setupFetchRecord.beforeEach = function (options = {}) {
   options = { ...defaultOptions, ...options };
 
-  beforeEach(function() {
+  beforeEach(function () {
     const { host, fetch } = options;
 
     this.fetch = fetch;
@@ -27,8 +27,8 @@ setupFetchRecord.beforeEach = function(options = {}) {
   });
 };
 
-setupFetchRecord.afterEach = function() {
-  afterEach(async function() {
+setupFetchRecord.afterEach = function () {
+  afterEach(async function () {
     // Note: test setup could fail, so we cannot assume this.polly
     // was setup before accessing it.
     if (this.polly) {

@@ -80,7 +80,8 @@ module.exports = {
     // NOTE: this is because we cannot assume `this.project` is always set.
     // If unavailable, we default to process.cwd (root) to determine the project root.
     // See: https://github.com/Netflix/pollyjs/issues/276
-    const projectRoot = this.project && this.project.root ? this.project.root : root;
+    const projectRoot =
+      this.project && this.project.root ? this.project.root : root;
     const configPath = path.join(projectRoot, 'config', 'polly.js');
 
     if (fs.existsSync(configPath)) {

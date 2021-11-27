@@ -6,6 +6,6 @@ export default {
   },
 
   relative(ratio) {
-    return ms => timeout(ratio * ms);
+    return (ms) => timeout(ratio * ms);
   }
 };
