@@ -20,7 +20,7 @@ UserTitle.propTypes = {
   })
 };
 
-export const UserList = props => (
+export const UserList = (props) => (
   <List title="Users" {...props} sort={{ field: 'name', order: 'ASC' }}>
     <Datagrid>
       <TextField source="name" />
@@ -31,7 +31,7 @@ export const UserList = props => (
   </List>
 );
 
-export const UserShow = props => (
+export const UserShow = (props) => (
   <Show title={<UserTitle />} {...props}>
     <SimpleShowLayout>
       <TextField source="id" />

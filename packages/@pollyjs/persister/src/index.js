@@ -163,7 +163,7 @@ export default class Persister {
     return (
       (recording &&
         recording.log.entries.find(
-          entry => entry._id === id && entry._order === order
+          (entry) => entry._id === id && entry._order === order
         )) ||
       null
     );
@@ -189,13 +189,13 @@ export default class Persister {
    */
   _removeUnusedEntries(recordingId, har) {
     const requests = this.polly._requests.filter(
-      r =>
+      (r) =>
         r.recordingId === recordingId &&
         (r.action === ACTIONS.RECORD || r.action === ACTIONS.REPLAY)
     );
 
-    har.log.entries = har.log.entries.filter(entry =>
-      requests.find(r => entry._id === r.id && entry._order === r.order)
+    har.log.entries = har.log.entries.filter((entry) =>
+      requests.find((r) => entry._id === r.id && entry._order === r.order)
     );
   }
 

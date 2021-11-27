@@ -10,7 +10,7 @@ module.exports = {
       { name: '@pollyjs/core' },
       { name: '@pollyjs/node-server' },
       { name: '@pollyjs/persister-local-storage' },
-      { name: '@pollyjs/persister-rest' },
+      { name: '@pollyjs/persister-rest' }
     ]);
-  },
+  }
 };

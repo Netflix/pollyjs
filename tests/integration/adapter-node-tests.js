@@ -1,7 +1,7 @@
 /* eslint-env node */
 
 export default function adapterNodeTests() {
-  it('should handle recording requests posting a Buffer', async function() {
+  it('should handle recording requests posting a Buffer', async function () {
     const { server, recordingName } = this.polly;
     const buffer = Buffer.from(recordingName);
     const url = `http://example.com/upload`;
@@ -20,7 +20,7 @@ export default function adapterNodeTests() {
     expect(res.status).to.equal(200);
   });
 
-  it('should handle recording requests posting an ArrayBuffer', async function() {
+  it('should handle recording requests posting an ArrayBuffer', async function () {
     const { server } = this.polly;
     const buffer = new ArrayBuffer(8);
     const url = `http://example.com/upload`;

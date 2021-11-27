@@ -1,12 +1,12 @@
 /* global setupPolly */
 
-describe('Intercept', function() {
+describe('Intercept', function () {
   setupPolly({
     adapters: ['fetch'],
     persister: 'local-storage'
   });
 
-  it('can mock valid responses', async function() {
+  it('can mock valid responses', async function () {
     const { server } = this.polly;
 
     server
@@ -26,7 +26,7 @@ describe('Intercept', function() {
     expect(post.title).to.equal('Post 42');
   });
 
-  it('can mock invalid responses', async function() {
+  it('can mock invalid responses', async function () {
     const { server } = this.polly;
 
     server
@@ -42,7 +42,7 @@ describe('Intercept', function() {
     expect(text).to.equal('Post not found.');
   });
 
-  it('can conditionally intercept requests', async function() {
+  it('can conditionally intercept requests', async function () {
     const { server } = this.polly;
 
     server

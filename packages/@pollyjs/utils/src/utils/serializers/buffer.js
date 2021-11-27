@@ -9,9 +9,9 @@ export function serialize(body) {
 
     if (Buffer.isBuffer(body)) {
       buffer = body;
-    } else if (Array.isArray(body) && body.some(c => Buffer.isBuffer(c))) {
+    } else if (Array.isArray(body) && body.some((c) => Buffer.isBuffer(c))) {
       // Body is a chunked array
-      const chunks = body.map(c => Buffer.from(c));
+      const chunks = body.map((c) => Buffer.from(c));
 
       buffer = Buffer.concat(chunks);
     } else if (`${body}` === '[object ArrayBuffer]') {

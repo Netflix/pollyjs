@@ -5,7 +5,7 @@ import alias from 'rollup-plugin-alias';
 import createNodeConfig from './node.config';
 import { pkg, testsPath } from './utils';
 
-const pollyDependencies = Object.keys(pkg.devDependencies || {}).filter(d =>
+const pollyDependencies = Object.keys(pkg.devDependencies || {}).filter((d) =>
   d.startsWith('@pollyjs')
 );
 

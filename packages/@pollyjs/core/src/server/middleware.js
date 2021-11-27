@@ -12,7 +12,7 @@ export default class Middleware {
     this.paths = this.global ? [GLOBAL] : paths;
     this._routeRecognizer = new RouteRecognizer();
 
-    this.paths.forEach(path =>
+    this.paths.forEach((path) =>
       this._routeRecognizer.add([{ path, handler: [handler] }])
     );
   }

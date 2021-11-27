@@ -121,7 +121,7 @@ export default class Polly {
 
   static register(Factory) {
     if (!FACTORY_REGISTRATION.has(Factory)) {
-      FACTORY_REGISTRATION.set(Factory, container =>
+      FACTORY_REGISTRATION.set(Factory, (container) =>
         container.register(Factory)
       );
     }
@@ -162,7 +162,7 @@ export default class Polly {
     this.config = mergeConfigs(DefaultConfig, this.config, config);
 
     // Register and connect to all specified adapters
-    this.config.adapters.forEach(adapter => this.connectTo(adapter));
+    this.config.adapters.forEach((adapter) => this.connectTo(adapter));
 
     /* Handle Persister */
     let { persister } = this.config;
@@ -221,7 +221,7 @@ export default class Polly {
    */
   play() {
     if (this[PAUSED_ADAPTERS]) {
-      this[PAUSED_ADAPTERS].forEach(adapterId => this.connectTo(adapterId));
+      this[PAUSED_ADAPTERS].forEach((adapterId) => this.connectTo(adapterId));
       delete this[PAUSED_ADAPTERS];
     }
   }
@@ -251,7 +251,7 @@ export default class Polly {
     await Promise.all(
       // The NOOP is there to handle both a resolved and rejected promise
       // to ensure the promise resolves regardless of the outcome.
-      this._requests.map(r => Promise.resolve(r.promise).then(NOOP, NOOP))
+      this._requests.map((r) => Promise.resolve(r.promise).then(NOOP, NOOP))
     );
   }
 

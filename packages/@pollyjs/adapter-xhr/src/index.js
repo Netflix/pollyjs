@@ -43,9 +43,9 @@ export default class XHRAdapter extends Adapter {
     this.NativeXMLHttpRequest = context.XMLHttpRequest;
     this.xhr = fakeXhrForContext.useFakeXMLHttpRequest();
 
-    this.xhr.onCreate = xhr => {
+    this.xhr.onCreate = (xhr) => {
       xhr[SEND] = xhr.send;
-      xhr.send = body => {
+      xhr.send = (body) => {
         xhr[SEND](body);
         this.handleRequest({
           url: xhr.url,

@@ -333,9 +333,6 @@ export default class Adapter {
       }
 
       await this.respondToRequest(pollyRequest, error);
-    } catch (e) {
-      // Rethrow any error not handled by `respondToRequest`.
-      throw e;
     } finally {
       pollyRequest.promise.reject(error);
     }

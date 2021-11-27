@@ -1,11 +1,11 @@
 import isExpired from '../../../src/utils/is-expired';
 
-describe('Unit | Utils | isExpired', function() {
-  it('should exist', function() {
+describe('Unit | Utils | isExpired', function () {
+  it('should exist', function () {
     expect(isExpired).to.be.a('function');
   });
 
-  it('should work', function() {
+  it('should work', function () {
     [
       [undefined, undefined, false],
       [null, null, false],

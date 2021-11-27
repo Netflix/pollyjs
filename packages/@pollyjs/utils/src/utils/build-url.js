@@ -3,7 +3,7 @@ import URL from './url';
 export default function buildUrl(...paths) {
   const url = new URL(
     paths
-      .map(p => p && (p + '').trim()) // Trim each string
+      .map((p) => p && (p + '').trim()) // Trim each string
       .filter(Boolean) // Remove empty strings or other falsy paths
       .join('/')
   );

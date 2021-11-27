@@ -6,7 +6,7 @@ import persisterTests from '@pollyjs-tests/integration/persister-tests';
 
 import pollyConfig from '../utils/polly-config';
 
-describe('Integration | REST Persister', function() {
+describe('Integration | REST Persister', function () {
   setupPolly.beforeEach({
     ...pollyConfig,
     persister: RESTPersister,

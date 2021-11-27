@@ -11,7 +11,7 @@
 export default function cancelFnAfterNTimes(fn, nTimes, cancel) {
   let callCount = 0;
 
-  return function(...args) {
+  return function (...args) {
     if (++callCount >= nTimes) {
       cancel();
     }

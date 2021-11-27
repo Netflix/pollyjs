@@ -1,7 +1,7 @@
 import Timing from '../../../src/utils/timing';
 
 function fixedTest(ms) {
-  it(`should handle ${ms}ms`, async function() {
+  it(`should handle ${ms}ms`, async function () {
     // Fail the test if it exceeds ms + 10ms buffer
     this.timeout(ms + 50);
 
@@ -22,7 +22,7 @@ function fixedTest(ms) {
 function relativeTest(ratio) {
   const timeout = ratio * 100;
 
-  it(`should handle a ratio of ${ratio}`, async function() {
+  it(`should handle a ratio of ${ratio}`, async function () {
     // Fail the test if it exceeds timeout + 10ms buffer
     this.timeout(timeout + 50);
 
@@ -40,20 +40,20 @@ function relativeTest(ratio) {
   });
 }
 
-describe('Unit | Utils | Timing', function() {
-  it('should exist', function() {
+describe('Unit | Utils | Timing', function () {
+  it('should exist', function () {
     expect(Timing).to.be.a('object');
     expect(Timing.fixed).to.be.a('function');
     expect(Timing.relative).to.be.a('function');
   });
 
-  describe('fixed', function() {
+  describe('fixed', function () {
     fixedTest(0);
     fixedTest(50);
     fixedTest(100);
   });
 
-  describe('relative', function() {
+  describe('relative', function () {
     relativeTest(0);
     relativeTest(0.5);
     relativeTest(1.0);

@@ -19,13 +19,13 @@ export default function setupMocha(defaults = {}, ctx = global) {
 }
 
 setupMocha.beforeEach = function setupMochaBeforeEach(defaults, ctx = global) {
-  ctx.beforeEach(function() {
+  ctx.beforeEach(function () {
     return beforeEach(this, generateRecordingName(this), defaults);
   });
 };
 
 setupMocha.afterEach = function setupMochaAfterEach(ctx = global) {
-  ctx.afterEach(function() {
+  ctx.afterEach(function () {
     return afterEach(this, 'mocha');
   });
 };

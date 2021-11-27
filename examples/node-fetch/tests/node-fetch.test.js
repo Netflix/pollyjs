@@ -9,7 +9,7 @@ const { expect } = require('chai');
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
 
-describe('node-fetch', function() {
+describe('node-fetch', function () {
   setupPolly({
     adapters: ['node-http'],
     persister: 'fs',
@@ -20,7 +20,7 @@ describe('node-fetch', function() {
     }
   });
 
-  it('should work', async function() {
+  it('should work', async function () {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');
     const post = await res.json();
 

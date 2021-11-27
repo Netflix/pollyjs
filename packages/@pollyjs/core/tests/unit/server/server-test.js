@@ -8,26 +8,26 @@ function request(method, path) {
   return server.lookup(method, path).handlers[0].get('intercept')();
 }
 
-describe('Unit | Server', function() {
-  it('should exist', function() {
+describe('Unit | Server', function () {
+  it('should exist', function () {
     expect(() => new Server()).to.not.throw();
     expect(new Server()).to.exist;
   });
 
-  describe('API', function() {
-    beforeEach(function() {
+  describe('API', function () {
+    beforeEach(function () {
       server = new Server();
     });
 
-    it('should handle all HTTP methods', function() {
-      HTTP_METHODS.forEach(method => {
+    it('should handle all HTTP methods', function () {
+      HTTP_METHODS.forEach((method) => {
         server[method.toLowerCase()]('/foo').intercept(() => 200);
         expect(request(method, '/foo')).to.equal(200);
       });
     });
 
-    it('should handle multiple routes on all HTTP methods', function() {
-      HTTP_METHODS.forEach(method => {
+    it('should handle multiple routes on all HTTP methods', function () {
+      HTTP_METHODS.forEach((method) => {
         server[method.toLowerCase()]([
           `/${method}`,
           `/${method}/*path`
@@ -38,7 +38,7 @@ describe('Unit | Server', function() {
       });
     });
 
-    it('should handle dynamic segments', function() {
+    it('should handle dynamic segments', function () {
       server.get('/foo/:seg1').intercept(() => 200);
       server.get('/foo/:seg1/bar/:seg2').intercept(() => 400);
 
@@ -48,14 +48,14 @@ describe('Unit | Server', function() {
       expect(request('GET', '/foo/42/bar/abc')).to.equal(400);
     });
 
-    it('should differentiate hosts with different protocols', function() {
-      ['http', 'https'].forEach(protocol => {
+    it('should differentiate hosts with different protocols', function () {
+      ['http', 'https'].forEach((protocol) => {
         server.get(`${protocol}://foo.bar`).intercept(() => protocol);
         expect(request('GET', `${protocol}://foo.bar`)).to.equal(protocol);
       });
     });
 
-    it('can be scoped to a host', function() {
+    it('can be scoped to a host', function () {
       server.host('http://foo.bar', () => {
         server.get('/baz').intercept(() => 200);
       });
@@ -63,7 +63,7 @@ describe('Unit | Server', function() {
       expect(request('GET', 'http://foo.bar/baz')).to.equal(200);
     });
 
-    it('can handle index route registration', function() {
+    it('can handle index route registration', function () {
       server.host('http://foo', () => {
         server.get('/').intercept(() => 200);
       });
@@ -72,7 +72,7 @@ describe('Unit | Server', function() {
       expect(request('GET', 'http://foo/')).to.equal(200);
     });
 
-    it('should reset the host after scoping', function() {
+    it('should reset the host after scoping', function () {
       server.host('http://foo.bar', () => {});
       server.get('/foo').intercept(() => 200);
 
@@ -80,7 +80,7 @@ describe('Unit | Server', function() {
       expect(request('GET', '/foo')).to.equal(200);
     });
 
-    it('should throw when nesting hosts', function() {
+    it('should throw when nesting hosts', function () {
       expect(() => {
         server.host('http://foo.bar', () => {
           server.host('http://bar.baz', () => {});
@@ -88,7 +88,7 @@ describe('Unit | Server', function() {
       }).to.throw();
     });
 
-    it('should reset the namespace after scoping', function() {
+    it('should reset the namespace after scoping', function () {
       server.namespace('/api', () => {});
       server.get('/foo').intercept(() => 200);
 
@@ -96,7 +96,7 @@ describe('Unit | Server', function() {
       expect(request('GET', '/foo')).to.equal(200);
     });
 
-    it('can be scoped to multiple namespaces', function() {
+    it('can be scoped to multiple namespaces', function () {
       server.namespace('/api', () => {
         server.get('/foo').intercept(() => 'foo');
 
@@ -110,8 +110,8 @@ describe('Unit | Server', function() {
     });
   });
 
-  describe('Route Matching', function() {
-    beforeEach(function() {
+  describe('Route Matching', function () {
+    beforeEach(function () {
       server = new Server();
     });
 
@@ -121,7 +121,7 @@ describe('Unit | Server', function() {
       server.get(url).intercept(() => {});
     }
 
-    it('should concat handlers for same paths', async function() {
+    it('should concat handlers for same paths', async function () {
       [
         '/ping',
         '/ping/:id',
@@ -129,13 +129,13 @@ describe('Unit | Server', function() {
         'http://ping.com',
         'http://ping.com/pong/:id',
         'http://ping.com/pong/*path'
-      ].forEach(url => {
+      ].forEach((url) => {
         addHandlers(url);
         expect(server.lookup('GET', url).handlers).to.have.lengthOf(3);
       });
     });
 
-    it('should concat handlers for same paths with a trailing slash', async function() {
+    it('should concat handlers for same paths with a trailing slash', async function () {
       addHandlers('/ping');
       expect(server.lookup('GET', '/ping').handlers).to.have.lengthOf(3);
 
@@ -157,7 +157,7 @@ describe('Unit | Server', function() {
       ).to.have.lengthOf(6);
     });
 
-    it('should concat handlers for same paths with different dynamic segment names', async function() {
+    it('should concat handlers for same paths with different dynamic segment names', async function () {
       addHandlers('/ping/:id');
       expect(server.lookup('GET', '/ping/:id').handlers).to.have.lengthOf(3);
 
@@ -166,7 +166,7 @@ describe('Unit | Server', function() {
       expect(server.lookup('GET', '/ping/:uuid').handlers).to.have.lengthOf(6);
     });
 
-    it('should concat handlers for same paths with different star segment names', async function() {
+    it('should concat handlers for same paths with different star segment names', async function () {
       addHandlers('/ping/*path');
       expect(server.lookup('GET', '/ping/*path').handlers).to.have.lengthOf(3);
 
@@ -175,7 +175,7 @@ describe('Unit | Server', function() {
       expect(server.lookup('GET', '/ping/*rest').handlers).to.have.lengthOf(6);
     });
 
-    it('should concat handlers for same paths with different dynamic and star segment names', async function() {
+    it('should concat handlers for same paths with different dynamic and star segment names', async function () {
       addHandlers('/ping/:id/pong/*path');
       expect(
         server.lookup('GET', '/ping/:id/pong/*path').handlers

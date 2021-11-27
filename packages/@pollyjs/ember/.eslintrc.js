@@ -2,10 +2,11 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
+    requireConfigFile: false,
     ecmaFeatures: {
       legacyDecorators: true
     }
@@ -17,7 +18,8 @@ module.exports = {
     'plugin:prettier/recommended'
   ],
   env: {
-    browser: true
+    browser: true,
+    node: true
   },
   rules: {},
   overrides: [

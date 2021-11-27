@@ -1,11 +1,11 @@
 import Interceptor from '../../../src/-private/interceptor';
 
-describe('Unit | Interceptor', function() {
-  it('should exist', function() {
+describe('Unit | Interceptor', function () {
+  it('should exist', function () {
     expect(Interceptor).to.be.a('function');
   });
 
-  it('should have the correct defaults', function() {
+  it('should have the correct defaults', function () {
     const interceptor = new Interceptor();
 
     expect(interceptor.type).to.equal('intercept');
@@ -15,7 +15,7 @@ describe('Unit | Interceptor', function() {
     expect(interceptor.shouldStopPropagating).to.be.false;
   });
 
-  it('should disable passthrough when calling abort and vise versa', function() {
+  it('should disable passthrough when calling abort and vise versa', function () {
     const interceptor = new Interceptor();
 
     expect(interceptor.shouldAbort).to.be.false;
@@ -30,7 +30,7 @@ describe('Unit | Interceptor', function() {
     expect(interceptor.shouldPassthrough).to.be.true;
   });
 
-  it('.abort()', function() {
+  it('.abort()', function () {
     const interceptor = new Interceptor();
 
     expect(interceptor.shouldAbort).to.be.false;
@@ -42,7 +42,7 @@ describe('Unit | Interceptor', function() {
     expect(interceptor.shouldIntercept).to.be.false;
   });
 
-  it('.passthrough()', function() {
+  it('.passthrough()', function () {
     const interceptor = new Interceptor();
 
     expect(interceptor.shouldPassthrough).to.be.false;
@@ -54,7 +54,7 @@ describe('Unit | Interceptor', function() {
     expect(interceptor.shouldIntercept).to.be.false;
   });
 
-  it('.stopPropagation()', function() {
+  it('.stopPropagation()', function () {
     const interceptor = new Interceptor();
 
     expect(interceptor.shouldStopPropagating).to.be.false;

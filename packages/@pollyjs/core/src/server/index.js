@@ -105,13 +105,13 @@ export default class Server {
   _lookupMiddleware(url) {
     const { host, path } = parseUrl(url);
 
-    return this[MIDDLEWARE].map(m => m.match(host, path)).filter(Boolean);
+    return this[MIDDLEWARE].map((m) => m.match(host, path)).filter(Boolean);
   }
 
   _register(method, routes) {
     const handler = new Handler();
 
-    castArray(routes).forEach(route => {
+    castArray(routes).forEach((route) => {
       const { host, path } = parseUrl(this._buildUrl(route));
       const registry = this._registryForHost(host);
       const name = this._nameForPath(path);
@@ -132,7 +132,7 @@ export default class Server {
     const handler = new Handler();
     const pathsByHost = {};
 
-    castArray(routes).forEach(route => {
+    castArray(routes).forEach((route) => {
       /*
         If the route is a '*' or '' and there is no host or namespace
         specified, treat the middleware as global so it will match all routes.
@@ -151,7 +151,7 @@ export default class Server {
       }
     });
 
-    keys(pathsByHost).forEach(host => {
+    keys(pathsByHost).forEach((host) => {
       this[MIDDLEWARE].push(
         new Middleware({ host, paths: pathsByHost[host], handler })
       );
@@ -180,7 +180,7 @@ export default class Server {
   _nameForPath(path = '') {
     const name = path
       .split(CHARS.SLASH)
-      .map(segment => {
+      .map((segment) => {
         switch (segment.charAt(0)) {
           // If this is a dynamic segment (e.g. :id), then just return `:`
           // since /path/:id is the same as /path/:uuid

@@ -9,7 +9,7 @@ export default function ajax(url, options = {}) {
 
     xhr.open(options.method || 'GET', url, REQUEST_ASYNC);
 
-    keys(options.headers || {}).forEach(k =>
+    keys(options.headers || {}).forEach((k) =>
       xhr.setRequestHeader(k, options.headers[k])
     );
 

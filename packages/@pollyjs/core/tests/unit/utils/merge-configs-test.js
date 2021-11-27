@@ -1,11 +1,11 @@
 import mergeConfigs from '../../../src/utils/merge-configs';
 
-describe('Unit | Utils | mergeConfigs', function() {
-  it('should exist', function() {
+describe('Unit | Utils | mergeConfigs', function () {
+  it('should exist', function () {
     expect(mergeConfigs).to.be.a('function');
   });
 
-  it('should not deep merge context objects', async function() {
+  it('should not deep merge context objects', async function () {
     const context = {};
     const config = mergeConfigs(
       { fetch: {}, xhr: {} },
@@ -18,7 +18,7 @@ describe('Unit | Utils | mergeConfigs', function() {
     expect(config.xhr.context).to.equal(context);
   });
 
-  it('should not deep merge arrays', async function() {
+  it('should not deep merge arrays', async function () {
     const array = [{}];
     const config = mergeConfigs({ array: [] }, { array });
 

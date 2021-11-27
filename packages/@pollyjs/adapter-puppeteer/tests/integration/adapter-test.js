@@ -10,12 +10,12 @@ import PuppeteerAdapter from '../../src';
 // The host the API server is on
 const HOST = 'http://localhost:4000';
 
-describe('Integration | Puppeteer Adapter', function() {
-  before(async function() {
+describe('Integration | Puppeteer Adapter', function () {
+  before(async function () {
     this.browser = await puppeteer.launch({ args: ['--no-sandbox'] });
   });
 
-  after(async function() {
+  after(async function () {
     await this.browser.close();
   });
 
@@ -36,12 +36,12 @@ describe('Integration | Puppeteer Adapter', function() {
 
   setupFetchRecord.beforeEach({ host: HOST });
 
-  beforeEach(function() {
+  beforeEach(function () {
     // Override this.fetch here since it needs access to the current context
     this.fetch = fetch.bind(this);
   });
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     this.page = await this.browser.newPage();
 
     await this.page.goto(`${HOST}/api`);
@@ -55,7 +55,7 @@ describe('Integration | Puppeteer Adapter', function() {
     });
   });
 
-  afterEach(async function() {
+  afterEach(async function () {
     // Turn off request interception before setupFetchRecord's afterEach so it
     // can correctly do it's thing
     await this.page.setRequestInterception(false);
@@ -63,7 +63,7 @@ describe('Integration | Puppeteer Adapter', function() {
 
   setupFetchRecord.afterEach();
 
-  afterEach(async function() {
+  afterEach(async function () {
     await this.page.close();
   });
 
@@ -71,7 +71,7 @@ describe('Integration | Puppeteer Adapter', function() {
 
   adapterTests();
 
-  it('should have resolved requests after flushing', async function() {
+  it('should have resolved requests after flushing', async function () {
     // Timeout after 500ms since we could have a hanging while loop
     this.timeout(500);
 
@@ -86,7 +86,7 @@ describe('Integration | Puppeteer Adapter', function() {
         await server.timeout(5);
         res.sendStatus(200);
       })
-      .on('request', req => requests.push(req));
+      .on('request', (req) => requests.push(req));
 
     this.page.on('requestfinished', () => resolved.push(i++));
 
@@ -103,7 +103,7 @@ describe('Integration | Puppeteer Adapter', function() {
     await this.polly.flush();
 
     expect(requests).to.have.lengthOf(3);
-    requests.forEach(request => expect(request.didRespond).to.be.true);
+    requests.forEach((request) => expect(request.didRespond).to.be.true);
     expect(resolved).to.have.members([1, 2, 3]);
   });
 });

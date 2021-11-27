@@ -4,18 +4,18 @@ import HTTPBase from '../../../src/-private/http-base';
 
 let base;
 
-describe('Unit | HTTPBase', function() {
-  it('should exist', function() {
+describe('Unit | HTTPBase', function () {
+  it('should exist', function () {
     expect(() => new HTTPBase()).to.not.throw();
     expect(new HTTPBase()).to.exist;
   });
 
-  describe('API', function() {
-    beforeEach(function() {
+  describe('API', function () {
+    beforeEach(function () {
       base = new HTTPBase();
     });
 
-    it('.getHeader()', function() {
+    it('.getHeader()', function () {
       const { headers } = base;
 
       base.setHeader('One', '1');
@@ -30,7 +30,7 @@ describe('Unit | HTTPBase', function() {
       expect(base.getHeader('one')).to.be.undefined;
     });
 
-    it('.hasHeader()', function() {
+    it('.hasHeader()', function () {
       const { headers } = base;
 
       base.setHeader('One', '1');
@@ -45,7 +45,7 @@ describe('Unit | HTTPBase', function() {
       expect(base.hasHeader('one')).to.be.false;
     });
 
-    it('.setHeader()', function() {
+    it('.setHeader()', function () {
       const { headers } = base;
 
       base.setHeader('One', '1');
@@ -58,7 +58,7 @@ describe('Unit | HTTPBase', function() {
       expect(headers).to.deep.equal({ one: '1' });
     });
 
-    it('.setHeaders()', function() {
+    it('.setHeaders()', function () {
       const { headers } = base;
 
       base.setHeaders({ One: '1', two: '2' });
@@ -71,7 +71,7 @@ describe('Unit | HTTPBase', function() {
       expect(headers).to.deep.equal({ one: '1', two: '2' });
     });
 
-    it('.removeHeader()', function() {
+    it('.removeHeader()', function () {
       const { headers } = base;
 
       base.setHeaders({ One: '1', Two: '2' });
@@ -83,7 +83,7 @@ describe('Unit | HTTPBase', function() {
       expect(headers).to.deep.equal({});
     });
 
-    it('.removeHeaders()', function() {
+    it('.removeHeaders()', function () {
       const { headers } = base;
 
       base.setHeaders({ One: '1', Two: '2' });
@@ -92,12 +92,12 @@ describe('Unit | HTTPBase', function() {
       expect(headers).to.deep.equal({});
     });
 
-    it('.type()', function() {
+    it('.type()', function () {
       base.type('text/plain');
       expect(base.getHeader('Content-Type')).to.equal('text/plain');
     });
 
-    it('.send() - string', function() {
+    it('.send() - string', function () {
       base.send('foo');
 
       expect(base.body).to.equal('foo');
@@ -106,8 +106,8 @@ describe('Unit | HTTPBase', function() {
       );
     });
 
-    it('.send() - boolean, number, & object', function() {
-      [true, 200, {}].forEach(body => {
+    it('.send() - boolean, number, & object', function () {
+      [true, 200, {}].forEach((body) => {
         base.type();
         base.send(body);
 
@@ -118,7 +118,7 @@ describe('Unit | HTTPBase', function() {
       });
     });
 
-    it('.send() - null & undefined', function() {
+    it('.send() - null & undefined', function () {
       base.type();
       base.send(null);
       expect(base.body).to.equal('');
@@ -130,7 +130,7 @@ describe('Unit | HTTPBase', function() {
       expect(base.hasHeader('Content-Type')).to.be.false;
     });
 
-    it('.send() - should not override existing type', function() {
+    it('.send() - should not override existing type', function () {
       base.type('text/plain; charset=utf-9000');
       base.send('foo');
 
@@ -140,7 +140,7 @@ describe('Unit | HTTPBase', function() {
       );
     });
 
-    it('.json()', function() {
+    it('.json()', function () {
       const obj = { foo: 'bar' };
 
       base.json(obj);
@@ -151,7 +151,7 @@ describe('Unit | HTTPBase', function() {
       );
     });
 
-    it('.json() - should not override existing type', function() {
+    it('.json() - should not override existing type', function () {
       const obj = { foo: 'bar' };
 
       base.type('text/plain; charset=utf-9000');
@@ -163,7 +163,7 @@ describe('Unit | HTTPBase', function() {
       );
     });
 
-    it('.jsonBody()', function() {
+    it('.jsonBody()', function () {
       const obj = { foo: 'bar' };
 
       expect(() => base.jsonBody()).to.throw(Error);
@@ -172,7 +172,7 @@ describe('Unit | HTTPBase', function() {
       expect(base.jsonBody()).to.deep.equal(obj);
     });
 
-    it('.end()', function() {
+    it('.end()', function () {
       base.setHeader('foo', 'bar');
 
       expect(base.headers).to.deep.equal({ foo: 'bar' });
@@ -182,7 +182,7 @@ describe('Unit | HTTPBase', function() {
       expect(base.headers).to.deep.equal({ foo: 'bar' });
     });
 
-    it('should be chainable', function() {
+    it('should be chainable', function () {
       expect(base.setHeader('one', '1')).to.equal(base);
       expect(base.setHeaders({ one: '1' })).to.equal(base);
       expect(base.type('text/plain')).to.equal(base);

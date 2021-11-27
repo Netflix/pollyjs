@@ -22,7 +22,7 @@ export default function registerAPI(app, config) {
 
   router.use(nocache());
 
-  router.get('/:recording', function(req, res) {
+  router.get('/:recording', function (req, res) {
     const { recording } = req.params;
     const { status, body } = api.getRecording(recording);
 
@@ -38,7 +38,7 @@ export default function registerAPI(app, config) {
   router.post(
     '/:recording',
     bodyParser.json({ limit: config.recordingSizeLimit }),
-    function(req, res) {
+    function (req, res) {
       const { recording } = req.params;
       const { status, body } = api.saveRecording(recording, req.body);
 
@@ -46,7 +46,7 @@ export default function registerAPI(app, config) {
     }
   );
 
-  router.delete('/:recording', function(req, res) {
+  router.delete('/:recording', function (req, res) {
     const { recording } = req.params;
     const { status, body } = api.deleteRecording(recording);
 

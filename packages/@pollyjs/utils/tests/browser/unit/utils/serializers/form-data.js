@@ -3,10 +3,10 @@ import File from '@pollyjs-tests/helpers/file';
 import { serialize } from '../../../../../src/utils/serializers/form-data';
 import serializerTests from '../../../../serializer-tests';
 
-describe('Unit | Utils | Serializers | form-data', function() {
+describe('Unit | Utils | Serializers | form-data', function () {
   serializerTests(serialize);
 
-  it('should noop if FormData is not found', function() {
+  it('should noop if FormData is not found', function () {
     const FormData = FormData;
     const formData = new FormData();
 
@@ -15,7 +15,7 @@ describe('Unit | Utils | Serializers | form-data', function() {
     global.FormData = FormData;
   });
 
-  it('should handle form-data', async function() {
+  it('should handle form-data', async function () {
     const formData = new FormData();
 
     formData.append('string', 'string');

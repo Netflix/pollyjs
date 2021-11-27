@@ -1,24 +1,24 @@
 import Handler from '../../../src/server/handler';
 
-describe('Unit | Server | Handler', function() {
-  it('should exist', function() {
+describe('Unit | Server | Handler', function () {
+  it('should exist', function () {
     expect(Handler).to.be.a('function');
   });
 
-  describe('Events', function() {
-    it('throws on registering an unknown event name', function() {
+  describe('Events', function () {
+    it('throws on registering an unknown event name', function () {
       expect(() => new Handler().on('unknownEventName')).to.throw(
         /Invalid event name provided/
       );
     });
 
-    it('throws on un-registering an unknown event name', function() {
+    it('throws on un-registering an unknown event name', function () {
       expect(() => new Handler().off('unknownEventName')).to.throw(
         /Invalid event name provided/
       );
     });
 
-    it('registers a known event via .on()', function() {
+    it('registers a known event via .on()', function () {
       const handler = new Handler();
       const { _eventEmitter: eventEmitter } = handler;
 
@@ -31,7 +31,7 @@ describe('Unit | Server | Handler', function() {
       expect(eventEmitter.listeners('request')).to.have.lengthOf(2);
     });
 
-    it('registers a known event via .on() with { times }', function() {
+    it('registers a known event via .on() with { times }', function () {
       const handler = new Handler();
       const { _eventEmitter: eventEmitter } = handler;
 
@@ -45,7 +45,7 @@ describe('Unit | Server | Handler', function() {
       expect(eventEmitter.hasListeners('request')).to.be.false;
     });
 
-    it('registers a known event via .on() with .times()', function() {
+    it('registers a known event via .on() with .times()', function () {
       const handler = new Handler();
       const { _eventEmitter: eventEmitter } = handler;
 
@@ -59,7 +59,7 @@ describe('Unit | Server | Handler', function() {
       expect(eventEmitter.hasListeners('request')).to.be.false;
     });
 
-    it('registers a known event via .on() with .times() and override with { times }', function() {
+    it('registers a known event via .on() with .times() and override with { times }', function () {
       const handler = new Handler();
       const { _eventEmitter: eventEmitter } = handler;
 
@@ -70,7 +70,7 @@ describe('Unit | Server | Handler', function() {
       expect(eventEmitter.hasListeners('request')).to.be.false;
     });
 
-    it('registers a known event via .once()', function() {
+    it('registers a known event via .once()', function () {
       const handler = new Handler();
       const { _eventEmitter: eventEmitter } = handler;
 
@@ -86,7 +86,7 @@ describe('Unit | Server | Handler', function() {
       expect(eventEmitter.hasListeners('request')).to.be.false;
     });
 
-    it('un-registers a known event via .off()', function() {
+    it('un-registers a known event via .off()', function () {
       const handler = new Handler();
       const { _eventEmitter: eventEmitter } = handler;
       const fn = () => {};
@@ -108,35 +108,35 @@ describe('Unit | Server | Handler', function() {
     });
   });
 
-  describe('.intercept()', function() {
-    it('registers an intercept handler', function() {
+  describe('.intercept()', function () {
+    it('registers an intercept handler', function () {
       const handler = new Handler();
 
       handler.intercept(() => {});
       expect(handler.has('intercept')).to.be.true;
     });
 
-    it('throws when passing a non-function to intercept', function() {
+    it('throws when passing a non-function to intercept', function () {
       const handler = new Handler();
 
-      [null, undefined, {}, [], ''].forEach(value => {
+      [null, undefined, {}, [], ''].forEach((value) => {
         expect(() => handler.intercept(value)).to.throw(
           /Invalid intercept handler provided/
         );
       });
     });
 
-    it('throws when passing an invalid times option', function() {
+    it('throws when passing an invalid times option', function () {
       const handler = new Handler();
 
-      ['1', -1, 0].forEach(times => {
+      ['1', -1, 0].forEach((times) => {
         expect(() => handler.intercept(() => {}, { times })).to.throw(
           /Invalid number provided/
         );
       });
     });
 
-    it('registers an intercept handler with { times }', function() {
+    it('registers an intercept handler with { times }', function () {
       const handler = new Handler();
 
       handler.intercept(() => {}, { times: 2 });
@@ -149,7 +149,7 @@ describe('Unit | Server | Handler', function() {
       expect(handler.has('intercept')).to.be.false;
     });
 
-    it('registers an intercept handler with .times()', function() {
+    it('registers an intercept handler with .times()', function () {
       const handler = new Handler();
 
       handler.times(2).intercept(() => {});
@@ -162,7 +162,7 @@ describe('Unit | Server | Handler', function() {
       expect(handler.has('intercept')).to.be.false;
     });
 
-    it('registers an intercept handler with .times() and override with { times }', function() {
+    it('registers an intercept handler with .times() and override with { times }', function () {
       const handler = new Handler();
 
       handler.times(2).intercept(() => {}, { times: 1 });
@@ -173,8 +173,8 @@ describe('Unit | Server | Handler', function() {
     });
   });
 
-  describe('.passthrough()', function() {
-    it('should work', function() {
+  describe('.passthrough()', function () {
+    it('should work', function () {
       const handler = new Handler();
 
       expect(handler.has('passthrough')).to.be.false;
@@ -186,7 +186,7 @@ describe('Unit | Server | Handler', function() {
       expect(handler.get('passthrough')).to.be.false;
     });
 
-    it('removes the intercept handler on passthrough', function() {
+    it('removes the intercept handler on passthrough', function () {
       const handler = new Handler();
 
       handler.intercept(() => {});
@@ -197,7 +197,7 @@ describe('Unit | Server | Handler', function() {
       expect(handler.has('intercept')).to.be.false;
     });
 
-    it('disables passthrough on intercept', function() {
+    it('disables passthrough on intercept', function () {
       const handler = new Handler();
 
       handler.passthrough();
@@ -210,8 +210,8 @@ describe('Unit | Server | Handler', function() {
     });
   });
 
-  describe('.recordingName()', function() {
-    it('should work', function() {
+  describe('.recordingName()', function () {
+    it('should work', function () {
       const handler = new Handler();
 
       expect(handler.has('recordingName')).to.be.false;
@@ -224,22 +224,22 @@ describe('Unit | Server | Handler', function() {
       expect(handler.get('recordingName')).to.be.undefined;
     });
 
-    it('should allow setting a falsy recordingName', function() {
+    it('should allow setting a falsy recordingName', function () {
       const handler = new Handler();
 
       expect(handler.has('recordingName')).to.be.false;
 
-      [false, undefined, null].forEach(value => {
+      [false, undefined, null].forEach((value) => {
         handler.recordingName(value);
         expect(handler.has('recordingName')).to.be.true;
         expect(handler.get('recordingName')).to.equal(value);
       });
     });
 
-    it('throws when passing an invalid truthy recording name', function() {
+    it('throws when passing an invalid truthy recording name', function () {
       const handler = new Handler();
 
-      [1, {}, [], true].forEach(value => {
+      [1, {}, [], true].forEach((value) => {
         expect(() => handler.recordingName(value)).to.throw(
           /Invalid recording name provided/
         );
@@ -247,8 +247,8 @@ describe('Unit | Server | Handler', function() {
     });
   });
 
-  describe('.configure()', function() {
-    it('should work', function() {
+  describe('.configure()', function () {
+    it('should work', function () {
       const handler = new Handler();
 
       expect(handler.get('config')).to.deep.equal({});
@@ -263,10 +263,10 @@ describe('Unit | Server | Handler', function() {
       expect(handler.get('config')).to.deep.equal({});
     });
 
-    it('throws when passing an invalid config', function() {
+    it('throws when passing an invalid config', function () {
       const handler = new Handler();
 
-      [false, true, null, undefined, 1, []].forEach(config => {
+      [false, true, null, undefined, 1, []].forEach((config) => {
         expect(() => handler.configure(config)).to.throw(
           /Invalid config provided/
         );
@@ -278,7 +278,7 @@ describe('Unit | Server | Handler', function() {
         'adapterOptions',
         'persister',
         'persisterOptions'
-      ].forEach(key => {
+      ].forEach((key) => {
         expect(() => handler.configure({ [key]: key })).to.throw(
           /Invalid configuration option provided/
         );
@@ -286,8 +286,8 @@ describe('Unit | Server | Handler', function() {
     });
   });
 
-  describe('.filter()', function() {
-    it('should work', function() {
+  describe('.filter()', function () {
+    it('should work', function () {
       const handler = new Handler();
       const filters = handler.get('filters');
       const fn = () => {};
@@ -304,10 +304,10 @@ describe('Unit | Server | Handler', function() {
       expect(filters.size).to.equal(2);
     });
 
-    it('throws when passing an invalid fn', function() {
+    it('throws when passing an invalid fn', function () {
       const handler = new Handler();
 
-      [false, true, null, undefined, 1, [], {}, ''].forEach(fn => {
+      [false, true, null, undefined, 1, [], {}, ''].forEach((fn) => {
         expect(() => handler.filter(fn)).to.throw(
           /Invalid filter callback provided/
         );
@@ -315,8 +315,8 @@ describe('Unit | Server | Handler', function() {
     });
   });
 
-  describe('.times()', function() {
-    it('should work', function() {
+  describe('.times()', function () {
+    it('should work', function () {
       const handler = new Handler();
       const defaultOptions = handler.get('defaultOptions');
 
@@ -332,10 +332,10 @@ describe('Unit | Server | Handler', function() {
       expect(defaultOptions).to.deep.equal({});
     });
 
-    it('throws when passing an invalid times option', function() {
+    it('throws when passing an invalid times option', function () {
       const handler = new Handler();
 
-      ['1', -1, 0].forEach(times => {
+      ['1', -1, 0].forEach((times) => {
         expect(() => handler.times(times)).to.throw(/Invalid number provided/);
       });
     });

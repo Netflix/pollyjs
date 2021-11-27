@@ -22,13 +22,13 @@ function assertListener(methodName) {
   );
 }
 
-describe('Unit | EventEmitter', function() {
-  it('should exist', function() {
+describe('Unit | EventEmitter', function () {
+  it('should exist', function () {
     expect(() => new EventEmitter({ eventNames: ['a'] })).to.not.throw();
     expect(new EventEmitter({ eventNames: ['a'] })).to.exist;
   });
 
-  it('should throw without eventNames', function() {
+  it('should throw without eventNames', function () {
     expect(() => new EventEmitter()).to.throw(PollyError);
     expect(() => new EventEmitter({ eventNames: [] })).to.throw(
       PollyError,
@@ -36,14 +36,14 @@ describe('Unit | EventEmitter', function() {
     );
   });
 
-  describe('API', function() {
-    beforeEach(function() {
+  describe('API', function () {
+    beforeEach(function () {
       emitter = new EventEmitter({
         eventNames: ['a', 'b']
       });
     });
 
-    it('.eventNames()', function() {
+    it('.eventNames()', function () {
       const listener = () => {};
 
       expect(emitter.eventNames()).to.have.lengthOf(0);
@@ -56,7 +56,7 @@ describe('Unit | EventEmitter', function() {
       expect(emitter.eventNames()).to.have.ordered.members(['b']);
     });
 
-    it('.on()', async function() {
+    it('.on()', async function () {
       assertEventName('on');
       assertListener('on');
 
@@ -74,7 +74,7 @@ describe('Unit | EventEmitter', function() {
       expect(listenerCalled).to.equal(1);
     });
 
-    it('.on(listener, { times })', async function() {
+    it('.on(listener, { times })', async function () {
       assertEventName('on');
       assertListener('on');
 
@@ -103,7 +103,7 @@ describe('Unit | EventEmitter', function() {
       expect(emitter.listeners('a')).to.have.lengthOf(0);
     });
 
-    it('.once()', async function() {
+    it('.once()', async function () {
       assertEventName('once');
       assertListener('once');
 
@@ -127,7 +127,7 @@ describe('Unit | EventEmitter', function() {
       expect(emitter.listeners('a')).to.have.lengthOf(0);
     });
 
-    it('.off()', async function() {
+    it('.off()', async function () {
       assertEventName('off');
 
       const listener = () => {};
@@ -150,7 +150,7 @@ describe('Unit | EventEmitter', function() {
       expect(emitter.listeners('a')).to.have.lengthOf(0);
     });
 
-    it('.listeners()', async function() {
+    it('.listeners()', async function () {
       assertEventName('listeners');
 
       expect(emitter.listeners('a')).to.be.an('array');
@@ -168,7 +168,7 @@ describe('Unit | EventEmitter', function() {
       expect(emitter.listeners('b')).to.have.lengthOf(0);
     });
 
-    it('.hasListeners()', async function() {
+    it('.hasListeners()', async function () {
       assertEventName('hasListeners');
 
       expect(emitter.hasListeners('a')).to.be.false;
@@ -180,7 +180,7 @@ describe('Unit | EventEmitter', function() {
       expect(emitter.hasListeners('a')).to.be.false;
     });
 
-    it('.emit()', async function() {
+    it('.emit()', async function () {
       expect(emitter.emit('a')).to.be.a('promise');
 
       const array = [];
@@ -196,10 +196,10 @@ describe('Unit | EventEmitter', function() {
       expect(array).to.have.ordered.members([1, 2, 3]);
     });
 
-    it('.emit() - stopPropagation', async function() {
+    it('.emit() - stopPropagation', async function () {
       const array = [];
 
-      emitter.on('a', async e => {
+      emitter.on('a', async (e) => {
         e.stopPropagation();
         array.push(1);
       });
@@ -209,7 +209,7 @@ describe('Unit | EventEmitter', function() {
       expect(array).to.have.ordered.members([1]);
     });
 
-    it('.emitParallel()', async function() {
+    it('.emitParallel()', async function () {
       expect(emitter.emitParallel('a')).to.be.a('promise');
 
       const array = [];
@@ -228,10 +228,10 @@ describe('Unit | EventEmitter', function() {
       expect(array).to.have.ordered.members([1, 3, 2]);
     });
 
-    it('.emitParallel() - stopPropagation', async function() {
+    it('.emitParallel() - stopPropagation', async function () {
       const array = [];
 
-      emitter.on('a', async e => {
+      emitter.on('a', async (e) => {
         e.stopPropagation();
         array.push(1);
       });
@@ -241,7 +241,7 @@ describe('Unit | EventEmitter', function() {
       expect(array).to.have.ordered.members([1, 2]);
     });
 
-    it('.emitSync()', async function() {
+    it('.emitSync()', async function () {
       emitter.once('a', () => Promise.resolve());
       expect(() => emitter.emitSync('a')).to.throw(
         PollyError,
@@ -258,10 +258,10 @@ describe('Unit | EventEmitter', function() {
       expect(array).to.have.ordered.members([1, 2, 3]);
     });
 
-    it('.emitSync() - stopPropagation', async function() {
+    it('.emitSync() - stopPropagation', async function () {
       const array = [];
 
-      emitter.on('a', e => {
+      emitter.on('a', (e) => {
         e.stopPropagation();
         array.push(1);
       });

@@ -4,7 +4,7 @@ export default function stringifyRequest(req, ...args) {
   // Remove all adapter & persister config options as they can cause a circular
   // structure to the final JSON
   ['adapter', 'adapterOptions', 'persister', 'persisterOptions'].forEach(
-    k => delete config[k]
+    (k) => delete config[k]
   );
 
   return JSON.stringify(

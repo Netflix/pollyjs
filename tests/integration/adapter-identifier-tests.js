@@ -2,8 +2,8 @@ import set from 'lodash-es/set';
 import deepmerge from 'deepmerge';
 
 function adapterIdentifierTests() {
-  describe('matchRequestsBy', function() {
-    beforeEach(function() {
+  describe('matchRequestsBy', function () {
+    beforeEach(function () {
       const { polly } = this;
 
       polly.server.post('/*').intercept((req, res) => {
@@ -89,7 +89,7 @@ function adapterIdentifierTests() {
       }
     });
 
-    describe('url', function() {
+    describe('url', function () {
       testConfiguration('url', false, {
         expected: {
           id: '3914e0be4d2f04139554f5ffada7191c',
@@ -249,7 +249,7 @@ function adapterIdentifierTests() {
 function captureRequests(server) {
   const reqs = [];
 
-  server.any().on('request', req => reqs.push(req));
+  server.any().on('request', (req) => reqs.push(req));
 
   return reqs;
 }
@@ -259,7 +259,7 @@ function lookupAdapterName(polly) {
 }
 
 function testConfiguration(optionName, value, expectedValues) {
-  it(`${optionName}=${value}`, async function() {
+  it(`${optionName}=${value}`, async function () {
     const adapterName = lookupAdapterName(this.polly);
     const expectedValue = deepmerge(
       expectedValues.expected || {},

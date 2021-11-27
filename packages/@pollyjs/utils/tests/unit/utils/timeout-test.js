@@ -1,11 +1,11 @@
 import timeout from '../../../src/utils/timeout';
 
-describe('Unit | Utils | timeout', function() {
-  it('should exist', function() {
+describe('Unit | Utils | timeout', function () {
+  it('should exist', function () {
     expect(timeout).to.be.a('function');
   });
 
-  it('should return a promise', async function() {
+  it('should return a promise', async function () {
     const promise = timeout(10);
 
     expect(promise).to.be.a('promise');
@@ -13,7 +13,7 @@ describe('Unit | Utils | timeout', function() {
     await promise;
   });
 
-  it('should timeout for the correct amount of ms', async function() {
+  it('should timeout for the correct amount of ms', async function () {
     this.timeout(110);
 
     const promise = timeout(100);

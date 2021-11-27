@@ -68,9 +68,9 @@ export default class HttpAdapter extends Adapter {
     // Create our interceptor that will match all hosts
     const interceptor = nock(/.*/).persist();
 
-    HTTP_METHODS.forEach(m => {
+    HTTP_METHODS.forEach((m) => {
       // Add an intercept for each supported HTTP method that will match all paths
-      interceptor.intercept(/.*/, m).reply(function(_, _body, respond) {
+      interceptor.intercept(/.*/, m).reply(function (_, _body, respond) {
         const { req, method } = this;
         const { headers } = req;
         const parsedArguments = normalizeClientRequestArgs(
@@ -117,7 +117,7 @@ export default class HttpAdapter extends Adapter {
 
     // Patch http.request, http.get, https.request, and https.get
     // to set some default values which nock doesn't properly set.
-    Object.keys(modules).forEach(moduleName => {
+    Object.keys(modules).forEach((moduleName) => {
       const module = modules[moduleName];
       const { request, get, globalAgent } = module;
 
@@ -161,7 +161,7 @@ export default class HttpAdapter extends Adapter {
   unpatchOverriddenMethods() {
     const modules = { http, https };
 
-    Object.keys(modules).forEach(moduleName => {
+    Object.keys(modules).forEach((moduleName) => {
       const module = modules[moduleName];
 
       module.request = this[moduleName].request;
@@ -202,14 +202,14 @@ export default class HttpAdapter extends Adapter {
     });
 
     // Write the request body
-    chunks.forEach(chunk => request.write(chunk));
+    chunks.forEach((chunk) => request.write(chunk));
     request.end();
 
     const response = await responsePromise;
     const responseBody = await new Promise((resolve, reject) => {
       const chunks = [];
 
-      response.on('data', chunk => chunks.push(chunk));
+      response.on('data', (chunk) => chunks.push(chunk));
       response.once('end', () =>
         resolve(this.getBodyFromChunks(chunks, response.headers))
       );
@@ -254,14 +254,14 @@ export default class HttpAdapter extends Adapter {
     // Expose the response data as a stream of chunks since
     // it could contain encoded data which is needed
     // to be pushed to the response chunk by chunk.
-    chunks.forEach(chunk => stream.push(chunk));
+    chunks.forEach((chunk) => stream.push(chunk));
     stream.push(null);
 
     // Create a promise that will resolve once the request
     // has been completed (including errored or aborted). This is needed so
     // that the deferred promise used by `polly.flush()` doesn't resolve before
     // the response was actually received.
-    const requestFinishedPromise = new Promise(resolve => {
+    const requestFinishedPromise = new Promise((resolve) => {
       if (req.aborted) {
         resolve();
       } else {
@@ -281,7 +281,7 @@ export default class HttpAdapter extends Adapter {
     // should not be concatenated. Instead, the chunks should
     // be preserved as-is so that each chunk can be mocked individually
     if (isContentEncoded(headers)) {
-      const hexChunks = chunks.map(chunk => {
+      const hexChunks = chunks.map((chunk) => {
         if (!Buffer.isBuffer(chunk)) {
           this.assert(
             'content-encoded responses must all be binary buffers',
@@ -325,7 +325,7 @@ export default class HttpAdapter extends Adapter {
     if (isContentEncoded(headers)) {
       const hexChunks = JSON.parse(body);
 
-      return hexChunks.map(chunk => Buffer.from(chunk, 'hex'));
+      return hexChunks.map((chunk) => Buffer.from(chunk, 'hex'));
     }
 
     // The body can be one of two things:

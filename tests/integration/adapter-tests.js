@@ -2,7 +2,7 @@ import { Polly } from '@pollyjs/core';
 import { ACTIONS } from '@pollyjs/utils';
 
 export default function adapterTests() {
-  it('should respect request order', async function() {
+  it('should respect request order', async function () {
     const testOrder = async () => {
       let res = await this.fetchRecord();
 
@@ -41,7 +41,7 @@ export default function adapterTests() {
     await testOrder();
   });
 
-  it('should respect request order across multiple recordings', async function() {
+  it('should respect request order across multiple recordings', async function () {
     const recordingName = this.polly.recordingName;
     const otherRecordingName = `${this.polly.recordingName}-other`;
     const order = {
@@ -49,7 +49,7 @@ export default function adapterTests() {
       [otherRecordingName]: []
     };
 
-    this.polly.server.any(this.recordUrl()).on('beforeResponse', req => {
+    this.polly.server.any(this.recordUrl()).on('beforeResponse', (req) => {
       order[req.recordingName].push(req.order);
     });
 
@@ -67,14 +67,14 @@ export default function adapterTests() {
     expect(order[otherRecordingName]).to.have.ordered.members([0, 1]);
   });
 
-  it('should properly handle 204 status code response', async function() {
+  it('should properly handle 204 status code response', async function () {
     const res = await this.relativeFetch('/echo?status=204');
 
     expect(res.status).to.equal(204);
     expect(await res.text()).to.equal('');
   });
 
-  it('should intercept', async function() {
+  it('should intercept', async function () {
     const { server } = this.polly;
 
     server.any(this.recordUrl()).intercept((_, res) => res.status(201));
@@ -88,7 +88,7 @@ export default function adapterTests() {
     expect(json).to.deep.equal({ foo: 'bar' });
   });
 
-  it('should passthrough', async function() {
+  it('should passthrough', async function () {
     const { server, persister, recordingId } = this.polly;
 
     server.get(this.recordUrl()).passthrough();
@@ -98,7 +98,7 @@ export default function adapterTests() {
     expect(await persister.find(recordingId)).to.be.null;
   });
 
-  it('should be able to intercept when in passthrough mode', async function() {
+  it('should be able to intercept when in passthrough mode', async function () {
     const { server } = this.polly;
 
     this.polly.configure({ mode: 'passthrough' });
@@ -114,14 +114,14 @@ export default function adapterTests() {
     expect(text).to.equal('Hello');
   });
 
-  it('should be able to abort from an intercept', async function() {
+  it('should be able to abort from an intercept', async function () {
     const { server } = this.polly;
     let responseCalled = false;
 
     server
       .get(this.recordUrl())
       .intercept((req, res, interceptor) => interceptor.abort())
-      .on('response', req => {
+      .on('response', (req) => {
         responseCalled = true;
         expect(req.action).to.not.equal(ACTIONS.INTERCEPT);
       });
@@ -130,14 +130,14 @@ export default function adapterTests() {
     expect(responseCalled).to.be.true;
   });
 
-  it('should be able to passthrough from an intercept', async function() {
+  it('should be able to passthrough from an intercept', async function () {
     const { server, persister, recordingId } = this.polly;
     let responseCalled = false;
 
     server
       .get(this.recordUrl())
       .intercept((req, res, interceptor) => interceptor.passthrough())
-      .on('response', req => {
+      .on('response', (req) => {
         responseCalled = true;
         expect(req.action).to.equal(ACTIONS.PASSTHROUGH);
       });
@@ -148,7 +148,7 @@ export default function adapterTests() {
     expect(responseCalled).to.be.true;
   });
 
-  it('should call all the life-cycle events', async function() {
+  it('should call all the life-cycle events', async function () {
     const { server } = this.polly;
     const events = [];
 
@@ -167,7 +167,7 @@ export default function adapterTests() {
     ]);
   });
 
-  it('should call beforeReplay with a cloned recording entry', async function() {
+  it('should call beforeReplay with a cloned recording entry', async function () {
     const { recordingId, recordingName, config } = this.polly;
     let replayedEntry;
 
@@ -208,7 +208,7 @@ export default function adapterTests() {
     expect(entry.response.content).to.not.equal(replayedEntry.response.content);
   });
 
-  it('should emit an error event', async function() {
+  it('should emit an error event', async function () {
     const { server } = this.polly;
     let error;
 
@@ -228,7 +228,7 @@ export default function adapterTests() {
     );
   });
 
-  it('should handle a compressed response', async function() {
+  it('should handle a compressed response', async function () {
     const res = await this.relativeFetch('/compress', {
       method: 'POST',
       body: JSON.stringify({ foo: 'bar' }),
@@ -239,7 +239,7 @@ export default function adapterTests() {
     expect(await res.json()).to.deep.equal({ foo: 'bar' });
   });
 
-  it('should have resolved requests after flushing', async function() {
+  it('should have resolved requests after flushing', async function () {
     // The puppeteer adapter has its own implementation of this test
     if (this.polly.adapters.has('puppeteer')) {
       this.skip();
@@ -255,7 +255,7 @@ export default function adapterTests() {
         await server.timeout(5);
         res.sendStatus(200);
       })
-      .on('request', req => requests.push(req));
+      .on('request', (req) => requests.push(req));
 
     this.fetchRecord().then(() => resolved.push(1));
     this.fetchRecord().then(() => resolved.push(2));
@@ -264,12 +264,12 @@ export default function adapterTests() {
     await this.polly.flush();
 
     expect(requests).to.have.lengthOf(3);
-    requests.forEach(request => expect(request.didRespond).to.be.true);
+    requests.forEach((request) => expect(request.didRespond).to.be.true);
     expect(resolved).to.have.members([1, 2, 3]);
   });
 
   // NOTE: test very unstable because of typicode.com being down
-  it.skip('should work with CORS requests', async function() {
+  it.skip('should work with CORS requests', async function () {
     this.timeout(10000);
 
     const { server } = this.polly;
@@ -308,7 +308,7 @@ export default function adapterTests() {
       const prevDateTime = har.log.entries[0].startedDateTime;
 
       // wait for the first request to expire
-      await new Promise(r => setTimeout(r, 10));
+      await new Promise((r) => setTimeout(r, 10));
 
       // request number two - the first request is now expired
       this.polly.replay();
@@ -324,7 +324,7 @@ export default function adapterTests() {
       return prevDateTime !== nextDateTime;
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
       this.polly.configure({
         expiresIn: '1ms',
         matchRequestsBy: {
@@ -333,21 +333,21 @@ export default function adapterTests() {
       });
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
       await this.polly.persister.delete(this.polly.recordingId);
     });
 
-    it('warns and plays back on expired recording if expiryStrategy is "warn"', async function() {
+    it('warns and plays back on expired recording if expiryStrategy is "warn"', async function () {
       this.polly.configure({ expiryStrategy: 'warn' });
       expect(await testExpiration.call(this)).to.equal(false);
     });
 
-    it('re-records on expired recording if expiryStrategy is "record"', async function() {
+    it('re-records on expired recording if expiryStrategy is "record"', async function () {
       this.polly.configure({ expiryStrategy: 'record' });
       expect(await testExpiration.call(this)).to.equal(true);
     });
 
-    it('throws on expired recording if expiryStrategy is "error"', async function() {
+    it('throws on expired recording if expiryStrategy is "error"', async function () {
       const { server } = this.polly;
       let error;
 

@@ -26,7 +26,7 @@ export function validateRequestConfig(config) {
     'adapterOptions',
     'persister',
     'persisterOptions'
-  ].forEach(key =>
+  ].forEach((key) =>
     assert(
       `Invalid configuration option provided. The "${key}" option cannot be overridden using the server configuration API.`,
       !(key in config)

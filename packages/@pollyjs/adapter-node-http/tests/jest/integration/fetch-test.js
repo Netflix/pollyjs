@@ -4,7 +4,7 @@ import { Polly } from '@pollyjs/core';
 
 import pollyConfig from '../../utils/polly-config';
 
-describe('Integration | Jest | Fetch', function() {
+describe('Integration | Jest | Fetch', function () {
   let polly;
 
   beforeEach(() => {

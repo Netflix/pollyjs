@@ -74,7 +74,7 @@ module.exports = {
     // defaults
     const config = {
       enabled: env !== 'production',
-      server: {},
+      server: {}
     };
 
     // NOTE: this is because we cannot assume `this.project` is always set.
@@ -106,5 +106,5 @@ module.exports = {
     if (this._config.enabled) {
       registerExpressAPI(app, this._config.server);
     }
-  },
+  }
 };

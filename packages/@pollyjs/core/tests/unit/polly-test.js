@@ -7,24 +7,24 @@ import Polly from '../../src/polly';
 import { Container } from '../../src/-private/container';
 import setupPolly from '../../src/test-helpers/mocha';
 
-describe('Unit | Polly', function() {
-  it('should exist', function() {
+describe('Unit | Polly', function () {
+  it('should exist', function () {
     expect(Polly).to.be.a('function');
   });
 
-  it('should have a version', function() {
+  it('should have a version', function () {
     expect(Polly.VERSION).to.be.a('string');
   });
 
-  it('should instantiate without throwing', async function() {
-    await expect(async function() {
+  it('should instantiate without throwing', async function () {
+    await expect(async function () {
       const polly = new Polly('recording name');
 
       await polly.stop();
     }).to.not.throw();
   });
 
-  it('should throw with an empty recording name', async function() {
+  it('should throw with an empty recording name', async function () {
     for (const value of [undefined, null, '', '\n\r']) {
       const polly = new Polly('test');
 
@@ -37,7 +37,7 @@ describe('Unit | Polly', function() {
     }
   });
 
-  it('should be able to change the recording name', async function() {
+  it('should be able to change the recording name', async function () {
     const polly = new Polly('squawk');
 
     expect(polly.recordingName).to.equal('squawk');
@@ -47,7 +47,7 @@ describe('Unit | Polly', function() {
     await polly.stop();
   });
 
-  it('should update the recording id when the name changes', async function() {
+  it('should update the recording id when the name changes', async function () {
     const polly = new Polly('squawk');
 
     expect(polly.recordingName).to.equal('squawk');
@@ -59,7 +59,7 @@ describe('Unit | Polly', function() {
     await polly.stop();
   });
 
-  it('can manually set the mode', async function() {
+  it('can manually set the mode', async function () {
     const polly = new Polly('squawk');
 
     expect(polly.mode).to.equal('replay');
@@ -69,7 +69,7 @@ describe('Unit | Polly', function() {
     await polly.stop();
   });
 
-  it('throws on an invalid mode', async function() {
+  it('throws on an invalid mode', async function () {
     const polly = new Polly('squawk');
 
     expect(() => (polly.mode = 'INVALID')).to.throw(
@@ -80,7 +80,7 @@ describe('Unit | Polly', function() {
     await polly.stop();
   });
 
-  it('it supports custom adapters', async function() {
+  it('it supports custom adapters', async function () {
     let connectCalled, disconnectCalled;
 
     class MockAdapter extends Adapter {
@@ -105,7 +105,7 @@ describe('Unit | Polly', function() {
     expect(disconnectCalled).to.be.true;
   });
 
-  it('it supports custom persisters', async function() {
+  it('it supports custom persisters', async function () {
     let instantiated, persistCalled;
 
     class MockPersister extends Persister {
@@ -132,7 +132,7 @@ describe('Unit | Polly', function() {
     expect(persistCalled).to.be.true;
   });
 
-  it('calls flush when flushRequestsOnStop is enabled', async function() {
+  it('calls flush when flushRequestsOnStop is enabled', async function () {
     let polly = new Polly('squawk', { flushRequestsOnStop: false });
     let flushCalled = false;
 
@@ -154,10 +154,10 @@ describe('Unit | Polly', function() {
     expect(flushCalled).to.be.true;
   });
 
-  describe('configure', function() {
+  describe('configure', function () {
     setupPolly();
 
-    it('should not be configurable once requests are handled', async function() {
+    it('should not be configurable once requests are handled', async function () {
       this.polly._requests.push({});
       expect(() => this.polly.configure()).to.throw(
         PollyError,
@@ -165,7 +165,7 @@ describe('Unit | Polly', function() {
       );
     });
 
-    it('should not be configurable once stopped', async function() {
+    it('should not be configurable once stopped', async function () {
       await this.polly.stop();
 
       expect(() => this.polly.configure()).to.throw(
@@ -174,7 +174,7 @@ describe('Unit | Polly', function() {
       );
     });
 
-    it('should deep merge configure options with defaults', async function() {
+    it('should deep merge configure options with defaults', async function () {
       this.polly.configure({
         matchRequestsBy: {
           url: {
@@ -190,7 +190,7 @@ describe('Unit | Polly', function() {
       });
     });
 
-    it('should not deep merge adapter options', async function() {
+    it('should not deep merge adapter options', async function () {
       class MockAdapterA extends Adapter {
         static get id() {
           return 'mock-a';
@@ -216,7 +216,7 @@ describe('Unit | Polly', function() {
       expect(this.polly.adapters.has('mock-b')).to.be.true;
     });
 
-    it('should connect to new adapters', async function() {
+    it('should connect to new adapters', async function () {
       let connectCalled = false;
 
       class MockAdapter extends Adapter {
@@ -235,7 +235,7 @@ describe('Unit | Polly', function() {
       expect(connectCalled).to.be.true;
     });
 
-    it('should disconnect from adapters before connecting', async function() {
+    it('should disconnect from adapters before connecting', async function () {
       let connectCount = 0;
       let disconnectCount = 0;
 
@@ -262,7 +262,7 @@ describe('Unit | Polly', function() {
     });
   });
 
-  describe('API', function() {
+  describe('API', function () {
     setupPolly();
 
     class MockAdapterA extends Adapter {
@@ -280,7 +280,7 @@ describe('Unit | Polly', function() {
       }
     }
 
-    it('.record()', async function() {
+    it('.record()', async function () {
       this.polly.mode = MODES.REPLAY;
 
       expect(this.polly.mode).to.equal(MODES.REPLAY);
@@ -288,7 +288,7 @@ describe('Unit | Polly', function() {
       expect(this.polly.mode).to.equal(MODES.RECORD);
     });
 
-    it('.replay()', async function() {
+    it('.replay()', async function () {
       this.polly.mode = MODES.RECORD;
 
       expect(this.polly.mode).to.equal(MODES.RECORD);
@@ -296,7 +296,7 @@ describe('Unit | Polly', function() {
       expect(this.polly.mode).to.equal(MODES.REPLAY);
     });
 
-    it('.passthrough()', async function() {
+    it('.passthrough()', async function () {
       this.polly.mode = MODES.RECORD;
 
       expect(this.polly.mode).to.equal(MODES.RECORD);
@@ -304,7 +304,7 @@ describe('Unit | Polly', function() {
       expect(this.polly.mode).to.equal(MODES.PASSTHROUGH);
     });
 
-    it('.pause()', async function() {
+    it('.pause()', async function () {
       this.polly.configure({ adapters: [MockAdapterA, MockAdapterB] });
 
       expect([...this.polly.adapters.keys()]).to.deep.equal([
@@ -315,7 +315,7 @@ describe('Unit | Polly', function() {
       expect([...this.polly.adapters.keys()]).to.deep.equal([]);
     });
 
-    it('.play()', async function() {
+    it('.play()', async function () {
       this.polly.configure({ adapters: [MockAdapterA, MockAdapterB] });
 
       expect([...this.polly.adapters.keys()]).to.deep.equal([
@@ -336,7 +336,7 @@ describe('Unit | Polly', function() {
       ]);
     });
 
-    it('.stop()', async function() {
+    it('.stop()', async function () {
       this.polly.mode = MODES.RECORD;
       expect(this.polly.mode).to.equal(MODES.RECORD);
 
@@ -347,7 +347,7 @@ describe('Unit | Polly', function() {
       expect(this.polly.mode).to.equal(MODES.STOPPED);
     });
 
-    it('.connectTo()', async function() {
+    it('.connectTo()', async function () {
       let connectCount = 0;
       let disconnectCount = 0;
 
@@ -376,7 +376,7 @@ describe('Unit | Polly', function() {
       expect(disconnectCount).to.equal(1);
     });
 
-    it('.disconnectTo()', async function() {
+    it('.disconnectTo()', async function () {
       let connectCount = 0;
       let disconnectCount = 0;
 
@@ -407,7 +407,7 @@ describe('Unit | Polly', function() {
       expect(disconnectCount).to.equal(2);
     });
 
-    it('.disconnect()', async function() {
+    it('.disconnect()', async function () {
       const disconnects = [];
 
       class MockAdapterA extends Adapter {
@@ -436,7 +436,7 @@ describe('Unit | Polly', function() {
       expect(disconnects.length).to.equal(2);
     });
 
-    it('.flush()', async function() {
+    it('.flush()', async function () {
       const promise = this.polly.flush();
 
       expect(promise).to.be.a('promise');
@@ -444,21 +444,21 @@ describe('Unit | Polly', function() {
     });
   });
 
-  describe('Class Methods & Events', function() {
-    it('should be event-able', function() {
+  describe('Class Methods & Events', function () {
+    it('should be event-able', function () {
       expect(Polly.on).to.be.a('function');
       expect(Polly.once).to.be.a('function');
       expect(Polly.off).to.be.a('function');
     });
 
-    describe('Methods', function() {
+    describe('Methods', function () {
       class MockAdapter extends Adapter {
         static get id() {
           return 'mock';
         }
       }
 
-      it('.register()', async function() {
+      it('.register()', async function () {
         Polly.register(MockAdapter);
 
         const polly = new Polly('Test');
@@ -469,7 +469,7 @@ describe('Unit | Polly', function() {
         Polly.unregister(MockAdapter);
       });
 
-      it('.unregister()', async function() {
+      it('.unregister()', async function () {
         Polly.register(MockAdapter);
 
         let polly = new Polly('Test');
@@ -485,11 +485,11 @@ describe('Unit | Polly', function() {
       });
     });
 
-    describe('Events', function() {
-      it('register', async function() {
+    describe('Events', function () {
+      it('register', async function () {
         let registerCalled = false;
 
-        Polly.once('register', container => {
+        Polly.once('register', (container) => {
           expect(container).to.be.an.instanceof(Container);
           registerCalled = true;
         });
@@ -500,10 +500,10 @@ describe('Unit | Polly', function() {
         await polly.stop();
       });
 
-      it('create', async function() {
+      it('create', async function () {
         let createCalled = false;
 
-        Polly.once('create', polly => {
+        Polly.once('create', (polly) => {
           expect(polly).to.be.an.instanceof(Polly);
           createCalled = true;
         });
@@ -514,15 +514,15 @@ describe('Unit | Polly', function() {
         await polly.stop();
       });
 
-      it('create - should throw with an async listener', async function() {
+      it('create - should throw with an async listener', async function () {
         Polly.once('create', () => {});
         Polly.once('create', () => Promise.resolve());
 
         expect(() => new Polly('Test')).to.throw(PollyError);
       });
 
-      it('create - configuration order should be preserved', async function() {
-        Polly.once('create', polly => {
+      it('create - configuration order should be preserved', async function () {
+        Polly.once('create', (polly) => {
           polly.configure({ logging: true, recordIfMissing: false });
         });
 
@@ -533,10 +533,10 @@ describe('Unit | Polly', function() {
         await polly.stop();
       });
 
-      it('stop', async function() {
+      it('stop', async function () {
         let stopCalled = false;
 
-        Polly.once('stop', polly => {
+        Polly.once('stop', (polly) => {
           expect(polly).to.be.an.instanceof(Polly);
           expect(polly.mode).to.equal(MODES.STOPPED);
           stopCalled = true;

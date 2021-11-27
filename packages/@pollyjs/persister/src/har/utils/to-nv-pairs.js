@@ -11,7 +11,7 @@ export default function toNVPairs(o) {
       //   { 'content-type': ['text/htm'] }
       //     => { name: 'content-type', value: 'text/html', _fromType: 'array }
       //     => { 'content-type': ['text/htm'] }
-      pairs.push(...value.map(v => ({ name, value: v, _fromType: 'array' })));
+      pairs.push(...value.map((v) => ({ name, value: v, _fromType: 'array' })));
     } else {
       pairs.push({ name, value });
     }

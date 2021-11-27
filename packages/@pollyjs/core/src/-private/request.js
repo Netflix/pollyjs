@@ -119,7 +119,7 @@ export default class PollyRequest extends HTTPBase {
   }
 
   set query(value) {
-    return this[PARSED_URL].set('query', value);
+    this[PARSED_URL].set('query', value);
   }
 
   get hash() {
@@ -127,7 +127,7 @@ export default class PollyRequest extends HTTPBase {
   }
 
   set hash(value) {
-    return this[PARSED_URL].set('hash', value);
+    this[PARSED_URL].set('hash', value);
   }
 
   get shouldPassthrough() {
@@ -246,7 +246,7 @@ export default class PollyRequest extends HTTPBase {
     this.identifiers = {};
 
     // Iterate through each normalizer
-    keys(NormalizeRequest).forEach(key => {
+    keys(NormalizeRequest).forEach((key) => {
       if (this[key] && matchRequestsBy[key]) {
         this.identifiers[key] = NormalizeRequest[key](
           this[key],
@@ -271,8 +271,9 @@ export default class PollyRequest extends HTTPBase {
       matchRequestsBy.order && !this.shouldPassthrough && !this.shouldIntercept
         ? requests
             .slice(0, requests.indexOf(this))
-            .filter(r => r.id === this.id && r.recordingId === this.recordingId)
-            .length
+            .filter(
+              (r) => r.id === this.id && r.recordingId === this.recordingId
+            ).length
         : 0;
   }
 }
