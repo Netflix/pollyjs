@@ -281,7 +281,7 @@ export default class HttpAdapter extends Adapter {
     // should not be concatenated. Instead, the chunks should
     // be preserved as-is so that each chunk can be mocked individually
     if (isContentEncoded(headers)) {
-      const base64Chunks = chunks.map((chunk) => {
+      const encodedChunks = chunks.map((chunk) => {
         if (!Buffer.isBuffer(chunk)) {
           this.assert(
             'content-encoded responses must all be binary buffers',
@@ -295,7 +295,7 @@ export default class HttpAdapter extends Adapter {
 
       return {
         encoding: 'base64',
-        body: JSON.stringify(base64Chunks)
+        body: JSON.stringify(encodedChunks)
       };
     }
 
@@ -323,9 +323,9 @@ export default class HttpAdapter extends Adapter {
     // If content-encoding is set in the header then the body/content
     // is as an array of base64 strings
     if (isContentEncoded(headers)) {
-      const base64Chunks = JSON.parse(body);
+      const encodedChunks = JSON.parse(body);
 
-      return base64Chunks.map((chunk) => Buffer.from(chunk, 'base64'));
+      return encodedChunks.map((chunk) => Buffer.from(chunk, encoding));
     }
 
     // The body can be one of two things:
