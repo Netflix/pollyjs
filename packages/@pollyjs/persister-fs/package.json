@@ -4,6 +4,7 @@
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-fs.js",
   "module": "dist/es/pollyjs-persister-fs.js",
+  "types": "types.d.ts",
   "files": [
     "src",
     "dist"

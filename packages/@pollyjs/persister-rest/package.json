@@ -5,6 +5,7 @@
   "main": "dist/cjs/pollyjs-persister-rest.js",
   "module": "dist/es/pollyjs-persister-rest.js",
   "browser": "dist/umd/pollyjs-persister-rest.js",
+  "types": "types.d.ts",
   "files": [
     "src",
     "dist"

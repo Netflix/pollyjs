@@ -6,6 +6,7 @@
   "main": "dist/cjs/pollyjs-persister-in-memory.js",
   "module": "dist/es/pollyjs-persister-in-memory.js",
   "browser": "dist/umd/pollyjs-persister-in-memory.js",
+  "types": "types.d.ts",
   "files": [
     "src",
     "dist"

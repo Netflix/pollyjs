@@ -5,6 +5,7 @@
   "main": "dist/cjs/pollyjs-adapter-fetch.js",
   "module": "dist/es/pollyjs-adapter-fetch.js",
   "browser": "dist/umd/pollyjs-adapter-fetch.js",
+  "types": "types.d.ts",
   "files": [
     "src",
     "dist"

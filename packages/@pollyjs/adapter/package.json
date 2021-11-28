@@ -5,6 +5,7 @@
   "main": "dist/cjs/pollyjs-adapter.js",
   "module": "dist/es/pollyjs-adapter.js",
   "browser": "dist/umd/pollyjs-adapter.js",
+  "types": "types.d.ts",
   "files": [
     "src",
     "dist"
