@@ -42,7 +42,7 @@
   "dependencies": {
     "@pollyjs/adapter": "^5.1.1",
     "@pollyjs/utils": "^5.1.1",
-    "detect-node": "^2.0.4",
+    "detect-node": "^2.1.0",
     "to-arraybuffer": "^1.0.1"
   },
   "devDependencies": {
