@@ -31,18 +31,18 @@ module.exports = {
   middleware: [attachMiddleware],
   launchers: {
     'Node:debug': {
-      command: 'yarn test:node --inspect-brk'
+      command: 'mocha --inspect-brk'
     },
     Node: {
-      command: 'yarn test:node --reporter tap',
+      command: 'mocha --reporter tap',
       protocol: 'tap'
     },
     Jest: {
-      command: 'yarn test:jest',
+      command: 'jest',
       protocol: 'tap'
     },
     Ember: {
-      command: 'yarn test:ember',
+      command: 'yarn workspace @pollyjs/ember run test',
       protocol: 'tap'
     },
     ESLint: {
