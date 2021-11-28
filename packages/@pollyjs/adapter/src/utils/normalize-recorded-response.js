@@ -8,7 +8,7 @@ export default function normalizeRecordedResponse(response) {
     statusCode: status,
     headers: normalizeHeaders(headers),
     body: content && content.text,
-    isBinary: Boolean(content && content._isBinary)
+    encoding: content && content.encoding
   };
 }
 

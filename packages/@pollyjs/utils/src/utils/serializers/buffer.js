@@ -21,7 +21,7 @@ export function serialize(body) {
     }
 
     if (Buffer.isBuffer(buffer)) {
-      return buffer.toString('hex');
+      return buffer.toString('base64');
     }
   }
 

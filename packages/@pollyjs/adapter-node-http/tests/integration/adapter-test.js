@@ -126,7 +126,7 @@ function commonTests(transport) {
     expect(requests[0].body.toString('base64')).to.equal(
       body.toString('base64')
     );
-    expect(requests[0].identifiers.body).to.equal(body.toString('hex'));
+    expect(requests[0].identifiers.body).to.equal(body.toString('base64'));
   });
 
   it('should be able to upload form data', async function () {

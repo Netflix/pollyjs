@@ -38,8 +38,8 @@ export default class Response {
     if (response.body && typeof response.body === 'string') {
       this.content.text = response.body;
 
-      if (response.isBinary) {
-        this.content._isBinary = true;
+      if (response.encoding) {
+        this.content.encoding = response.encoding;
       }
     }
 
