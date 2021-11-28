@@ -6,13 +6,13 @@ describe('Unit | Utils | guidForRecording', function () {
   });
 
   it('should remove illegal file system characters', function () {
-    expect(guidForRecording(`'?<>\\:*|"`)).to.equal('-_3218500777');
+    expect(guidForRecording(`'?<>\\:*|"`)).to.equal('_3218500777');
   });
 
   it('should create a guid for each segment of the name', function () {
     const name = guidForRecording(`foo!/bar%/baz..`);
 
-    expect(name).to.equal('foo-_2152783170/bar-_567945773/baz-_1682401886');
+    expect(name).to.equal('foo_2152783170/bar_567945773/baz_1682401886');
   });
 
   it('should trim name to 100 characters', function () {
