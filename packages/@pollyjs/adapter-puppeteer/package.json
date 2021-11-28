@@ -4,6 +4,7 @@
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-puppeteer.js",
   "module": "dist/es/pollyjs-adapter-puppeteer.js",
+  "types": "types.d.ts",
   "files": [
     "src",
     "dist"

@@ -4,6 +4,7 @@
   "description": "Standalone node server and express integration for @pollyjs",
   "main": "dist/cjs/pollyjs-node-server.js",
   "module": "dist/es/pollyjs-node-server.js",
+  "types": "types.d.ts",
   "files": [
     "src",
     "dist"
