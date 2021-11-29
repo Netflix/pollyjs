@@ -255,15 +255,20 @@ export default function adapterTests() {
         await server.timeout(5);
         res.sendStatus(200);
       })
-      .on('request', (req) => requests.push(req));
+      .on('request', (req) => {
+        requests.push(req);
+      });
 
     this.fetchRecord().then(() => resolved.push(1));
     this.fetchRecord().then(() => resolved.push(2));
     this.fetchRecord().then(() => resolved.push(3));
 
-    await this.polly.flush();
+    await this.polly.server.timeout(10);
 
     expect(requests).to.have.lengthOf(3);
+
+    await this.polly.flush();
+
     requests.forEach((request) => expect(request.didRespond).to.be.true);
     expect(resolved).to.have.members([1, 2, 3]);
   });

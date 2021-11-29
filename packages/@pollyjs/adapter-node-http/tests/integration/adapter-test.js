@@ -165,11 +165,17 @@ function commonTests(transport) {
 
     server
       .any(url)
-      .on('request', () => req.abort())
       .on('abort', () => (abortEventCalled = true))
-      .intercept((_, res) => {
+      .intercept(async (_, res) => {
+        await server.timeout(50);
         res.sendStatus(200);
       });
+
+    req.on('socket', () => {
+      setTimeout(() => {
+        req.abort();
+      }, 10);
+    });
 
     try {
       await getResponseFromRequest(req);
@@ -185,12 +191,14 @@ function commonTests(transport) {
     const { server } = this.polly;
     const url = `${protocol}//example.com`;
     const req = transport.request(url);
+    let requestIntercepted = false;
     let abortEventCalled = false;
 
     server
       .any(url)
       .on('abort', () => (abortEventCalled = true))
-      .intercept((_, res) => {
+      .intercept(async (_, res) => {
+        requestIntercepted = true;
         res.sendStatus(200);
       });
 
@@ -205,6 +213,9 @@ function commonTests(transport) {
     }
 
     await this.polly.flush();
-    expect(abortEventCalled).to.equal(true);
+
+    // Nock will completely ignore requests that have been immediately aborted
+    expect(requestIntercepted).to.equal(false);
+    expect(abortEventCalled).to.equal(false);
   });
 }
