@@ -176,8 +176,14 @@ export default class HttpAdapter extends Adapter {
     if (req.aborted) {
       pollyRequest.abort();
     } else {
-      pollyRequest[ABORT_HANDLER] = () => pollyRequest.abort();
+      pollyRequest[ABORT_HANDLER] = () => {
+        if (!pollyRequest.aborted && (req.aborted || req.destroyed)) {
+          pollyRequest.abort();
+        }
+      };
+
       req.once('abort', pollyRequest[ABORT_HANDLER]);
+      req.once('close', pollyRequest[ABORT_HANDLER]);
     }
   }
 
@@ -230,6 +236,7 @@ export default class HttpAdapter extends Adapter {
 
     if (pollyRequest[ABORT_HANDLER]) {
       req.off('abort', pollyRequest[ABORT_HANDLER]);
+      req.off('close', pollyRequest[ABORT_HANDLER]);
     }
 
     if (pollyRequest.aborted) {
