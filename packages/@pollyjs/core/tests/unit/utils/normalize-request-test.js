@@ -119,8 +119,8 @@ describe('Unit | Utils | Normalize Request', function () {
 
   describe('url', function () {
     it('should sort query params', function () {
-      expect(url('http://foo.com?b=1&c=1&a=1', {})).to.equal(
-        'http://foo.com?a=1&b=1&c=1'
+      expect(url('http://foo.com/?b=1&c=1&a=1', {})).to.equal(
+        'http://foo.com/?a=1&b=1&c=1'
       );
     });
 
@@ -130,51 +130,51 @@ describe('Unit | Utils | Normalize Request', function () {
           /* config options */
           'hash',
           /* input url */
-          'http://hash-test.com?b=1&c=1&a=1#hello=world',
+          'http://hash-test.com/?b=1&c=1&a=1#hello=world',
           /* expected when true */
-          [true, 'http://hash-test.com?a=1&b=1&c=1#hello=world'],
+          [true, 'http://hash-test.com/?a=1&b=1&c=1#hello=world'],
           /* expected when false */
-          [false, 'http://hash-test.com?a=1&b=1&c=1'],
+          [false, 'http://hash-test.com/?a=1&b=1&c=1'],
           /* expected when custom fn */
           [
             (h) => h.replace('=', '!='),
-            'http://hash-test.com?a=1&b=1&c=1#hello!=world'
+            'http://hash-test.com/?a=1&b=1&c=1#hello!=world'
           ]
         ],
         [
           'protocol',
-          'http://protocol-test.com',
-          [true, 'http://protocol-test.com'],
-          [false, '//protocol-test.com'],
-          [(p) => p.replace('http', 'https'), 'https://protocol-test.com']
+          'http://protocol-test.com/',
+          [true, 'http://protocol-test.com/'],
+          [false, '//protocol-test.com/'],
+          [(p) => p.replace('http', 'https'), 'https://protocol-test.com/']
         ],
         [
           'query',
-          'http://query-test.com?b=1&c=1&a=1',
-          [true, 'http://query-test.com?a=1&b=1&c=1'],
-          [false, 'http://query-test.com'],
-          [(q) => ({ ...q, c: 2 }), 'http://query-test.com?a=1&b=1&c=2']
+          'http://query-test.com/?b=1&c=1&a=1',
+          [true, 'http://query-test.com/?a=1&b=1&c=1'],
+          [false, 'http://query-test.com/'],
+          [(q) => ({ ...q, c: 2 }), 'http://query-test.com/?a=1&b=1&c=2']
         ],
         [
           'username',
-          'https://username:password@username-test.com',
-          [true, 'https://username:password@username-test.com'],
-          [false, 'https://username-test.com'],
-          [(u) => `${u}123`, 'https://username123:password@username-test.com']
+          'https://username:password@username-test.com/',
+          [true, 'https://username:password@username-test.com/'],
+          [false, 'https://username-test.com/'],
+          [(u) => `${u}123`, 'https://username123:password@username-test.com/']
         ],
         [
           'password',
-          'https://username:password@password-test.com',
-          [true, 'https://username:password@password-test.com'],
-          [false, 'https://username@password-test.com'],
-          [(p) => `${p}123`, 'https://username:password123@password-test.com']
+          'https://username:password@password-test.com/',
+          [true, 'https://username:password@password-test.com/'],
+          [false, 'https://username@password-test.com/'],
+          [(p) => `${p}123`, 'https://username:password123@password-test.com/']
         ],
         [
           'port',
-          'https://port-test.com:8000',
-          [true, 'https://port-test.com:8000'],
-          [false, 'https://port-test.com'],
-          [(p) => Number(p) + 1, 'https://port-test.com:8001']
+          'https://port-test.com:8000/',
+          [true, 'https://port-test.com:8000/'],
+          [false, 'https://port-test.com/'],
+          [(p) => Number(p) + 1, 'https://port-test.com:8001/']
         ],
         [
           'pathname',
@@ -196,8 +196,8 @@ describe('Unit | Utils | Normalize Request', function () {
 
     it('should support a custom fn', function () {
       expect(
-        url('https://foo.bar', (url) => url.replace('bar', 'foo'))
-      ).to.equal('https://foo.foo');
+        url('https://foo.bar/', (url) => url.replace('bar', 'foo'))
+      ).to.equal('https://foo.foo/');
     });
 
     it('should pass the correct arguments to the custom fn', function () {

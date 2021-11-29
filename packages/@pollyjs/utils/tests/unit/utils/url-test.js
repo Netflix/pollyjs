@@ -9,11 +9,11 @@ describe('Unit | Utils | URL', function () {
   });
 
   it('should work', function () {
-    expect(new URL('http://netflix.com').href).to.equal('http://netflix.com');
+    expect(new URL('http://netflix.com/').href).to.equal('http://netflix.com/');
   });
 
   it('should should not parse the query string by default', function () {
-    expect(new URL('http://netflix.com?foo=bar').query).to.equal('?foo=bar');
+    expect(new URL('http://netflix.com/?foo=bar').query).to.equal('?foo=bar');
   });
 
   it('should correctly parse query params', function () {
@@ -26,7 +26,9 @@ describe('Unit | Utils | URL', function () {
       ['a=1&a=2', { a: ['1', '2'] }],
       ['foo[bar][baz]=1', { foo: { bar: { baz: '1' } } }]
     ].forEach(([query, obj]) => {
-      expect(new URL(`http://foo.bar?${query}`, true).query).to.deep.equal(obj);
+      expect(new URL(`http://foo.bar/?${query}`, true).query).to.deep.equal(
+        obj
+      );
     });
   });
 
@@ -55,7 +57,7 @@ describe('Unit | Utils | URL', function () {
       `${encode('a[]')}=1&${encode('a[]')}=2`,
       'a=1&a=2'
     ].forEach((query) => {
-      const url = new URL(`http://foo.bar?${query}`, true);
+      const url = new URL(`http://foo.bar/?${query}`, true);
 
       expect(decode(url.href.split('?')[1])).to.equal(decode(query));
       expect(decode(url.toString().split('?')[1])).to.equal(decode(query));
