@@ -27,19 +27,18 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-* Upgrade url-version to 1.5.0+ to fix CVE-2021-27515. This change could alter the final url generated for a request. 
-* - Adapter
+* Upgrade url-parse to 1.5.0+ to fix CVE-2021-27515. This change could alter the final url generated for a request. 
+* Adapter
 	- `passthroughRequest` renamed to `onFetchResponse`
 	- `respondToRequest` renamed to `onRespond`
-
-- Persister
+* Persister
 	- `findRecording` renamed to `onFindRecording`
 	- `saveRecording` renamed to `onSaveRecording`
 	- `deleteRecording` renamed to `onDeleteRecording`
 * The `logging` configuration option has now been replaced with `logLevel`. This allows for more fine-grain control over what should be logged as well as silencing logs altogether. 
 * Recording file name will no longer have trailing dashes
 * Use the standard `encoding` field on the generated har file instead of `_isBinary` and use `base64` encoding instead of `hex` to reduce the payload size.
-* @pollyjs dependencies have been moved to peer dependencies
+* @pollyjs dependencies for @pollyjs/ember have been moved to peer dependencies
 
 
 
