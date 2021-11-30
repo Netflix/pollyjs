@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/netflix/pollyjs/compare/v5.2.0...v6.0.0) (2021-11-30)
+
+
+* feat(ember)!: Upgrade to ember octane (#415) ([8559ef8](https://github.com/netflix/pollyjs/commit/8559ef8c600aefaec629870eac5f5c8953e18b16)), closes [#415](https://github.com/netflix/pollyjs/issues/415)
+
+
+### BREAKING CHANGES
+
+* @pollyjs dependencies have been moved to peer dependencies
+
+
+
+
+
 # [5.2.0](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/ember/compare/v5.1.1...v5.2.0) (2021-11-24)
 
 

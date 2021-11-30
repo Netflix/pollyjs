@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/netflix/pollyjs/compare/v5.2.0...v6.0.0) (2021-11-30)
+
+
+* feat!: Cleanup adapter and persister APIs (#429) ([06499fc](https://github.com/netflix/pollyjs/commit/06499fc2d85254b3329db2bec770d173ed32bca0)), closes [#429](https://github.com/netflix/pollyjs/issues/429)
+
+
+### BREAKING CHANGES
+
+* - Adapter
+	- `passthroughRequest` renamed to `onFetchResponse`
+	- `respondToRequest` renamed to `onRespond`
+
+- Persister
+	- `findRecording` renamed to `onFindRecording`
+	- `saveRecording` renamed to `onSaveRecording`
+	- `deleteRecording` renamed to `onDeleteRecording`
+
+
+
+
+
 ## [5.1.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-local-storage/compare/v5.1.0...v5.1.1) (2021-06-02)
 
 **Note:** Version bump only for package @pollyjs/persister-local-storage

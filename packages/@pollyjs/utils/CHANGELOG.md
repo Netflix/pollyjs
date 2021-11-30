@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/netflix/pollyjs/compare/v5.2.0...v6.0.0) (2021-11-30)
+
+
+* fix!: Upgrade url-parse (#426) ([c21ed04](https://github.com/netflix/pollyjs/commit/c21ed048ff9d87a3773458dcfb9758e4fa6582bf)), closes [#426](https://github.com/netflix/pollyjs/issues/426)
+* chore!: Upgrade package dependencies (#421) ([dd23334](https://github.com/netflix/pollyjs/commit/dd23334fa9b64248e4c49c3616237bdc2f12f682)), closes [#421](https://github.com/netflix/pollyjs/issues/421)
+* feat!: Use base64 instead of hex encoding for binary data (#420) ([6bb9b36](https://github.com/netflix/pollyjs/commit/6bb9b36522d73f9c079735d9006a12376aee39ea)), closes [#420](https://github.com/netflix/pollyjs/issues/420)
+* feat(ember)!: Upgrade to ember octane (#415) ([8559ef8](https://github.com/netflix/pollyjs/commit/8559ef8c600aefaec629870eac5f5c8953e18b16)), closes [#415](https://github.com/netflix/pollyjs/issues/415)
+
+
+### BREAKING CHANGES
+
+* Upgrade url-version to 1.5.0+ to fix CVE-2021-27515. This change could alter the final url generated for a request. 
+* Recording file name will no longer have trailing dashes
+* Use the standard `encoding` field on the generated har file instead of `_isBinary` and use `base64` encoding instead of `hex` to reduce the payload size.
+* @pollyjs dependencies have been moved to peer dependencies
+
+
+
+
+
 ## [5.1.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/utils/compare/v5.1.0...v5.1.1) (2021-06-02)
 
 

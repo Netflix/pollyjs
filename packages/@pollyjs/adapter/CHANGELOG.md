@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/netflix/pollyjs/compare/v5.2.0...v6.0.0) (2021-11-30)
+
+
+* feat!: Cleanup adapter and persister APIs (#429) ([06499fc](https://github.com/netflix/pollyjs/commit/06499fc2d85254b3329db2bec770d173ed32bca0)), closes [#429](https://github.com/netflix/pollyjs/issues/429)
+* feat!: Improve logging and add logLevel (#427) ([bef3ee3](https://github.com/netflix/pollyjs/commit/bef3ee39f71dfc2fa4dbeb522dfba16d01243e9f)), closes [#427](https://github.com/netflix/pollyjs/issues/427)
+* feat!: Use base64 instead of hex encoding for binary data (#420) ([6bb9b36](https://github.com/netflix/pollyjs/commit/6bb9b36522d73f9c079735d9006a12376aee39ea)), closes [#420](https://github.com/netflix/pollyjs/issues/420)
+* feat(ember)!: Upgrade to ember octane (#415) ([8559ef8](https://github.com/netflix/pollyjs/commit/8559ef8c600aefaec629870eac5f5c8953e18b16)), closes [#415](https://github.com/netflix/pollyjs/issues/415)
+
+
+### BREAKING CHANGES
+
+* - Adapter
+	- `passthroughRequest` renamed to `onFetchResponse`
+	- `respondToRequest` renamed to `onRespond`
+
+- Persister
+	- `findRecording` renamed to `onFindRecording`
+	- `saveRecording` renamed to `onSaveRecording`
+	- `deleteRecording` renamed to `onDeleteRecording`
+* The `logging` configuration option has now been replaced with `logLevel`. This allows for more fine-grain control over what should be logged as well as silencing logs altogether. 
+* Use the standard `encoding` field on the generated har file instead of `_isBinary` and use `base64` encoding instead of `hex` to reduce the payload size.
+* @pollyjs dependencies have been moved to peer dependencies
+
+
+
+
+
 ## [5.1.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter/compare/v5.1.0...v5.1.1) (2021-06-02)
 
 **Note:** Version bump only for package @pollyjs/adapter

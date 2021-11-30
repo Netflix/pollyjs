@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/netflix/pollyjs/compare/v5.2.0...v6.0.0) (2021-11-30)
+
+
+* feat!: Cleanup adapter and persister APIs (#429) ([06499fc](https://github.com/netflix/pollyjs/commit/06499fc2d85254b3329db2bec770d173ed32bca0)), closes [#429](https://github.com/netflix/pollyjs/issues/429)
+* chore!: Upgrade package dependencies (#421) ([dd23334](https://github.com/netflix/pollyjs/commit/dd23334fa9b64248e4c49c3616237bdc2f12f682)), closes [#421](https://github.com/netflix/pollyjs/issues/421)
+* feat!: Use base64 instead of hex encoding for binary data (#420) ([6bb9b36](https://github.com/netflix/pollyjs/commit/6bb9b36522d73f9c079735d9006a12376aee39ea)), closes [#420](https://github.com/netflix/pollyjs/issues/420)
+* feat(ember)!: Upgrade to ember octane (#415) ([8559ef8](https://github.com/netflix/pollyjs/commit/8559ef8c600aefaec629870eac5f5c8953e18b16)), closes [#415](https://github.com/netflix/pollyjs/issues/415)
+
+
+### Features
+
+* **adapter-node-http:** Upgrade nock to v13 ([#424](https://github.com/netflix/pollyjs/issues/424)) ([2d5b59e](https://github.com/netflix/pollyjs/commit/2d5b59ee0c33ea53a64321249246fcae0a616a3f))
+
+
+### BREAKING CHANGES
+
+* - Adapter
+	- `passthroughRequest` renamed to `onFetchResponse`
+	- `respondToRequest` renamed to `onRespond`
+
+- Persister
+	- `findRecording` renamed to `onFindRecording`
+	- `saveRecording` renamed to `onSaveRecording`
+	- `deleteRecording` renamed to `onDeleteRecording`
+* Recording file name will no longer have trailing dashes
+* Use the standard `encoding` field on the generated har file instead of `_isBinary` and use `base64` encoding instead of `hex` to reduce the payload size.
+* @pollyjs dependencies have been moved to peer dependencies
+
+
+
+
+
 ## [5.1.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/adapter-node-http/compare/v5.1.0...v5.1.1) (2021-06-02)
 
 **Note:** Version bump only for package @pollyjs/adapter-node-http

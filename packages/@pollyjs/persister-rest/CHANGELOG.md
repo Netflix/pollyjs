@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/netflix/pollyjs/compare/v5.2.0...v6.0.0) (2021-11-30)
+
+
+* feat!: Cleanup adapter and persister APIs (#429) ([06499fc](https://github.com/netflix/pollyjs/commit/06499fc2d85254b3329db2bec770d173ed32bca0)), closes [#429](https://github.com/netflix/pollyjs/issues/429)
+* feat(ember)!: Upgrade to ember octane (#415) ([8559ef8](https://github.com/netflix/pollyjs/commit/8559ef8c600aefaec629870eac5f5c8953e18b16)), closes [#415](https://github.com/netflix/pollyjs/issues/415)
+
+
+### BREAKING CHANGES
+
+* - Adapter
+	- `passthroughRequest` renamed to `onFetchResponse`
+	- `respondToRequest` renamed to `onRespond`
+
+- Persister
+	- `findRecording` renamed to `onFindRecording`
+	- `saveRecording` renamed to `onSaveRecording`
+	- `deleteRecording` renamed to `onDeleteRecording`
+* @pollyjs dependencies have been moved to peer dependencies
+
+
+
+
+
 ## [5.1.1](https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-rest/compare/v5.1.0...v5.1.1) (2021-06-02)
 
 **Note:** Version bump only for package @pollyjs/persister-rest
