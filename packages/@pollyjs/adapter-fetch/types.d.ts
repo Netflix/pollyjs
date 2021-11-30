@@ -1,3 +1,5 @@
 import Adapter from '@pollyjs/adapter';
 
-export default class FetchAdapter extends Adapter {}
+export default class FetchAdapter extends Adapter<{
+  context?: any;
+}> {}
