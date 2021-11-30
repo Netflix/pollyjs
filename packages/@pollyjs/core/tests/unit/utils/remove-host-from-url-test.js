@@ -13,14 +13,8 @@ describe('Unit | Utils | removeHostFromUrl', function () {
     expect(url.toString()).to.equal('/bar/baz/');
   });
 
-  it('should remove hostname without a protocol', function () {
-    const url = removeHost(new URL('//foo.com/bar/baz/'));
-
-    expect(url.toString()).to.equal('/bar/baz/');
-  });
-
-  it('should remove hostname without a protocol and a tld', function () {
-    const url = removeHost(new URL('//foo/bar/baz/'));
+  it('should remove hostname without a tld', function () {
+    const url = removeHost(new URL('http://foo/bar/baz/'));
 
     expect(url.toString()).to.equal('/bar/baz/');
   });
