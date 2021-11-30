@@ -9,7 +9,8 @@ export default function persisterTests() {
     await this.fetchRecord();
     await persister.persist();
 
-    expect(await validate.har(await persister.find(recordingId))).to.be.true;
+    expect(await validate.har(await persister.findRecording(recordingId))).to.be
+      .true;
 
     await this.fetchRecord({
       method: 'POST',
@@ -19,7 +20,8 @@ export default function persisterTests() {
 
     await persister.persist();
 
-    expect(await validate.har(await persister.find(recordingId))).to.be.true;
+    expect(await validate.har(await persister.findRecording(recordingId))).to.be
+      .true;
   });
 
   it('should have the correct metadata', async function () {
@@ -29,7 +31,7 @@ export default function persisterTests() {
     await this.fetchRecord();
     await persister.persist();
 
-    const har = await persister.find(recordingId);
+    const har = await persister.findRecording(recordingId);
     const { _recordingName, creator, entries } = har.log;
     const entry = entries[0];
 
@@ -56,7 +58,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(1));
     await persister.persist();
 
-    let har = await persister.find(recordingId);
+    let har = await persister.findRecording(recordingId);
 
     expect(har.log.entries).to.have.lengthOf(1);
 
@@ -71,7 +73,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(2));
     await persister.persist();
 
-    har = await persister.find(recordingId);
+    har = await persister.findRecording(recordingId);
 
     expect(har.log.entries).to.have.lengthOf(3);
     expect(
@@ -120,7 +122,7 @@ export default function persisterTests() {
 
     expect(recordingId).to.include('Override');
 
-    const har = await persister.find(recordingId);
+    const har = await persister.findRecording(recordingId);
 
     expect(await validate.har(har)).to.be.true;
     expect(har.log.entries).to.have.lengthOf(1);
@@ -149,7 +151,7 @@ export default function persisterTests() {
     await this.fetchRecord();
     await persister.persist();
 
-    const har = await persister.find(recordingId);
+    const har = await persister.findRecording(recordingId);
     const { headers } = har.log.entries[0].response;
 
     expect(await validate.har(har)).to.be.true;
@@ -185,7 +187,7 @@ export default function persisterTests() {
     await this.fetchRecord();
     await persister.persist();
 
-    const har = await persister.find(recordingId);
+    const har = await persister.findRecording(recordingId);
     const { content, redirectURL } = har.log.entries[0].response;
 
     expect(await validate.har(har)).to.be.true;
@@ -204,7 +206,7 @@ export default function persisterTests() {
     } catch (e) {
       error = e;
     } finally {
-      const savedRecording = await this.polly.persister.find(
+      const savedRecording = await this.polly.persister.findRecording(
         this.polly.recordingId
       );
 
@@ -223,7 +225,9 @@ export default function persisterTests() {
     await this.fetchRecord();
     await this.polly.stop();
 
-    const har = await this.polly.persister.find(this.polly.recordingId);
+    const har = await this.polly.persister.findRecording(
+      this.polly.recordingId
+    );
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(1);
@@ -238,7 +242,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(2));
     await this.polly.persister.persist();
 
-    let har = await this.polly.persister.find(recordingId);
+    let har = await this.polly.persister.findRecording(recordingId);
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(2);
@@ -257,7 +261,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(3)); // -> New recording
     await this.polly.persister.persist();
 
-    har = await this.polly.persister.find(recordingId);
+    har = await this.polly.persister.findRecording(recordingId);
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(2);
@@ -279,7 +283,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(2));
     await this.polly.persister.persist();
 
-    let har = await this.polly.persister.find(recordingId);
+    let har = await this.polly.persister.findRecording(recordingId);
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(2);
@@ -296,7 +300,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(2));
     await this.polly.persister.persist();
 
-    har = await this.polly.persister.find(recordingId);
+    har = await this.polly.persister.findRecording(recordingId);
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(4);
@@ -321,7 +325,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(2));
     await this.polly.persister.persist();
 
-    let har = await this.polly.persister.find(recordingId);
+    let har = await this.polly.persister.findRecording(recordingId);
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(2);
@@ -337,7 +341,7 @@ export default function persisterTests() {
     await this.fetch(orderedRecordUrl(4));
     await this.polly.persister.persist();
 
-    har = await this.polly.persister.find(recordingId);
+    har = await this.polly.persister.findRecording(recordingId);
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(4);
@@ -361,7 +365,7 @@ export default function persisterTests() {
     await this.fetchRecord();
     await persister.persist();
 
-    har = await persister.find(recordingId);
+    har = await persister.findRecording(recordingId);
     content = har.log.entries[0].response.content;
 
     expect(await validate.har(har)).to.be.true;
@@ -376,7 +380,7 @@ export default function persisterTests() {
     await this.fetchRecord();
     await persister.persist();
 
-    har = await persister.find(recordingId);
+    har = await persister.findRecording(recordingId);
     content = har.log.entries[1].response.content;
 
     expect(await validate.har(har)).to.be.true;
@@ -391,7 +395,7 @@ export default function persisterTests() {
     await this.fetchRecord();
     await persister.persist();
 
-    har = await persister.find(recordingId);
+    har = await persister.findRecording(recordingId);
     content = har.log.entries[2].response.content;
 
     expect(await validate.har(har)).to.be.true;

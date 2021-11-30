@@ -18,12 +18,6 @@ export default class XHRAdapter extends Adapter {
     return 'xhr';
   }
 
-  static get name() {
-    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
-    // and therefore still referencing `name`.  Remove in 5.0.0
-    return this.id;
-  }
-
   get defaultOptions() {
     return {
       context: global
@@ -78,7 +72,7 @@ export default class XHRAdapter extends Adapter {
     }
   }
 
-  async passthroughRequest(pollyRequest) {
+  async onFetchResponse(pollyRequest) {
     const { xhr: fakeXhr } = pollyRequest.requestArguments;
     const xhr = new this.NativeXMLHttpRequest();
 
@@ -143,7 +137,7 @@ export default class XHRAdapter extends Adapter {
     };
   }
 
-  respondToRequest(pollyRequest, error) {
+  onRespond(pollyRequest, error) {
     const { xhr } = pollyRequest.requestArguments;
 
     if (pollyRequest[ABORT_HANDLER]) {

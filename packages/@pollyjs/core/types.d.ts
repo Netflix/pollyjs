@@ -84,7 +84,7 @@ export interface PollyConfig {
 }
 export interface HTTPBase {
   headers: Headers;
-  body: any;
+  body?: string;
 
   getHeader(name: string): string | string[] | null;
   setHeader(name: string, value?: string | string[] | null): this;
@@ -99,8 +99,20 @@ export interface HTTPBase {
 }
 
 export type RequestEvent = 'identify';
+export type RequestArguments = { [key: string]: any };
 
-export interface Request extends HTTPBase {
+export interface Request<TArguments extends RequestArguments = {}>
+  extends HTTPBase {
+  constructor(
+    polly: Polly,
+    request: {
+      url: string;
+      method: string;
+      headers: Headers;
+      body?: string;
+      requestArguments: TArguments;
+    }
+  );
   method: string;
   url: string;
   readonly absoluteUrl: string;
@@ -112,7 +124,7 @@ export interface Request extends HTTPBase {
   query: { [key: string]: string | string[] };
   readonly params: { [key: string]: string };
   readonly log: Logger;
-  readonly requestArguments: any;
+  readonly requestArguments: TArguments;
   recordingName: string;
   recordingId: string;
   responseTime?: number | undefined;
@@ -123,6 +135,7 @@ export interface Request extends HTTPBase {
   action: ACTION | null;
   aborted: boolean;
   promise: Promise<void>;
+  response?: Response;
   configure(config: Partial<PollyConfig>): void;
   overrideRecordingName(recordingName: string): void;
   on(event: RequestEvent, listener: RequestEventListener): this;
@@ -240,7 +253,7 @@ export class PollyLogger {
   connect: () => void;
   disconnect: () => void;
   logRequest: (request: Request) => void;
-  logRequestResponse: (request: Request) => void;
+  logRequestResponse: (request: Request, response: Response) => void;
   logRequestError: (request: Request, error: Error) => void;
 }
 export type PollyEvent = 'create' | 'stop' | 'register';

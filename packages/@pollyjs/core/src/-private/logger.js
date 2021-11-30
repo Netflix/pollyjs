@@ -31,19 +31,23 @@ export default class Logger {
 
   logRequest(request) {
     const { log } = request;
+    const debug = log.getLevel() <= log.levels.DEBUG;
 
-    log.debug(`Request: ${request.method} ${request.url}`, { request });
+    log.info(
+      `Request: ${request.method} ${request.url}`,
+      ...(debug ? [{ request }] : [])
+    );
   }
 
-  logRequestResponse(request) {
+  logRequestResponse(request, response) {
     const { log } = request;
     const debug = log.getLevel() <= log.levels.DEBUG;
 
     log.info(
       `Response: ${FORMATTED_ACTIONS[request.action]} ➞ ${request.method} ${
         request.url
-      } ${request.response.statusCode} • ${request.responseTime}ms`,
-      ...(debug ? [{ request, response: request.response }] : [])
+      } ${response.statusCode} • ${request.responseTime}ms`,
+      ...(debug ? [{ request, response }] : [])
     );
   }
 

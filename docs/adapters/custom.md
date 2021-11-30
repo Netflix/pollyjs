@@ -41,12 +41,12 @@ class CustomAdapter extends Adapter {
     /* Do something when the adapter is disconnected from */
   }
 
-  async passthroughRequest(pollyRequest) {
+  async onFetchResponse(pollyRequest) {
     /* Do something when the adapter is connect to */
   }
 
   /* optional */
-  async respondToRequest(pollyRequest) {
+  async onRespond(pollyRequest) {
     const { statusCode, body, headers } = pollyRequest.response;
     /* Deliver the response to the user */
   }
@@ -57,12 +57,12 @@ The `Adapter` class provides the `handleRequest()` method which can be
 called from `onConnect`. It accepts request parameters and returns a
 PollyRequest object with a `response` property.
 
-The `passthroughRequest` method takes a PollyRequest object, makes a real HTTP
+The `onFetchResponse` method takes a PollyRequest object, makes a real HTTP
 request and returns the response as a `{ statusCode, headers, body }` object,
 where `body` is a string.
 
-The `respondToRequest()` method makes sure that the response has been delivered
-to the user. `pollyjs.flush()` will wait for all `respondToRequests()` calls to
+The `onRespond()` method makes sure that the response has been delivered
+to the user. `pollyjs.flush()` will wait for all `onResponds()` calls to
 finish. You can omit the implementation of this method if no asynchronous
 delivery is required.
 
@@ -103,7 +103,7 @@ class FetchAdapter extends Adapter {
     window.fetch = this.originalFetch;
   }
 
-  async passthroughRequest(pollyRequest) {
+  async onFetchResponse(pollyRequest) {
     const response = await this.originalFetch([
       pollyRequest.url,
       {

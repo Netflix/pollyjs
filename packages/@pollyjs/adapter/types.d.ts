@@ -1,8 +1,8 @@
-import { Polly, Headers, Request, Interceptor } from '@pollyjs/core';
+import { Polly, Request, Interceptor, Response } from '@pollyjs/core';
 
 export default class Adapter<
   TOptions extends {} = {},
-  TRequestArguments = any
+  TRequest extends Request = Request
 > {
   static readonly id: string;
   static readonly type: string;
@@ -15,32 +15,34 @@ export default class Adapter<
   onConnect: () => void;
   disconnect: () => void;
   onDisconnect: () => void;
-  timeout: (request: Request, options: { time: number }) => Promise<void>;
-  handleRequest: (request: {
-    url: string;
-    method: string;
-    headers: Headers;
-    body: string;
-    requestArguments?: TRequestArguments;
-  }) => Promise<Request>;
-  passthrough: (request: Request) => Promise<void>;
-  onIntercept: (request: Request, interceptor: Interceptor) => Promise<void>;
-  intercept: (request: Request, interceptor: Interceptor) => Promise<void>;
-  onRecord: (request: Request) => Promise<void>;
-  record: (request: Request) => Promise<void>;
-  onReplay: (request: Request) => Promise<void>;
-  replay: (request: Request) => Promise<void>;
+  private timeout: (
+    request: TRequest,
+    options: { time: number }
+  ) => Promise<void>;
+  handleRequest: (
+    request: Pick<
+      TRequest,
+      'url' | 'method' | 'headers' | 'body' | 'requestArguments'
+    >
+  ) => Promise<TRequest>;
+  private passthrough: (request: TRequest) => Promise<void>;
+  onPassthrough: (request: TRequest) => Promise<void>;
+  private intercept: (
+    request: TRequest,
+    interceptor: Interceptor
+  ) => Promise<void>;
+  onIntercept: (request: TRequest, interceptor: Interceptor) => Promise<void>;
+  private record: (request: TRequest) => Promise<void>;
+  onRecord: (request: TRequest) => Promise<void>;
+  private replay: (request: TRequest) => Promise<void>;
+  onReplay: (request: TRequest) => Promise<void>;
   assert: (message: string, condition?: boolean) => void;
-  onPassthrough: (request: Request) => Promise<void>;
-  passthroughRequest(pollyRequest: Request): Promise<{
-    statusCode: number;
-    headers: Headers;
-    body: string;
-    encoding?: string;
-  }>;
-  respondToRequest: (request: Request, error?: Error) => Promise<void>;
-  onIdentifyRequest: (request: Request) => Promise<void>;
-  onRequest: (request: Request) => Promise<void>;
-  onRequestFinished: (request: Request) => Promise<void>;
-  onRequestFailed: (request: Request) => Promise<void>;
+  onFetchResponse(
+    pollyRequest: TRequest
+  ): Promise<Pick<Response, 'statusCode' | 'headers' | 'body' | 'encoding'>>;
+  onRespond: (request: TRequest, error?: Error) => Promise<void>;
+  onIdentifyRequest: (request: TRequest) => Promise<void>;
+  onRequest: (request: TRequest) => Promise<void>;
+  onRequestFinished: (request: TRequest) => Promise<void>;
+  onRequestFailed: (request: TRequest) => Promise<void>;
 }

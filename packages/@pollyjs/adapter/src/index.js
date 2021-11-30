@@ -54,6 +54,10 @@ export default class Adapter {
     }
   }
 
+  onConnect() {
+    this.assert('Must implement the `onConnect` hook.');
+  }
+
   disconnect() {
     if (this.isConnected) {
       this.onDisconnect();
@@ -63,6 +67,10 @@ export default class Adapter {
         `Disconnected from ${this.constructor.id} adapter.`
       );
     }
+  }
+
+  onDisconnect() {
+    this.assert('Must implement the `onDisconnect` hook.');
   }
 
   timeout(pollyRequest, { time }) {
@@ -144,6 +152,15 @@ export default class Adapter {
     return this.onPassthrough(pollyRequest);
   }
 
+  /**
+   * @param {PollyRequest} pollyRequest
+   */
+  async onPassthrough(pollyRequest) {
+    const response = await this.onFetchResponse(pollyRequest);
+
+    await pollyRequest.respond(response);
+  }
+
   async intercept(pollyRequest, interceptor) {
     pollyRequest.action = ACTIONS.INTERCEPT;
     await pollyRequest._intercept(interceptor);
@@ -151,6 +168,14 @@ export default class Adapter {
     if (interceptor.shouldIntercept) {
       return this.onIntercept(pollyRequest, pollyRequest.response);
     }
+  }
+
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @param {PollyResponse} pollyResponse
+   */
+  async onIntercept(pollyRequest, pollyResponse) {
+    await pollyRequest.respond(pollyResponse);
   }
 
   async record(pollyRequest) {
@@ -164,6 +189,17 @@ export default class Adapter {
     }
 
     return this.onRecord(pollyRequest);
+  }
+
+  /**
+   * @param {PollyRequest} pollyRequest
+   */
+  async onRecord(pollyRequest) {
+    await this.onPassthrough(pollyRequest);
+
+    if (!pollyRequest.aborted) {
+      await this.persister.recordRequest(pollyRequest);
+    }
   }
 
   async replay(pollyRequest) {
@@ -228,51 +264,6 @@ export default class Adapter {
     );
   }
 
-  assert(message, ...args) {
-    assert(
-      `[${this.constructor.type}:${this.constructor.id}] ${message}`,
-      ...args
-    );
-  }
-
-  onConnect() {
-    this.assert('Must implement the `onConnect` hook.');
-  }
-
-  onDisconnect() {
-    this.assert('Must implement the `onDisconnect` hook.');
-  }
-
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @returns {Object({ statusCode: number, headers: Object, body: string })}
-   */
-  async passthroughRequest(/* pollyRequest */) {
-    this.assert('Must implement the `passthroughRequest` hook.');
-  }
-
-  /**
-   * Make sure the response from a Polly request is delivered to the
-   * user through the adapter interface.
-   *
-   * Calling `pollyjs.flush()` will await this method.
-   *
-   * @param {PollyRequest} pollyRequest
-   * @param {Error} [error]
-   */
-  async respondToRequest(/* pollyRequest, error */) {}
-
-  /**
-   * @param {PollyRequest} pollyRequest
-   */
-  async onRecord(pollyRequest) {
-    await this.onPassthrough(pollyRequest);
-
-    if (!pollyRequest.aborted) {
-      await this.persister.recordRequest(pollyRequest);
-    }
-  }
-
   /**
    * @param {PollyRequest} pollyRequest
    * @param {Object} normalizedResponse The normalized response generated from the recording entry
@@ -282,22 +273,17 @@ export default class Adapter {
     await pollyRequest.respond(normalizedResponse);
   }
 
-  /**
-   * @param {PollyRequest} pollyRequest
-   * @param {PollyResponse} pollyResponse
-   */
-  async onIntercept(pollyRequest, pollyResponse) {
-    await pollyRequest.respond(pollyResponse);
+  assert(message, ...args) {
+    assert(
+      `[${this.constructor.type}:${this.constructor.id}] ${message}`,
+      ...args
+    );
   }
 
   /**
    * @param {PollyRequest} pollyRequest
    */
-  async onPassthrough(pollyRequest) {
-    const response = await this.passthroughRequest(pollyRequest);
-
-    await pollyRequest.respond(response);
-  }
+  onRequest() {}
 
   /**
    * @param {PollyRequest} pollyRequest
@@ -314,13 +300,8 @@ export default class Adapter {
   /**
    * @param {PollyRequest} pollyRequest
    */
-  onRequest() {}
-
-  /**
-   * @param {PollyRequest} pollyRequest
-   */
   async onRequestFinished(pollyRequest) {
-    await this.respondToRequest(pollyRequest);
+    await this.onRespond(pollyRequest);
     pollyRequest.promise.resolve();
   }
 
@@ -340,9 +321,28 @@ export default class Adapter {
         await pollyRequest._emit('error', error);
       }
 
-      await this.respondToRequest(pollyRequest, error);
+      await this.onRespond(pollyRequest, error);
     } finally {
       pollyRequest.promise.reject(error);
     }
+  }
+
+  /**
+   * Make sure the response from a Polly request is delivered to the
+   * user through the adapter interface.
+   *
+   * Calling `pollyjs.flush()` will await this method.
+   *
+   * @param {PollyRequest} pollyRequest
+   * @param {Error} [error]
+   */
+  async onRespond(/* pollyRequest, error */) {}
+
+  /**
+   * @param {PollyRequest} pollyRequest
+   * @returns {Object({ statusCode: number, headers: Object, body: string })}
+   */
+  async onFetchResponse(/* pollyRequest */) {
+    this.assert('Must implement the `onFetchResponse` hook.');
   }
 }

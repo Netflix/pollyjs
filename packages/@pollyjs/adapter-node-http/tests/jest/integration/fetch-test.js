@@ -21,14 +21,14 @@ describe('Integration | Jest | Fetch', function () {
     expect((await fetch('http://localhost:4000/api/db/foo')).status).toBe(404);
     await persister.persist();
 
-    const har = await persister.find(recordingId);
+    const har = await persister.findRecording(recordingId);
 
     expect(har).toBeDefined();
     expect(har.log.entries.length).toBe(1);
     expect(har.log.entries[0].request.url.includes('/api/db/foo')).toBe(true);
     expect(har.log.entries[0].response.status).toBe(404);
 
-    await persister.delete(recordingId);
-    expect(persister.find(recordingId)).resolves.toBeNull();
+    await persister.deleteRecording(recordingId);
+    expect(persister.findRecording(recordingId)).resolves.toBeNull();
   });
 });
