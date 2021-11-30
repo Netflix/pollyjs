@@ -32,7 +32,7 @@ export default class FetchAdapter extends Adapter {
     const { context } = this.options;
 
     if (isNode) {
-      console.warn(
+      this.polly.logger.log.warn(
         '[Polly] [adapter:fetch] Using the fetch adapter in Node has been deprecated. Please use the node-http adapter instead.'
       );
     }

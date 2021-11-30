@@ -28,7 +28,6 @@ const EVENT_EMITTER = new EventEmitter({
 export default class Polly {
   constructor(recordingName, config) {
     this.recordingName = recordingName;
-    this.logger = new Logger(this);
     this.server = new Server();
     this.config = {};
     this.container = new Container();
@@ -44,7 +43,6 @@ export default class Polly {
     /* requests over the lifetime of the polly instance */
     this._requests = [];
 
-    this.logger.connect();
     EVENT_EMITTER.emitSync('create', this);
     this.configure(config);
   }
@@ -159,7 +157,16 @@ export default class Polly {
     // Disconnect from all current adapters before updating the config
     this.disconnect();
 
+    if (this.logger) {
+      this.logger.disconnect();
+    }
+
+    // Update the config
     this.config = mergeConfigs(DefaultConfig, this.config, config);
+
+    // Create a new logger
+    this.logger = new Logger(this);
+    this.logger.connect();
 
     // Register and connect to all specified adapters
     this.config.adapters.forEach((adapter) => this.connectTo(adapter));
@@ -180,6 +187,10 @@ export default class Polly {
 
       this.persister = new (container.lookup(`persister:${persister}`))(this);
     }
+
+    this.logger.log.debug('Polly instance configured.', {
+      config: this.config
+    });
   }
 
   /**
@@ -237,11 +248,16 @@ export default class Polly {
       }
 
       this.disconnect();
-      this.logger.disconnect();
+
       await (this.persister && this.persister.persist());
       this.mode = MODES.STOPPED;
 
       await EVENT_EMITTER.emit('stop', this);
+
+      this.logger.log.debug('Polly instance stopped.', {
+        recordingName: this.recordingName
+      });
+      this.logger.disconnect();
     }
   }
 

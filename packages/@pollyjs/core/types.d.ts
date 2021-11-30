@@ -1,5 +1,6 @@
 import Adapter from '@pollyjs/adapter';
 import Persister from '@pollyjs/persister';
+import { LogLevelDesc } from 'loglevel';
 
 export type MODE = 'record' | 'replay' | 'passthrough' | 'stopped';
 export type ACTION = 'record' | 'replay' | 'intercept' | 'passthrough';
@@ -43,7 +44,7 @@ export interface PollyConfig {
       }
     | undefined;
 
-  logging?: boolean | undefined;
+  logLevel?: LogLevelDesc | undefined;
   flushRequestsOnStop?: boolean | undefined;
 
   recordIfMissing?: boolean | undefined;

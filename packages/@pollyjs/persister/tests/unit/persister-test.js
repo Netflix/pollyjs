@@ -43,7 +43,11 @@ describe('Unit | Persister', function () {
         }
       }
 
-      this.persister = new CustomPersister({});
+      this.persister = new CustomPersister({
+        logger: {
+          log: { debug: () => {} }
+        }
+      });
     });
 
     it('should handle concurrent find requests', async function () {

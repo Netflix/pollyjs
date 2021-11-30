@@ -146,9 +146,10 @@ export default class Persister {
     return cache.get(recordingId);
   }
 
-  async save(recordingId) {
+  async save(recordingId, har) {
     await this.saveRecording(...arguments);
     this._cache.delete(recordingId);
+    this.polly.logger.log.debug('Recording saved.', { recordingId, har });
   }
 
   async delete(recordingId) {

@@ -253,8 +253,8 @@ describe('Unit | Server | Handler', function () {
 
       expect(handler.get('config')).to.deep.equal({});
 
-      handler.configure({ logging: true });
-      expect(handler.get('config')).to.deep.equal({ logging: true });
+      handler.configure({ logLevel: 'info' });
+      expect(handler.get('config')).to.deep.equal({ logLevel: 'info' });
 
       handler.configure({ recordIfMissing: false });
       expect(handler.get('config')).to.deep.equal({ recordIfMissing: false });

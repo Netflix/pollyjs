@@ -47,6 +47,10 @@ export default class Adapter {
     if (!this.isConnected) {
       this.onConnect();
       this.isConnected = true;
+
+      this.polly.logger.log.debug(
+        `Connected to ${this.constructor.id} adapter.`
+      );
     }
   }
 
@@ -54,6 +58,10 @@ export default class Adapter {
     if (this.isConnected) {
       this.onDisconnect();
       this.isConnected = false;
+
+      this.polly.logger.log.debug(
+        `Disconnected from ${this.constructor.id} adapter.`
+      );
     }
   }
 
@@ -149,7 +157,7 @@ export default class Adapter {
     pollyRequest.action = ACTIONS.RECORD;
 
     if ('navigator' in global && !navigator.onLine) {
-      console.warn(
+      pollyRequest.log.warn(
         '[Polly] Recording may fail because the browser is offline.\n' +
           `${stringifyRequest(pollyRequest)}`
       );
@@ -189,7 +197,7 @@ export default class Adapter {
             break;
           // log a warning and continue if expiryStrategy is "warn".
           case EXPIRY_STRATEGIES.WARN:
-            console.warn(`[Polly] ${message}`);
+            pollyRequest.log.warn(`[Polly] ${message}`);
             break;
           // throw an error if we encounter an unsupported expiryStrategy.
           default:
