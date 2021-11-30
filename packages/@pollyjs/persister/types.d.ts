@@ -78,13 +78,13 @@ export default class Persister<TOptions extends {} = {}> {
   hasPending: boolean;
   persist: () => Promise<void>;
   recordRequest: (request: Request) => void;
-  find: (recordingId: string) => Promise<Har | null>;
-  save: (recordingId: string, har: Har) => Promise<void>;
-  delete: (recordingId: string) => Promise<void>;
+  private findRecording: (recordingId: string) => Promise<Har | null>;
+  onFindRecording: (recordingId: string) => Promise<Har | null>;
+  private saveRecording: (recordingId: string, har: Har) => Promise<void>;
+  onSaveRecording: (recordingId: string, har: Har) => Promise<void>;
+  private deleteRecording: (recordingId: string) => Promise<void>;
+  onDeleteRecording: (recordingId: string) => Promise<void>;
   findEntry: (request: Request) => Promise<HarEntry | null>;
   stringify: (value: any) => string;
   assert: (message: string, condition?: boolean) => void;
-  findRecording: (recordingId: string) => Promise<Har | null>;
-  saveRecording: (recordingId: string, har: Har) => Promise<void>;
-  deleteRecording: (recordingId: string) => Promise<void>;
 }

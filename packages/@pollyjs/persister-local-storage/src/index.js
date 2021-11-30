@@ -7,12 +7,6 @@ export default class LocalStoragePersister extends Persister {
     return 'local-storage';
   }
 
-  static get name() {
-    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
-    // and therefore still referencing `name`.  Remove in 5.0.0
-    return this.id;
-  }
-
   get defaultOptions() {
     return {
       key: 'pollyjs',
@@ -41,18 +35,18 @@ export default class LocalStoragePersister extends Persister {
     this.localStorage.setItem(this.options.key, this.stringify(db));
   }
 
-  findRecording(recordingId) {
+  onFindRecording(recordingId) {
     return this.db[recordingId] || null;
   }
 
-  saveRecording(recordingId, data) {
+  onSaveRecording(recordingId, data) {
     const { db } = this;
 
     db[recordingId] = data;
     this.db = db;
   }
 
-  deleteRecording(recordingId) {
+  onDeleteRecording(recordingId) {
     const { db } = this;
 
     delete db[recordingId];
