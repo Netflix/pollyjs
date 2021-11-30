@@ -23,18 +23,18 @@ polly.configure({
 
 [config.js](https://raw.githubusercontent.com/Netflix/pollyjs/master/packages/@pollyjs/core/src/defaults/config.js ':include :type=code')
 
-## logging
+## logLevel
 
-_Type_: `Boolean`
-_Default_: `false`
+_Type_: `'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'`
+_Default_: `'warn'`
 
-Logs requests and their responses to the console grouped by the recording name.
+Set the log level for the polly instance.
 
 **Example**
 
 ```js
 polly.configure({
-  logging: true
+  logLevel: 'info'
 });
 ```
 
@@ -61,7 +61,7 @@ _Default_: `false`
 
 If `false`, Polly will throw when attempting to persist any failed requests.
 A request is considered to be a failed request when its response's status code
-is `< 200` or `≥ 300`.
+is `≥ 400`.
 
 **Example**
 
@@ -110,8 +110,8 @@ polly.configure({
 
 ## expiryStrategy
 
-_Type_: `String`
-_Default_: `warn`
+_Type_: `'warn' | 'error' | 'record'`
+_Default_: `'warn'`
 
 The strategy for what should occur when Polly tries to use an expired recording in `replay` mode. Can be one of the following:
 
@@ -432,7 +432,7 @@ a GUID for the request.
 
   ```js
   // Retrieve our model
-  let model = await fetch('/models/1').then(res => res.json());
+  let model = await fetch('/models/1').then((res) => res.json());
 
   // Modify the model
   model.foo = 'bar';
@@ -441,7 +441,7 @@ a GUID for the request.
   await fetch('/models/1', { method: 'POST', body: JSON.stringify(model) });
 
   // Get our updated model
-  model = await fetch('/models/1').then(res => res.json());
+  model = await fetch('/models/1').then((res) => res.json());
 
   // Assert that our change persisted
   expect(model.foo).to.equal('bar');
