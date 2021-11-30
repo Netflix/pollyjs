@@ -56,7 +56,7 @@ export default class Persister {
 
     for (const [recordingId, { name, requests }] of this.pending) {
       const entries = [];
-      const recording = await this.find(recordingId);
+      const recording = await this.findRecording(recordingId);
       let har;
 
       if (!recording) {
@@ -70,7 +70,7 @@ export default class Persister {
 
         this.assert(
           `Cannot persist response for [${entry.request.method}] ${entry.request.url} because the status code was ${entry.response.status} and \`recordFailedRequests\` is \`false\``,
-          request.response.ok || request.config.recordFailedRequests
+          entry.response.status < 400 || request.config.recordFailedRequests
         );
 
         /*
@@ -93,7 +93,7 @@ export default class Persister {
         this._removeUnusedEntries(recordingId, har);
       }
 
-      promises.push(this.save(recordingId, har));
+      promises.push(this.saveRecording(recordingId, har));
     }
 
     await Promise.all(promises);
@@ -119,12 +119,12 @@ export default class Persister {
     this.pending.get(recordingId).requests.push(pollyRequest);
   }
 
-  async find(recordingId) {
+  async findRecording(recordingId) {
     const { _cache: cache } = this;
 
     if (!cache.has(recordingId)) {
-      const findRecording = async () => {
-        const recording = await this.findRecording(recordingId);
+      const onFindRecording = async () => {
+        const recording = await this.onFindRecording(recordingId);
 
         if (recording) {
           this.assert(
@@ -140,25 +140,38 @@ export default class Persister {
         }
       };
 
-      cache.set(recordingId, findRecording());
+      cache.set(recordingId, onFindRecording());
     }
 
     return cache.get(recordingId);
   }
 
-  async save(recordingId) {
-    await this.saveRecording(...arguments);
+  onFindRecording() {
+    this.assert('Must implement the `onFindRecording` hook.');
+  }
+
+  async saveRecording(recordingId, har) {
+    await this.onSaveRecording(...arguments);
+    this._cache.delete(recordingId);
+    this.polly.logger.log.debug('Recording saved.', { recordingId, har });
+  }
+
+  onSaveRecording() {
+    this.assert('Must implement the `onSaveRecording` hook.');
+  }
+
+  async deleteRecording(recordingId) {
+    await this.onDeleteRecording(...arguments);
     this._cache.delete(recordingId);
   }
 
-  async delete(recordingId) {
-    await this.deleteRecording(...arguments);
-    this._cache.delete(recordingId);
+  onDeleteRecording() {
+    this.assert('Must implement the `onDeleteRecording` hook.');
   }
 
   async findEntry(pollyRequest) {
     const { id, order, recordingId } = pollyRequest;
-    const recording = await this.find(recordingId);
+    const recording = await this.findRecording(recordingId);
 
     return (
       (recording &&
@@ -197,17 +210,5 @@ export default class Persister {
     har.log.entries = har.log.entries.filter((entry) =>
       requests.find((r) => entry._id === r.id && entry._order === r.order)
     );
-  }
-
-  findRecording() {
-    this.assert('Must implement the `findRecording` hook.');
-  }
-
-  saveRecording() {
-    this.assert('Must implement the `saveRecording` hook.');
-  }
-
-  deleteRecording() {
-    this.assert('Must implement the `deleteRecording` hook.');
   }
 }

@@ -2,6 +2,7 @@ import md5 from 'blueimp-md5';
 import stringify from 'fast-json-stable-stringify';
 import isAbsoluteUrl from 'is-absolute-url';
 import { URL, assert, timestamp } from '@pollyjs/utils';
+import logLevel from 'loglevel';
 
 import NormalizeRequest from '../utils/normalize-request';
 import parseUrl from '../utils/parse-url';
@@ -136,6 +137,20 @@ export default class PollyRequest extends HTTPBase {
 
   get shouldIntercept() {
     return this[ROUTE].shouldIntercept();
+  }
+
+  get log() {
+    if (this.id) {
+      const log = logLevel.getLogger(
+        `@pollyjs/core:${this.recordingName}:${this.id}`
+      );
+
+      log.setLevel(this.config.logLevel);
+
+      return log;
+    } else {
+      return this[POLLY].logger.log;
+    }
   }
 
   on(eventName, listener) {
@@ -275,5 +290,12 @@ export default class PollyRequest extends HTTPBase {
               (r) => r.id === this.id && r.recordingId === this.recordingId
             ).length
         : 0;
+
+    this.log.debug('Request Identified:', {
+      id: this.id,
+      order: this.order,
+      identifiers: this.identifiers,
+      request: this
+    });
   }
 }

@@ -7,7 +7,7 @@ setupPersister.beforeEach = function () {};
 
 setupPersister.afterEach = function () {
   afterEach(async function () {
-    await this.polly.persister.delete(this.polly.recordingId);
+    await this.polly.persister.deleteRecording(this.polly.recordingId);
   });
 };
 

@@ -108,8 +108,8 @@ import LocalStoragePersister from '@pollyjs/persister-local-storage';
 Polly.register(FetchAdapter);
 Polly.register(LocalStoragePersister);
 
-describe('Simple Example', function() {
-  it('fetches a post', async function() {
+describe('Simple Example', function () {
+  it('fetches a post', async function () {
     /*
       Create a new polly instance.
 
@@ -119,7 +119,7 @@ describe('Simple Example', function() {
     const polly = new Polly('Simple Example', {
       adapters: ['fetch'], // Hook into `fetch`
       persister: 'local-storage', // Read/write to/from local-storage
-      logging: true // Log requests to console
+      logLevel: 'info' // Log requests to console
     });
 
     const response = await fetch(
@@ -253,8 +253,8 @@ Lets take a look at how we can modify our previous test case to test against a
 post that does not exist.
 
 ```js
-describe('Simple Client-Side Server Example', function() {
-  it('fetches an unknown post', async function() {
+describe('Simple Client-Side Server Example', function () {
+  it('fetches an unknown post', async function () {
     /*
       Create a new polly instance.
 
@@ -264,7 +264,7 @@ describe('Simple Client-Side Server Example', function() {
     const polly = new Polly('Simple Client-Side Server Example', {
       adapters: ['fetch'], // Hook into `fetch`
       persister: 'local-storage', // Read/write to/from local-storage
-      logging: true // Log requests to console
+      logLevel: 'info' // Log requests to console
     });
     const { server } = polly;
 

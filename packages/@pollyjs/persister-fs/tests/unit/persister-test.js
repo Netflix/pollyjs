@@ -48,7 +48,7 @@ describe('Unit | FS Persister', function () {
         }
       });
 
-      expect(persister.findRecording('FS-Persister')).to.deep.equal({});
+      expect(persister.onFindRecording('FS-Persister')).to.deep.equal({});
     });
   });
 
@@ -63,25 +63,25 @@ describe('Unit | FS Persister', function () {
       });
     });
 
-    it('saveRecording', function () {
-      expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
+    it('onSaveRecording', function () {
+      expect(this.persister.onFindRecording('FS-Persister')).to.deep.equal({});
 
-      this.persister.saveRecording('FS-Persister', { foo: 'bar' });
-      expect(this.persister.findRecording('FS-Persister')).to.deep.equal({
+      this.persister.onSaveRecording('FS-Persister', { foo: 'bar' });
+      expect(this.persister.onFindRecording('FS-Persister')).to.deep.equal({
         foo: 'bar'
       });
     });
 
-    it('findRecording', function () {
-      expect(this.persister.findRecording('FS-Persister')).to.deep.equal({});
-      expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
+    it('onFindRecording', function () {
+      expect(this.persister.onFindRecording('FS-Persister')).to.deep.equal({});
+      expect(this.persister.onFindRecording('Does-Not-Exist')).to.be.null;
     });
 
-    it('deleteRecording', function () {
-      expect(this.persister.findRecording('FS-Persister')).to.not.be.null;
+    it('onDeleteRecording', function () {
+      expect(this.persister.onFindRecording('FS-Persister')).to.not.be.null;
 
-      this.persister.deleteRecording('FS-Persister');
-      expect(this.persister.findRecording('Does-Not-Exist')).to.be.null;
+      this.persister.onDeleteRecording('FS-Persister');
+      expect(this.persister.onFindRecording('Does-Not-Exist')).to.be.null;
     });
   });
 });

@@ -40,11 +40,11 @@ class CustomPersister extends Persister {
     return 'custom';
   }
 
-  findRecording() {}
+  onFindRecording() {}
 
-  saveRecording() {}
+  onSaveRecording() {}
 
-  deleteRecording() {}
+  onDeleteRecording() {}
 }
 ```
 

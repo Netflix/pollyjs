@@ -1,4 +1,5 @@
 import { ACTIONS } from '@pollyjs/utils';
+import logLevel from 'loglevel';
 
 const FORMATTED_ACTIONS = {
   [ACTIONS.RECORD]: 'Recorded',
@@ -10,72 +11,54 @@ const FORMATTED_ACTIONS = {
 export default class Logger {
   constructor(polly) {
     this.polly = polly;
-    this.groupName = null;
+    this.log = logLevel.getLogger(`@pollyjs/core:${this.polly.recordingName}`);
+
+    this.log.setLevel(polly.config.logLevel);
   }
 
   connect() {
     this._middleware = this.polly.server
       .any()
-      .on('error', (...args) => this.logError(...args))
-      .on('response', (...args) => this.logRequest(...args));
+      .on('error', (...args) => this.logRequestError(...args))
+      .on('request', (...args) => this.logRequest(...args))
+      .on('response', (...args) => this.logRequestResponse(...args));
   }
 
   disconnect() {
-    this.groupEnd();
     this._middleware.off('error');
     this._middleware.off('response');
   }
 
-  groupStart(groupName) {
-    // If the provided groupName is different, end the current group so a new one
-    // can be started.
-    if (this.groupName && this.groupName !== groupName) {
-      this.groupEnd();
-      this.groupName = null;
-    }
-
-    // Create a new console group for the provided groupName if one
-    // doesn't already exist.
-    if (!this.groupName) {
-      this.groupName = groupName;
-      console.group(this.groupName);
-    }
-  }
-
-  groupEnd() {
-    if (this.groupName) {
-      console.groupEnd();
-    }
-  }
-
   logRequest(request) {
-    if (request.config.logging) {
-      this.groupStart(request.recordingName);
+    const { log } = request;
+    const debug = log.getLevel() <= log.levels.DEBUG;
 
-      console.groupCollapsed(
-        `${FORMATTED_ACTIONS[request.action]} ➞ ${request.method} ${
-          request.url
-        } ${request.response.statusCode} • ${request.responseTime}ms`
-      );
-      console.log('Request:', request);
-      console.log('Response:', request.response);
-      console.log('Identifiers:', request.identifiers);
-      console.groupEnd();
-    }
+    log.info(
+      `Request: ${request.method} ${request.url}`,
+      ...(debug ? [{ request }] : [])
+    );
   }
 
-  logError(request, error) {
-    this.groupStart(request.recordingName);
+  logRequestResponse(request, response) {
+    const { log } = request;
+    const debug = log.getLevel() <= log.levels.DEBUG;
 
-    console.group(`Errored ➞ ${request.method} ${request.url}`);
-    console.error(error);
-    console.log('Request:', request);
+    log.info(
+      `Response: ${FORMATTED_ACTIONS[request.action]} ➞ ${request.method} ${
+        request.url
+      } ${response.statusCode} • ${request.responseTime}ms`,
+      ...(debug ? [{ request, response }] : [])
+    );
+  }
 
-    if (request.didRespond) {
-      console.log('Response:', request.response);
-    }
+  logRequestError(request, error) {
+    const { log } = request;
+    const debug = log.getLevel() <= log.levels.DEBUG;
 
-    console.log('Identifiers:', request.identifiers);
-    console.groupEnd();
+    log.error(
+      `Errored ➞ ${request.method} ${request.url}`,
+      error,
+      ...(debug ? [{ request }] : [])
+    );
   }
 }

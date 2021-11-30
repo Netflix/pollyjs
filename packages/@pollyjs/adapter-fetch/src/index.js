@@ -16,12 +16,6 @@ export default class FetchAdapter extends Adapter {
     return 'fetch';
   }
 
-  static get name() {
-    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
-    // and therefore still referencing `name`.  Remove in 5.0.0
-    return this.id;
-  }
-
   get defaultOptions() {
     return {
       context: global
@@ -32,7 +26,7 @@ export default class FetchAdapter extends Adapter {
     const { context } = this.options;
 
     if (isNode) {
-      console.warn(
+      this.polly.logger.log.warn(
         '[Polly] [adapter:fetch] Using the fetch adapter in Node has been deprecated. Please use the node-http adapter instead.'
       );
     }
@@ -153,7 +147,7 @@ export default class FetchAdapter extends Adapter {
     }
   }
 
-  async passthroughRequest(pollyRequest) {
+  async onFetchResponse(pollyRequest) {
     const { context } = this.options;
     const { options } = pollyRequest.requestArguments;
 
@@ -195,7 +189,7 @@ export default class FetchAdapter extends Adapter {
     };
   }
 
-  respondToRequest(pollyRequest, error) {
+  onRespond(pollyRequest, error) {
     const {
       context: { Response }
     } = this.options;

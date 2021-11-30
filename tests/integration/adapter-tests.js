@@ -93,9 +93,9 @@ export default function adapterTests() {
 
     server.get(this.recordUrl()).passthrough();
 
-    expect(await persister.find(recordingId)).to.be.null;
+    expect(await persister.findRecording(recordingId)).to.be.null;
     expect((await this.fetchRecord()).status).to.equal(404);
-    expect(await persister.find(recordingId)).to.be.null;
+    expect(await persister.findRecording(recordingId)).to.be.null;
   });
 
   it('should be able to intercept when in passthrough mode', async function () {
@@ -142,9 +142,9 @@ export default function adapterTests() {
         expect(req.action).to.equal(ACTIONS.PASSTHROUGH);
       });
 
-    expect(await persister.find(recordingId)).to.be.null;
+    expect(await persister.findRecording(recordingId)).to.be.null;
     expect((await this.fetchRecord()).status).to.equal(404);
-    expect(await persister.find(recordingId)).to.be.null;
+    expect(await persister.findRecording(recordingId)).to.be.null;
     expect(responseCalled).to.be.true;
   });
 
@@ -178,7 +178,7 @@ export default function adapterTests() {
     this.polly = new Polly(recordingName, config);
     this.polly.replay();
 
-    const har = await this.polly.persister.find(recordingId);
+    const har = await this.polly.persister.findRecording(recordingId);
 
     expect(har).to.be.an('object');
     expect(har.log.entries).to.have.lengthOf(1);
@@ -306,7 +306,7 @@ export default function adapterTests() {
       this.polly.record();
       await this.relativeFetch(url);
       await persister.persist();
-      har = await persister.find(recordingId);
+      har = await persister.findRecording(recordingId);
 
       expect(har).to.be.an('object');
       expect(har.log.entries).to.have.lengthOf(1);
@@ -319,7 +319,7 @@ export default function adapterTests() {
       this.polly.replay();
       await this.relativeFetch(url);
       await persister.persist();
-      har = await persister.find(recordingId);
+      har = await persister.findRecording(recordingId);
 
       expect(har).to.be.an('object');
       expect(har.log.entries).to.have.lengthOf(1);
@@ -339,7 +339,7 @@ export default function adapterTests() {
     });
 
     afterEach(async function () {
-      await this.polly.persister.delete(this.polly.recordingId);
+      await this.polly.persister.deleteRecording(this.polly.recordingId);
     });
 
     it('warns and plays back on expired recording if expiryStrategy is "warn"', async function () {

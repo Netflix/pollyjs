@@ -1,5 +1,6 @@
 import Adapter from '@pollyjs/adapter';
 import Persister from '@pollyjs/persister';
+import { Logger, LogLevelDesc } from 'loglevel';
 
 export type MODE = 'record' | 'replay' | 'passthrough' | 'stopped';
 export type ACTION = 'record' | 'replay' | 'intercept' | 'passthrough';
@@ -43,7 +44,7 @@ export interface PollyConfig {
       }
     | undefined;
 
-  logging?: boolean | undefined;
+  logLevel?: LogLevelDesc | undefined;
   flushRequestsOnStop?: boolean | undefined;
 
   recordIfMissing?: boolean | undefined;
@@ -83,7 +84,7 @@ export interface PollyConfig {
 }
 export interface HTTPBase {
   headers: Headers;
-  body: any;
+  body?: string;
 
   getHeader(name: string): string | string[] | null;
   setHeader(name: string, value?: string | string[] | null): this;
@@ -97,7 +98,21 @@ export interface HTTPBase {
   jsonBody(): any;
 }
 
-export interface Request extends HTTPBase {
+export type RequestEvent = 'identify';
+export type RequestArguments = { [key: string]: any };
+
+export interface Request<TArguments extends RequestArguments = {}>
+  extends HTTPBase {
+  constructor(
+    polly: Polly,
+    request: {
+      url: string;
+      method: string;
+      headers: Headers;
+      body?: string;
+      requestArguments: TArguments;
+    }
+  );
   method: string;
   url: string;
   readonly absoluteUrl: string;
@@ -108,17 +123,28 @@ export interface Request extends HTTPBase {
   hash: string;
   query: { [key: string]: string | string[] };
   readonly params: { [key: string]: string };
+  readonly log: Logger;
+  readonly requestArguments: TArguments;
   recordingName: string;
+  recordingId: string;
   responseTime?: number | undefined;
   timestamp?: string | undefined;
   didRespond: boolean;
   id?: string | undefined;
   order?: number | undefined;
   action: ACTION | null;
+  aborted: boolean;
+  promise: Promise<void>;
+  response?: Response;
+  configure(config: Partial<PollyConfig>): void;
+  overrideRecordingName(recordingName: string): void;
+  on(event: RequestEvent, listener: RequestEventListener): this;
+  once(event: RequestEvent, listener: RequestEventListener): this;
+  off(event: RequestEvent, listener?: RequestEventListener): this;
 }
 export interface Response extends HTTPBase {
   statusCode: number;
-  isBinary: boolean;
+  encoding: string | undefined;
   readonly statusText: string;
   readonly ok: boolean;
 
@@ -126,11 +152,7 @@ export interface Response extends HTTPBase {
   sendStatus(status: number): this;
   end(): Readonly<this>;
 }
-export interface Interceptor {
-  abort(): void;
-  passthrough(): void;
-  stopPropagation(): void;
-}
+
 export type RequestRouteEvent = 'request';
 export type RecordingRouteEvent = 'beforeReplay' | 'beforePersist';
 export type ResponseRouteEvent = 'beforeResponse' | 'response';
@@ -140,6 +162,10 @@ export type AbortRouteEvent = 'abort';
 export interface ListenerEvent {
   readonly type: string;
   stopPropagation: () => void;
+}
+export interface Interceptor extends ListenerEvent {
+  abort(): void;
+  passthrough(): void;
 }
 export type ErrorEventListener = (
   req: Request,
@@ -204,7 +230,7 @@ export class RouteHandler {
   passthrough(value?: boolean): RouteHandler;
   intercept(fn: InterceptHandler): RouteHandler;
   recordingName(recordingName?: string): RouteHandler;
-  configure(config: PollyConfig): RouteHandler;
+  configure(config: Partial<PollyConfig>): RouteHandler;
   times(n?: number): RouteHandler;
 }
 export class PollyServer {
@@ -220,6 +246,15 @@ export class PollyServer {
   any: (routes?: string | string[]) => RouteHandler;
   host(host: string, callback: () => void): void;
   namespace(path: string, callback: () => void): void;
+}
+export class PollyLogger {
+  polly: Polly;
+  log: Logger;
+  connect: () => void;
+  disconnect: () => void;
+  logRequest: (request: Request) => void;
+  logRequestResponse: (request: Request, response: Response) => void;
+  logRequestError: (request: Request, error: Error) => void;
 }
 export type PollyEvent = 'create' | 'stop' | 'register';
 export type PollyEventListener = (poll: Polly) => void;
@@ -240,6 +275,9 @@ export class Polly {
   persister: Persister | null;
   adapters: Map<string, Adapter>;
   config: PollyConfig;
+  logger: PollyLogger;
+
+  private _requests: Request[];
 
   pause(): void;
   play(): void;
@@ -248,7 +286,7 @@ export class Polly {
   passthrough(): void;
   stop(): Promise<void>;
   flush(): Promise<void>;
-  configure(config: PollyConfig): void;
+  configure(config: Partial<PollyConfig>): void;
   connectTo(name: string | typeof Adapter): void;
   disconnectFrom(name: string | typeof Adapter): void;
   disconnect(): void;

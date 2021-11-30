@@ -8,12 +8,6 @@ export default class RestPersister extends Persister {
     return 'rest';
   }
 
-  static get name() {
-    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
-    // and therefore still referencing `name`.  Remove in 5.0.0
-    return this.id;
-  }
-
   get defaultOptions() {
     return {
       host: 'http://localhost:3000',
@@ -27,7 +21,7 @@ export default class RestPersister extends Persister {
     return ajax(buildUrl(host, apiNamespace, url), ...args);
   }
 
-  async findRecording(recordingId) {
+  async onFindRecording(recordingId) {
     const response = await this.ajax(`/${encodeURIComponent(recordingId)}`, {
       Accept: 'application/json; charset=utf-8'
     });
@@ -35,7 +29,7 @@ export default class RestPersister extends Persister {
     return this._normalize(response);
   }
 
-  async saveRecording(recordingId, data) {
+  async onSaveRecording(recordingId, data) {
     await this.ajax(`/${encodeURIComponent(recordingId)}`, {
       method: 'POST',
       body: this.stringify(data),
@@ -46,7 +40,7 @@ export default class RestPersister extends Persister {
     });
   }
 
-  async deleteRecording(recordingId) {
+  async onDeleteRecording(recordingId) {
     await this.ajax(`/${encodeURIComponent(recordingId)}`, {
       method: 'DELETE'
     });

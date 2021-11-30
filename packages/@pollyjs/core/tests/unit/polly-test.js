@@ -523,12 +523,12 @@ describe('Unit | Polly', function () {
 
       it('create - configuration order should be preserved', async function () {
         Polly.once('create', (polly) => {
-          polly.configure({ logging: true, recordIfMissing: false });
+          polly.configure({ logLevel: 'info', recordIfMissing: false });
         });
 
         const polly = new Polly('Test', { recordIfMissing: true });
 
-        expect(polly.config.logging).to.be.true;
+        expect(polly.config.logLevel).to.equal('info');
         expect(polly.config.recordIfMissing).to.be.true;
         await polly.stop();
       });

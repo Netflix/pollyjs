@@ -29,12 +29,6 @@ export default class HttpAdapter extends Adapter {
     return 'node-http';
   }
 
-  static get name() {
-    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
-    // and therefore still referencing `name`.  Remove in 5.0.0
-    return this.id;
-  }
-
   onConnect() {
     this.assert(
       'Running concurrent node-http adapters is unsupported, stop any running Polly instances.',
@@ -187,7 +181,7 @@ export default class HttpAdapter extends Adapter {
     }
   }
 
-  async passthroughRequest(pollyRequest) {
+  async onFetchResponse(pollyRequest) {
     const { parsedArguments } = pollyRequest.requestArguments;
     const { method, headers, body } = pollyRequest;
     const { options } = parsedArguments;
@@ -230,7 +224,7 @@ export default class HttpAdapter extends Adapter {
     };
   }
 
-  async respondToRequest(pollyRequest, error) {
+  async onRespond(pollyRequest, error) {
     const { req, respond } = pollyRequest.requestArguments;
     const { statusCode, body, headers, encoding } = pollyRequest.response;
 

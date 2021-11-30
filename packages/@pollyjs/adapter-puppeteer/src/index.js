@@ -10,12 +10,6 @@ export default class PuppeteerAdapter extends Adapter {
     return 'puppeteer';
   }
 
-  static get name() {
-    // NOTE: deprecated in 4.1.0 but proxying since it's possible "core" is behind
-    // and therefore still referencing `name`.  Remove in 5.0.0
-    return this.id;
-  }
-
   get defaultOptions() {
     return {
       page: null,
@@ -160,7 +154,7 @@ export default class PuppeteerAdapter extends Adapter {
     this._requestsMapping.pollyRequests.set(request, pollyRequest);
   }
 
-  async passthroughRequest(pollyRequest) {
+  async onFetchResponse(pollyRequest) {
     const { page } = this.options;
     const { id, order, url, method, headers, body } = pollyRequest;
     const requestId = `${this.polly.recordingId}:${id}:${order}`;
@@ -199,7 +193,7 @@ export default class PuppeteerAdapter extends Adapter {
     }
   }
 
-  async respondToRequest(pollyRequest, error) {
+  async onRespond(pollyRequest, error) {
     const { request } = pollyRequest.requestArguments;
     const { response } = pollyRequest;
 
