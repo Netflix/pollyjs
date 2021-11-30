@@ -49,8 +49,8 @@ Polly.register(XHRAdapter);
 Polly.register(FetchAdapter);
 Polly.register(RESTPersister);
 
-describe('Netflix Homepage', function() {
-  it('should be able to sign in', async function() {
+describe('Netflix Homepage', function () {
+  it('should be able to sign in', async function () {
     /*
       Create a new polly instance.
 
@@ -181,31 +181,35 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 
 [//]: contributor-faces
 
-<a href="https://github.com/offirgolan"><img src="https://avatars2.githubusercontent.com/u/575938?v=4" title="offirgolan" width="80" height="80"></a>
-<a href="https://github.com/jasonmit"><img src="https://avatars1.githubusercontent.com/u/3108309?v=4" title="jasonmit" width="80" height="80"></a>
-<a href="https://github.com/cibernox"><img src="https://avatars2.githubusercontent.com/u/265339?v=4" title="cibernox" width="80" height="80"></a>
-<a href="https://github.com/DenrizSusam"><img src="https://avatars1.githubusercontent.com/u/39295979?v=4" title="DenrizSusam" width="80" height="80"></a>
-<a href="https://github.com/dustinsoftware"><img src="https://avatars3.githubusercontent.com/u/942358?v=4" title="dustinsoftware" width="80" height="80"></a>
-<a href="https://github.com/silverchen"><img src="https://avatars0.githubusercontent.com/u/6683103?v=4" title="silverchen" width="80" height="80"></a>
-<a href="https://github.com/tombh"><img src="https://avatars2.githubusercontent.com/u/160835?v=4" title="tombh" width="80" height="80"></a>
-<a href="https://github.com/zkwentz"><img src="https://avatars2.githubusercontent.com/u/4832?v=4" title="zkwentz" width="80" height="80"></a>
-<a href="https://github.com/agraves"><img src="https://avatars3.githubusercontent.com/u/46964?v=4" title="agraves" width="80" height="80"></a>
-<a href="https://github.com/swashcap"><img src="https://avatars1.githubusercontent.com/u/1858316?v=4" title="swashcap" width="80" height="80"></a>
-<a href="https://github.com/DanielRuf"><img src="https://avatars1.githubusercontent.com/u/827205?v=4" title="DanielRuf" width="80" height="80"></a>
-<a href="https://github.com/dciccale"><img src="https://avatars0.githubusercontent.com/u/539546?v=4" title="dciccale" width="80" height="80"></a>
-<a href="https://github.com/ericclemmons"><img src="https://avatars0.githubusercontent.com/u/15182?v=4" title="ericclemmons" width="80" height="80"></a>
-<a href="https://github.com/jamesgeorge007"><img src="https://avatars2.githubusercontent.com/u/25279263?v=4" title="jamesgeorge007" width="80" height="80"></a>
-<a href="https://github.com/feinoujc"><img src="https://avatars2.githubusercontent.com/u/1733707?v=4" title="feinoujc" width="80" height="80"></a>
-<a href="https://github.com/karlhorky"><img src="https://avatars2.githubusercontent.com/u/1935696?v=4" title="karlhorky" width="80" height="80"></a>
-<a href="https://github.com/kennethlarsen"><img src="https://avatars3.githubusercontent.com/u/1408595?v=4" title="kennethlarsen" width="80" height="80"></a>
-<a href="https://github.com/poteto"><img src="https://avatars0.githubusercontent.com/u/1390709?v=4" title="poteto" width="80" height="80"></a>
-<a href="https://github.com/fastfrwrd"><img src="https://avatars3.githubusercontent.com/u/231133?v=4" title="fastfrwrd" width="80" height="80"></a>
-<a href="https://github.com/rwd"><img src="https://avatars3.githubusercontent.com/u/218337?v=4" title="rwd" width="80" height="80"></a>
-<a href="https://github.com/gribnoysup"><img src="https://avatars2.githubusercontent.com/u/5036933?v=4" title="gribnoysup" width="80" height="80"></a>
-<a href="https://github.com/shriyash"><img src="https://avatars0.githubusercontent.com/u/4494915?v=4" title="shriyash" width="80" height="80"></a>
-<a href="https://github.com/geigerzaehler"><img src="https://avatars2.githubusercontent.com/u/3919579?v=4" title="geigerzaehler" width="80" height="80"></a>
-<a href="https://github.com/vikr01"><img src="https://avatars0.githubusercontent.com/u/28772991?v=4" title="vikr01" width="80" height="80"></a>
-<a href="https://github.com/yasinuslu"><img src="https://avatars0.githubusercontent.com/u/1007479?v=4" title="yasinuslu" width="80" height="80"></a>
+<a href="https://github.com/offirgolan"><img src="https://avatars.githubusercontent.com/u/575938?v=4" title="offirgolan" width="80" height="80"></a>
+<a href="https://github.com/jasonmit"><img src="https://avatars.githubusercontent.com/u/3108309?v=4" title="jasonmit" width="80" height="80"></a>
+<a href="https://github.com/cibernox"><img src="https://avatars.githubusercontent.com/u/265339?v=4" title="cibernox" width="80" height="80"></a>
+<a href="https://github.com/DenrizSusam"><img src="https://avatars.githubusercontent.com/u/39295979?v=4" title="DenrizSusam" width="80" height="80"></a>
+<a href="https://github.com/dustinsoftware"><img src="https://avatars.githubusercontent.com/u/942358?v=4" title="dustinsoftware" width="80" height="80"></a>
+<a href="https://github.com/silverchen"><img src="https://avatars.githubusercontent.com/u/6683103?v=4" title="silverchen" width="80" height="80"></a>
+<a href="https://github.com/tombh"><img src="https://avatars.githubusercontent.com/u/160835?v=4" title="tombh" width="80" height="80"></a>
+<a href="https://github.com/zkwentz"><img src="https://avatars.githubusercontent.com/u/4832?v=4" title="zkwentz" width="80" height="80"></a>
+<a href="https://github.com/agraves"><img src="https://avatars.githubusercontent.com/u/46964?v=4" title="agraves" width="80" height="80"></a>
+<a href="https://github.com/brandon-leapyear"><img src="https://avatars.githubusercontent.com/u/27799541?v=4" title="brandon-leapyear" width="80" height="80"></a>
+<a href="https://github.com/swashcap"><img src="https://avatars.githubusercontent.com/u/1858316?v=4" title="swashcap" width="80" height="80"></a>
+<a href="https://github.com/DanielRuf"><img src="https://avatars.githubusercontent.com/u/827205?v=4" title="DanielRuf" width="80" height="80"></a>
+<a href="https://github.com/dciccale"><img src="https://avatars.githubusercontent.com/u/539546?v=4" title="dciccale" width="80" height="80"></a>
+<a href="https://github.com/ericclemmons"><img src="https://avatars.githubusercontent.com/u/15182?v=4" title="ericclemmons" width="80" height="80"></a>
+<a href="https://github.com/jamesgeorge007"><img src="https://avatars.githubusercontent.com/u/25279263?v=4" title="jamesgeorge007" width="80" height="80"></a>
+<a href="https://github.com/woodenconsulting"><img src="https://avatars.githubusercontent.com/u/4163029?v=4" title="woodenconsulting" width="80" height="80"></a>
+<a href="https://github.com/feinoujc"><img src="https://avatars.githubusercontent.com/u/1733707?v=4" title="feinoujc" width="80" height="80"></a>
+<a href="https://github.com/josex2r"><img src="https://avatars.githubusercontent.com/u/3719730?v=4" title="josex2r" width="80" height="80"></a>
+<a href="https://github.com/karlhorky"><img src="https://avatars.githubusercontent.com/u/1935696?v=4" title="karlhorky" width="80" height="80"></a>
+<a href="https://github.com/kennethlarsen"><img src="https://avatars.githubusercontent.com/u/1408595?v=4" title="kennethlarsen" width="80" height="80"></a>
+<a href="https://github.com/poteto"><img src="https://avatars.githubusercontent.com/u/1390709?v=4" title="poteto" width="80" height="80"></a>
+<a href="https://github.com/fastfrwrd"><img src="https://avatars.githubusercontent.com/u/231133?v=4" title="fastfrwrd" width="80" height="80"></a>
+<a href="https://github.com/rwd"><img src="https://avatars.githubusercontent.com/u/218337?v=4" title="rwd" width="80" height="80"></a>
+<a href="https://github.com/rmachielse"><img src="https://avatars.githubusercontent.com/u/2470404?v=4" title="rmachielse" width="80" height="80"></a>
+<a href="https://github.com/gribnoysup"><img src="https://avatars.githubusercontent.com/u/5036933?v=4" title="gribnoysup" width="80" height="80"></a>
+<a href="https://github.com/shriyash"><img src="https://avatars.githubusercontent.com/u/4494915?v=4" title="shriyash" width="80" height="80"></a>
+<a href="https://github.com/geigerzaehler"><img src="https://avatars.githubusercontent.com/u/3919579?v=4" title="geigerzaehler" width="80" height="80"></a>
+<a href="https://github.com/vikr01"><img src="https://avatars.githubusercontent.com/u/28772991?v=4" title="vikr01" width="80" height="80"></a>
+<a href="https://github.com/yasinuslu"><img src="https://avatars.githubusercontent.com/u/1007479?v=4" title="yasinuslu" width="80" height="80"></a>
 
 [//]: contributor-faces
 
