@@ -61,7 +61,7 @@ _Default_: `false`
 
 If `false`, Polly will throw when attempting to persist any failed requests.
 A request is considered to be a failed request when its response's status code
-is `< 200` or `≥ 300`.
+is `≥ 400`.
 
 **Example**
 

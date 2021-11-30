@@ -70,7 +70,7 @@ export default class Persister {
 
         this.assert(
           `Cannot persist response for [${entry.request.method}] ${entry.request.url} because the status code was ${entry.response.status} and \`recordFailedRequests\` is \`false\``,
-          request.response.ok || request.config.recordFailedRequests
+          entry.response.status < 400 || request.config.recordFailedRequests
         );
 
         /*

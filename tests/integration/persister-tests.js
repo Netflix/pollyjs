@@ -201,7 +201,7 @@ export default function persisterTests() {
     this.polly.configure({ recordFailedRequests: false });
 
     try {
-      await this.fetchRecord();
+      await this.relativeFetch('/echo?status=400');
       await this.polly.stop();
     } catch (e) {
       error = e;
@@ -222,7 +222,21 @@ export default function persisterTests() {
   it('should not error when persisting a failed request and `recordFailedRequests` is true', async function () {
     this.polly.configure({ recordFailedRequests: true });
 
-    await this.fetchRecord();
+    await this.relativeFetch('/echo?status=400');
+    await this.polly.stop();
+
+    const har = await this.polly.persister.findRecording(
+      this.polly.recordingId
+    );
+
+    expect(har).to.be.an('object');
+    expect(har.log.entries).to.have.lengthOf(1);
+  });
+
+  it('should not error when persisting a 302 request and `recordFailedRequests` is false', async function () {
+    this.polly.configure({ recordFailedRequests: false });
+
+    await this.relativeFetch('/echo?status=302');
     await this.polly.stop();
 
     const har = await this.polly.persister.findRecording(
