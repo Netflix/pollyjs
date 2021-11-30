@@ -27,7 +27,7 @@ called in the order they were declared.
 ```js
 server
   .get('/session')
-  .on('request', req => {
+  .on('request', (req) => {
     req.headers['X-AUTH'] = '<ACCESS_TOKEN>';
     req.query.email = 'test@app.com';
   })
@@ -60,7 +60,7 @@ called in the order they were declared.
 ```js
 server
   .get('/session')
-  .once('request', req => {
+  .once('request', (req) => {
     req.headers['X-AUTH'] = '<ACCESS_TOKEN>';
     req.query.email = 'test@app.com';
   })
@@ -292,7 +292,7 @@ server.any('/session').configure({ recordFailedRequests: true });
 
 server.get('/users/:id').configure({ timing: Timing.relative(3.0) });
 
-server.get('/users/1').configure({ logging: true });
+server.get('/users/1').configure({ logLevel: 'info' });
 ```
 
 ### recordingName

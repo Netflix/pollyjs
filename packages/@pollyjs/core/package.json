@@ -49,6 +49,7 @@
     "fast-json-stable-stringify": "^2.1.0",
     "is-absolute-url": "^3.0.3",
     "lodash-es": "^4.17.21",
+    "loglevel": "^1.8.0",
     "route-recognizer": "^0.3.4",
     "slugify": "^1.6.3"
   },

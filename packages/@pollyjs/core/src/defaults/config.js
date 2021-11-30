@@ -1,4 +1,5 @@
 import { MODES, EXPIRY_STRATEGIES } from '@pollyjs/utils';
+import logLevel from 'loglevel';
 
 import Timing from '../utils/timing';
 
@@ -14,7 +15,7 @@ export default {
     disableSortingHarEntries: false
   },
 
-  logging: false,
+  logLevel: logLevel.levels.WARN,
   flushRequestsOnStop: false,
 
   recordIfMissing: true,
