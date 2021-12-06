@@ -7,7 +7,8 @@
   "types": "types.d.ts",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "types.d.ts"
   ],
   "repository": "https://github.com/netflix/pollyjs/tree/master/packages/@pollyjs/persister-fs",
   "license": "Apache-2.0",
