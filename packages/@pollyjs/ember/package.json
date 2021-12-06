@@ -41,12 +41,12 @@
     "minimist": "^1.2.5"
   },
   "peerDependencies": {
-    "@pollyjs/adapter-fetch": "^5.1.1",
-    "@pollyjs/adapter-xhr": "^5.1.1",
-    "@pollyjs/core": "^5.1.1",
-    "@pollyjs/node-server": "^5.1.1",
-    "@pollyjs/persister-local-storage": "^5.1.1",
-    "@pollyjs/persister-rest": "^5.1.1"
+    "@pollyjs/adapter-fetch": "^6.0.0",
+    "@pollyjs/adapter-xhr": "^6.0.0",
+    "@pollyjs/core": "^6.0.0",
+    "@pollyjs/node-server": "^6.0.0",
+    "@pollyjs/persister-local-storage": "^6.0.0",
+    "@pollyjs/persister-rest": "^6.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
