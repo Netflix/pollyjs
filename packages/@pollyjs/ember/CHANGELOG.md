@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/netflix/pollyjs/compare/v6.0.0...v6.0.1) (2021-12-06)
+
+
+### Bug Fixes
+
+* **ember:** Bump peer dependencies to 6.x ([#432](https://github.com/netflix/pollyjs/issues/432)) ([1529226](https://github.com/netflix/pollyjs/commit/152922688744c8a2f8d89f793dcecf3c2bc40033))
+
+
+
+
+
 # [6.0.0](https://github.com/netflix/pollyjs/compare/v5.2.0...v6.0.0) (2021-11-30)
 
 
