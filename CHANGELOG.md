@@ -50,6 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * The `logging` configuration option has now been replaced with `logLevel`. This allows for more fine-grain control over what should be logged as well as silencing logs altogether. 
 * Recording file name will no longer have trailing dashes
 * Use the standard `encoding` field on the generated har file instead of `_isBinary` and use `base64` encoding instead of `hex` to reduce the payload size.
+	* Although backwards compatibility is not guaranteed, you can replace all occurrences of `"_isBinary": true` with `"encoding": "hex"` in the recorded HAR files.
 * @pollyjs dependencies for @pollyjs/ember have been moved to peer dependencies
 
 
