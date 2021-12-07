@@ -236,27 +236,27 @@ export class RouteHandler {
   times(n?: number): RouteHandler;
 }
 export class PollyServer {
-  timeout: (ms: number) => Promise<void>;
-  get: (routes?: string | string[]) => RouteHandler;
-  put: (routes?: string | string[]) => RouteHandler;
-  post: (routes?: string | string[]) => RouteHandler;
-  delete: (routes?: string | string[]) => RouteHandler;
-  patch: (routes?: string | string[]) => RouteHandler;
-  head: (routes?: string | string[]) => RouteHandler;
-  options: (routes?: string | string[]) => RouteHandler;
-  merge: (routes?: string | string[]) => RouteHandler;
-  any: (routes?: string | string[]) => RouteHandler;
+  timeout(ms: number): Promise<void>;
+  get(routes?: string | string[]): RouteHandler;
+  put(routes?: string | string[]): RouteHandler;
+  post(routes?: string | string[]): RouteHandler;
+  delete(routes?: string | string[]): RouteHandler;
+  patch(routes?: string | string[]): RouteHandler;
+  head(routes?: string | string[]): RouteHandler;
+  options(routes?: string | string[]): RouteHandler;
+  merge(routes?: string | string[]): RouteHandler;
+  any(routes?: string | string[]): RouteHandler;
   host(host: string, callback: () => void): void;
   namespace(path: string, callback: () => void): void;
 }
 export class PollyLogger {
   polly: Polly;
   log: Logger;
-  connect: () => void;
-  disconnect: () => void;
-  logRequest: (request: Request) => void;
-  logRequestResponse: (request: Request, response: Response) => void;
-  logRequestError: (request: Request, error: Error) => void;
+  connect(): void;
+  disconnect(): void;
+  logRequest(request: Request): void;
+  logRequestResponse(request: Request, response: Response): void;
+  logRequestError(request: Request, error: Error): void;
 }
 export type PollyEvent = 'create' | 'stop' | 'register';
 export type PollyEventListener = (poll: Polly) => void;

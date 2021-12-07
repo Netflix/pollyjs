@@ -59,8 +59,8 @@ export interface HarLog {
   browser: string;
   entries: HarEntry[];
   pages: [];
-  addEntries: (entries: HarEntry[]) => void;
-  sortEntries: () => void;
+  addEntries(entries: HarEntry[]): void;
+  sortEntries(): void;
 }
 
 export interface Har {
@@ -77,15 +77,15 @@ export default class Persister<TOptions extends {} = {}> {
   private _cache: Map<string, Har>;
   polly: Polly;
   hasPending: boolean;
-  persist: () => Promise<void>;
-  recordRequest: (request: Request) => void;
-  private findRecording: (recordingId: string) => Promise<Har | null>;
-  onFindRecording: (recordingId: string) => Promise<Har | null>;
-  private saveRecording: (recordingId: string, har: Har) => Promise<void>;
-  onSaveRecording: (recordingId: string, har: Har) => Promise<void>;
-  private deleteRecording: (recordingId: string) => Promise<void>;
-  onDeleteRecording: (recordingId: string) => Promise<void>;
-  findEntry: (request: Request) => Promise<HarEntry | null>;
-  stringify: (value: any) => string;
-  assert: (message: string, condition?: boolean) => void;
+  persist(): Promise<void>;
+  recordRequest(request: Request): void;
+  private findRecording(recordingId: string): Promise<Har | null>;
+  onFindRecording(recordingId: string): Promise<Har | null>;
+  private saveRecording(recordingId: string, har: Har): Promise<void>;
+  onSaveRecording(recordingId: string, har: Har): Promise<void>;
+  private deleteRecording(recordingId: string): Promise<void>;
+  onDeleteRecording(recordingId: string): Promise<void>;
+  findEntry(request: Request): Promise<HarEntry | null>;
+  stringify(value: any): string;
+  assert(message: string, condition?: boolean): void;
 }
