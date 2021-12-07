@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-xhr",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "XHR adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-xhr.js",
   "module": "dist/es/pollyjs-adapter-xhr.js",
@@ -43,13 +43,13 @@
   },
   "dependencies": {
     "@offirgolan/nise": "^4.1.0",
-    "@pollyjs/adapter": "^6.0.1",
+    "@pollyjs/adapter": "^6.0.2",
     "@pollyjs/utils": "^6.0.1",
     "to-arraybuffer": "^1.0.1"
   },
   "devDependencies": {
-    "@pollyjs/core": "^6.0.1",
-    "@pollyjs/persister-rest": "^6.0.1",
+    "@pollyjs/core": "^6.0.2",
+    "@pollyjs/persister-rest": "^6.0.2",
     "rollup": "^1.14.6"
   }
 }
