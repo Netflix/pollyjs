@@ -70,6 +70,7 @@ export interface Har {
 export default class Persister<TOptions extends {} = {}> {
   static readonly id: string;
   static readonly type: string;
+  constructor(polly: Polly);
   readonly defaultOptions: TOptions;
   readonly options: TOptions;
   private pending: Map<string, { name: string; recordings: Request[] }>;
