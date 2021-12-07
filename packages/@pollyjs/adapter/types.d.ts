@@ -6,6 +6,7 @@ export default class Adapter<
 > {
   static readonly id: string;
   static readonly type: string;
+  constructor(polly: Polly);
   polly: Polly;
   isConnected: boolean;
   readonly defaultOptions: TOptions;

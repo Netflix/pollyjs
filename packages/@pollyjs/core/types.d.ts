@@ -2,6 +2,8 @@ import Adapter from '@pollyjs/adapter';
 import Persister from '@pollyjs/persister';
 import { Logger, LogLevelDesc } from 'loglevel';
 
+type Newable<T> = { new (...args: any[]): T };
+
 export type MODE = 'record' | 'replay' | 'passthrough' | 'stopped';
 export type ACTION = 'record' | 'replay' | 'intercept' | 'passthrough';
 export type EXPIRY_STRATEGY = 'record' | 'warn' | 'error';
@@ -16,7 +18,7 @@ export type Headers = Record<string, string | string[]>;
 export interface PollyConfig {
   mode?: MODE | undefined;
 
-  adapters?: Array<string | typeof Adapter> | undefined;
+  adapters?: Array<string | Newable<Adapter>> | undefined;
   adapterOptions?:
     | {
         fetch?: { context?: any } | undefined;
@@ -28,7 +30,7 @@ export interface PollyConfig {
       }
     | undefined;
 
-  persister?: string | typeof Persister | undefined;
+  persister?: string | Newable<Persister> | undefined;
   persisterOptions?:
     | {
         keepUnusedRequests?: boolean | undefined;
@@ -259,8 +261,8 @@ export class PollyLogger {
 export type PollyEvent = 'create' | 'stop' | 'register';
 export type PollyEventListener = (poll: Polly) => void;
 export class Polly {
-  static register(Factory: typeof Adapter | typeof Persister): void;
-  static unregister(Factory: typeof Adapter | typeof Persister): void;
+  static register<T extends Adapter | Persister>(Factory: Newable<T>): void;
+  static unregister<T extends Adapter | Persister>(Factory: Newable<T>): void;
   static on(event: PollyEvent, listener: PollyEventListener): void;
   static off(event: PollyEvent, listener: PollyEventListener): void;
   static once(event: PollyEvent, listener: PollyEventListener): void;
