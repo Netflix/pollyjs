@@ -105,16 +105,6 @@ export type RequestArguments = { [key: string]: any };
 
 export interface Request<TArguments extends RequestArguments = {}>
   extends HTTPBase {
-  constructor(
-    polly: Polly,
-    request: {
-      url: string;
-      method: string;
-      headers: Headers;
-      body?: string;
-      requestArguments: TArguments;
-    }
-  );
   method: string;
   url: string;
   readonly absoluteUrl: string;
