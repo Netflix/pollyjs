@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-puppeteer",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-puppeteer.js",
   "module": "dist/es/pollyjs-adapter-puppeteer.js",
@@ -45,8 +45,8 @@
     "@pollyjs/utils": "^6.0.1"
   },
   "devDependencies": {
-    "@pollyjs/core": "^6.0.2",
-    "@pollyjs/persister-fs": "^6.0.2",
+    "@pollyjs/core": "^6.0.3",
+    "@pollyjs/persister-fs": "^6.0.3",
     "node-fetch": "^2.6.6",
     "puppeteer": "1.10.0",
     "rollup": "^1.14.6"
