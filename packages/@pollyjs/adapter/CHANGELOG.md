@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.4](https://github.com/netflix/pollyjs/compare/v6.0.3...v6.0.4) (2021-12-10)
+
+
+### Bug Fixes
+
+* Update types for class methods ([#438](https://github.com/netflix/pollyjs/issues/438)) ([b88655a](https://github.com/netflix/pollyjs/commit/b88655ac1b4ca7348afd45e9aeaa50e998ea68d7))
+
+
+
+
+
 ## [6.0.2](https://github.com/netflix/pollyjs/compare/v6.0.1...v6.0.2) (2021-12-07)
 
 
