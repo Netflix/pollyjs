@@ -199,6 +199,7 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 <a href="https://github.com/woodenconsulting"><img src="https://avatars.githubusercontent.com/u/4163029?v=4" title="woodenconsulting" width="80" height="80"></a>
 <a href="https://github.com/feinoujc"><img src="https://avatars.githubusercontent.com/u/1733707?v=4" title="feinoujc" width="80" height="80"></a>
 <a href="https://github.com/josex2r"><img src="https://avatars.githubusercontent.com/u/3719730?v=4" title="josex2r" width="80" height="80"></a>
+<a href="https://github.com/jomaxx"><img src="https://avatars.githubusercontent.com/u/2747424?v=4" title="jomaxx" width="80" height="80"></a>
 <a href="https://github.com/karlhorky"><img src="https://avatars.githubusercontent.com/u/1935696?v=4" title="karlhorky" width="80" height="80"></a>
 <a href="https://github.com/kennethlarsen"><img src="https://avatars.githubusercontent.com/u/1408595?v=4" title="kennethlarsen" width="80" height="80"></a>
 <a href="https://github.com/poteto"><img src="https://avatars.githubusercontent.com/u/1390709?v=4" title="poteto" width="80" height="80"></a>
@@ -209,7 +210,6 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 <a href="https://github.com/shriyash"><img src="https://avatars.githubusercontent.com/u/4494915?v=4" title="shriyash" width="80" height="80"></a>
 <a href="https://github.com/geigerzaehler"><img src="https://avatars.githubusercontent.com/u/3919579?v=4" title="geigerzaehler" width="80" height="80"></a>
 <a href="https://github.com/vikr01"><img src="https://avatars.githubusercontent.com/u/28772991?v=4" title="vikr01" width="80" height="80"></a>
-<a href="https://github.com/yasinuslu"><img src="https://avatars.githubusercontent.com/u/1007479?v=4" title="yasinuslu" width="80" height="80"></a>
 
 [//]: contributor-faces
 
