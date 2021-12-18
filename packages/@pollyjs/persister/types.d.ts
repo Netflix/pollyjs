@@ -39,7 +39,7 @@ export interface HarEntry {
   _id: string;
   _order: number;
   startedDateTime: string;
-  requests: HarRequest;
+  request: HarRequest;
   response: HarResponse;
   cache: {};
   timings: {
