@@ -5,12 +5,12 @@ import { getUser } from "./github-api";
 // 🟡 Important: Run `autoSetupPolly()`/`setupPolly()` EARLY!
 let pollyContext = autoSetupPolly();
 /* Polly/Nock MUST patch HTTP modules before your code `import`'s or `require`'s those modules.
-✅ Place after `import`'s, OR at the top of first `describe()`.
-❌ Do NOT setup in `beforeAll`/`beforeEach`!
+✅ Place autoSetupPolly() after `import`'s, OR at the top of first `describe()`.
+❌ Do NOT autoSetupPolly() in `beforeAll`/`beforeEach`!
 */
 
 // beforeEach(() => {
-//   // Common or shared interceptors go here.
+//   // Common or shared interceptors go here, or in tests. See example below.
 //   pollyContext.polly.server
 //       .get("/ping")
 //       .intercept((req, res) => void res.sendStatus(200));

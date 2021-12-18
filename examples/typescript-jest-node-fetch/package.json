@@ -2,7 +2,7 @@
   "name": "typescript-jest-node-fetch",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
+  "main": "./dist/index.js",
   "type": "commonjs",
   "exports": "./dist/index.js",
   "scripts": {

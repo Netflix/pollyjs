@@ -27,11 +27,11 @@ export default function autoSetupPolly() {
     // 🟡 Note: In node, all `fetch` like libraries use the http/https modules under the hood.
     // `node-fetch` is handled by the `NodeHttpAdapter`, NOT the `FetchAdapter`.
     adapters: ["node-http"],
-    mode: pollyMode,
-    recordIfMissing,
-    recordFailedRequests: true,
     flushRequestsOnStop: true,
     logging: false,
+    mode: pollyMode,
+    recordFailedRequests: true,
+    recordIfMissing,
     persister: "fs",
     persisterOptions: {
       fs: {
