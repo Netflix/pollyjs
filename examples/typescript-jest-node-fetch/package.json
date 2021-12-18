@@ -1,0 +1,49 @@
+{
+  "name": "typescript-jest-node-fetch",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "type": "commonjs",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "test": "jest --runInBand",
+    "test:record": "POLLY_MODE=record jest --runInBand --verbose"
+  },
+  "keywords": [
+    "pollyjs",
+    "test-mocking",
+    "jest",
+    "node",
+    "typescript",
+    "fetch"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "node-fetch": "^2.6.6"
+  },
+  "devDependencies": {
+    "@pollyjs/adapter-fetch": "^5.1.1",
+    "@pollyjs/adapter-node-http": "^5.1.1",
+    "@pollyjs/core": "^5.1.1",
+    "@pollyjs/node-server": "^5.1.1",
+    "@pollyjs/persister-fs": "^5.1.1",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^16.11.11",
+    "@types/node-fetch": "^2.5.12",
+    "@types/pollyjs__adapter": "^4.3.1",
+    "@types/pollyjs__adapter-fetch": "^2.0.1",
+    "@types/pollyjs__adapter-node-http": "^2.0.1",
+    "@types/pollyjs__core": "^4.3.3",
+    "@types/pollyjs__persister": "^4.3.1",
+    "@types/pollyjs__persister-fs": "^2.0.1",
+    "@types/pollyjs__utils": "^2.6.1",
+    "@types/setup-polly-jest": "^0.5.1",
+    "jest": "^26.6.0",
+    "nodemon": "^2.0.15",
+    "setup-polly-jest": "^0.10.0",
+    "ts-jest": "^26.5.6",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  }
+}
