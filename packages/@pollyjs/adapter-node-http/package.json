@@ -55,7 +55,7 @@
     "@pollyjs/persister-fs": "^6.0.4",
     "form-data": "^4.0.0",
     "get-stream": "^6.0.1",
-    "node-fetch": "^2.6.6",
+    "node-fetch": "^3.1.1",
     "rollup": "^1.14.6"
   }
 }
