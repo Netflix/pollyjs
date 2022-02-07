@@ -3,8 +3,7 @@ import { setupPolly } from "setup-polly-jest";
 import { Polly } from "@pollyjs/core";
 import NodeHttpAdapter from "@pollyjs/adapter-node-http";
 import FSPersister from "@pollyjs/persister-fs";
-// import FetchAdapter from "@pollyjs/adapter-fetch";
-// Polly.register(FetchAdapter);
+
 Polly.register(NodeHttpAdapter);
 Polly.register(FSPersister);
 
