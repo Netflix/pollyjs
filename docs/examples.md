@@ -34,6 +34,14 @@
 
 [index.test.js](https://raw.githubusercontent.com/Netflix/pollyjs/master/examples/jest-node-fetch/__tests__/index.test.js ':include :type=code')
 
+## TypeScript + Jest + Node Fetch
+
+**[Full Source](https://github.com/Netflix/pollyjs/tree/master/examples/typescript-jest-node-fetch)**
+
+[auto-setup-polly.ts](https://raw.githubusercontent.com/Netflix/pollyjs/master/examples/typescript-jest-node-fetch/src/utils/auto-setup-polly.ts ':include :type=code')
+
+[github-api.test.ts](https://raw.githubusercontent.com/Netflix/pollyjs/master/examples/typescript-jest-node-fetch/src/github-api.test.ts ':include :type=code')
+
 ## Jest + Puppeteer
 
 **[Full Source](https://github.com/Netflix/pollyjs/tree/master/examples/jest-puppeteer)**
