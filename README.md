@@ -192,6 +192,7 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 <a href="https://github.com/agraves"><img src="https://avatars.githubusercontent.com/u/46964?v=4" title="agraves" width="80" height="80"></a>
 <a href="https://github.com/brandon-leapyear"><img src="https://avatars.githubusercontent.com/u/27799541?v=4" title="brandon-leapyear" width="80" height="80"></a>
 <a href="https://github.com/swashcap"><img src="https://avatars.githubusercontent.com/u/1858316?v=4" title="swashcap" width="80" height="80"></a>
+<a href="https://github.com/justsml"><img src="https://avatars.githubusercontent.com/u/397632?v=4" title="justsml" width="80" height="80"></a>
 <a href="https://github.com/DanielRuf"><img src="https://avatars.githubusercontent.com/u/827205?v=4" title="DanielRuf" width="80" height="80"></a>
 <a href="https://github.com/dciccale"><img src="https://avatars.githubusercontent.com/u/539546?v=4" title="dciccale" width="80" height="80"></a>
 <a href="https://github.com/ericclemmons"><img src="https://avatars.githubusercontent.com/u/15182?v=4" title="ericclemmons" width="80" height="80"></a>
@@ -206,10 +207,9 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 <a href="https://github.com/fastfrwrd"><img src="https://avatars.githubusercontent.com/u/231133?v=4" title="fastfrwrd" width="80" height="80"></a>
 <a href="https://github.com/rwd"><img src="https://avatars.githubusercontent.com/u/218337?v=4" title="rwd" width="80" height="80"></a>
 <a href="https://github.com/rmachielse"><img src="https://avatars.githubusercontent.com/u/2470404?v=4" title="rmachielse" width="80" height="80"></a>
+<a href="https://github.com/ROpdebee"><img src="https://avatars.githubusercontent.com/u/15186467?v=4" title="ROpdebee" width="80" height="80"></a>
 <a href="https://github.com/gribnoysup"><img src="https://avatars.githubusercontent.com/u/5036933?v=4" title="gribnoysup" width="80" height="80"></a>
 <a href="https://github.com/shriyash"><img src="https://avatars.githubusercontent.com/u/4494915?v=4" title="shriyash" width="80" height="80"></a>
-<a href="https://github.com/geigerzaehler"><img src="https://avatars.githubusercontent.com/u/3919579?v=4" title="geigerzaehler" width="80" height="80"></a>
-<a href="https://github.com/vikr01"><img src="https://avatars.githubusercontent.com/u/28772991?v=4" title="vikr01" width="80" height="80"></a>
 
 [//]: contributor-faces
 
