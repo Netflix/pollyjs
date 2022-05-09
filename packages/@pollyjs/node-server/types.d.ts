@@ -23,7 +23,7 @@ export interface APIResponse {
 
 export class API {
   constructor(options: Pick<Config, 'recordingsDir'>);
-  getRecordings(recording: string): APIResponse;
+  getRecording(recording: string): APIResponse;
   saveRecording(recording: string, data: any): APIResponse;
   deleteRecording(recording: string): APIResponse;
   filenameFor(recording: string): string;
