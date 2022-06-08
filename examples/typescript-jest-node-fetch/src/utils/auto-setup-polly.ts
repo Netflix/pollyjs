@@ -23,11 +23,54 @@ switch (process.env.POLLY_MODE) {
     break;
 }
 
-export default function autoSetupPolly() {
-  /**
+/**
+ * 
+ * ### Example: Ignoring headers (API Keys)
+ * 
+ * ```ts
+ * import autoSetupPolly from '../utils/auto-setup-polly';
+ * 
+ * describe('Group of tests', () => {
+ *   const polly = autoSetupPolly({
+ *     matchRequestsBy: {
+ *       headers: { exclude: ['x-request-id', 'x-api-key'] },
+ *     }
+ *   });
+ *   
+ *   it('Api Request', async () => {
+ *     // Polly will skip matching on the headers `x-request-id` and `x-api-key` in requests,
+ *     //   AND prevent the values being recorded!
+ *     // ... test goes here ...
+ *   })
+ * });
+ * ```
+ * 
+ * ### Example: Ignoring generated data using a callback
+ * 
+ * ```ts
+ * 
+ * import autoSetupPolly from '../utils/auto-setup-polly';
+ * 
+ * const polly = autoSetupPolly({
+ *  matchRequestsBy: {
+ *    body(body, req) {
+ *      const json = JSON.parse(body);
+ *
+ *      delete json.uuid;
+ *      delete json.createdDate;
+ * 
+ *      return JSON.stringify(json);
+ *    }
+ * });
+ *
+ * ```
+ * 
+ * @param overrideConfig 
+ * @returns 
+ */
+export default function autoSetupPolly(overrideConfig: PollyConfig = {}) {
+  /*
    * This persister can be adapted for both Node.js and Browser environments.
-   * 
-   * TODO: Customize your config.
    */
   return setupPolly({
     // 🟡 Note: In node, most `fetch` like libraries use the http/https modules.
@@ -44,5 +87,6 @@ export default function autoSetupPolly() {
         recordingsDir: path.resolve(__dirname, "../../__recordings__"),
       },
     },
+    ...overrideConfig,
   });
 }
