@@ -79,7 +79,7 @@ export default function autoSetupPolly(overrideConfig: PollyConfig = {}) {
     mode,
     recordIfMissing,
     flushRequestsOnStop: true,
-    logging: false,
+    logLevel: "warn",
     recordFailedRequests: true,
     persister: "fs",
     persisterOptions: {

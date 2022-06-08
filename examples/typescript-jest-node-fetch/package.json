@@ -7,7 +7,8 @@
   "exports": "./dist/index.js",
   "scripts": {
     "test": "jest --runInBand",
-    "test:record": "POLLY_MODE=record jest --runInBand --verbose"
+    "test:record": "POLLY_MODE=record jest --runInBand --verbose",
+    "test:offline": "POLLY_MODE=offline jest --runInBand --verbose"
   },
   "keywords": [
     "pollyjs",
