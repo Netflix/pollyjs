@@ -64,8 +64,8 @@ Polly.register(XHRAdapter);
 Polly.register(FetchAdapter);
 Polly.register(RESTPersister);
 
-describe('Netflix Homepage', function() {
-  it('should be able to sign in', async function() {
+describe('Netflix Homepage', function () {
+  it('should be able to sign in', async function () {
     /*
       Create a new polly instance.
 
@@ -178,23 +178,6 @@ file which Polly will use to replay the sign-in response when the test is rerun:
   }
 }
 ```
-
-## Credits
-
-_In alphabetical order:_
-
-- [Jason Mitchell](https://twitter.com/_jasonmit) - Creator / Maintainer
-- [Offir Golan](https://twitter.com/offirgolan) - Creator / Maintainer
-- [Sophinie Som](https://twitter.com/s0phinie) - Branding / Logo
-
-## We're hiring!
-
-Join the Netflix Studio & Content Engineering teams to help us build projects like this!
-
-Open Roles:
-
-- [Senior UI Engineer - Production Visibility Engineering](https://jobs.netflix.com/jobs/868295)
-- [Senior UI Engineer - Production Workflows Engineering](https://jobs.netflix.com/jobs/868224)
 
 ## License
 

@@ -163,14 +163,6 @@ file which Polly will use to replay the sign-in response when the test is rerun:
 }
 ```
 
-## Credits
-
-_In alphabetical order:_
-
-- [Jason Mitchell](https://twitter.com/_jasonmit) - Creator / Maintainer
-- [Offir Golan](https://twitter.com/offirgolan) - Creator / Maintainer
-- [Sophinie Som](https://twitter.com/s0phinie) - Branding / Logo
-
 ## Prior Art
 
 The "Client Server" API of Polly is heavily influenced by the very popular mock server library [pretender](https://github.com/pretenderjs/pretender). Pretender supports XHR and Fetch stubbing and is a great lightweight alternative to Polly if your project does not require persisting capabilities or Node adapters.
@@ -212,10 +204,6 @@ Thank you to all contributors especially the maintainers: [trek](https://github.
 <a href="https://github.com/shriyash"><img src="https://avatars.githubusercontent.com/u/4494915?v=4" title="shriyash" width="80" height="80"></a>
 
 [//]: contributor-faces
-
-## We're hiring!
-
-Join the Netflix Studio UI team to help us build projects like this! You can check out our open roles here on our [team page](https://jobs.netflix.com/teams/client-and-ui-engineering).
 
 ## License
 
