@@ -1,5 +1,5 @@
 {
-  "name": "typescript-jest-node-fetch",
+  "name": "@pollyjs/typescript-jest-node-fetch-example",
   "version": "1.0.0",
   "private": true,
   "main": "./dist/index.js",

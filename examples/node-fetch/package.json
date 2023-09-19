@@ -1,5 +1,5 @@
 {
-  "name": "node-fetch-example",
+  "name": "@pollyjs/node-fetch-example",
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
