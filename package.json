@@ -89,6 +89,7 @@
     "rollup-plugin-alias": "^1.5.2",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-node-builtins": "^2.1.2",

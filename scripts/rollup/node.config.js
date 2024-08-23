@@ -4,6 +4,7 @@ import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
+import copy from 'rollup-plugin-copy';
 
 import { input, output, pkg, minify } from './utils';
 
@@ -13,7 +14,7 @@ export default function createNodeConfig(options = {}) {
   return deepmerge(
     {
       input,
-      output: [output('cjs'), output('es')],
+      output: [output('cjs'), output('es', 'mjs')],
       external,
       plugins: [
         json(),
@@ -40,7 +41,13 @@ export default function createNodeConfig(options = {}) {
             ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
           ]
         }),
-        minify && terser()
+        minify && terser(),
+        copy({
+          targets: [
+            { src: 'types.d.ts', dest: 'dist/cjs' },
+            { src: 'types.d.ts', dest: 'dist/es', rename: 'types.d.mts' }
+          ]
+        })
       ]
     },
     options

@@ -3,8 +3,20 @@
   "version": "6.0.6",
   "description": "Standalone node server and express integration for @pollyjs",
   "main": "dist/cjs/pollyjs-node-server.js",
-  "module": "dist/es/pollyjs-node-server.js",
-  "types": "types.d.ts",
+  "module": "dist/es/pollyjs-node-server.mjs",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-node-server.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-node-server.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",

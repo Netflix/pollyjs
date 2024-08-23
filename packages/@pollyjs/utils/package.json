@@ -3,9 +3,21 @@
   "version": "6.0.6",
   "description": "Shared utilities and constants between @pollyjs packages",
   "main": "dist/cjs/pollyjs-utils.js",
-  "module": "dist/es/pollyjs-utils.js",
+  "module": "dist/es/pollyjs-utils.mjs",
   "browser": "dist/umd/pollyjs-utils.js",
-  "types": "types.d.ts",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-utils.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-utils.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",

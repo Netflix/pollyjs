@@ -3,8 +3,20 @@
   "version": "6.0.6",
   "description": "Node HTTP adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-node-http.js",
-  "module": "dist/es/pollyjs-adapter-node-http.js",
-  "types": "types.d.ts",
+  "module": "dist/es/pollyjs-adapter-node-http.mjs",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-adapter-node-http.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-adapter-node-http.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",

@@ -15,11 +15,11 @@ const banner = `/**
 */`;
 
 export const input = './src/index.js';
-export const output = (format) => {
+export const output = (format, ext = 'js') => {
   return {
     format,
     file: `./dist/${format}/${pkg.name.replace('@pollyjs/', 'pollyjs-')}.${
-      minify ? 'min.js' : 'js'
+      minify ? `min.${ext}` : ext
     }`,
     sourcemap: production,
     banner

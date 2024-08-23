@@ -3,8 +3,20 @@
   "version": "6.0.6",
   "description": "File system persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-fs.js",
-  "module": "dist/es/pollyjs-persister-fs.js",
-  "types": "types.d.ts",
+  "module": "dist/es/pollyjs-persister-fs.mjs",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-persister-fs.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-persister-fs.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",
