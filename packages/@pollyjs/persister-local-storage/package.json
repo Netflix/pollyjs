@@ -3,9 +3,21 @@
   "version": "6.0.6",
   "description": "Local storage persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-local-storage.js",
-  "module": "dist/es/pollyjs-persister-local-storage.js",
+  "module": "dist/es/pollyjs-persister-local-storage.mjs",
   "browser": "dist/umd/pollyjs-persister-local-storage.js",
-  "types": "types.d.ts",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-persister-local-storage.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-persister-local-storage.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",

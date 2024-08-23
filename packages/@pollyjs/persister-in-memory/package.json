@@ -4,9 +4,21 @@
   "private": true,
   "description": "In memory storage persister for @pollyjs",
   "main": "dist/cjs/pollyjs-persister-in-memory.js",
-  "module": "dist/es/pollyjs-persister-in-memory.js",
+  "module": "dist/es/pollyjs-persister-in-memory.mjs",
   "browser": "dist/umd/pollyjs-persister-in-memory.js",
-  "types": "types.d.ts",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-persister-in-memory.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-persister-in-memory.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",

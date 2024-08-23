@@ -3,9 +3,21 @@
   "version": "6.0.6",
   "description": "XHR adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-xhr.js",
-  "module": "dist/es/pollyjs-adapter-xhr.js",
+  "module": "dist/es/pollyjs-adapter-xhr.mjs",
   "browser": "dist/umd/pollyjs-adapter-xhr.js",
-  "types": "types.d.ts",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-adapter-xhr.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-adapter-xhr.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",

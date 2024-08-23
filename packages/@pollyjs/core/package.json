@@ -3,9 +3,21 @@
   "version": "6.0.6",
   "description": "Record, replay, and stub HTTP Interactions",
   "main": "dist/cjs/pollyjs-core.js",
-  "module": "dist/es/pollyjs-core.js",
+  "module": "dist/es/pollyjs-core.mjs",
   "browser": "dist/umd/pollyjs-core.js",
-  "types": "types.d.ts",
+  "types": "dist/cjs/types.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/types.d.ts",
+        "default": "./dist/cjs/pollyjs-core.js"
+      },
+      "import": {
+        "types": "./dist/es/types.d.mts",
+        "default": "./dist/es/pollyjs-core.mjs"
+      }
+    }
+  },
   "files": [
     "src",
     "dist",
