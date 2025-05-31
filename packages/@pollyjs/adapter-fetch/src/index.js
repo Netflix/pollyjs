@@ -1,6 +1,5 @@
 import Adapter from '@pollyjs/adapter';
 import { cloneArrayBuffer, isBufferUtf8Representable } from '@pollyjs/utils';
-import isNode from 'detect-node';
 import { Buffer } from 'buffer/';
 import bufferToArrayBuffer from 'to-arraybuffer';
 
@@ -24,12 +23,6 @@ export default class FetchAdapter extends Adapter {
 
   onConnect() {
     const { context } = this.options;
-
-    if (isNode) {
-      this.polly.logger.log.warn(
-        '[Polly] [adapter:fetch] Using the fetch adapter in Node has been deprecated. Please use the node-http adapter instead.'
-      );
-    }
 
     ['fetch', 'Request', 'Response', 'Headers'].forEach((key) =>
       this.assert(`${key} global not found.`, !!(context && context[key]))
