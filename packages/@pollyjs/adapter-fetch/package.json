@@ -1,6 +1,6 @@
 {
   "name": "@pollyjs/adapter-fetch",
-  "version": "6.0.6",
+  "version": "6.0.7",
   "description": "Fetch adapter for @pollyjs",
   "main": "dist/cjs/pollyjs-adapter-fetch.js",
   "module": "dist/es/pollyjs-adapter-fetch.js",

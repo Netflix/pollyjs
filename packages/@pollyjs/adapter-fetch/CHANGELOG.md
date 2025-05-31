@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.7](https://github.com/netflix/pollyjs/compare/v6.0.6...v6.0.7) (2025-05-31)
+
+
+### Bug Fixes
+
+* Undeprecating fetch for node because node supports fetch now ([#506](https://github.com/netflix/pollyjs/issues/506)) ([be0bd6c](https://github.com/netflix/pollyjs/commit/be0bd6ca0035565a1c29770bfc87f0b0754fec27))
+
+
+
+
+
 ## [6.0.6](https://github.com/netflix/pollyjs/compare/v6.0.5...v6.0.6) (2023-07-20)
 
 **Note:** Version bump only for package @pollyjs/adapter-fetch
